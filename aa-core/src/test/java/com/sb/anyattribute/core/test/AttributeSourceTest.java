@@ -22,15 +22,19 @@ public class AttributeSourceTest extends TestCase {
 
 		AttributeSource as = cfg.createJdbcAttributeSource();
 		as.open();
-		AttributeObject ao = new AttributeObject();
-		ao.setDate(AttributeDate.getInstance("2015/12/31 00:00:00.000"));
-		ao.setName(AttributeName.getInstance("attr-name1"));
-		ao.setOwner(AttributeOwner.getInstance("attr-owner1"));
-		ao.setValue(AttributeValue.getInstance(new BigDecimal("123.456")));
+		try {
 
-		as.saveAttributeObject(ao);
-		AttributeObject ao2 = as.getAttributeObject(ao.getOwner(), ao.getDate(), ao.getName());
-		Assert.assertEquals(ao, ao2);
-		as.close();
+			AttributeObject ao = new AttributeObject();
+			ao.setDate(AttributeDate.getInstance("2015/12/31 00:00:00.000"));
+			ao.setName(AttributeName.getInstance("attr-name1"));
+			ao.setOwner(AttributeOwner.getInstance("attr-owner1"));
+			ao.setValue(AttributeValue.getInstance(new BigDecimal("123.456")));
+
+			as.saveAttributeObject(ao);
+			AttributeObject ao2 = as.getAttributeObject(ao.getOwner(), ao.getDate(), ao.getName());
+			Assert.assertEquals(ao, ao2);
+		} finally {
+			as.close();
+		}
 	}
 }
