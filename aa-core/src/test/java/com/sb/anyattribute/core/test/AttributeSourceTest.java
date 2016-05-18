@@ -33,6 +33,9 @@ public class AttributeSourceTest extends TestCase {
 			as.saveAttributeObject(ao);
 			AttributeObject ao2 = as.getAttributeObject(ao.getOwner(), ao.getDate(), ao.getName());
 			Assert.assertEquals(ao, ao2);
+			as.clear();
+			AttributeObject ao3 = as.getAttributeObject(ao.getOwner(), ao.getDate(), ao.getName());
+			Assert.assertNull(ao3);//
 		} finally {
 			as.close();
 		}

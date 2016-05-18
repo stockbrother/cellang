@@ -76,4 +76,9 @@ public class JdbcAttributeSource extends AbstractAttributeSource {
 		pool.dispose();
 	}
 
+	@Override
+	public void clear() {
+		AttributeTable.executeUpdate(this.pool, AttributeTable.SQL_DELETE);
+	}
+
 }

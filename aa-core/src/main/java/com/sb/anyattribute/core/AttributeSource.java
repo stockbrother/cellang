@@ -12,4 +12,5 @@ public interface AttributeSource {
 
 	public void saveAttributeObject(AttributeObject ao);
 
+	public void clear();
 }
