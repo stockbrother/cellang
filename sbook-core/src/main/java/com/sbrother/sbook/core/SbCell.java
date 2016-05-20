@@ -1,24 +1,22 @@
 package com.sbrother.sbook.core;
 
+import com.sbrother.sbook.common.ObjectUtil;
+
 public class SbCell {
 
-	private SbOwner owner;
+	private String book;
 
-	private SbDate date;
-
-	private SbName name;
+	private String name;
 
 	private SbValue value;
 
-	public SbOwner getOwner() {
-		return owner;
+	private long version;
+
+	public String getBookIdentifier() {
+		return book;
 	}
 
-	public SbDate getDate() {
-		return date;
-	}
-
-	public SbName getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -26,15 +24,11 @@ public class SbCell {
 		return value;
 	}
 
-	public void setOwner(SbOwner owner) {
-		this.owner = owner;
+	public void setBookIdentifier(String date) {
+		this.book = date;
 	}
 
-	public void setDate(SbDate date) {
-		this.date = date;
-	}
-
-	public void setName(SbName name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -49,11 +43,18 @@ public class SbCell {
 		}
 		SbCell ao = (SbCell) obj;
 
-		return SbOwner.isNullSafeEquals(this.owner, ao.owner) //
-				&& SbDate.isNullSafeEquals(this.date, ao.date)//
-				&& SbName.isNullSafeEquals(this.name, ao.name) //
+		return ObjectUtil.isNullSafeEquals(this.book, ao.book)//
+				&& ObjectUtil.isNullSafeEquals(this.name, ao.name) //
 				&& SbValue.isNullSafeEquals(this.value, ao.value)//
 		;
+	}
+
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
 	}
 
 }

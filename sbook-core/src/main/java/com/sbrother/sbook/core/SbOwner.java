@@ -2,10 +2,10 @@ package com.sbrother.sbook.core;
 
 public class SbOwner {
 
-	private String value;
+	private String identifier;
 
 	public SbOwner(String string) {
-		this.value = string;
+		this.identifier = string;
 	}
 
 	public static SbOwner getInstance(String string) {
@@ -23,11 +23,11 @@ public class SbOwner {
 			return false;
 		}
 		SbOwner ad = (SbOwner) obj;
-		return this.value.equals(ad.value);
+		return this.identifier.equals(ad.identifier);
 	}
 
-	public String getValue() {
-		return value;
+	public String getIdentifier() {
+		return identifier;
 	}
 
 }

@@ -1,11 +1,16 @@
 package com.sbrother.sbook.core.jdbc;
 
+import com.sbrother.sbook.common.jdbc.SbSql;
+
 public class SbCellTable {
 
-	public static final String SQL_CREATE = "create table if not exists attributes(owner varchar,date timestamp,name varchar,value decimal) ";
-	public static final String SQL_INSERT = "insert into attributes(owner,date,name,value)values(?,?,?,?)";
-	public static final String SQL_SELECT = "select owner,date,name,value from attributes where owner=? and date=? and name=?";
-	public static final String SQL_DROP = "drop all objects";
-	public static final String SQL_DELETE = "delete from attributes";
+	public static final SbSql SQL_CREATE = SbSql.getInstance(
+			"create table if not exists attributes(owner varchar,date timestamp,name varchar,value decimal) ");
+	public static final SbSql SQL_INSERT = SbSql
+			.getInstance("insert into attributes(owner,date,name,value)values(?,?,?,?)", 4);
+	public static final SbSql SQL_SELECT = SbSql
+			.getInstance("select owner,date,name,value from attributes where owner=? and date=? and name=?", 3);
+	public static final SbSql SQL_DROP = SbSql.getInstance("drop all objects");
+	public static final SbSql SQL_DELETE = SbSql.getInstance("delete from attributes");
 
 }
