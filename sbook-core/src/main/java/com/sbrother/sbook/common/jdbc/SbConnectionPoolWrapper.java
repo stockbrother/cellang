@@ -25,7 +25,8 @@ public class SbConnectionPoolWrapper {
 
 		@Override
 		public Object execute(PreparedStatement ps) throws SQLException {
-			return ps.executeUpdate();
+			int rt = ps.executeUpdate();
+			return Long.valueOf(rt);//
 		}
 
 	};
@@ -36,12 +37,13 @@ public class SbConnectionPoolWrapper {
 		this.pool = pool;
 	}
 
-	public Object executeUpdate(String sql) {
-		return execute(sql, EMPTY, UPDATE);
+	public long executeUpdate(String sql) {
+		Long rt = (Long) execute(sql, EMPTY, UPDATE);
+		return rt.longValue();
 	}
 
-	public Object executeUpdate(String sql, Object[] pp) {
-		return execute(sql, new SbArrayParameterProvider(pp), UPDATE);
+	public Long executeUpdate(String sql, Object[] pp) {
+		return (Long) execute(sql, new SbArrayParameterProvider(pp), UPDATE);
 	}
 
 	public Object execute(String sql, SbParameterProvider pp, SbPreparedStatementExecutor pse) {
@@ -71,7 +73,8 @@ public class SbConnectionPoolWrapper {
 	}
 
 	public Object executeQuery(String sql, Object[] objects, SbResultSetProcessor rsp) {
-		return execute(sql, new SbArrayParameterProvider(objects), new SbResultSetProcessorPreparedStatementExecutor(rsp));
+		return execute(sql, new SbArrayParameterProvider(objects),
+				new SbResultSetProcessorPreparedStatementExecutor(rsp));
 	}
 
 }

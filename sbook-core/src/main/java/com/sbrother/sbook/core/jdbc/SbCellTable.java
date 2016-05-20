@@ -1,16 +1,22 @@
 package com.sbrother.sbook.core.jdbc;
 
-import com.sbrother.sbook.common.jdbc.SbSql;
+import com.sbrother.sbook.common.jdbc.SbColumn;
+import com.sbrother.sbook.common.jdbc.SbSqlOperation;
 
 public class SbCellTable {
 
-	public static final SbSql SQL_CREATE = SbSql.getInstance(
-			"create table if not exists attributes(owner varchar,date timestamp,name varchar,value decimal) ");
-	public static final SbSql SQL_INSERT = SbSql
-			.getInstance("insert into attributes(owner,date,name,value)values(?,?,?,?)", 4);
-	public static final SbSql SQL_SELECT = SbSql
-			.getInstance("select owner,date,name,value from attributes where owner=? and date=? and name=?", 3);
-	public static final SbSql SQL_DROP = SbSql.getInstance("drop all objects");
-	public static final SbSql SQL_DELETE = SbSql.getInstance("delete from attributes");
+	public static final String T_CELLS = "cells";
+	
+	public static final SbColumn F_BOOKID = SbColumn.getInstance("bookid");
+	public static final SbColumn F_TYPEID = SbColumn.getInstance("typeid");
+
+	public static final SbSqlOperation SQL_CREATE = SbSqlOperation
+			.getInstance("create table if not exists " + T_CELLS + "(bookid varchar,typeid varchar,value decimal) ");
+	public static final SbSqlOperation SQL_INSERT = SbSqlOperation
+			.getInstance("insert into " + T_CELLS + "(bookid,typeid,value)values(?,?,?)", 3);
+	
+	public static final SbSqlOperation SQL_DROP = SbSqlOperation.getInstance("drop all objects");
+	
+	public static final SbSqlOperation SQL_DELETE = SbSqlOperation.getInstance("delete from " + T_CELLS);
 
 }

@@ -4,9 +4,9 @@ import com.sbrother.sbook.common.SbConfiguration;
 
 public class SbJdbcAttributeSourceConfiguration extends SbConfiguration {
 
-	public SbJdbcAttributeSource createJdbcAttributeSource() {
+	public SbJdbcCellSource create() {
 
-		SbJdbcAttributeSource rt = new SbJdbcAttributeSource();
+		SbJdbcCellSource rt = new SbJdbcCellSource();
 		rt.configure(this);//
 
 		return rt;

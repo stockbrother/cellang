@@ -14,10 +14,6 @@ public class SbValue {
 		return new SbValue(bigDecimal);
 	}
 
-	public static boolean isNullSafeEquals(SbValue value2, SbValue value3) {
-		return value2 == null ? value3 == null : value2.equals(value3);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || !(obj instanceof SbValue)) {

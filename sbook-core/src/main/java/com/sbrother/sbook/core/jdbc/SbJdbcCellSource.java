@@ -9,10 +9,10 @@ import com.sbrother.sbook.common.SbConfiguration;
 import com.sbrother.sbook.common.jdbc.SbConnectionPoolWrapper;
 import com.sbrother.sbook.common.jdbc.SbResultSetProcessor;
 import com.sbrother.sbook.core.SbAbstractCellSource;
-import com.sbrother.sbook.core.SbCell;
+import com.sbrother.sbook.core.SbCellValue;
 import com.sbrother.sbook.core.SbValue;
 
-public class SbJdbcAttributeSource extends SbAbstractCellSource {
+public class SbJdbcCellSource extends SbAbstractCellSource {
 
 	private JdbcConnectionPool pool;
 
@@ -20,37 +20,21 @@ public class SbJdbcAttributeSource extends SbAbstractCellSource {
 
 	private SbConnectionPoolWrapper poolWrapper;
 
-	public SbJdbcAttributeSource() {
+	public SbJdbcCellSource() {
 	}
 
 	@Override
-	public SbCell getCell(String date, String name) {
-		SbCell rt = (SbCell) this.poolWrapper.executeQuery( //
-				SbCellTable.SQL_SELECT.getSql(), new Object[] { date, name }, //
-				new SbResultSetProcessor() {
+	public SbCellValue getCell(String bookId, String typeId) {
 
-					@Override
-					public Object process(ResultSet rs) throws SQLException {
-						SbCell rt = null;
-						while (rs.next()) {
-							rt = new SbCell();
-							rt.setBookIdentifier(rs.getString("book"));
-							rt.setName(rs.getString("name"));
-							rt.setValue(SbValue.getInstance(rs.getBigDecimal("value")));//
-							break;
-						}
-						return rt;
-					}
-				});
-
+		SbCellValue rt = new SbSelectCellSql().bookId(bookId).execute(this.poolWrapper, bookId, typeId);
 		return rt;
 	}
 
 	@Override
-	public void saveAttributeObject(final SbCell ao) {
+	public void save(final SbCellValue ao) {
 
 		this.poolWrapper.executeUpdate(SbCellTable.SQL_INSERT.getSql(),
-				new Object[] { ao.getBookIdentifier(), ao.getName(), ao.getValue().getValue() });
+				new Object[] { ao.getBookId(), ao.getTypeId(), ao.getValue().getValue() });
 	}
 
 	public void configure(SbConfiguration cfg) {
