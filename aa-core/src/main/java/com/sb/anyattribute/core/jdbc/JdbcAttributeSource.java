@@ -7,6 +7,8 @@ import java.util.Date;
 import org.h2.jdbcx.JdbcConnectionPool;
 
 import com.sb.anyattribute.common.Configuration;
+import com.sb.anyattribute.common.jdbc.ConnectionPoolWrapper;
+import com.sb.anyattribute.common.jdbc.ResultSetProcessor;
 import com.sb.anyattribute.core.AbstractAttributeSource;
 import com.sb.anyattribute.core.AttributeDate;
 import com.sb.anyattribute.core.AttributeList;
@@ -21,6 +23,8 @@ public class JdbcAttributeSource extends AbstractAttributeSource {
 
 	private String url;
 
+	private ConnectionPoolWrapper poolWrapper;
+
 	public JdbcAttributeSource() {
 	}
 
@@ -32,9 +36,9 @@ public class JdbcAttributeSource extends AbstractAttributeSource {
 
 	@Override
 	public AttributeObject getAttributeObject(AttributeOwner ao, AttributeDate date, AttributeName name) {
-		AttributeObject rt = (AttributeObject) AttributeTable.executeQuery(this.pool, //
+		AttributeObject rt = (AttributeObject) this.poolWrapper.executeQuery( //
 				AttributeTable.SQL_SELECT, new Object[] { ao.getValue(), new Date(date.getValue()), name.getValue() }, //
-				new AttributeTable.ResultSetProcessor() {
+				new ResultSetProcessor() {
 
 					@Override
 					public Object process(ResultSet rs) throws SQLException {
@@ -57,7 +61,7 @@ public class JdbcAttributeSource extends AbstractAttributeSource {
 	@Override
 	public void saveAttributeObject(final AttributeObject ao) {
 
-		AttributeTable.executeUpdate(this.pool, AttributeTable.SQL_INSERT, new Object[] { ao.getOwner().getValue(),
+		this.poolWrapper.executeUpdate(AttributeTable.SQL_INSERT, new Object[] { ao.getOwner().getValue(),
 				new Date(ao.getDate().getValue()), ao.getName().getValue(), ao.getValue().getValue() });
 	}
 
@@ -68,7 +72,8 @@ public class JdbcAttributeSource extends AbstractAttributeSource {
 	@Override
 	public void open() {
 		pool = JdbcConnectionPool.create(this.url, "sa", "sa");
-		AttributeTable.createIfNotExist(this.pool);
+		this.poolWrapper = new ConnectionPoolWrapper(this.pool);
+		this.poolWrapper.executeUpdate(AttributeTable.SQL_CREATE);
 	}
 
 	@Override
@@ -78,7 +83,7 @@ public class JdbcAttributeSource extends AbstractAttributeSource {
 
 	@Override
 	public void clear() {
-		AttributeTable.executeUpdate(this.pool, AttributeTable.SQL_DELETE);
+		this.poolWrapper.executeUpdate(AttributeTable.SQL_DELETE);
 	}
 
 }
