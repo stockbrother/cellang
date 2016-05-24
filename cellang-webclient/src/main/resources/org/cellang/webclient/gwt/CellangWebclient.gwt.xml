@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
-
-	<inherits name="com.google.gwt.dom.DOM" />
+	
+	<inherits name='com.google.gwt.user.User' />
 	<source path='client' />
-
+	<entry-point class='org.cellang.webclient.gwt.client.CellangEntryPoint' />
+	
 </module>
