@@ -3,6 +3,6 @@
 	
 	<inherits name='com.google.gwt.user.User' />
 	<source path='client' />
-	<entry-point class='org.cellang.webclient.gwt.client.CellangEntryPoint' />
-	
+	<entry-point class='org.cellang.webclient.gwt.client.CellangEntryPoint' />						
+
 </module>
