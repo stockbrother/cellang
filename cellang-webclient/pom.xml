@@ -49,16 +49,15 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>compile</goal>
-							<goal>generateAsync</goal>
+							<goal>compile</goal>							
 							<goal>test</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<runTarget>module1.html</runTarget>
+					<runTarget>home.html</runTarget>
 					<modules>
-						<module>mytmp.module1</module>
+						<module>org.cellang.webclient.gwt.CellangWebclient</module>
 					</modules>
 				</configuration>
 			</plugin>
