@@ -62,7 +62,7 @@
 				<configuration>
 					<runTarget>home.html</runTarget>
 					<modules>
-						<module>org.cellang.webclient.gwt.CellangWebclient</module>
+						<module>org.cellang.webclient.Module</module>
 					</modules>
 					<copyWebapp>true</copyWebapp>
 					<style>PRETY</style>
