@@ -181,15 +181,15 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 		if (ppL.isEmpty()) {// not configured,then default ones
 
-			{// try ws/wss first,
+			if(false){// try ws/wss first,
 				String hpro = getWindowLocationProtocol();
 				boolean https = hpro.equals("https");
-				String wsp = https ? "wss" : "ws";
+				String wsp = https ? "wskts" : "wskt";
 				String portS = Window.Location.getPort();
 				int port = Integer.parseInt(portS);
 				ppL.add(new ProtocolPort(wsp, port));
 			}
-			{// try ajax second
+			if(true){// try ajax second
 				String pro = getWindowLocationProtocol();
 				int port = getWindowLocationPort();
 				ppL.add(new ProtocolPort(pro, port));
@@ -198,8 +198,8 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 		}
 
 		String host = Window.Location.getHostName();
-		String ajaRes = "/aja/default";
-		String wsRes = "/wsa/default";
+		String ajaRes = "/transfer/ajax";
+		String wsRes = "/transfer/wskt";
 
 		for (ProtocolPort pp : ppL) {
 			String pro = pp.protocol;
@@ -208,7 +208,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 			if (pro.startsWith("http")) {
 				resource = ajaRes;
-			} else if (pro.startsWith("ws")) {
+			} else if (pro.startsWith("wskt")) {
 				resource = wsRes;
 			} else {
 				throw new WebException("not supported pro:" + pro);
@@ -227,7 +227,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	}
 
 	public boolean tryConnect(int uriIdx) {
-
+		LOG.info("try connect:"+uriIdx);
 		TransferPoint ep = this.tryedEndpointMap.get(uriIdx);
 		if (ep != null) {// tryed before.
 			return true;//

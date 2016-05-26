@@ -6,7 +6,7 @@ package org.cellang.clwt.core.client.transferpoint.ws;
 
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.transferpoint.EndpointImpl;
-import org.cellang.clwt.core.client.transferpoint.TransferProvider;
+import org.cellang.clwt.core.client.transferpoint.UnderlyingTransfer;
 import org.cellang.clwt.core.client.transferpoint.EndpointImpl.UnderlyingProtocol;
 
 /**
@@ -19,7 +19,7 @@ public class WebSocketProtocol implements UnderlyingProtocol {
 	 * May 9, 2013
 	 */
 	@Override
-	public TransferProvider createGomet(Address uri, boolean force) {
+	public UnderlyingTransfer createGomet(Address uri, boolean force) {
 		//
 		WebSocketTransferProvider rt = new WebSocketTransferProvider(uri);
 		
