@@ -47,7 +47,7 @@ public class DefaultRootWidget extends AbstractWebWidget implements WebWidget, C
 			ele = getBodyElement();
 			ele.setInnerText("not found id:_cellang_root");
 		} else {
-			ele.setInnerText("Hello world!");
+			//ele.setInnerText("Hello world!");
 		}
 
 		return ele;

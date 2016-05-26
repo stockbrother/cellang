@@ -9,8 +9,11 @@ import java.util.Map;
 
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.ClientClosingEvent;
+import org.cellang.clwt.core.client.impl.UiClientImpl;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.Handler;
+import org.cellang.clwt.core.client.logger.WebLogger;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.transferpoint.ws.WebSocketProtocol;
 
@@ -21,12 +24,13 @@ import com.google.gwt.user.client.Window;
  * 
  */
 public class EndpointImpl extends AbstractTransferPoint {
-
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(EndpointImpl.class);
+	
 	public static interface UnderlyingProtocol {
-		public TransferProvider createGomet(Address uri, boolean force);
+		public UnderlyingTransfer createGomet(Address uri, boolean force);
 	}
 
-	private TransferProvider socket;
+	private UnderlyingTransfer socket;
 
 	private Map<String, UnderlyingProtocol> protocols;
 
@@ -38,8 +42,8 @@ public class EndpointImpl extends AbstractTransferPoint {
 	public EndpointImpl(Container c, Address uri, MessageDispatcherI md) {
 		super(c, uri, md, new MessageCacheImpl(c));
 		this.protocols = new HashMap<String, UnderlyingProtocol>();
-		this.protocols.put("ws", new WebSocketProtocol());
-		this.protocols.put("wss", new WebSocketProtocol());
+		this.protocols.put("wskt", new WebSocketProtocol());
+		this.protocols.put("wskts", new WebSocketProtocol());
 
 		this.protocols.put("http", new AjaxProtocol(c));
 		this.protocols.put("https", new AjaxProtocol(c));
@@ -69,8 +73,9 @@ public class EndpointImpl extends AbstractTransferPoint {
 
 	@Override
 	public void open() {
+		LOG.info("open endpoint:"+this.name+",uri:"+this.uri.toString());//
 		super.open();
-
+		
 		String proS = uri.getProtocol();
 
 		UnderlyingProtocol pro = this.protocols.get(proS);
@@ -81,10 +86,10 @@ public class EndpointImpl extends AbstractTransferPoint {
 			Window.alert("protocol is not support:" + proS);
 		}
 
-		this.socket.addOpenHandler(new Handler<TransferProvider>() {
+		this.socket.addOpenHandler(new Handler<UnderlyingTransfer>() {
 
 			@Override
-			public void handle(TransferProvider t) {
+			public void handle(UnderlyingTransfer t) {
 				//
 				EndpointImpl.this.onConnected();
 			}

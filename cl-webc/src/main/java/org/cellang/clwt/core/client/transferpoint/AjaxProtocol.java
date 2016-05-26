@@ -25,7 +25,7 @@ public class AjaxProtocol implements UnderlyingProtocol {
 	 * May 9, 2013
 	 */
 	@Override
-	public TransferProvider createGomet(Address uri, boolean force) {
+	public UnderlyingTransfer createGomet(Address uri, boolean force) {
 		//
 
 		AjaxTransferProvider rt = new AjaxTransferProvider(this.c, uri);

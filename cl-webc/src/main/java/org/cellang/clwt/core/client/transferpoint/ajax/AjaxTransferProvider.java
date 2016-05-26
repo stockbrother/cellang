@@ -236,6 +236,7 @@ public class AjaxTransferProvider extends AbstractTransferProvider {
 		}
 		ClientAjaxMsgContext amc = new ClientAjaxMsgContext();
 		amc.am = am2;
+		LOG.info("onAjaxMsg:"+am2);//
 		hdl.handle(amc);
 
 	}

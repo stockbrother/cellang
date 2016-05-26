@@ -15,7 +15,7 @@ import com.google.gwt.user.client.Timer;
  * @author wu
  * 
  */
-public abstract class AbstractTransferProvider implements TransferProvider {
+public abstract class AbstractTransferProvider implements UnderlyingTransfer {
 
 	public static final State UNKNOWN = State.valueOf("unknown");
 
@@ -24,7 +24,7 @@ public abstract class AbstractTransferProvider implements TransferProvider {
 	public static final State OPENED = State.valueOf("opened");
 
 	public static final State CLOSING = State.valueOf("closing");
-	
+
 	public static final State CLOSED = State.valueOf("closed");
 
 	protected String protocol;
@@ -35,7 +35,7 @@ public abstract class AbstractTransferProvider implements TransferProvider {
 
 	protected boolean errorsInOpenning;
 
-	protected CollectionHandler<TransferProvider> openHandlers = new CollectionHandler<TransferProvider>();
+	protected CollectionHandler<UnderlyingTransfer> openHandlers = new CollectionHandler<UnderlyingTransfer>();
 	protected CollectionHandler<String> closeHandlers = new CollectionHandler<String>();
 	protected CollectionHandler<String> errorHandlers = new CollectionHandler<String>();
 	protected CollectionHandler<String> msgHandlers = new CollectionHandler<String>();
@@ -70,26 +70,26 @@ public abstract class AbstractTransferProvider implements TransferProvider {
 		this.setState(OPENED);
 		this.openHandlers.handle(this);
 	}
-	
-	protected void closed(){
+
+	protected void closed() {
 		this.setState(CLOSED);
 	}
 
 	@Override
-	public void open(long timeout) {
+	public void open(final long timeout) {
 
 		this.setState(OPENNING);
 		new Timer() {
 
 			@Override
 			public void run() {
-				AbstractTransferProvider.this.checkOpenTimeout();
+				AbstractTransferProvider.this.checkOpenTimeout(timeout);
 			}
 		}.schedule((int) timeout);
 
 	}
 
-	protected void checkOpenTimeout() {
+	protected void checkOpenTimeout(long timeout) {
 
 		if (!this.isState(OPENNING)) {//
 			return;
@@ -101,7 +101,7 @@ public abstract class AbstractTransferProvider implements TransferProvider {
 		}
 
 		//
-		this.errorHandlers.handle("timeout to open:" + this.uri);
+		this.errorHandlers.handle("timeout(" + timeout + ") to open:" + this.uri);
 	}
 
 	private void onError(String msg) {
@@ -115,7 +115,7 @@ public abstract class AbstractTransferProvider implements TransferProvider {
 	 * May 9, 2013
 	 */
 	@Override
-	public void addOpenHandler(final Handler<TransferProvider> handler) {
+	public void addOpenHandler(final Handler<UnderlyingTransfer> handler) {
 		this.openHandlers.addHandler(handler);
 	}
 

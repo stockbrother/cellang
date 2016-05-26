@@ -4,6 +4,7 @@
  */
 package org.cellang.core.commons.transfer.ajax;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.xml.DOMConfigurator;
 import org.cellang.core.commons.lang.Path;
 import org.cellang.core.commons.session.Session;
 import org.cellang.core.commons.session.SessionManager;
@@ -60,7 +62,21 @@ public class AjaxCometServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
+		super.init();//
+
 		try {
+			ServletContext sc = this.getServletContext();
+
+			String webAppPath = sc.getRealPath("/");
+			String log4jProp = webAppPath + File.separator + "WEB-INF" + File.separator + "log4j.xml";
+			File file = new File(log4jProp);
+			if (file.exists()) {
+				System.out.println("start configure log4j");
+				DOMConfigurator.configure(log4jProp);
+				System.out.println("end of configure log4j");
+			} else {
+				throw new RuntimeException("file not found:" + log4jProp);
+			}
 
 			String max = getInitParameter("maxIdleTime", true);
 			this.maxIdleTimeout = (Integer.parseInt(max));
@@ -84,6 +100,7 @@ public class AjaxCometServlet extends HttpServlet {
 			this.getServletContext().setAttribute(CometManager.class.getName(), this.manager);
 
 		} catch (Exception x) {
+			x.printStackTrace();
 			throw new ServletException(x);
 		}
 
