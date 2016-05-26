@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<inherits name='com.google.gwt.json.JSON' />
+
+	<inherits name='org.fusesource.restygwt.RestyGWT' />
+	
+	<inherits name='com.google.gwt.user.User' />
+	
+	<source path='client' />
+	
+	<replace-with class="org.cellang.clwt.core.client.impl.DefaultClientLoader">
+		<when-type-is class="org.cellang.clwt.core.client.ClientLoader" />
+	</replace-with>
+	
+	<replace-with class="org.cellang.clwt.core.client.impl.DefaultWebCorePlugin">
+		<when-type-is class="org.cellang.clwt.core.client.WebCorePlugin" />
+	</replace-with>
+	
+	<replace-with class="org.cellang.clwt.core.client.impl.DefaultContainer">
+		<when-type-is class="org.cellang.clwt.core.client.Container" />
+	</replace-with>
+</module>

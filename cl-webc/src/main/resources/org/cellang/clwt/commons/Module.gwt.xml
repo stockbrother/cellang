@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+	<inherits name='org.cellang.clwt.core.Module' />
+
+	<source path='client' />
+	
+	<replace-with class="org.cellang.clwt.commons.client.impl.DefaultCommonsPlugin">
+		<when-type-is class="org.cellang.clwt.commons.client.CommonsPlugin" />
+	</replace-with>
+</module>

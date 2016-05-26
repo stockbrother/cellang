@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+	<inherits name='org.cellang.clwt.commons.Module' />
+	
+	<source path='client' />
+		
+	<entry-point class='org.cellang.webc.main.client.CellangEntryPoint' />						
+
+</module>
