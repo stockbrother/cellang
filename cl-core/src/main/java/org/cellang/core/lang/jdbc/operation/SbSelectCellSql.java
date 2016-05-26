@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.core.common.jdbc.ConnectionPoolWrapper;
-import org.cellang.core.common.jdbc.ResultSetProcessor;
-import org.cellang.core.common.jdbc.SqlOperation;
+import org.cellang.core.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.core.commons.jdbc.ResultSetProcessor;
+import org.cellang.core.commons.jdbc.SqlOperation;
 import org.cellang.core.lang.CellRecord;
 import org.cellang.core.lang.CellValue;
 import org.cellang.core.lang.jdbc.CellsTable;

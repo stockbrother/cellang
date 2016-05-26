@@ -1,7 +1,7 @@
 package org.cellang.core.lang.jdbc.operation;
 
-import org.cellang.core.common.jdbc.ConnectionPoolWrapper;
-import org.cellang.core.common.jdbc.SqlOperation;
+import org.cellang.core.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.core.commons.jdbc.SqlOperation;
 import org.cellang.core.lang.CellRecord;
 import org.cellang.core.lang.jdbc.RelationsTable;
 

@@ -1,4 +1,4 @@
-package org.cellang.core.common.jdbc;
+package org.cellang.core.commons.jdbc;
 
 public abstract class JdbcOperation<T> {
 	protected ConnectionPoolWrapper poolWrapper;

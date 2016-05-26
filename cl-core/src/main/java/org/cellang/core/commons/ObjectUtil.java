@@ -1,4 +1,4 @@
-package org.cellang.core.common;
+package org.cellang.core.commons;
 
 public class ObjectUtil {
 

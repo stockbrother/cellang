@@ -1,6 +1,6 @@
 package org.cellang.core.lang.jdbc;
 
-import org.cellang.core.common.Configuration;
+import org.cellang.core.commons.Configuration;
 
 public class JdbcCellSourceConfiguration extends Configuration {
 

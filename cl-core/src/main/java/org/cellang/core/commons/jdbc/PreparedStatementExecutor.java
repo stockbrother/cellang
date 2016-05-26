@@ -1,4 +1,4 @@
-package org.cellang.core.common.jdbc;
+package org.cellang.core.commons.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
