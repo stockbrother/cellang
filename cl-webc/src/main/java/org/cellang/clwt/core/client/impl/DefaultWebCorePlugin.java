@@ -12,7 +12,7 @@ import org.cellang.clwt.core.client.lang.Attacher;
 import org.cellang.clwt.core.client.lang.InstanceOf;
 import org.cellang.clwt.core.client.lang.WebObject;
 import org.cellang.clwt.core.client.lang.InstanceOf.CheckerSupport;
-import org.cellang.clwt.core.client.transferpoint.TransferPoint;
+import org.cellang.clwt.core.client.transfer.TransferPoint;
 import org.cellang.clwt.core.client.widget.DefaultWebWidgetFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;

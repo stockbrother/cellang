@@ -5,7 +5,7 @@ package org.cellang.clwt.core.client;
 
 import org.cellang.clwt.core.client.codec.CodecFactory;
 import org.cellang.clwt.core.client.lang.WebObject;
-import org.cellang.clwt.core.client.transferpoint.TransferPoint;
+import org.cellang.clwt.core.client.transfer.TransferPoint;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 /**

@@ -1,6 +1,6 @@
 package org.cellang.core.server;
 
-import org.cellang.core.commons.lang.Path;
+import org.cellang.commons.lang.Path;
 
 public class MessageContext {
 

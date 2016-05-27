@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.transferpoint.TransferPoint;
+import org.cellang.clwt.core.client.transfer.TransferPoint;
 
 /**
  * @author wu

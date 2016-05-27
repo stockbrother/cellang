@@ -36,10 +36,10 @@ import org.cellang.clwt.core.client.message.MessageDataWrapper;
 import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.message.MessageDispatcherImpl;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
-import org.cellang.clwt.core.client.transferpoint.EndpointImpl;
-import org.cellang.clwt.core.client.transferpoint.TransferPoint;
-import org.cellang.clwt.core.client.transferpoint.TransferPointConfiguration;
-import org.cellang.clwt.core.client.transferpoint.TransferPointConfiguration.ProtocolPort;
+import org.cellang.clwt.core.client.transfer.EndpointImpl;
+import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.TransferPointConfiguration;
+import org.cellang.clwt.core.client.transfer.TransferPointConfiguration.ProtocolPort;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;
 

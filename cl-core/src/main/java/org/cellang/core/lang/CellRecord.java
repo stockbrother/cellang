@@ -1,6 +1,6 @@
 package org.cellang.core.lang;
 
-import org.cellang.core.commons.ObjectUtil;
+import org.cellang.commons.ObjectUtil;
 
 public class CellRecord {
 

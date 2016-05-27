@@ -6,7 +6,7 @@ package org.cellang.core.lang;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.core.commons.lang.Handler;
+import org.cellang.commons.lang.Handler;
 
 /**
  * @author wuzhen

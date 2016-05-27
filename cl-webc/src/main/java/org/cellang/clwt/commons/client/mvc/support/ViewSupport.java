@@ -16,7 +16,7 @@ import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.message.MessageDataWrapper;
-import org.cellang.clwt.core.client.transferpoint.TransferPoint;
+import org.cellang.clwt.core.client.transfer.TransferPoint;
 
 import com.google.gwt.user.client.Element;
 

@@ -1,7 +1,7 @@
 package org.cellang.core.lang.jdbc;
 
-import org.cellang.core.commons.jdbc.SqlOperation;
-import org.cellang.core.commons.jdbc.TableColumn;
+import org.cellang.commons.jdbc.SqlOperation;
+import org.cellang.commons.jdbc.TableColumn;
 
 public class RelationsTable {
 

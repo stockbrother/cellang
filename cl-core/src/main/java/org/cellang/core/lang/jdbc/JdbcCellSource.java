@@ -2,8 +2,8 @@ package org.cellang.core.lang.jdbc;
 
 import java.util.List;
 
-import org.cellang.core.commons.Configuration;
-import org.cellang.core.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.commons.Configuration;
+import org.cellang.commons.jdbc.ConnectionPoolWrapper;
 import org.cellang.core.lang.AbstractCellSource;
 import org.cellang.core.lang.CellRecord;
 import org.cellang.core.lang.jdbc.operation.CellInsertOperation;

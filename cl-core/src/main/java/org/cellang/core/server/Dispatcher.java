@@ -1,7 +1,7 @@
 package org.cellang.core.server;
 
-import org.cellang.core.commons.lang.Handler;
-import org.cellang.core.commons.lang.Path;
+import org.cellang.commons.lang.Handler;
+import org.cellang.commons.lang.Path;
 
 public interface Dispatcher<T> {
 

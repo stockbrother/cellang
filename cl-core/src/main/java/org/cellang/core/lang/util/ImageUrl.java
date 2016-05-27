@@ -3,7 +3,7 @@
  */
 package org.cellang.core.lang.util;
 
-import org.cellang.core.commons.ObjectUtil;
+import org.cellang.commons.ObjectUtil;
 
 /**
  * @author wu

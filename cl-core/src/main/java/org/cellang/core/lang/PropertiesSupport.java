@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.core.commons.ObjectUtil;
+import org.cellang.commons.ObjectUtil;
 
 /**
  * @author wu

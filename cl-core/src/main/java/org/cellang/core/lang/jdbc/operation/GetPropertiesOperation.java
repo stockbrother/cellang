@@ -4,9 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.cellang.core.commons.jdbc.ConnectionPoolWrapper;
-import org.cellang.core.commons.jdbc.ResultSetProcessor;
-import org.cellang.core.commons.jdbc.SqlOperation;
+import org.cellang.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.commons.jdbc.ResultSetProcessor;
+import org.cellang.commons.jdbc.SqlOperation;
 import org.cellang.core.lang.jdbc.PropertiesTable;
 
 public class GetPropertiesOperation extends SqlOperation<Properties> {
@@ -19,7 +19,7 @@ public class GetPropertiesOperation extends SqlOperation<Properties> {
 
 	@Override
 	public Properties execute() {
-		Properties rt = new Properties();
+		final Properties rt = new Properties();
 		this.poolWrapper.executeQuery(SQL0, new ResultSetProcessor() {
 
 			@Override

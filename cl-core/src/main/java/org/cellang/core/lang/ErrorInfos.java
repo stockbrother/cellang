@@ -6,8 +6,8 @@ package org.cellang.core.lang;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.core.commons.ObjectUtil;
-import org.cellang.core.commons.lang.Path;
+import org.cellang.commons.ObjectUtil;
+import org.cellang.commons.lang.Path;
 
 /**
  * @author wu

@@ -2,8 +2,8 @@ package org.cellang.core.lang.jdbc.operation;
 
 import java.util.UUID;
 
-import org.cellang.core.commons.jdbc.ConnectionPoolWrapper;
-import org.cellang.core.commons.jdbc.SqlOperation;
+import org.cellang.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.commons.jdbc.SqlOperation;
 import org.cellang.core.lang.CellRecord;
 import org.cellang.core.lang.jdbc.CellsTable;
 

@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.core.commons.jdbc.ConnectionPoolWrapper;
-import org.cellang.core.commons.jdbc.JdbcOperation;
-import org.cellang.core.commons.jdbc.ResultSetProcessor;
+import org.cellang.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.commons.jdbc.JdbcOperation;
+import org.cellang.commons.jdbc.ResultSetProcessor;
 import org.cellang.core.lang.jdbc.CellsTable;
 import org.cellang.core.lang.jdbc.PropertiesTable;
 import org.cellang.core.lang.jdbc.RelationsTable;
@@ -27,7 +27,7 @@ public class InitialDBOperation extends JdbcOperation<Void> {
 
 	@Override
 	public Void execute() {
-		List<String> schemaList = new ArrayList<String>();
+		final List<String> schemaList = new ArrayList<String>();
 		this.poolWrapper.executeQuery("show schemas", new ResultSetProcessor() {
 
 			@Override
