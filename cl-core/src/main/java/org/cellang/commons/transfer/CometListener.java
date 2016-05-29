@@ -16,8 +16,6 @@ public interface CometListener {
 
 	public void onConnect(Comet ws);
 
-	public void onMessage(Comet ws, Reader reader);
-	
 	public void onMessage(Comet ws, String ms);
 	
 	public void onException(Comet ws, Throwable t);

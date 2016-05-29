@@ -4,9 +4,6 @@
  */
 package org.cellang.commons.transfer;
 
-import java.io.Reader;
-
-import org.cellang.core.lang.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,12 +14,6 @@ import org.slf4j.LoggerFactory;
 public class CometListenerAdaptor implements CometListener {
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CometListenerAdaptor.class);
-
-	@Override
-	public void onMessage(Comet ws, Reader reader) {
-		String s = StringUtil.readAsString(reader);
-		this.onMessage(ws, s);
-	}
 
 	@Override
 	public void onConnect(Comet ws) {

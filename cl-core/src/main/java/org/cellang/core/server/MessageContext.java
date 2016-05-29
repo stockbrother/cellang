@@ -1,17 +1,35 @@
 package org.cellang.core.server;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.core.lang.MessageI;
+import org.cellang.core.lang.MessageSupport;
 
 public class MessageContext {
 
-	private Path path;
+	private MessageI requestMessage;
 
-	public MessageContext(Path path) {
-		this.path = path;
+	private MessageI responseMessage;
+
+	private ServerContext serverContext;
+
+	public MessageContext(MessageI reqMsg) {
+		this.requestMessage = reqMsg;
+		this.responseMessage = MessageSupport.newMessage();
 	}
 
-	public Path getPath() {
-		return this.path;
+	public MessageI getRequestMessage() {
+		return requestMessage;
+	}
+
+	public MessageI getResponseMessage() {
+		return responseMessage;
+	}
+
+	public ServerContext getServerContext() {
+		return serverContext;
+	}
+
+	public void setServerContext(ServerContext serverContext) {
+		this.serverContext = serverContext;
 	}
 
 }

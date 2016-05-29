@@ -88,4 +88,7 @@ public interface MessageI {
 
 	public void setMessage(MessageI msg);
 
+	public MessageI path(Path path);
+	
+
 }

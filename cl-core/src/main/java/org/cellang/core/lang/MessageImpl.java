@@ -12,4 +12,7 @@ public class MessageImpl extends MessageSupport {
 	protected MessageImpl() {
 
 	}
+	protected MessageImpl(String path) {
+		super(path);
+	}
 }
