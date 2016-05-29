@@ -4,7 +4,7 @@ public interface CellangServer {
 
 	public void start();
 
-	public void service();
+	public void service(MessageContext mc);
 
 	public void shutdown();
 

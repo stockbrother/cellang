@@ -119,16 +119,4 @@ public class DefaultCometManager implements CometManager, CometListener {
 		this.listeners.onConnect(ws);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.websocket.api.WsListenerI#onMessage(com.fs.websocket.api.
-	 * WebSocketI, java.io.Reader)
-	 */
-	@Override
-	public void onMessage(Comet ws, Reader reader) {
-		String s = StringUtil.readAsString(reader);
-		this.onMessage(ws, s);
-	}
-
 }

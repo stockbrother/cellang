@@ -22,7 +22,7 @@ public class MessageSupport implements MessageI {
 	private HasProperties<Object> payloads;
 
 	public MessageSupport() {
-		this(Path.ROOT.toString());
+		this(null);
 	}
 
 	public MessageSupport(String path) {
@@ -32,8 +32,12 @@ public class MessageSupport implements MessageI {
 	public MessageSupport(String path, String id) {
 		this.headers = new MapProperties<String>();
 		this.payloads = new MapProperties<Object>();
-		this.headers.setProperty(HK_PATH, path);
-		this.headers.setProperty(HK_ID, id);
+		if (path != null) {
+			this.headers.setProperty(HK_PATH, path);
+		}
+		if (id != null) {
+			this.headers.setProperty(HK_ID, id);
+		}
 
 	}
 
@@ -184,8 +188,8 @@ public class MessageSupport implements MessageI {
 		//
 		Object rt = this.getPayloads().getProperty(key);
 		if (force && rt == null) {
-			throw new RuntimeException("force payload key:" + key + ",all payload keys:"
-					+ this.getPayloads().keyList());
+			throw new RuntimeException(
+					"force payload key:" + key + ",all payload keys:" + this.getPayloads().keyList());
 		}
 		return rt;
 	}
@@ -337,6 +341,18 @@ public class MessageSupport implements MessageI {
 		String h = this.getHeader(HK_SILENCE, "false");
 		return "true".equalsIgnoreCase(h) || "yes".equalsIgnoreCase(h);
 
+	}
+
+	@Override
+	public MessageI path(Path path) {
+		//
+		if (path == null) {
+			this.setHeader(HK_PATH, null);//
+		} else {
+			this.setHeader(HK_PATH, path.toString());
+		}
+
+		return this;
 	}
 
 }

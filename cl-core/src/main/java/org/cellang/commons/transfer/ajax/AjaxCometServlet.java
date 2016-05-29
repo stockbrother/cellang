@@ -20,6 +20,8 @@ import org.cellang.commons.lang.Path;
 import org.cellang.commons.session.Session;
 import org.cellang.commons.session.SessionManager;
 import org.cellang.commons.session.SessionManagerImpl;
+import org.cellang.commons.transfer.Comet;
+import org.cellang.commons.transfer.CometListener;
 import org.cellang.commons.transfer.CometManager;
 import org.cellang.commons.transfer.DefaultCometManager;
 import org.slf4j.Logger;
@@ -36,11 +38,11 @@ public class AjaxCometServlet extends HttpServlet {
 
 	// NOTE,must same as client.
 	public static final String HK_SESSION_ID = "x-ajax-comet-sessionId";
-	
+
 	public static final String PK_maxIdleTime = "maxIdleTime";
-	
-	public static final String PK_timeoutForFirstMessage ="timeoutForFirstMessage";
-	
+
+	public static final String PK_timeoutForFirstMessage = "timeoutForFirstMessage";
+
 	public static final String SK_COMET = "ajaxComet";
 
 	protected DefaultCometManager manager;
@@ -69,8 +71,6 @@ public class AjaxCometServlet extends HttpServlet {
 		this.sessions = new SessionManagerImpl();
 		try {
 			ServletContext sc = this.getServletContext();
-
-			String webAppPath = sc.getRealPath("/");
 
 			String max = getInitParameter(PK_maxIdleTime, true);
 			this.maxIdleTimeout = (Integer.parseInt(max));

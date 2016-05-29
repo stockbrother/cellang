@@ -22,9 +22,6 @@ public class CollectionCometListener implements CometListener {
 		this.listeners = new ArrayList<CometListener>();
 	}
 
-	/*
-	 * Dec 12, 2012
-	 */
 	@Override
 	public void onMessage(Comet ws, String msg) {
 		//
@@ -33,9 +30,6 @@ public class CollectionCometListener implements CometListener {
 		}
 	}
 
-	/*
-	 * Dec 12, 2012
-	 */
 	@Override
 	public void onException(Comet ws, Throwable t) {
 		//
@@ -45,9 +39,6 @@ public class CollectionCometListener implements CometListener {
 		}
 	}
 
-	/*
-	 * Dec 12, 2012
-	 */
 	@Override
 	public void onConnect(Comet ws) {
 		//
@@ -57,9 +48,6 @@ public class CollectionCometListener implements CometListener {
 		}
 	}
 
-	/*
-	 * Dec 12, 2012
-	 */
 	@Override
 	public void onClose(Comet ws, int statusCode, String reason) {
 		//
@@ -76,16 +64,4 @@ public class CollectionCometListener implements CometListener {
 		this.listeners.add(ln);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.websocket.api.WsListenerI#onMessage(com.fs.websocket.api.WebSocketI
-	 * , java.io.Reader)
-	 */
-	@Override
-	public void onMessage(Comet ws, Reader reader) {
-		String s = StringUtil.readAsString(reader);
-		this.onMessage(ws, s);
-	}
 }
