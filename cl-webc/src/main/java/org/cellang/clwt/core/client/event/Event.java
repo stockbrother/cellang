@@ -9,14 +9,14 @@ import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.SynchronizedI;
 import org.cellang.clwt.core.client.lang.UiType;
 import org.cellang.clwt.core.client.lang.WebObject;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 
 /**
  * @author wuzhen
  * 
  */
-public class Event extends MessageDataWrapper {
+public class Event extends MsgWrapper {
 
 	public static class Type<E extends Event> extends UiType<E> {
 

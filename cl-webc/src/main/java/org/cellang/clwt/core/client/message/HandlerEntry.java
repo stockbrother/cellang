@@ -30,7 +30,7 @@ public final class HandlerEntry {
 		this.handlers = hdls;
 	}
 
-	public boolean tryHandle(boolean dely, Path p, final MessageDataWrapper md) {
+	public boolean tryHandle(boolean dely, Path p, final MsgWrapper md) {
 		if (!this.isMatch(p)) {
 			return false;
 		}
@@ -49,7 +49,7 @@ public final class HandlerEntry {
 		return true;
 	}
 
-	protected void doHandle(MessageDataWrapper md) {
+	protected void doHandle(MsgWrapper md) {
 		try {
 			this.handlers.handle(md);
 		} catch (Throwable t) {

@@ -10,17 +10,17 @@ package org.cellang.clwt.core.client.message;
 public class MessageException {
 
 	protected Throwable exception;
-	protected MessageDataWrapper messageData;
+	protected MsgWrapper messageData;
 
 	public Throwable getException() {
 		return exception;
 	}
 
-	public MessageDataWrapper getMessageData() {
+	public MsgWrapper getMessageData() {
 		return messageData;
 	}
 
-	public MessageException(Throwable t, MessageDataWrapper md) {
+	public MessageException(Throwable t, MsgWrapper md) {
 		this.exception = t;
 		this.messageData = md;
 	}

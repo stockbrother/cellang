@@ -12,7 +12,7 @@ import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.event.Event.Type;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 
 /**
@@ -51,7 +51,7 @@ public interface WebObject extends HasProperties<Object> {
 	// use EventBusI.addHandler
 	public <E extends Event> void addHandler(Event.Type<E> ec, EventHandlerI<E> l);
 
-	public <W extends MessageDataWrapper> void addHandler(Path path, MessageHandlerI<W> mh);
+	public <W extends MsgWrapper> void addHandler(Path path, MessageHandlerI<W> mh);
 
 	public <E extends Event> void dispatch(E evt);
 

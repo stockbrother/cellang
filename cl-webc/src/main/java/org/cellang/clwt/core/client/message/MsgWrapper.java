@@ -13,21 +13,21 @@ import org.cellang.clwt.core.client.lang.Path;
  * @author wuzhen
  * 
  */
-public class MessageDataWrapper extends AbstractHasProperties<Object> {
+public class MsgWrapper extends AbstractHasProperties<Object> {
 
 	public static final String HK_REQUEST_ID = "_requestId";
 	
 	protected MessageData target;
 
-	public MessageDataWrapper(String path) {
+	public MsgWrapper(String path) {
 		this(Path.valueOf(path));
 	}
 
-	public MessageDataWrapper(Path path) {
+	public MsgWrapper(Path path) {
 		this(new MessageData(path));
 	}
 
-	public MessageDataWrapper(MessageData md) {
+	public MsgWrapper(MessageData md) {
 		this.target = md;
 	}
 

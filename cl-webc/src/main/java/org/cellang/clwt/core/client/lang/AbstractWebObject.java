@@ -22,7 +22,7 @@ import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.event.Event.Type;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.message.MessageDispatcherImpl;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
@@ -318,7 +318,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	}
 
 	@Override
-	public <W extends MessageDataWrapper> void addHandler(Path path, MessageHandlerI<W> mh) {
+	public <W extends MsgWrapper> void addHandler(Path path, MessageHandlerI<W> mh) {
 		this.eventDispatcher.addHandler(path, mh);
 	}
 

@@ -2,9 +2,13 @@
 <module>
 
 	<inherits name='org.cellang.clwt.commons.Module' />
-	
+
 	<source path='client' />
-		
-	<entry-point class='org.cellang.webc.main.client.CellangEntryPoint' />						
+
+	<entry-point class='org.cellang.webc.main.client.CellangEntryPoint' />
+	
+	<replace-with class="org.cellang.webc.main.client.CellangClientPluginImpl">
+		<when-type-is class="org.cellang.webc.main.client.CellangClientPlugin" />
+	</replace-with>
 
 </module>

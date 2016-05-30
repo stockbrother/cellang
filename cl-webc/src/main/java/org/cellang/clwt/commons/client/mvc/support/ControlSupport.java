@@ -5,7 +5,7 @@ package org.cellang.clwt.commons.client.mvc.support;
 
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.lang.Path;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 /**
@@ -18,11 +18,11 @@ public class ControlSupport extends AbstractControl {
 		super(c, name);
 	}
 
-	protected MessageDataWrapper newRequest(Path path) {
-		return new MessageDataWrapper(path);
+	protected MsgWrapper newRequest(Path path) {
+		return new MsgWrapper(path);
 	}
 
-	protected void sendMessage(MessageDataWrapper req) {
+	protected void sendMessage(MsgWrapper req) {
 		this.getClient(true).getEndpoint(true).sendMessage(req);//
 	}
 

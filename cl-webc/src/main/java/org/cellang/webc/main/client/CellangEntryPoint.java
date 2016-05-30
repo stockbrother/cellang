@@ -1,5 +1,8 @@
 package org.cellang.webc.main.client;
 
+import org.cellang.clwt.commons.client.frwk.impl.FrwkControlImpl;
+import org.cellang.clwt.commons.client.mvc.ControlManager;
+import org.cellang.clwt.commons.client.mvc.impl.ControlManagerImpl;
 import org.cellang.clwt.core.client.ClientLoader;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.WebClient;
@@ -21,18 +24,20 @@ public class CellangEntryPoint implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		System.out.println("onModuleLoad");
-		
-		Plugin[] spis = new Plugin[] { (WebCorePlugin) GWT.create(WebCorePlugin.class) };
-		
-		Plugins sf = ((ClientLoader) GWT.create(ClientLoader.class)).getOrLoadClient(spis,
-				new EventHandlerI<Event>() {
 
-					@Override
-					public void handle(Event e) {
-						// TODO
-					}
-				});
-		
+		Plugin[] spis = new Plugin[] { //
+				(WebCorePlugin) GWT.create(WebCorePlugin.class), //
+				(CellangClientPlugin) GWT.create(CellangClientPlugin.class) //
+				};
+
+		Plugins sf = ((ClientLoader) GWT.create(ClientLoader.class)).getOrLoadClient(spis, new EventHandlerI<Event>() {
+
+			@Override
+			public void handle(Event e) {
+				// TODO
+			}
+		});
+
 		this.container = sf.getContainer();
 		client = this.container.get(WebClient.class, true);
 
@@ -40,6 +45,7 @@ public class CellangEntryPoint implements EntryPoint {
 		WebWidget root = client.getRoot();
 		/****/
 		System.out.println("end of onModuleLoad");
+
 	}
 
 }

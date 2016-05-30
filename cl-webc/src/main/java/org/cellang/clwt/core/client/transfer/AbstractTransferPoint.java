@@ -29,7 +29,7 @@ import org.cellang.clwt.core.client.lang.Handler;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 
@@ -88,17 +88,17 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		this.addHandler(
 				EndpointMessageEvent.TYPE.getAsPath().concat(
 						Path.valueOf("/control/status/serverIsReady", '/')),
-				new MessageHandlerI<MessageDataWrapper>() {
+				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
-					public void handle(MessageDataWrapper t) {
+					public void handle(MsgWrapper t) {
 						AbstractTransferPoint.this.onServerIsReady(t);
 					}
 				});
-		MessageHandlerI<MessageDataWrapper> bindingMH = new MessageHandlerI<MessageDataWrapper>() {
+		MessageHandlerI<MsgWrapper> bindingMH = new MessageHandlerI<MsgWrapper>() {
 
 			@Override
-			public void handle(MessageDataWrapper t) {
+			public void handle(MsgWrapper t) {
 				AbstractTransferPoint.this.onBindingSuccess(t);
 			}
 		};
@@ -106,10 +106,10 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		this.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), bindingMH);
 		this.addHandler(Path.valueOf("/endpoint/message/terminal/binding/success"), bindingMH);
 
-		MessageHandlerI<MessageDataWrapper> unBindingMH = new MessageHandlerI<MessageDataWrapper>() {
+		MessageHandlerI<MsgWrapper> unBindingMH = new MessageHandlerI<MsgWrapper>() {
 
 			@Override
-			public void handle(MessageDataWrapper t) {
+			public void handle(MsgWrapper t) {
 				AbstractTransferPoint.this.onUnbindingSuccess(t);
 			}
 		};
@@ -163,7 +163,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		this.close();
 	}
 
-	protected void onServerIsReady(MessageDataWrapper e) {
+	protected void onServerIsReady(MsgWrapper e) {
 		MessageData md = e.getMessage();
 		this.clientId = md.getString("clientId", true);
 		this.terminalId = md.getString("terminalId", true);
@@ -323,7 +323,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 	/**
 	 * Dec 23, 2012
 	 */
-	public void onBindingSuccess(MessageDataWrapper evt) {
+	public void onBindingSuccess(MsgWrapper evt) {
 		MessageData md = evt.getTarget();
 		LOG.info(getShortName() + ",onBindingSuccess:" + md);
 		this.userInfo = new ObjectPropertiesData();
@@ -333,7 +333,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		new EndpointBondEvent(this, this.getSessionId()).dispatch();
 	}
 
-	public void onUnbindingSuccess(MessageDataWrapper evt) {
+	public void onUnbindingSuccess(MsgWrapper evt) {
 		this.userInfo = null;
 		new EndpointUnbondEvent(this).dispatch();
 	}
@@ -342,7 +342,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 	 * Jan 1, 2013
 	 */
 	@Override
-	public void sendMessage(MessageDataWrapper req) {
+	public void sendMessage(MsgWrapper req) {
 		this.sendMessage(req.getTarget());//
 	}
 

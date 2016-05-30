@@ -10,6 +10,6 @@ import org.cellang.clwt.core.client.lang.Handler;
  * @author wu
  * 
  */
-public interface MessageHandlerI<W extends MessageDataWrapper> extends Handler<W> {
+public interface MessageHandlerI<W extends MsgWrapper> extends Handler<W> {
 
 }

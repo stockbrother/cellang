@@ -17,7 +17,7 @@ import org.cellang.clwt.core.client.event.ScheduleEvent;
 import org.cellang.clwt.core.client.event.StateChangeEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 
 /**
  * @author wu
@@ -129,7 +129,7 @@ public class MessageCacheImpl extends AbstractWebObject implements MessageCacheI
 	 * Mar 28, 2013
 	 */
 	@Override
-	public void addMessage(MessageDataWrapper mw) {
+	public void addMessage(MsgWrapper mw) {
 		this.addMessage(mw.getTarget());
 	}
 

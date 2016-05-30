@@ -32,7 +32,7 @@ import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.State;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.message.MessageDispatcherImpl;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
@@ -158,10 +158,10 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 		});
 
 		rt.addHandler(Path.valueOf("/endpoint/message/client/init/success"),
-				new MessageHandlerI<MessageDataWrapper>() {
+				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
-					public void handle(MessageDataWrapper t) {
+					public void handle(MsgWrapper t) {
 						UiClientImpl.this.onInitSuccess(rt, t);
 					}
 				});
@@ -252,7 +252,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	/**
 	 * Jan 1, 2013
 	 */
-	protected void onInitSuccess(TransferPoint ep, MessageDataWrapper evt) {
+	protected void onInitSuccess(TransferPoint ep, MsgWrapper evt) {
 		MessageData t = evt.getMessage();
 		String sd = (String) t.getPayloads().getProperty("clientId", true);
 		String sid = sd;
@@ -343,7 +343,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	 */
 	public void onEndpointOpen(TransferPoint ep) {
 
-		MessageDataWrapper req = new MessageDataWrapper(Path.valueOf("/client/init"));
+		MsgWrapper req = new MsgWrapper(Path.valueOf("/client/init"));
 		String locale = this.getPreferedLocale();
 
 		req.setPayload("preferedLocale", (locale));

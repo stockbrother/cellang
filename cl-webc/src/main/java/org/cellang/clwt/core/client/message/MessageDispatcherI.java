@@ -10,19 +10,19 @@ import org.cellang.clwt.core.client.lang.Path;
  * @author wu
  * 
  */
-public interface MessageDispatcherI extends MessageHandlerI<MessageDataWrapper> {
+public interface MessageDispatcherI extends MessageHandlerI<MsgWrapper> {
 
-	public <W extends MessageDataWrapper> void addHandler(Path path,
+	public <W extends MsgWrapper> void addHandler(Path path,
 			MessageHandlerI<W> mh);
 
-	public <W extends MessageDataWrapper> void addHandler(Path path, boolean strict,
+	public <W extends MsgWrapper> void addHandler(Path path, boolean strict,
 			MessageHandlerI<W> mh);
 
-	public <W extends MessageDataWrapper> void addDefaultHandler(MessageHandlerI<W> mh);
+	public <W extends MsgWrapper> void addDefaultHandler(MessageHandlerI<W> mh);
 
 	public void addExceptionHandler(MessageExceptionHandlerI eh);
 
-	public void dispatch(MessageDataWrapper mw);
+	public void dispatch(MsgWrapper mw);
 
 	public void cleanAllHanlders();
 }

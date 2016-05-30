@@ -22,7 +22,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 
 	protected List<HandlerEntry> handlers;
 
-	protected CollectionHandler<MessageDataWrapper> defaultHandlers;
+	protected CollectionHandler<MsgWrapper> defaultHandlers;
 
 	protected CollectionHandler<MessageException> exceptionHandlers;
 
@@ -32,7 +32,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 		this.name = name;
 		this.exceptionHandlers = new CollectionHandler<MessageException>();
 		this.handlers = new ArrayList<HandlerEntry>();
-		this.defaultHandlers = new CollectionHandler<MessageDataWrapper>();
+		this.defaultHandlers = new CollectionHandler<MsgWrapper>();
 
 	}
 
@@ -40,7 +40,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 	 * Dec 23, 2012
 	 */
 	@Override
-	public void handle(MessageDataWrapper msg) {
+	public void handle(MsgWrapper msg) {
 		try {
 			this.handleInternal(msg);
 		} catch (Throwable t) {
@@ -61,7 +61,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 		}
 	}
 
-	protected void handleInternal(MessageDataWrapper t) {
+	protected void handleInternal(MsgWrapper t) {
 		//logger.debug("dispatcher:" + ",handle msg:" + t);
 		Path p = t.getTarget().getPath();
 
@@ -89,12 +89,12 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 	 * Dec 23, 2012
 	 */
 	@Override
-	public <W extends MessageDataWrapper> void addHandler(Path path, MessageHandlerI<W> mh) {
+	public <W extends MsgWrapper> void addHandler(Path path, MessageHandlerI<W> mh) {
 		this.addHandler(path, false, mh);
 	}
 
 	@Override
-	public <W extends MessageDataWrapper> void addHandler(Path path, boolean strict, MessageHandlerI<W> mh) {
+	public <W extends MsgWrapper> void addHandler(Path path, boolean strict, MessageHandlerI<W> mh) {
 
 		HandlerEntry he = new HandlerEntry(path, strict, mh);
 
@@ -106,7 +106,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 	 * Dec 23, 2012
 	 */
 	@Override
-	public <W extends MessageDataWrapper> void addDefaultHandler(MessageHandlerI<W> mh) {
+	public <W extends MsgWrapper> void addDefaultHandler(MessageHandlerI<W> mh) {
 		this.defaultHandlers.addHandler(mh);
 	}
 
@@ -130,7 +130,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 	 * fs.uicore.api.gwt.client.MsgWrapper)
 	 */
 	@Override
-	public void dispatch(MessageDataWrapper mw) {
+	public void dispatch(MsgWrapper mw) {
 		this.handle(mw);
 	}
 

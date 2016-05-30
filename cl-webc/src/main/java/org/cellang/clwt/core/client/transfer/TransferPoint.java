@@ -9,7 +9,7 @@ import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.data.PropertiesData;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.WebObject;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 
 /**
  * @author wu
@@ -21,7 +21,7 @@ public interface TransferPoint extends WebObject {
 
 	public void sendMessage(MessageData req);
 
-	public void sendMessage(MessageDataWrapper req);
+	public void sendMessage(MsgWrapper req);
 
 	public Address getUri();
 	

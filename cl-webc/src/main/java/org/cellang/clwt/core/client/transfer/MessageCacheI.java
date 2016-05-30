@@ -6,7 +6,7 @@ package org.cellang.clwt.core.client.transfer;
 
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.lang.WebObject;
-import org.cellang.clwt.core.client.message.MessageDataWrapper;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 
 /**
  * @author wu
@@ -16,7 +16,7 @@ public interface MessageCacheI extends WebObject {
 
 	public void addMessage(MessageData md);
 
-	public void addMessage(MessageDataWrapper mw);
+	public void addMessage(MsgWrapper mw);
 
 	public MessageData getMessage(String id);
 	
