@@ -6,7 +6,7 @@ package org.cellang.clwt.core.client.lang;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 import com.google.gwt.user.client.Element;
 
@@ -28,7 +28,7 @@ public class ObjectElementHelpers {
 	public ObjectElementHelper addHelper(String name, Element ele) {
 		ObjectElementHelper rt = this.getHelper(name, false);
 		if (rt != null) {
-			throw new WebException("already has helper:" + name + " for owner:"
+			throw new UiException("already has helper:" + name + " for owner:"
 					+ this.owner);
 		}
 		rt = new ObjectElementHelper(ele, this.owner);
@@ -39,7 +39,7 @@ public class ObjectElementHelpers {
 	public ObjectElementHelper getHelper(String name, boolean force) {
 		ObjectElementHelper rt = this.helpers.get(name);
 		if (force && rt == null) {
-			throw new WebException("no this helper:" + name + " for owner:"
+			throw new UiException("no this helper:" + name + " for owner:"
 					+ this.owner);
 		}
 		return rt;

@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 
 /**
  * @author wu
@@ -17,7 +17,7 @@ public class EndpointUnbondEvent extends EndpointEvent {
 	/**
 	 * @param type
 	 */
-	public EndpointUnbondEvent(TransferPoint c) {
+	public EndpointUnbondEvent(Endpoint c) {
 		super(TYPE, c);
 	}
 

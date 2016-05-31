@@ -6,7 +6,7 @@
  */
 package org.cellang.clwt.core.client.core;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.Attacher;
 import org.cellang.clwt.core.client.lang.WebObject;
 
@@ -41,7 +41,7 @@ public class AttacherElementWrapper extends ElementWrapper implements
 	@Override
 	public WebObject getOwner(boolean force) {
 		if (this.owner == null && force) {
-			throw new WebException("no owner for:" + this);
+			throw new UiException("no owner for:" + this);
 		}
 		return this.owner;
 

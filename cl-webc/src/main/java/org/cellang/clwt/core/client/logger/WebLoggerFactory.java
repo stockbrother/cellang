@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.gwtbridge.GwtBridge;
 import org.cellang.clwt.core.client.util.ObjectUtil;
 
@@ -87,7 +87,7 @@ public class WebLoggerFactory {
 
 			}
 			if (rt == null) {
-				throw new WebException("bug,at least has a root logger with null name");
+				throw new UiException("bug,at least has a root logger with null name");
 			}
 
 			this.cache.put(name, rt);
@@ -193,7 +193,7 @@ public class WebLoggerFactory {
 			}
 		}
 		if (force) {
-			throw new WebException("no level for name:" + name + ",all level:" + levelName);
+			throw new UiException("no level for name:" + name + ",all level:" + levelName);
 		}
 		return null;
 	}
@@ -205,7 +205,7 @@ public class WebLoggerFactory {
 
 		String name = levelName.get(level);
 		if (force && name == null) {
-			throw new WebException("no name for level:" + level + ",all level:" + levelName);
+			throw new UiException("no name for level:" + level + ",all level:" + levelName);
 		}
 
 		return name;

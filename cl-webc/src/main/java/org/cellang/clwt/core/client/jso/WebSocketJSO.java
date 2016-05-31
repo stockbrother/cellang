@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.core.client.jso;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.core.ErrorReportProxyHandler;
 import org.cellang.clwt.core.client.lang.Handler;
 
@@ -34,7 +34,7 @@ public final class WebSocketJSO extends AbstractJSO {
 		WebSocketJSO rt = tryCreate(uri);
 		if (force && rt == null) {
 			String agent = Window.Navigator.getUserAgent();
-			throw new WebException("browser not support web socket,agent:" + agent);
+			throw new UiException("browser not support web socket,agent:" + agent);
 		}
 		return rt;
 	}

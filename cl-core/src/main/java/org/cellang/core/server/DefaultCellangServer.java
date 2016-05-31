@@ -14,6 +14,7 @@ import org.cellang.core.lang.CellSource;
 import org.cellang.core.lang.jdbc.JdbcCellSourceConfiguration;
 import org.cellang.core.lang.util.ExceptionUtil;
 import org.cellang.core.server.handler.AuthHandler;
+import org.cellang.core.server.handler.SignupHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,7 @@ public class DefaultCellangServer implements CellangServer {
 
 		});
 		this.dispatcher.addHandler(Path.valueOf("msg/auth"), new AuthHandler());
+		this.dispatcher.addHandler(Path.valueOf("msg/signup/anonymous"), new SignupHandler());
 
 		this.executor = Executors.newCachedThreadPool();
 	}

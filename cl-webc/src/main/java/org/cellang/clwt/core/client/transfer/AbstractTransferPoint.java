@@ -6,7 +6,7 @@ package org.cellang.clwt.core.client.transfer;
 
 import org.cellang.clwt.core.client.Console;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.codec.Codec;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.data.MessageData;
@@ -44,7 +44,7 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
-public abstract class AbstractTransferPoint extends AbstractWebObject implements TransferPoint {
+public abstract class AbstractTransferPoint extends AbstractWebObject implements Endpoint {
 
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(AbstractTransferPoint.class);
 
@@ -182,7 +182,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 	protected void assertIsReady() {
 
 		if (!this.isReady()) {
-			throw new WebException(getShortName() + ",server is not ready");
+			throw new UiException(getShortName() + ",server is not ready");
 		}
 
 	}
@@ -357,7 +357,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 	public void logout() {
 		//
 		if (!this.isBond()) {
-			throw new WebException(getShortName() + " not bound yet.");
+			throw new UiException(getShortName() + " not bound yet.");
 		}
 
 		MessageData req = new MessageData("/terminal/unbinding");

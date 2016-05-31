@@ -11,7 +11,7 @@ import org.cellang.clwt.commons.client.frwk.HeaderViewI;
 import org.cellang.clwt.commons.client.mvc.simple.SimpleView;
 import org.cellang.clwt.commons.client.widget.BarWidgetI;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.Position;
 
@@ -82,7 +82,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 			rt.getOrAddMenuItem(path.getName());
 
 		} else {
-			throw new WebException("not support deeper menu for path:" + path);
+			throw new UiException("not support deeper menu for path:" + path);
 		}
 
 	}

@@ -6,7 +6,7 @@ package org.cellang.webc.main.client.handler.message;
 
 import org.cellang.clwt.commons.client.frwk.LoginViewI;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.event.EndpointMessageEvent;
@@ -82,7 +82,7 @@ public class LoginFailureMH extends UiHandlerSupport implements MessageHandlerI<
 			// again
 
 		} else {
-			throw new WebException("bug,no this type:" + type);
+			throw new UiException("bug,no this type:" + type);
 		}
 
 	}

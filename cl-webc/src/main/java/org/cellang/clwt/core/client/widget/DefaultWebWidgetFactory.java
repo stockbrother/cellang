@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.AbstractHasProperties;
 import org.cellang.clwt.core.client.lang.HasProperties;
 import org.cellang.clwt.core.client.widget.WebWidget.CreaterI;
@@ -52,7 +52,7 @@ public class DefaultWebWidgetFactory implements WebWidgetFactory {
 	public <T extends WebWidget> T create(Class<T> cls, String name, HasProperties<Object> pts) {
 		WebWidget.CreaterI<T> wic = this.createrMap.get(cls);
 		if (wic == null) {
-			throw new WebException("no creater found for widget type:" + cls);
+			throw new UiException("no creater found for widget type:" + cls);
 		}
 
 		T rt = wic.create(this.container, name, pts);

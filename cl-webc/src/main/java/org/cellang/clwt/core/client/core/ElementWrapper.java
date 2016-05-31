@@ -7,7 +7,7 @@ package org.cellang.clwt.core.client.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.jso.RectJSO;
 import org.cellang.clwt.core.client.lang.Callback;
 import org.cellang.clwt.core.client.lang.Point;
@@ -306,7 +306,7 @@ public class ElementWrapper {
 			p = p.getParent();
 		}
 		if (p == null && force) {
-			throw new WebException("no parent with tag:" + tag + " for element:" + this);
+			throw new UiException("no parent with tag:" + tag + " for element:" + this);
 		}
 		return p;
 	}

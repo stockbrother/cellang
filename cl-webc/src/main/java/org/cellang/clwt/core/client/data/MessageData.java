@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.core.client.data;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.util.UID;
 
@@ -82,7 +82,7 @@ public class MessageData {
 		String rt = this.getHeader(key);
 
 		if (force && rt == null) {
-			throw new WebException("no header with key:" + key + ",msg:" + this);
+			throw new UiException("no header with key:" + key + ",msg:" + this);
 		}
 
 		return rt;
@@ -113,7 +113,7 @@ public class MessageData {
 		Object rt = this.getPayload(key);
 
 		if (force && rt == null) {
-			throw new WebException("no header with key:" + key);
+			throw new UiException("no header with key:" + key);
 		}
 
 		return rt;

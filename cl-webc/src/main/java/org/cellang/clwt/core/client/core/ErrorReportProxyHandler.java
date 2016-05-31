@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.core;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.Handler;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
@@ -33,7 +33,7 @@ public class ErrorReportProxyHandler<T> implements Handler<T> {
 			this.target.handle(t);
 		} catch (Throwable e) {
 			LOG.error("handler error in handler:" + this.target, e);
-			throw WebException.toRtE(e);
+			throw UiException.toRtE(e);
 		}
 	}
 

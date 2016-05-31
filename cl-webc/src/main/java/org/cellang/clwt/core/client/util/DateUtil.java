@@ -8,7 +8,7 @@ package org.cellang.clwt.core.client.util;
 
 import java.util.Date;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.DateData;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -27,7 +27,7 @@ public class DateUtil {
 	public static String format(DateData dd, boolean force) {
 		if (dd == null) {
 			if (force) {
-				throw new WebException("null date data");
+				throw new UiException("null date data");
 			}
 			return null;
 		}

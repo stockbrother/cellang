@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.data;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 /**
  * @author wu
@@ -22,7 +22,7 @@ public class StringPropertiesData extends PropertiesData<String> {
 				rt.setProperty(key, svalue);
 
 			} else {
-				throw new WebException("cannot convert:" + di + " to:" + String.class);
+				throw new UiException("cannot convert:" + di + " to:" + String.class);
 			}
 		}
 		return rt;

@@ -11,7 +11,7 @@ import java.util.Map;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.ContainerAwareWebObject;
 import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.codec.CodecFactory;
 import org.cellang.clwt.core.client.codec.JsonCodecFactoryC;
 import org.cellang.clwt.core.client.data.MessageData;
@@ -37,7 +37,7 @@ import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.message.MessageDispatcherImpl;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.transfer.EndpointImpl;
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration.ProtocolPort;
 import org.cellang.clwt.core.client.widget.WebWidget;
@@ -65,7 +65,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	private List<Address> uriList;
 
-	private Map<Integer, TransferPoint> tryedEndpointMap = new HashMap<Integer, TransferPoint>();
+	private Map<Integer, Endpoint> tryedEndpointMap = new HashMap<Integer, Endpoint>();
 
 	public static final State UNKNOWN = State.valueOf("UNKNOWN");
 
@@ -86,7 +86,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	/**
 	 * Note:only set after client start.
 	 */
-	private TransferPoint endpoint;
+	private Endpoint endpoint;
 
 	public UiClientImpl(Container c, WebWidget root) {
 		super(c);
@@ -129,10 +129,10 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	}
 
-	protected TransferPoint newEndpoint(int tryIdx) {
+	protected Endpoint newEndpoint(int tryIdx) {
 		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
 		Address uri = this.uriList.get(tryIdx);
-		final TransferPoint rt = new EndpointImpl(this.container, uri, md);
+		final Endpoint rt = new EndpointImpl(this.container, uri, md);
 		rt.setProperty(PK_TRYING_INDEX, tryIdx);// the trying idx.
 
 		rt.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
@@ -171,7 +171,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	@Override
 	public void start() {
 		if (!this.isState(UNKNOWN)) {
-			throw new WebException("state should be:" + UNKNOWN + ",but state is:" + this.state);
+			throw new UiException("state should be:" + UNKNOWN + ",but state is:" + this.state);
 		}
 		
 		this.setState(STARTING);
@@ -211,7 +211,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 			} else if (pro.startsWith("wskt")) {
 				resource = wsRes;
 			} else {
-				throw new WebException("not supported pro:" + pro);
+				throw new UiException("not supported pro:" + pro);
 			}
 			Address uri = new Address(pro, host, port, resource);
 			this.uriList.add(uri);
@@ -228,7 +228,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	public boolean tryConnect(int uriIdx) {
 		LOG.info("try connect:"+uriIdx);
-		TransferPoint ep = this.tryedEndpointMap.get(uriIdx);
+		Endpoint ep = this.tryedEndpointMap.get(uriIdx);
 		if (ep != null) {// tryed before.
 			return true;//
 		}
@@ -252,12 +252,12 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	/**
 	 * Jan 1, 2013
 	 */
-	protected void onInitSuccess(TransferPoint ep, MsgWrapper evt) {
+	protected void onInitSuccess(Endpoint ep, MsgWrapper evt) {
 		MessageData t = evt.getMessage();
 		String sd = (String) t.getPayloads().getProperty("clientId", true);
 		String sid = sd;
 		if (sid == null) {
-			throw new WebException("got a null sessionId");
+			throw new UiException("got a null sessionId");
 		}
 		this.clientId = sd;
 		{
@@ -291,7 +291,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	}
 
 
-	public void onEndpointError(TransferPoint ep) {
+	public void onEndpointError(Endpoint ep) {
 
 		if (this.isState(STARTED)) {//
 			return;// ignore ,because it may a applevel error.
@@ -324,7 +324,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 		// ws error will delay the ajax request for that the limit is 2
 		// connections.
-		TransferPoint ep = evt.getEndPoint();
+		Endpoint ep = evt.getEndPoint();
 		if (ep.isOpen()) {
 			// this endpoint is open,but error before client/server is ready, so
 			// we
@@ -341,7 +341,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	 * open does not gurantee the endpoint is the final one.after client start
 	 * is gurantee this. May 12, 2013
 	 */
-	public void onEndpointOpen(TransferPoint ep) {
+	public void onEndpointOpen(Endpoint ep) {
 
 		MsgWrapper req = new MsgWrapper(Path.valueOf("/client/init"));
 		String locale = this.getPreferedLocale();
@@ -437,10 +437,10 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	 * Jan 1, 2013
 	 */
 	@Override
-	public TransferPoint getEndpoint(boolean force) {
+	public Endpoint getEndpoint(boolean force) {
 		//
 		if (this.endpoint == null && force) {
-			throw new WebException("end point is null, client not started?");
+			throw new UiException("end point is null, client not started?");
 		}
 		return this.endpoint;
 	}

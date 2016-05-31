@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.clwt.core.client.UiCoreConstants;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 import com.google.gwt.user.client.Window;
 
@@ -77,7 +77,7 @@ public class TransferPointConfiguration {
 	public ProtocolPort getFirst(boolean force) {
 		if (this.configuredL.isEmpty()) {
 			if (force) {
-				throw new WebException("no any configured");
+				throw new UiException("no any configured");
 			}
 			return null;
 		}

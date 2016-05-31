@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.data;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 /**
  * @author wu
@@ -19,7 +19,7 @@ public class ObjectPropertiesData extends PropertiesData<Object> {
 		String rt = this.getString(key);
 
 		if (rt == null && force) {
-			throw new WebException("no value for key:" + key + " in properties data:" + this);
+			throw new UiException("no value for key:" + key + " in properties data:" + this);
 		}
 		return rt;
 	}

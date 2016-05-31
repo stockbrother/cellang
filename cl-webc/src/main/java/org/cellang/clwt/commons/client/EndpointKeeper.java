@@ -12,7 +12,7 @@ import org.cellang.clwt.core.client.event.ScheduleEvent;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 
 /**
  * @author wu
@@ -22,7 +22,7 @@ public class EndpointKeeper {
 
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(EndpointKeeper.class);
 
-	protected TransferPoint endpoint;
+	protected Endpoint endpoint;
 
 	private WebClient client;
 

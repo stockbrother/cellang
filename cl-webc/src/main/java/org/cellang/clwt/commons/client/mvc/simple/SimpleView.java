@@ -14,7 +14,7 @@ import org.cellang.clwt.commons.client.mvc.widget.ButtonI;
 import org.cellang.clwt.commons.client.mvc.widget.ErrorInfosWidgetI;
 import org.cellang.clwt.commons.client.mvc.widget.ListI;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.event.ClickEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
@@ -104,7 +104,7 @@ public class SimpleView extends ViewSupport {
 		// listen to the button clicked event,which is button state is changed.
 		ButtonI b = this.actionMap.get(aname);
 		if (b != null) {
-			throw new WebException("already exist action:" + name + " in view:" + this);
+			throw new UiException("already exist action:" + name + " in view:" + this);
 		}
 
 		b = this.factory.create(ButtonI.class);// TODO,
@@ -128,7 +128,7 @@ public class SimpleView extends ViewSupport {
 	protected void hideAction(Path aname, boolean hide) {
 		ButtonI b = this.actionMap.get(aname);
 		if (b == null) {
-			throw new WebException("no action:" + aname + " in view:" + this);
+			throw new UiException("no action:" + aname + " in view:" + this);
 		}
 		b.setVisible(!hide);
 	}
@@ -171,7 +171,7 @@ public class SimpleView extends ViewSupport {
 	private void doClickAction(Path ap) {
 		ButtonI ab = this.actionMap.get(ap);
 		if (ab == null) {
-			throw new WebException("widget not found for action:" + ap + " in view:" + this);
+			throw new UiException("widget not found for action:" + ap + " in view:" + this);
 		}
 		ab.getElementWrapper().click();
 	}

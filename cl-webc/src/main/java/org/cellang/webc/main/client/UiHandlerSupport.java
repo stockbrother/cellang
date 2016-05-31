@@ -10,7 +10,7 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 /**
@@ -25,7 +25,7 @@ public class UiHandlerSupport {
 		this.container = c;
 	}
 
-	protected TransferPoint getEndpoint() {
+	protected Endpoint getEndpoint() {
 		return this.getClient(true).getEndpoint(true);
 	}
 

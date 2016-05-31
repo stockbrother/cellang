@@ -12,7 +12,7 @@ import org.cellang.clwt.core.client.lang.Attacher;
 import org.cellang.clwt.core.client.lang.InstanceOf;
 import org.cellang.clwt.core.client.lang.WebObject;
 import org.cellang.clwt.core.client.lang.InstanceOf.CheckerSupport;
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 import org.cellang.clwt.core.client.widget.DefaultWebWidgetFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;
@@ -120,12 +120,12 @@ public class DefaultWebCorePlugin implements WebCorePlugin {
 				return o instanceof Attacher;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(TransferPoint.class) {
+		InstanceOf.addChecker(new CheckerSupport(Endpoint.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof TransferPoint;
+				return o instanceof Endpoint;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(Scheduler.class) {

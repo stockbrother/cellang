@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.message;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.lang.AbstractHasProperties;
@@ -86,7 +86,7 @@ public class MsgWrapper extends AbstractHasProperties<Object> {
 		String sd = this.getPayload(key, force);
 		String rt = sd == null ? null : sd;
 		if (rt == null && force) {
-			throw new WebException("no payload:" + key);
+			throw new UiException("no payload:" + key);
 		}
 		return rt;
 
@@ -102,7 +102,7 @@ public class MsgWrapper extends AbstractHasProperties<Object> {
 		Boolean rt = sd == null ? null : sd;
 
 		if (rt == null && force) {
-			throw new WebException("no payload:" + key);
+			throw new UiException("no payload:" + key);
 		}
 
 		return rt;

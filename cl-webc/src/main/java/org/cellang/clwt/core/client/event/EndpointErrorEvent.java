@@ -5,7 +5,7 @@ package org.cellang.clwt.core.client.event;
 
 import org.cellang.clwt.core.client.data.ErrorInfoData;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 
 /**
  * @author wuzhen
@@ -20,7 +20,7 @@ public class EndpointErrorEvent extends EndpointEvent {
 	/**
 	 * @param type
 	 */
-	public EndpointErrorEvent(TransferPoint c, String message) {
+	public EndpointErrorEvent(Endpoint c, String message) {
 		super(TYPE, c);
 		this.errors.add(new ErrorInfoData("unknow", message));
 	}

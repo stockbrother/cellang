@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.cellang.commons.lang.Path;
 import org.cellang.commons.transfer.ajax.AjaxCometServlet;
@@ -38,7 +39,7 @@ public class AjaxCometServletTest extends TestCase {
 		Hashtable<String, String> paras = new Hashtable<String, String>();
 		paras.put(AjaxCometServlet.PK_maxIdleTime, "60000");
 		paras.put(AjaxCometServlet.PK_timeoutForFirstMessage, "10000");
-		servletRunner.registerServlet(this.contextPath, AjaxCometServlet.class.getName(), paras);
+		servletRunner.registerServlet(this.contextPath, TestAjaxCometServlet.class.getName(), paras);
 		servletClient = servletRunner.newClient();
 	}
 
@@ -102,7 +103,14 @@ public class AjaxCometServletTest extends TestCase {
 	public void testSimple() throws Exception {
 		String sessionId = this.connect();
 		try {
+			AjaxMsg amsg = new AjaxMsg(AjaxMsg.MESSAGE);
+			amsg.setProperty(AjaxMsg.PK_TEXTMESSAGE, "hello!");
 
+			this.send(amsg, sessionId);
+			TestAjaxCometServlet.TestEvent evt = TestAjaxCometServlet.events.poll(100, TimeUnit.MILLISECONDS);
+			Assert.assertNotNull("message not received", evt);
+			Assert.assertNotNull("no session id", evt.cometId);
+			Assert.assertEquals("message not expected.", "hello!", evt.message);
 		} finally {
 			this.close(sessionId);
 		}

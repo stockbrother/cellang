@@ -6,7 +6,7 @@ package org.cellang.clwt.core.client.codec;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 /**
  * @author wu
@@ -27,11 +27,11 @@ public class AbstractCodecFactory implements CodecFactory {
 		Class cls = cd.getDataClass();
 		String oldx = this.classMap.put(cls, tc);
 		if (oldx != null) {
-			throw new WebException("duplicated:" + cls + ",oldx:" + oldx);
+			throw new UiException("duplicated:" + cls + ",oldx:" + oldx);
 		}
 		Codec old = this.jcMap.put(tc, cd);
 		if (old != null) {
-			throw new WebException("duplicated:" + tc);
+			throw new UiException("duplicated:" + tc);
 		}
 
 	}
@@ -41,7 +41,7 @@ public class AbstractCodecFactory implements CodecFactory {
 	public <T> Codec<T> getCodec(Class<T> dataCls) {
 		String tc = this.classMap.get(dataCls);
 		if (tc == null) {
-			throw new WebException("no codec found for data class:" + dataCls);
+			throw new UiException("no codec found for data class:" + dataCls);
 		}
 		return this.getCodec(tc);
 
@@ -53,7 +53,7 @@ public class AbstractCodecFactory implements CodecFactory {
 
 		Codec rt = this.jcMap.get(type);
 		if (rt == null) {
-			throw new WebException("no codec found for type code:" + type + ",all:" + this.jcMap.keySet());
+			throw new UiException("no codec found for type code:" + type + ",all:" + this.jcMap.keySet());
 		}
 		return rt;
 	}

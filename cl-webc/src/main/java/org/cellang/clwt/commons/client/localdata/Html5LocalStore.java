@@ -5,7 +5,7 @@
 package org.cellang.clwt.commons.client.localdata;
 
 import org.cellang.clwt.commons.client.html5.LocalStorageJSO;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 /**
  * @author wu
@@ -25,7 +25,7 @@ public class Html5LocalStore extends LocalStore {
 		LocalStorageJSO jso = LocalStorageJSO.getInstance(false);//
 		if (jso == null) {
 			if (force) {
-				throw new WebException(
+				throw new UiException(
 						"browser not support html5 local storage ");
 			}
 			return null;

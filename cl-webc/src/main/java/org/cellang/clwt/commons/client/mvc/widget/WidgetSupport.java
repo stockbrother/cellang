@@ -4,7 +4,7 @@
 package org.cellang.clwt.commons.client.mvc.widget;
 
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.HasProperties;
 import org.cellang.clwt.core.client.lang.WebObject;
 import org.cellang.clwt.core.client.widget.AbstractWebWidget;
@@ -32,7 +32,7 @@ public class WidgetSupport extends AbstractWebWidget {
 		WebWidget old = (WebWidget) this.parent;
 
 		if (parent != null && !(parent instanceof WebWidget)) {
-			throw new WebException("cannot set a none widget parent");
+			throw new UiException("cannot set a none widget parent");
 		}
 		super.parent(parent);
 
@@ -44,7 +44,7 @@ public class WidgetSupport extends AbstractWebWidget {
 	protected void onSetParent(WebWidget old, WebWidget newP) {
 
 		if (old != null && newP != null) {
-			throw new WebException("changing parent not suported, current parent:" + old + ",new parent:" + newP
+			throw new UiException("changing parent not suported, current parent:" + old + ",new parent:" + newP
 					+ " for widget:" + this + "");
 		}
 

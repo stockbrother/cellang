@@ -4,7 +4,7 @@
 package org.cellang.clwt.core.client.event;
 
 import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 
 /**
  * @author wu
@@ -23,7 +23,7 @@ public class AfterClientStartEvent extends ClientEvent {
 		return (WebClient) this.source;
 	}
 
-	public TransferPoint getEndPoint() {
+	public Endpoint getEndPoint() {
 		return this.getClient().getEndpoint(true);
 	}
 

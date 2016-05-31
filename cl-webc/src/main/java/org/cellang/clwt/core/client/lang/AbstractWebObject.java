@@ -14,7 +14,7 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.ContainerAware;
 import org.cellang.clwt.core.client.Scheduler;
 import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.event.AttachedEvent;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.EventBus;
@@ -145,7 +145,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	@Override
 	public WebObject parent(WebObject newParent) {
 		if(!(newParent instanceof AbstractWebObject)){
-			throw new WebException("not supported:"+newParent);
+			throw new UiException("not supported:"+newParent);
 		}
 		
 		if (this.parent != null) {
@@ -163,7 +163,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		// new parent
 		if (newParent != null) {
 			if (newParent.contains(this)) {
-				throw new WebException("already parent:" + newParent + ",child:" + this.toDebugString());
+				throw new UiException("already parent:" + newParent + ",child:" + this.toDebugString());
 			}
 
 			if (this instanceof ContainerAware) {
@@ -198,11 +198,11 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 
 		if (rt.isEmpty()) {
 			if (force) {
-				throw new WebException("force:" + cls + "/" + name + " in " + this.toDebugString());
+				throw new UiException("force:" + cls + "/" + name + " in " + this.toDebugString());
 			}
 			return null;
 		} else if (rt.size() > 1) {
-			throw new WebException("too many,there are " + rt.size() + " " + cls + "/" + name + " in "
+			throw new UiException("too many,there are " + rt.size() + " " + cls + "/" + name + " in "
 					+ this.toDebugString());
 
 		}
@@ -283,7 +283,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 			next = next.getParent();
 		}
 		if (force) {
-			throw new WebException("force:" + cls);
+			throw new UiException("force:" + cls);
 		}
 		return null;
 
@@ -341,11 +341,11 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 
 		if (rt.isEmpty()) {
 			if (force) {
-				throw new WebException("force:" + cls + "/" + name + " in:" + this.toDebugString());
+				throw new UiException("force:" + cls + "/" + name + " in:" + this.toDebugString());
 			}
 			return null;
 		} else if (rt.size() > 1) {
-			throw new WebException("too many:" + cls + "/" + name + " in:" + this.toDebugString());
+			throw new UiException("too many:" + cls + "/" + name + " in:" + this.toDebugString());
 
 		}
 		return rt.get(0);
@@ -506,7 +506,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		Container c = this.getContainer();
 		if (c == null) {
 			if (force) {
-				throw new WebException("force,container not found for object:" + this.toDebugString());
+				throw new UiException("force,container not found for object:" + this.toDebugString());
 			}
 			return null;
 		}
@@ -524,7 +524,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		if (this.attached) {
 			return;
 		}
-		throw new WebException("not attached:" + this.toDebugString());
+		throw new UiException("not attached:" + this.toDebugString());
 	}
 
 	/*
@@ -626,13 +626,13 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		List<T> l = this.getAttacherList(cls);
 		if (l.isEmpty()) {
 			if (force) {
-				throw new WebException("no attacher:" + cls + " in uio:" + this.toDebugString());
+				throw new UiException("no attacher:" + cls + " in uio:" + this.toDebugString());
 			}
 			return null;
 		} else if (l.size() == 1) {
 			return l.get(0);
 		} else {
-			throw new WebException("to many attacher:" + cls + " in uio:" + this.toDebugString());
+			throw new UiException("to many attacher:" + cls + " in uio:" + this.toDebugString());
 
 		}
 
@@ -661,7 +661,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		LazyI rt = this.lazyMap.get(name);
 
 		if (rt == null && force) {
-			throw new WebException("no lazy:" + name);
+			throw new UiException("no lazy:" + name);
 		}
 
 		return rt;
@@ -674,7 +674,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	@Override
 	public <T> void addLazy(String name, LazyI<T> lz) {
 		if (null != this.getLazy(name, false)) {
-			throw new WebException("lazy exist:" + name);
+			throw new UiException("lazy exist:" + name);
 		}
 		this.lazyMap.put(name, lz);
 	}
@@ -713,7 +713,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 			}
 		}
 		if (force) {
-			throw new WebException("no id:" + id + " in:" + this.toDebugString());
+			throw new UiException("no id:" + id + " in:" + this.toDebugString());
 		}
 		return null;
 	}
@@ -736,7 +736,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		}
 
 		if (force) {
-			throw new WebException("not found id:" + id + " in:" + this.toDebugString());
+			throw new UiException("not found id:" + id + " in:" + this.toDebugString());
 		}
 
 		return null;

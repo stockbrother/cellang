@@ -10,7 +10,7 @@ import java.util.Map;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.ContainerAware;
 import org.cellang.clwt.core.client.Scheduler;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.event.ScheduleEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;
@@ -79,7 +79,7 @@ public class DefaultScheduler extends AbstractWebObject implements Scheduler, Co
 			ScheduleTask rti = new ScheduleTask(this, name, intervalMS);
 			com.google.gwt.core.client.Scheduler.get().scheduleFixedPeriod(rti, rti.intervalMS);
 		} else {
-			throw new WebException("schedule task already exist:" + rt);
+			throw new UiException("schedule task already exist:" + rt);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class DefaultScheduler extends AbstractWebObject implements Scheduler, Co
 		ScheduleTask rt = this.taskMap.get(name);
 
 		if (rt == null && force) {
-			throw new WebException("no task by name:" + name);
+			throw new UiException("no task by name:" + name);
 		}
 		return rt;
 	}
@@ -122,7 +122,7 @@ public class DefaultScheduler extends AbstractWebObject implements Scheduler, Co
 	 */
 	@Override
 	public void cancel(String name) {
-		throw new WebException("TODO");
+		throw new UiException("TODO");
 	}
 
 	/*

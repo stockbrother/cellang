@@ -10,6 +10,7 @@ import org.cellang.clwt.core.client.event.EndpointBondEvent;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.webc.main.client.handler.ClientStartedHandler;
 import org.cellang.webc.main.client.handler.EndpointBondHandler;
+import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
 
 public class CellangClientPluginImpl implements CellangClientPlugin {
 
@@ -23,6 +24,8 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 		EventBus eb = client.getEventBus(true);
 		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartedHandler(c));//NOTE
 		eb.addHandler(EndpointBondEvent.TYPE, new EndpointBondHandler(c));
+		
+		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 	}
 
 }

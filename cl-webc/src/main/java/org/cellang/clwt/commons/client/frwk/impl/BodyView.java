@@ -11,7 +11,7 @@ import org.cellang.clwt.commons.client.widget.TabWI;
 import org.cellang.clwt.commons.client.widget.TabberWI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.MapProperties;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.HasProperties;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.widget.WebWidget;
@@ -49,7 +49,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		WebWidget old = this.getItem(path, false);
 
 		if (old != null) {
-			throw new WebException("already exist:" + path + ",widget:" + old);
+			throw new UiException("already exist:" + path + ",widget:" + old);
 		}
 		final PanelWI prt = this.factory.create(PanelWI.class);
 		final TabWI sitem = this.tabber.addTab(path, prt);
@@ -77,7 +77,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		TabWI ta = this.getTabOfItem(path, false);
 		if (ta == null) {
 			if (force) {
-				throw new WebException("no item found :" + path);
+				throw new UiException("no item found :" + path);
 			}
 			return null;
 		}
@@ -90,7 +90,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		TabWI ta = this.tabber.getTab(path, false);
 		if (ta == null) {
 			if (force) {
-				throw new WebException("no item found :" + path);
+				throw new UiException("no item found :" + path);
 			}
 			return null;
 		}
@@ -121,7 +121,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		TabWI tab = this.getTabOfItem(path, false);
 		if (tab == null) {
 			if (force) {
-				throw new WebException("no item found:" + path);
+				throw new UiException("no item found:" + path);
 			}
 		}
 		tab.setText(false, title);

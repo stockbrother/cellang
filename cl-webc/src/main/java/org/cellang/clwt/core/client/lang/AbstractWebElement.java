@@ -4,7 +4,7 @@
 package org.cellang.clwt.core.client.lang;
 
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.core.ElementWrapper;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.ScrollEvent;
@@ -161,7 +161,7 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	@Override
 	public void addChild(WebObject c) {
 		if (c == null || !(c instanceof WebElement)) {
-			throw new WebException("child is null or not a widget:" + c);
+			throw new UiException("child is null or not a widget:" + c);
 		}
 		super.addChild(c);
 		if ((c instanceof WebElement)) {

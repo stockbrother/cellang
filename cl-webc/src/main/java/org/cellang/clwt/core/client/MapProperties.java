@@ -55,7 +55,7 @@ public class MapProperties<T> implements HasProperties<T> {
 	public T getProperty(String key, boolean force) {
 		T rt = this.getProperty(key, null);
 		if (rt == null && force) {
-			throw new WebException("force:" + key + ",keyList:" + this.keyList());
+			throw new UiException("force:" + key + ",keyList:" + this.keyList());
 		}
 		return rt;
 	}

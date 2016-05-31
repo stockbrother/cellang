@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.util.ObjectUtil;
 
 /**
@@ -55,7 +55,7 @@ public class AbstractHasProperties<T> implements HasProperties<T> {
 	public T getProperty(String key, boolean force) {
 		T rt = this.getProperty(key, null);
 		if (rt == null && force) {
-			throw new WebException("force:" + key + ",keyList:" + this.keyList());
+			throw new UiException("force:" + key + ",keyList:" + this.keyList());
 		}
 		return rt;
 	}

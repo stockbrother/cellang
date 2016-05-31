@@ -6,7 +6,7 @@ package org.cellang.clwt.core.client.lang;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 /**
  * @author wuzhen
@@ -49,7 +49,7 @@ public class InstanceOf {
 	public static boolean isInstance(Class cls, Object o) {
 		CheckerI ck = map.get(cls);
 		if (ck == null) {
-			throw new WebException("no instanceof checker found:" + cls
+			throw new UiException("no instanceof checker found:" + cls
 					+ ",please add it in the your");
 		}
 		return ck.isInstance(o);

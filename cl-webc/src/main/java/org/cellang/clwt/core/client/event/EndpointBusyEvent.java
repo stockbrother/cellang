@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 
 /**
  * @author wu
@@ -18,7 +18,7 @@ public class EndpointBusyEvent extends EndpointEvent {
 	/**
 	 * @param type
 	 */
-	public EndpointBusyEvent(TransferPoint src) {
+	public EndpointBusyEvent(Endpoint src) {
 		super(TYPE, src);
 	}
 

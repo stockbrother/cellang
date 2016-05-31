@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.Scheduler;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.Handler;
 import org.cellang.clwt.core.client.lang.Path;
@@ -243,7 +243,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 
 	public void assertConnected() {
 		if (!this.isConnected()) {
-			throw new WebException("no sid");
+			throw new UiException("no sid");
 		}
 	}
 
@@ -312,7 +312,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	public void close() {
 		//
 		if(!this.isState(OPENED)){
-			throw new WebException("not openned");
+			throw new UiException("not openned");
 		}
 		this.state = CLOSING;
 		// TODO send a async message to server?

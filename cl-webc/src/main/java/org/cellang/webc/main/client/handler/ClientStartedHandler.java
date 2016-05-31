@@ -11,12 +11,12 @@ import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.LoginControlI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.event.AfterClientStartEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.gwtbridge.UiWindow;
 import org.cellang.clwt.core.client.lang.Path;
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 import org.cellang.webc.main.client.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.HeaderItems;
 import org.cellang.webc.main.client.UiHandlerSupport;
@@ -60,20 +60,20 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 			if (action.equals("pf")) {
 //				String pfId = UiWindow.getParameter("pfId", null);
 //				if (pfId == null) {
-//					throw new WebException("pfId is null");
+//					throw new UiException("pfId is null");
 //				}
 //				LoginControlI lc = this.getControl(LoginControlI.class, true);
 //				PasswordResetViewI pv = lc.openPasswordResetView();
 //				pv.setPfId(pfId);
-				throw new WebException("todo");
+				throw new UiException("todo");
 			} else {
-				throw new WebException("no this action:" + action);
+				throw new UiException("no this action:" + action);
 			}
 		}
 	}
 
 	public void activeMessageHandlers(Container c, WebClient client) {
-		TransferPoint ep = client.getEndpoint(true);
+		Endpoint ep = client.getEndpoint(true);
 		// ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 		// new SignupAnonymousSuccessMH(c));
 		//

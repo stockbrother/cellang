@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.SynchronizedI;
@@ -87,7 +87,7 @@ public class Event extends MsgWrapper {
 		super(msg);
 		Path mpath = msg.getPath();
 		if (!path.isSubPath(mpath, true)) {
-			throw new WebException("event type path:" + path + " is not the super type of message path:"
+			throw new UiException("event type path:" + path + " is not the super type of message path:"
 					+ mpath);
 		}
 		this.source = src;

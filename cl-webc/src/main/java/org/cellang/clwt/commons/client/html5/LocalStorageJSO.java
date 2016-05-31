@@ -7,7 +7,7 @@ package org.cellang.clwt.commons.client.html5;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.clwt.core.client.WebException;
+import org.cellang.clwt.core.client.UiException;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Window;
@@ -27,7 +27,7 @@ public final class LocalStorageJSO extends JavaScriptObject {
 		if (!isSupport()) {
 			if (force) {
 				String agent = Window.Navigator.getUserAgent();
-				throw new WebException("browser not support Storage,agent: "
+				throw new UiException("browser not support Storage,agent: "
 						+ agent);
 			}
 			return null;

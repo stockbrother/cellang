@@ -6,13 +6,15 @@ package org.cellang.commons.transfer.ajax;
 
 import org.cellang.commons.session.SessionManager;
 import org.cellang.commons.transfer.DefaultCometManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author wu
  * 
  */
 public class AjaxCloseHandler extends AjaxMsgHandler {
-
+	public static final Logger LOG = LoggerFactory.getLogger(AjaxCloseHandler.class);
 	/**
 	 * @param sessionMap
 	 * @param manager
@@ -27,6 +29,7 @@ public class AjaxCloseHandler extends AjaxMsgHandler {
 	 */
 	@Override
 	public void handlerInternal(AjaxMsgContext amc) {
+		LOG.info("close:");
 		amc.arc.writeCloseSuccess();
 		if (amc.arc.as == null) {
 			// ignore the session already closed.

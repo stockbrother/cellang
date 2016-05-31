@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 
 
 /**
@@ -18,7 +18,7 @@ public class EndpointOpenEvent extends EndpointEvent {
 	/**
 	 * @param type
 	 */
-	public EndpointOpenEvent(TransferPoint c) {
+	public EndpointOpenEvent(Endpoint c) {
 		super(TYPE, c);
 	}
 

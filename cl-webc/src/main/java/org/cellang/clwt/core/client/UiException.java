@@ -7,21 +7,21 @@ package org.cellang.clwt.core.client;
  * @author wu
  * 
  */
-public class WebException extends RuntimeException {
+public class UiException extends RuntimeException {
 
-	public WebException() {
+	public UiException() {
 		this((String) null);
 	}
 
-	public WebException(String msg) {
+	public UiException(String msg) {
 		this(msg, null);
 	}
 
-	public WebException(Throwable t) {
+	public UiException(Throwable t) {
 		this(null, t);
 	}
 
-	public WebException(String msg, Throwable t) {
+	public UiException(String msg, Throwable t) {
 		super(msg, t);
 	}
 
@@ -32,7 +32,7 @@ public class WebException extends RuntimeException {
 		if (t instanceof RuntimeException) {
 			return (RuntimeException) t;
 		} else {
-			return new WebException(t);
+			return new UiException(t);
 		}
 	}
 

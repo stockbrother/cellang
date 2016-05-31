@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.transfer.TransferPoint;
+import org.cellang.clwt.core.client.transfer.Endpoint;
 
 
 /**
@@ -20,7 +20,7 @@ public class EndpointBondEvent extends EndpointEvent {
 	/**
 	 * @param type
 	 */
-	public EndpointBondEvent(TransferPoint c, String sessionId) {
+	public EndpointBondEvent(Endpoint c, String sessionId) {
 		super(TYPE, c);
 	}
 
