@@ -2,11 +2,11 @@ package org.cellang.core.lang.util;
 
 public class ExceptionUtil {
 
-	public static RuntimeException toRuntimeException(Throwable t) {
-		if (t instanceof RuntimeException) {
-			return (RuntimeException) t;
+	public static RuntimeException toRuntimeException(Throwable e) {
+		if (e instanceof RuntimeException) {
+			return (RuntimeException) e;
 		} else {
-			return new RuntimeException(t);
+			return new RuntimeException(e);
 		}
 	}
 }
