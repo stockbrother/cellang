@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.clwt.core.client.UiException;
+import org.cellang.clwt.core.client.transfer.ajax.AjaxMsgWrapper;
 import org.cellang.clwt.core.client.util.ObjectUtil;
 
 /**
@@ -101,11 +102,16 @@ public class AbstractHasProperties<T> implements HasProperties<T> {
 	}
 
 	/*
-	 *Apr 9, 2013
+	 * Apr 9, 2013
 	 */
 	@Override
 	public void setProperties(Map<String, T> map) {
 		this.map.putAll(map);
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getName() + ":" + this.getAsMap();
 	}
 
 }

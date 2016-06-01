@@ -25,8 +25,8 @@ public abstract class AjaxMsgHandler {
 
 	public void handle(AjaxMsgContext amc) {
 		if (this.sessionRequired && amc.arc.as == null) {
-			
-			throw new RuntimeException("session required for handler:" + this.getClass());
+			throw new RuntimeException("session required for handler:" + this.getClass()
+					+ ",do you provide the session id in http header by key:" + AjaxCometServlet.HK_SESSION_ID);
 		}
 
 		this.handlerInternal(amc);

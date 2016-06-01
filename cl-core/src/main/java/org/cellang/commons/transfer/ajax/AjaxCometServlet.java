@@ -37,7 +37,8 @@ public class AjaxCometServlet extends HttpServlet {
 	private static final Logger LOG = LoggerFactory.getLogger(AjaxCometServlet.class);
 
 	// NOTE,must same as client.
-	public static final String HK_SESSION_ID = "x-ajax-comet-sessionId";
+	// NOTE..............XXXXXXXXXXXXXXXXXXX.............XXXXXXXXXXX
+	public static final String HK_SESSION_ID = "x-cl-ajax-sessionId";
 
 	public static final String PK_maxIdleTime = "maxIdleTime";
 
@@ -103,6 +104,15 @@ public class AjaxCometServlet extends HttpServlet {
 	/* */
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		try {
+			this.doService(req, res);
+		} catch (Throwable e) {
+			res.sendError(500, "unexpected error:" + e.getMessage());// todo
+			LOG.error("unexpected exception raised.", e);
+		}
+	}
+
+	protected void doService(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		if (LOG.isDebugEnabled()) {
 
 			String ccode = req.getCharacterEncoding();
@@ -137,9 +147,12 @@ public class AjaxCometServlet extends HttpServlet {
 			Session s = this.sessions.touchSession(sid);
 			if (s == null) {// session is missing,
 				//
+				LOG.warn("session not found or expired for id:" + sid);//
 			} else {
 				as = (AjaxComet) s.getProperty(SK_COMET, true);
 			}
+		} else {
+			LOG.debug("no session id provided ");
 		}
 
 		// NOTE, the timeout for first message should be long enough,
@@ -171,8 +184,7 @@ public class AjaxCometServlet extends HttpServlet {
 		}
 	}
 
-	protected void doRequest(String sid, HttpServletRequest req, AjaxRequestContext arc)
-			throws ServletException, IOException {
+	protected void doRequest(String sid, HttpServletRequest req, AjaxRequestContext arc) throws IOException {
 		// virtual terminal id
 		if (sid != null && arc.as == null) {// missing session
 			//

@@ -7,12 +7,11 @@ import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.transfer.Endpoint;
 
 /**
- * @author wu
- * 
+ * @author wu <br>
+ *         After client start, a Endpoint available.
  */
 public class AfterClientStartEvent extends ClientEvent {
-	public static Type<AfterClientStartEvent> TYPE = new Type<AfterClientStartEvent>(ClientEvent.TYPE,
-			"started");
+	public static Type<AfterClientStartEvent> TYPE = new Type<AfterClientStartEvent>(ClientEvent.TYPE, "started");
 
 	/** */
 	public AfterClientStartEvent(WebClient client) {
