@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.cellang.core.lang.util.ExceptionUtil;
+import org.cellang.core.util.ExceptionUtil;
 
 public class Log4jWebConfigListener implements ServletContextListener {
 

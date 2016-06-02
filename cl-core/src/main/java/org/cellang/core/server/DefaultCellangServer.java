@@ -10,11 +10,9 @@ import org.cellang.commons.dispatch.DefaultDispatcher;
 import org.cellang.commons.dispatch.Dispatcher;
 import org.cellang.commons.lang.Handler;
 import org.cellang.commons.lang.Path;
-import org.cellang.core.lang.CellSource;
-import org.cellang.core.lang.jdbc.JdbcCellSourceConfiguration;
-import org.cellang.core.lang.util.ExceptionUtil;
 import org.cellang.core.server.handler.AuthHandler;
 import org.cellang.core.server.handler.SignupHandler;
+import org.cellang.core.util.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,13 +30,7 @@ public class DefaultCellangServer implements CellangServer {
 
 	public DefaultCellangServer() {
 
-		JdbcCellSourceConfiguration cfg = new JdbcCellSourceConfiguration();
-		cfg.setUrl("jdbc:h2:./target/test/h2db");
-
-		CellSource as = cfg.create();
-
 		this.serverContext = new ServerContext();
-		serverContext.setCellSource(as);
 		this.dispatcher = new DefaultDispatcher<MessageContext>();
 		this.dispatcher.addDefaultHandler(new Handler<MessageContext>() {
 
@@ -56,7 +48,6 @@ public class DefaultCellangServer implements CellangServer {
 
 	@Override
 	public void start() {
-		this.serverContext.getCellSource().open();
 		this.running = true;
 
 	}
@@ -68,7 +59,6 @@ public class DefaultCellangServer implements CellangServer {
 	@Override
 	public void shutdown() {
 		this.running = false;
-		this.serverContext.getCellSource().close();
 	}
 
 	@Override

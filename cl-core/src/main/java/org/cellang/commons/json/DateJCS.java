@@ -5,7 +5,7 @@ package org.cellang.commons.json;
 
 import java.util.Date;
 
-import org.cellang.core.lang.util.DateUtil;
+import org.cellang.core.util.DateUtil;
 
 /**
  * @author wu

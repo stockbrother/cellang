@@ -110,7 +110,7 @@ public class MapProperties<T> extends PropertiesSupport<T> {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.commons.api.value.PropertiesI#removeProperty(java.lang.String)
+	 * com.fs.commons.api.value.HasProperties#removeProperty(java.lang.String)
 	 */
 	@Override
 	public T removeProperty(String key) {
