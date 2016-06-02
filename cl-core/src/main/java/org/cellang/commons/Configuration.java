@@ -15,13 +15,38 @@ public class Configuration {
 		return getString(string, false);
 	}
 
+	public String getString(String string, String def) {
+		String rt = valueMap.get(string);
+		if (rt == null) {
+			return def;
+		}
+		return rt;
+	}
+
 	public String getString(String string, boolean force) {
 		String rt = valueMap.get(string);
 		if (rt == null && force) {
+
 			throw new RuntimeException("no value found for key:" + string);
 		}
 		return rt;
 
+	}
+
+	public int getAsInt(String string, int i) {
+		String valueS = this.getString(string);
+		if (valueS == null) {
+			return i;
+		}
+		return Integer.parseInt(valueS);//
+	}
+
+	public boolean getBoolean(String string, boolean b) {
+		String valueS = this.getString(string);
+		if (valueS == null) {
+			return b;
+		}
+		return Boolean.valueOf(valueS);
 	}
 
 }

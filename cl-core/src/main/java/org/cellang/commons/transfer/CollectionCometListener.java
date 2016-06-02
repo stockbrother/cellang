@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.core.lang.util.StringUtil;
+import org.cellang.core.util.StringUtil;
 
 /**
  * @author wu

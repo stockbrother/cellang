@@ -110,7 +110,7 @@ public abstract class PropertiesSupport<T> implements HasProperties<T> {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.commons.api.value.PropertiesI#getPropertyAsCsv(java.lang.String)
+	 * com.fs.commons.api.value.HasProperties#getPropertyAsCsv(java.lang.String)
 	 */
 	@Override
 	public List<String> getPropertyAsCsv(String key) {

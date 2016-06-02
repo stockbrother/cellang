@@ -5,7 +5,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.cellang.commons.transfer.ajax.AjaxMsg;
-import org.cellang.core.lang.util.ExceptionUtil;
+import org.cellang.core.util.ExceptionUtil;
 
 public class QueueAjaxMessageCallback extends AjaxMessageCallback {
 

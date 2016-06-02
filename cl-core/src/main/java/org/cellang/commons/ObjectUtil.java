@@ -13,6 +13,10 @@ public class ObjectUtil {
 		return new ObjectUtil(string);
 	}
 
+	public static boolean nullSafeEquals(Object name, Object name2) {
+		return isNullSafeEquals(name, name2);
+	}
+
 	public static boolean isNullSafeEquals(Object name, Object name2) {
 		return name == null ? name2 == null : name.equals(name2);
 	}
