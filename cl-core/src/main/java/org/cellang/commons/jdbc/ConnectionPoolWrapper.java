@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.h2.jdbcx.JdbcConnectionPool;
 
 public class ConnectionPoolWrapper {
 
@@ -31,10 +30,8 @@ public class ConnectionPoolWrapper {
 
 	};
 
-	private JdbcConnectionPool pool;
+	public ConnectionPoolWrapper() {
 
-	public ConnectionPoolWrapper(JdbcConnectionPool pool) {
-		this.pool = pool;
 	}
 
 	public long executeUpdate(String sql) {
@@ -48,7 +45,7 @@ public class ConnectionPoolWrapper {
 
 	public Object execute(String sql, ParameterProvider pp, PreparedStatementExecutor pse) {
 		try {
-			Connection c = pool.getConnection();
+			Connection c = null;//
 			try {
 
 				PreparedStatement ps = c.prepareStatement(sql);

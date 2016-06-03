@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.cellang.commons.session.Session;
 import org.cellang.commons.session.SessionManager;
 import org.cellang.commons.transfer.DefaultCometManager;
+import org.cellang.commons.transfer.servlet.AjaxCometServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

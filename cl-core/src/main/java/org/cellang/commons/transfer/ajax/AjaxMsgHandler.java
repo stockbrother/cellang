@@ -6,6 +6,7 @@ package org.cellang.commons.transfer.ajax;
 
 import org.cellang.commons.session.SessionManager;
 import org.cellang.commons.transfer.DefaultCometManager;
+import org.cellang.commons.transfer.servlet.AjaxCometServlet;
 
 /**
  * @author wu

@@ -93,7 +93,7 @@ public class SignupHandler extends AbstracHandler {
 		SignupHandler.confirm(this.dataService, email, confirmCode, res.getErrorInfos());
 	}
 	
-	public static void confirm(NodeService ds, String email, String confirmCode, ErrorInfos eis) {
+	public static void confirm(TableService ds, String email, String confirmCode, ErrorInfos eis) {
 		email = email.toLowerCase();
 		NodeSearchOperationI<SignupRequest> qo = ds.prepareNodeSearch(NodeTypes.SIGNUP_REQUEST);
 	
