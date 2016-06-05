@@ -8,19 +8,27 @@ import org.cellang.commons.transfer.Comet;
 import org.cellang.commons.transfer.CometListener;
 import org.cellang.commons.transfer.servlet.AjaxCometServlet;
 import org.cellang.core.lang.MessageI;
+import org.cellang.core.lang.MessageSupport;
 import org.cellang.core.server.CellangServer;
+import org.cellang.core.server.Channel;
 import org.cellang.core.server.DefaultCellangServer;
 import org.cellang.core.server.MessageContext;
-import org.json.simple.JSONObject;
+import org.cellang.core.server.Messages;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CellangServlet extends AjaxCometServlet implements CometListener {
+	private static final Logger LOG = LoggerFactory.getLogger(CellangServlet.class);
 
 	CellangServer server;
 
 	JsonCodecs codecs;
 
 	Codec messageCodec;
+
+	private static final String CHANNEL = "CHANNEL";
 
 	@Override
 	public void init() throws ServletException {
@@ -33,26 +41,44 @@ public class CellangServlet extends AjaxCometServlet implements CometListener {
 
 	@Override
 	public void onConnect(Comet ws) {
+		CometChannel ct = new CometChannel(ws, this.messageCodec);
+		ws.setAttribute(CHANNEL, ct);// bind comet session with CHANNEL.
+		MessageI reqMsg = MessageSupport.newMessage(Messages.MSG_CLIENT_IS_READY);
+		this.doService(reqMsg, ws);//
 
+	}
+
+	protected void doService(MessageI req, Comet ct) {
+		Channel channel = this.getChannel(ct);
+		MessageContext mc = new MessageContext(req, channel);
+		this.server.service(mc);
+		MessageI res = mc.getResponseMessage();
+
+		if (res != null) {
+			channel.sendMessage(res);
+		}
+
+	}
+
+	private CometChannel getChannel(Comet ct) {
+		return (CometChannel) ct.getAttribute(CHANNEL);
 	}
 
 	@Override
 	public void onMessage(Comet ws, String ms) {
-		JSONObject jso = (JSONObject) JSONValue.parse(ms);
+		JSONArray jso = (JSONArray) JSONValue.parse(ms);
 		MessageI reqMsg = (MessageI) this.messageCodec.decode(jso);
-
-		MessageContext mc = new MessageContext(reqMsg);
-		this.server.service(mc);
+		this.doService(reqMsg, ws);
 	}
 
 	@Override
 	public void onException(Comet ws, Throwable t) {
-
+		LOG.error("", t);
 	}
 
 	@Override
 	public void onClose(Comet ws, int statusCode, String reason) {
-
+		LOG.info("comet closed,stateCode:" + statusCode + ",reason:" + reason);//
 	}
 
 }

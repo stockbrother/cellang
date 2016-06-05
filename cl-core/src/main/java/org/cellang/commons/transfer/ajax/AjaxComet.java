@@ -8,6 +8,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.cellang.commons.transfer.CometListener;
 import org.cellang.commons.transfer.CometSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author wu
@@ -15,7 +17,8 @@ import org.cellang.commons.transfer.CometSupport;
  *         The session of client connection.
  */
 public class AjaxComet extends CometSupport {
-
+	private static final Logger LOG = LoggerFactory.getLogger(AjaxComet.class);
+	
 	private BlockingQueue<AjaxMsg> queue;
 
 	private long timeoutMs = 1000;
@@ -66,9 +69,14 @@ public class AjaxComet extends CometSupport {
 
 	@Override
 	public void sendMessage(String msg) {
+		if(LOG.isTraceEnabled()){
+			LOG.trace("sendMessage:"+msg);
+		}
+		
 		AjaxMsg am = new AjaxMsg(AjaxMsg.MESSAGE);
 		am.setProperty(AjaxMsg.PK_TEXTMESSAGE, msg);
 		this.putAjaxMessage(am);
+		
 	}
 
 	public BlockingQueue<AjaxMsg> getQueue() {
@@ -76,7 +84,7 @@ public class AjaxComet extends CometSupport {
 	}
 
 	public void putAjaxMessage(AjaxMsg am) {
-		//
+				
 		try {
 			this.queue.put(am);
 		} catch (InterruptedException e) {

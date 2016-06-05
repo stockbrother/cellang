@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author wu
  * 
  */
 public class AjaxRequestContext {
+	private static final Logger LOG = LoggerFactory.getLogger(AjaxRequestContext.class);
 
 	@Deprecated
 	// move to servlet.
@@ -39,8 +42,8 @@ public class AjaxRequestContext {
 	 * @param req2
 	 * @param res2
 	 */
-	public AjaxRequestContext(int timeoutForSession, int timeoutForFirstMessage, AjaxComet as,
-			HttpServletRequest req, HttpServletResponse res2) {
+	public AjaxRequestContext(int timeoutForSession, int timeoutForFirstMessage, AjaxComet as, HttpServletRequest req,
+			HttpServletResponse res2) {
 		this.req = req;
 		this.res = res2;
 		this.as = as;
@@ -81,6 +84,9 @@ public class AjaxRequestContext {
 	 * May 8, 2013
 	 */
 	public void write(AjaxMsg msg) {
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("write:" + msg);//
+		}
 		Writer out = this.getWriter();
 
 		try {

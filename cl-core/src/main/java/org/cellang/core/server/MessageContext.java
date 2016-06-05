@@ -1,7 +1,6 @@
 package org.cellang.core.server;
 
 import org.cellang.core.lang.MessageI;
-import org.cellang.core.lang.MessageSupport;
 
 public class MessageContext {
 
@@ -11,9 +10,11 @@ public class MessageContext {
 
 	private ServerContext serverContext;
 
-	public MessageContext(MessageI reqMsg) {
+	private Channel channel;
+	
+	public MessageContext(MessageI reqMsg,Channel channel) {
 		this.requestMessage = reqMsg;
-		this.responseMessage = MessageSupport.newMessage();
+		this.channel = channel;
 	}
 
 	public MessageI getRequestMessage() {
@@ -30,6 +31,14 @@ public class MessageContext {
 
 	public void setServerContext(ServerContext serverContext) {
 		this.serverContext = serverContext;
+	}
+
+	public Channel getChannel() {
+		return channel;
+	}
+
+	public void setResponseMessage(MessageI responseMessage) {
+		this.responseMessage = responseMessage;
 	}
 
 }

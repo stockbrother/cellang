@@ -23,8 +23,7 @@
 
 	<servlet>
 		<servlet-name>transferServlet</servlet-name>
-		<servlet-class>org.cellang.commons.transfer.ajax.AjaxCometServlet
-		</servlet-class>
+		<servlet-class>org.cellang.core.servlet.CellangServlet</servlet-class>
 		<init-param>
 			<param-name>maxIdleTime</param-name>
 			<param-value>600000</param-value>

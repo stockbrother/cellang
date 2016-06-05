@@ -33,14 +33,14 @@ public class ClientWithBrowserMock {
 
 	public long timeoutForFirstMessage = 5 * 1000;
 
-	public ClientWithBrowserMock() {
+	public ClientWithBrowserMock(Class<? extends AjaxCometServlet> clazz) {
 		this.queueCallback = new QueueAjaxMessageCallback();
 		this.executor = Executors.newFixedThreadPool(2);
 		servletRunner = new ServletRunner();
 		Hashtable<String, String> paras = new Hashtable<String, String>();
 		paras.put(AjaxCometServlet.PK_maxIdleTime, 60000 + "");
 		paras.put(AjaxCometServlet.PK_timeoutForFirstMessage, this.timeoutForFirstMessage + "");
-		servletRunner.registerServlet(this.contextPath, MockAjaxCometServlet.class.getName(), paras);
+		servletRunner.registerServlet(this.contextPath, clazz.getName(), paras);
 		servletClient = servletRunner.newClient();
 	}
 

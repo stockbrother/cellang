@@ -9,8 +9,8 @@ import java.util.concurrent.Future;
 import org.cellang.commons.dispatch.DefaultDispatcher;
 import org.cellang.commons.dispatch.Dispatcher;
 import org.cellang.commons.lang.Handler;
-import org.cellang.commons.lang.Path;
 import org.cellang.core.server.handler.AuthHandler;
+import org.cellang.core.server.handler.ClientIsReadyHandler;
 import org.cellang.core.server.handler.SignupHandler;
 import org.cellang.core.util.ExceptionUtil;
 import org.slf4j.Logger;
@@ -40,9 +40,9 @@ public class DefaultCellangServer implements CellangServer {
 			}
 
 		});
-		this.dispatcher.addHandler(Path.valueOf("msg/auth"), new AuthHandler());
-		this.dispatcher.addHandler(Path.valueOf("msg/signup/anonymous"), new SignupHandler());
-
+		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler());
+		this.dispatcher.addHandler(Messages.MSG_AUTH, new AuthHandler());
+		this.dispatcher.addHandler(Messages.MSG_SIGNUP, new SignupHandler());
 		this.executor = Executors.newCachedThreadPool();
 	}
 
@@ -52,10 +52,6 @@ public class DefaultCellangServer implements CellangServer {
 
 	}
 
-	private void doService(MessageContext mc) {
-		this.dispatcher.dispatch(mc.getRequestMessage().getPath(), mc);//
-	}
-
 	@Override
 	public void shutdown() {
 		this.running = false;
@@ -63,6 +59,17 @@ public class DefaultCellangServer implements CellangServer {
 
 	@Override
 	public void service(final MessageContext mc) {
+		try {
+			this.doService(mc);
+		} catch (Throwable t) {
+			LOG.error("", t);			
+		}
+	}
+
+	protected void doService(final MessageContext mc) {
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("service:mc:" + mc);//
+		}
 		mc.setServerContext(this.serverContext);
 		try {
 
@@ -70,7 +77,7 @@ public class DefaultCellangServer implements CellangServer {
 
 				@Override
 				public MessageContext call() throws Exception {
-					DefaultCellangServer.this.doService(mc);
+					DefaultCellangServer.this.dispatcher.dispatch(mc.getRequestMessage().getPath(), mc);//
 					return mc;
 				}
 			});

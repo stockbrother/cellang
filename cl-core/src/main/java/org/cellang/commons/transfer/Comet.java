@@ -15,4 +15,10 @@ public interface Comet {
 	public void sendMessage(String msg);
 
 	public void addListener(CometListener ln);
+
+	public void setAttribute(String string, Object value);
+
+	public Object getAttribute(String string);
+	
+	
 }

@@ -99,7 +99,7 @@ public class EndpointImpl extends AbstractTransferPoint {
 			@Override
 			public void handle(String t) {
 				//
-				EndpointImpl.this.onMessage(t);
+				EndpointImpl.this.onRawMessage(t);
 
 			}
 		});

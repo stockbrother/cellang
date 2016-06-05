@@ -20,8 +20,6 @@ import org.cellang.commons.lang.Path;
 import org.cellang.commons.session.Session;
 import org.cellang.commons.session.SessionManager;
 import org.cellang.commons.session.SessionManagerImpl;
-import org.cellang.commons.transfer.Comet;
-import org.cellang.commons.transfer.CometListener;
 import org.cellang.commons.transfer.CometManager;
 import org.cellang.commons.transfer.DefaultCometManager;
 import org.cellang.commons.transfer.ajax.AjaxCloseHandler;
@@ -118,11 +116,16 @@ public class AjaxCometServlet extends HttpServlet {
 			this.doService(req, res);
 		} catch (Throwable e) {
 			res.sendError(500, "unexpected error:" + e.getMessage());// todo
+			// NOTE,logger not work in "mvn gwt:run" environment.
+			e.printStackTrace();
 			LOG.error("unexpected exception raised.", e);
 		}
 	}
 
 	protected void doService(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("service,request url:" + req.getRequestURL() + ",res:" + res);
+		}
 		if (LOG.isDebugEnabled()) {
 
 			String ccode = req.getCharacterEncoding();
@@ -191,6 +194,9 @@ public class AjaxCometServlet extends HttpServlet {
 				as.endRequest();
 			}
 
+		}
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("end of service.");
 		}
 	}
 

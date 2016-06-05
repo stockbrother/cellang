@@ -86,8 +86,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 			}
 		});
 		this.addHandler(
-				EndpointMessageEvent.TYPE.getAsPath().concat(
-						Path.valueOf("/control/status/serverIsReady", '/')),
+				EndpointMessageEvent.TYPE.getAsPath().concat(Path.valueOf("/control/status/serverIsReady", '/')),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
@@ -211,6 +210,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 	}
 
+	// do not add any additional header, sent the message directly.
 	private void sendMessageDirect(final MessageData req) {
 		//
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
@@ -239,7 +239,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 	 */
 	protected void onConnected() {
 		// wait server is ready
-		LOG.info(getShortName() + " is open, waiting server is ready.");
+		LOG.info(getShortName() + " is open, clientIsReady send to server and waiting server is ready.");
 		MessageData req = new MessageData("/control/status/clientIsReady");
 		this.sendMessageDirect(req);
 
@@ -260,7 +260,11 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 	}
 
-	protected void onMessage(String msg) {
+	// a message from server side.
+	protected void onRawMessage(String msg) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("onRawMessage:" + msg);//
+		}
 		JSONValue jsonV = JSONParser.parseStrict(msg);
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
 		String sid = md.getSourceId();
@@ -268,8 +272,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 			MessageData req = this.messageCache.removeMessage(sid);
 			if (req == null) {
 				LOG.info(getShortName()
-						+ ",request not found,may timeout or the source message is from other side,message:"
-						+ md);
+						+ ",request not found,may timeout or the source message is from other side,message:" + md);
 			} else {
 				md.setPayload(MessageData.PK_SOURCE, req);
 			}

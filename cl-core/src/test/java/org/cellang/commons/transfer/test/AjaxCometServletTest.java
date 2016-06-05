@@ -20,7 +20,7 @@ public class AjaxCometServletTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		browser = new ClientWithBrowserMock();
+		browser = new ClientWithBrowserMock(MockAjaxCometServlet.class);
 	}
 
 	public void testNoThisHandler() throws Exception {

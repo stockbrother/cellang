@@ -41,6 +41,10 @@ public class MessageSupport implements MessageI {
 
 	}
 
+	public static MessageI newMessage(Path p) {
+		return new MessageImpl(p.toString());
+	}
+
 	public static MessageI newMessage() {
 		return new MessageImpl();
 	}

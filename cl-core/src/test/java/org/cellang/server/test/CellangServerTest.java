@@ -22,7 +22,7 @@ public class CellangServerTest extends TestCase {
 			String password = "password1";
 			msg.setPayload("userId", userId);
 			msg.setPayload("password", password);
-			MessageContext mc = new MessageContext(msg);
+			MessageContext mc = new MessageContext(msg,null);
 			server.service(mc);
 			MessageI rmsg = mc.getResponseMessage();
 			Assert.assertNotNull(rmsg);

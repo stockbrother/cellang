@@ -3,15 +3,12 @@
  */
 package org.cellang.commons.transfer;
 
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import org.cellang.core.util.StringUtil;
 
 /**
  * @author wuzhen
@@ -116,6 +113,7 @@ public class DefaultCometManager implements CometManager, CometListener {
 	@Override
 	public void onConnect(Comet ws) {
 		this.cometMap.put(ws.getId(), ws);//
+		
 		this.listeners.onConnect(ws);
 	}
 

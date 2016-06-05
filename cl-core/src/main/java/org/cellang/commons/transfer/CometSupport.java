@@ -3,6 +3,9 @@
  */
 package org.cellang.commons.transfer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author wu
  * 
@@ -12,6 +15,8 @@ public abstract class CometSupport extends CollectionCometListener implements Co
 	private String id;
 
 	private String protocol;
+
+	private Map<String, Object> attributes = new HashMap<String, Object>();
 
 	public CometSupport(String pro, String tid) {
 		this.id = tid;
@@ -28,9 +33,8 @@ public abstract class CometSupport extends CollectionCometListener implements Co
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.fs.websocket.api.WebSocketI#addListener(com.fs.websocket.api.WsListenerI
-	 * )
+	 * @see com.fs.websocket.api.WebSocketI#addListener(com.fs.websocket.api.
+	 * WsListenerI )
 	 */
 	@Override
 	public void addListener(CometListener ln) {
@@ -42,4 +46,11 @@ public abstract class CometSupport extends CollectionCometListener implements Co
 		return this.protocol;
 	}
 
+	public void setAttribute(String key, Object value) {
+		this.attributes.put(key, value);
+	}
+
+	public Object getAttribute(String key) {
+		return this.attributes.get(key);
+	}
 }
