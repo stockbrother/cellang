@@ -8,14 +8,15 @@ import java.util.Map;
 
 import org.cellang.clwt.commons.client.EndpointKeeper;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
-import org.cellang.clwt.commons.client.frwk.LoginControlI;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.UiException;
+import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.event.AfterClientStartEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.gwtbridge.UiWindow;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.logger.WebLogger;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.transfer.Endpoint;
 import org.cellang.webc.main.client.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.HeaderItems;
@@ -28,7 +29,7 @@ import org.cellang.webc.main.client.handler.message.LoginSuccessMH;
  * 
  */
 public class ClientStartedHandler extends UiHandlerSupport implements EventHandlerI<AfterClientStartEvent> {
-
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(ClientStartedHandler.class);
 	/**
 	 * @param c
 	 */
@@ -38,7 +39,8 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 
 	@Override
 	public void handle(AfterClientStartEvent e) {
-
+		LOG.debug("handle event:"+e);
+		
 		this.activeMessageHandlers(this.container, e.getClient());
 
 		//

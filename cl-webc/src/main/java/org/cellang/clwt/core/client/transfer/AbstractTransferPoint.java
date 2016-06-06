@@ -162,6 +162,12 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		this.close();
 	}
 
+	/**
+	 * After clientIsReady, client send a message to server. Server will
+	 * establish terminal and then server send the message to client.
+	 * 
+	 * @param e
+	 */
 	protected void onServerIsReady(MsgWrapper e) {
 		MessageData md = e.getMessage();
 		this.clientId = md.getString("clientId", true);

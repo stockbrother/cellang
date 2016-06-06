@@ -14,6 +14,7 @@ import org.cellang.core.server.Channel;
 import org.cellang.core.server.DefaultCellangServer;
 import org.cellang.core.server.MessageContext;
 import org.cellang.core.server.Messages;
+import org.cellang.elastictable.elasticsearch.UUIDUtil;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class CellangServlet extends AjaxCometServlet implements CometListener {
 
 	Codec messageCodec;
 
-	private static final String CHANNEL = "CHANNEL";
+	private static final String CHANNEL0 = "CHANNEL0";
 
 	@Override
 	public void init() throws ServletException {
@@ -39,17 +40,28 @@ public class CellangServlet extends AjaxCometServlet implements CometListener {
 		this.manager.addListener(this);
 	}
 
+	/**
+	 * Comet is the underlying transfer layer session.<br>
+	 * Channel is the app layer session,we call it channel;<br>
+	 * Logically,it is possible to build multiple channel on the same comet.<br>
+	 * Actually, here, we just map channel 1-1 to comet.<br>
+	 */
 	@Override
 	public void onConnect(Comet ws) {
-		CometChannel ct = new CometChannel(ws, this.messageCodec);
-		ws.setAttribute(CHANNEL, ct);// bind comet session with CHANNEL.
-		MessageI reqMsg = MessageSupport.newMessage(Messages.MSG_CLIENT_IS_READY);
-		this.doService(reqMsg, ws);//
+
+		String id = UUIDUtil.randomStringUUID();
+		CometChannel ct = new CometChannel(id, ws, this.messageCodec);
+
+		ws.setAttribute(CHANNEL0, ct);// bind comet session with CHANNEL.
+		// TODO make sure this clientIsReady is only from client?
+		// MessageI reqMsg =
+		// MessageSupport.newMessage(Messages.MSG_CLIENT_IS_READY);
+		// this.doService(reqMsg, ws);//
 
 	}
 
 	protected void doService(MessageI req, Comet ct) {
-		Channel channel = this.getChannel(ct);
+		Channel channel = this.getChannel0(ct);
 		MessageContext mc = new MessageContext(req, channel);
 		this.server.service(mc);
 		MessageI res = mc.getResponseMessage();
@@ -60,8 +72,8 @@ public class CellangServlet extends AjaxCometServlet implements CometListener {
 
 	}
 
-	private CometChannel getChannel(Comet ct) {
-		return (CometChannel) ct.getAttribute(CHANNEL);
+	private CometChannel getChannel0(Comet ct) {
+		return (CometChannel) ct.getAttribute(CHANNEL0);
 	}
 
 	@Override

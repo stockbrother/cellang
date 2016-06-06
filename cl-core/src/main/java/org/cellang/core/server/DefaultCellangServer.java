@@ -10,6 +10,7 @@ import org.cellang.commons.dispatch.DefaultDispatcher;
 import org.cellang.commons.dispatch.Dispatcher;
 import org.cellang.commons.lang.Handler;
 import org.cellang.core.server.handler.AuthHandler;
+import org.cellang.core.server.handler.ClientInitHandler;
 import org.cellang.core.server.handler.ClientIsReadyHandler;
 import org.cellang.core.server.handler.SignupHandler;
 import org.cellang.core.util.ExceptionUtil;
@@ -41,6 +42,7 @@ public class DefaultCellangServer implements CellangServer {
 
 		});
 		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler());
+		this.dispatcher.addHandler(Messages.REQ_CLIENT_INIT, new ClientInitHandler());
 		this.dispatcher.addHandler(Messages.MSG_AUTH, new AuthHandler());
 		this.dispatcher.addHandler(Messages.MSG_SIGNUP, new SignupHandler());
 		this.executor = Executors.newCachedThreadPool();
@@ -68,7 +70,7 @@ public class DefaultCellangServer implements CellangServer {
 
 	protected void doService(final MessageContext mc) {
 		if (LOG.isTraceEnabled()) {
-			LOG.trace("service:mc:" + mc);//
+			LOG.trace("service: request message:" + mc.getRequestMessage());//
 		}
 		mc.setServerContext(this.serverContext);
 		try {

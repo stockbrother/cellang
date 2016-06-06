@@ -13,7 +13,8 @@ public class CometChannel extends Channel {
 	private Comet comet;
 	private Codec messageCodec;
 
-	public CometChannel(Comet ws, Codec messageCodec) {
+	public CometChannel(String id, Comet ws, Codec messageCodec) {
+		super(id);
 		this.comet = ws;
 		this.messageCodec = messageCodec;
 	}

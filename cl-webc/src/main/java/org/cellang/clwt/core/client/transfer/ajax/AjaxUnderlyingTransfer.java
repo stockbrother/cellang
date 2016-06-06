@@ -86,6 +86,9 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	}
 
 	protected void doRequest(final AjaxMsgWrapper am, final Handler<String> onfailure) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("doRequest:ajax msg:" + am);//
+		}
 		this.requests++;
 		JSONArray jsa = new JSONArray();
 		jsa.set(0, am.getAsJsonObject());
@@ -153,10 +156,10 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 								// responsed.
 			return;
 		}
-		
+
 		if (this.isState(CLOSED) || this.isState(CLOSING)) {
 			// if is closing or closed, no more things to do.
-			//the close success handler will call the tryClose() method.
+			// the close success handler will call the tryClose() method.
 			return;
 		}
 
@@ -170,7 +173,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 
 		}
 
-		if (fsid == null) {//is openning
+		if (fsid == null) {// is openning
 			// not opened successfully before,must not send heart beat.
 			// Just ignore?
 			return;
@@ -199,8 +202,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	 * @param method
 	 * @param exception
 	 */
-	protected void onRequestFailure(Handler<String> onfailure, AjaxMsgWrapper req, Method method,
-			Throwable exception) {
+	protected void onRequestFailure(Handler<String> onfailure, AjaxMsgWrapper req, Method method, Throwable exception) {
 		this.requests--;
 
 		String data = "request failure for request:" + req + ",now:" + System.currentTimeMillis();
@@ -220,7 +222,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 		this.errorHandlers.handle(data);
 
 		// HOW this happen?,may be because the network issue?
-		
+
 		this.tryCloseByError();
 	}
 
@@ -236,7 +238,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 		}
 		ClientAjaxMsgContext amc = new ClientAjaxMsgContext();
 		amc.am = am2;
-		LOG.info("onAjaxMsg:"+am2);//
+		LOG.info("onAjaxMsg:" + am2);//
 		hdl.handle(amc);
 
 	}
@@ -273,9 +275,9 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	}
 
 	public void tryClose() {
-		if(this.isState(CLOSED)){
-			//already closed,not raise event again.
-			return;//duplicated close?
+		if (this.isState(CLOSED)) {
+			// already closed,not raise event again.
+			return;// duplicated close?
 		}
 		this.sid = null;
 		this.closed();
@@ -288,7 +290,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	public void conected(String sid2) {
 		this.sid = sid2;
 		this.opened();
-		
+
 	}
 
 	/**
@@ -311,7 +313,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	@Override
 	public void close() {
 		//
-		if(!this.isState(OPENED)){
+		if (!this.isState(OPENED)) {
 			throw new UiException("not openned");
 		}
 		this.state = CLOSING;

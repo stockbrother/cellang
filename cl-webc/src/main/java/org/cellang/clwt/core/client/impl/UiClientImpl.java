@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.ContainerAwareWebObject;
+import org.cellang.clwt.core.client.UiConstants;
 import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.codec.CodecFactory;
@@ -52,7 +53,7 @@ import com.google.gwt.user.client.Window.ClosingEvent;
 public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(UiClientImpl.class);
-	
+
 	private String clientId;
 
 	private CodecFactory cf;
@@ -69,18 +70,18 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	public static final State UNKNOWN = State.valueOf("UNKNOWN");
 
-	//starting 
+	// starting
 	public static final State STARTING = State.valueOf("STARTING");
 
-	//failed to connect any endpoint protocol.
+	// failed to connect any endpoint protocol.
 	public static final State FAILED = State.valueOf("FAILED");
 
-	//ok state 
+	// ok state
 	public static final State STARTED = State.valueOf("STARTED");
 
-	//connection is closed,then set to lost state.
+	// connection is closed,then set to lost state.
 	public static final State LOST = State.valueOf("LOST");
-	
+
 	private static final String PK_TRYING_INDEX = "_trying_idx";
 
 	/**
@@ -157,14 +158,13 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 			}
 		});
 
-		rt.addHandler(Path.valueOf("/endpoint/message/client/init/success"),
-				new MessageHandlerI<MsgWrapper>() {
+		rt.addHandler(Path.valueOf("/endpoint/message/client/init/success"), new MessageHandlerI<MsgWrapper>() {
 
-					@Override
-					public void handle(MsgWrapper t) {
-						UiClientImpl.this.onInitSuccess(rt, t);
-					}
-				});
+			@Override
+			public void handle(MsgWrapper t) {
+				UiClientImpl.this.onInitSuccess(rt, t);
+			}
+		});
 		return rt;
 	}
 
@@ -173,15 +173,16 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 		if (!this.isState(UNKNOWN)) {
 			throw new UiException("state should be:" + UNKNOWN + ",but state is:" + this.state);
 		}
-		
+
 		this.setState(STARTING);
 
 		this.uriList = new ArrayList<Address>();
-		List<ProtocolPort> ppL = new ArrayList<ProtocolPort>(TransferPointConfiguration.getInstance().getConfiguredList());
+		List<ProtocolPort> ppL = new ArrayList<ProtocolPort>(
+				TransferPointConfiguration.getInstance().getConfiguredList());
 
 		if (ppL.isEmpty()) {// not configured,then default ones
 
-			if(false){// try ws/wss first,
+			if (false) {// try ws/wss first,
 				String hpro = getWindowLocationProtocol();
 				boolean https = hpro.equals("https");
 				String wsp = https ? "wskts" : "wskt";
@@ -189,7 +190,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 				int port = Integer.parseInt(portS);
 				ppL.add(new ProtocolPort(wsp, port));
 			}
-			if(true){// try ajax second
+			if (true) {// try ajax second
 				String pro = getWindowLocationProtocol();
 				int port = getWindowLocationPort();
 				ppL.add(new ProtocolPort(pro, port));
@@ -219,15 +220,15 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 		this.tryConnect(0);
 	}
-	
-	public void setState(State s){
+
+	public void setState(State s) {
 		State old = this.state;
 		super.setState(s);
 		LOG.info("state changed,old:" + old + ",new:" + this.state);
 	}
 
 	public boolean tryConnect(int uriIdx) {
-		LOG.info("try connect:"+uriIdx);
+		LOG.info("try connect:" + uriIdx);
 		Endpoint ep = this.tryedEndpointMap.get(uriIdx);
 		if (ep != null) {// tryed before.
 			return true;//
@@ -253,6 +254,9 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	 * Jan 1, 2013
 	 */
 	protected void onInitSuccess(Endpoint ep, MsgWrapper evt) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("onInitSuccess,ep:" + ep + ",evt:" + evt);//
+		}
 		MessageData t = evt.getMessage();
 		String sd = (String) t.getPayloads().getProperty("clientId", true);
 		String sid = sd;
@@ -290,7 +294,6 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 		new AfterClientStartEvent(this).dispatch();
 	}
 
-
 	public void onEndpointError(Endpoint ep) {
 
 		if (this.isState(STARTED)) {//
@@ -313,10 +316,10 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	}
 
 	public void onEndpointClose(EndpointCloseEvent evt) {
-		
-		
+
 		//
-		if (this.isState(STARTED)) {//if started,not try other method for connect
+		if (this.isState(STARTED)) {// if started,not try other method for
+									// connect
 			this.setState(LOST);
 			new ClientConnectLostEvent(this).dispatch();
 			return;// ignore ,because it may a applevel error.
@@ -338,12 +341,16 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	}
 
 	/**
-	 * open does not gurantee the endpoint is the final one.after client start
-	 * is gurantee this. May 12, 2013
+	 * After serverIsReady, the the endpoint is open event raised up.<br>
+	 * 
+	 * Util now,opened endpoint does not gurantee it is the final one.<br>
+	 * 
+	 * After client start, is gurantee this.
+	 * 
 	 */
 	public void onEndpointOpen(Endpoint ep) {
 
-		MsgWrapper req = new MsgWrapper(Path.valueOf("/client/init"));
+		MsgWrapper req = new MsgWrapper(UiConstants.P_CLIENT_INIT);
 		String locale = this.getPreferedLocale();
 
 		req.setPayload("preferedLocale", (locale));
