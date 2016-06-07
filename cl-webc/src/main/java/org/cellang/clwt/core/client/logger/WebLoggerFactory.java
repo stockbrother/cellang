@@ -133,7 +133,7 @@ public class WebLoggerFactory {
 	private static Configurations CONFIGURATIONS;
 	static {
 		// add the root logger config.
-		String ll = GwtBridge.getWindowLocationParameter("fs.logLevel", "INFO");
+		String ll = GwtBridge.getWindowLocationParameter("fs.logLevel", "TRACE");
 		ll = ll.toUpperCase();
 		int level = WebLoggerFactory.getLevel(ll, true);
 		CONFIGURATIONS = new Configurations(level);

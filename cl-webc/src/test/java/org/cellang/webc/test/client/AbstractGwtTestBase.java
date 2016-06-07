@@ -29,6 +29,7 @@ public abstract class AbstractGwtTestBase extends GWTTestCase {
 
 	@Override
 	protected void gwtSetUp() throws Exception {
+		
 		this.finishing = new HashSet<String>();
 
 		Plugin[] spis = new Plugin[] { //

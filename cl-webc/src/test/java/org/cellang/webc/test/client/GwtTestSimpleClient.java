@@ -6,8 +6,8 @@ import org.cellang.clwt.core.client.event.AfterClientStartEvent;
 import org.cellang.clwt.core.client.event.EndpointBondEvent;
 import org.cellang.clwt.core.client.event.EndpointUnbondEvent;
 import org.cellang.clwt.core.client.event.Event;
-import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.transfer.Endpoint;
@@ -21,8 +21,7 @@ public class GwtTestSimpleClient extends AbstractGwtTestBase {
 
 	@Override
 	protected void gwtSetUp() throws Exception {
-		super.gwtSetUp();
-
+		super.gwtSetUp();		
 		this.client.start();
 	}
 

@@ -17,7 +17,7 @@ public class EventBusImpl extends AbstractWebObject implements EventBus {
 	 * @param c
 	 */
 	public EventBusImpl(Container c) {
-		super(c);
+		super(c,"eventBus");
 	}
 
 	@Override

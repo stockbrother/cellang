@@ -75,7 +75,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 		}
 
 		if (matches == 0) {
-
+			
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
 				logger.debug("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:"
@@ -96,7 +96,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 	@Override
 	public <W extends MsgWrapper> void addHandler(Path path, boolean strict, MessageHandlerI<W> mh) {
 
-		HandlerEntry he = new HandlerEntry(path, strict, mh);
+		HandlerEntry he = new HandlerEntry(this,path, strict, mh);
 
 		this.handlers.add(he);
 

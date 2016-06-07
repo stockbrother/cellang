@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.clwt.core.client.Container;
+import org.cellang.clwt.core.client.logger.WebLogger;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
+import org.cellang.webc.main.client.CellangClientPluginImpl;
 
 import com.google.gwt.core.client.GWT;
 
 public class Plugins {
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(Plugins.class);
 	private Container container;
 
 	private List<Plugin> spiList = new ArrayList<Plugin>();
@@ -38,8 +42,8 @@ public class Plugins {
 	}
 
 	public Plugins active(Plugin spi) {
+		LOG.info("active plugin:" + spi.getClass().getName());
 		spiList.add(spi);
-
 		spi.active(this.container);
 		return this;
 	}

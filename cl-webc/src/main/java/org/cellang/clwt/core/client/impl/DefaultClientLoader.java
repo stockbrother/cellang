@@ -207,8 +207,9 @@ public class DefaultClientLoader extends ClientLoader {
 	 */
 	protected void afterClientStart(Container container) {
 		//
+		LOG.debug("afterClientStart,to hide the client this window is stoped to listening any new message from console!!!!!!!");//
 		WebClient client = container.get(WebClient.class, true);
-		this.hide();
+		//this.hide();
 	}
 
 	private void show() {
