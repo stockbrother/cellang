@@ -32,7 +32,9 @@ import org.cellang.clwt.core.client.util.OID;
  * @author wuzhen
  * 
  */
-public class AbstractWebObject extends AbstractHasProperties<Object> implements WebObject {
+public class AbstractWebObject extends AbstractHasProperties<Object>implements WebObject {
+
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(AbstractWebObject.class);
 
 	protected Map<String, LazyI> lazyMap;
 
@@ -87,14 +89,14 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		this.attacherList = new ArrayList<Object>();
 		this.logger = log != null ? log : WebLoggerFactory.getLogger(this.getClass());//
 
-		this.eventDispatcher = new MessageDispatcherImpl("unknow");//
+		this.eventDispatcher = new MessageDispatcherImpl(name+"-dispatcher");//
 		this.lazyMap = new HashMap<String, LazyI>();
 		if (pts != null) {
 			this.setProperties(pts);
 		}
 	}
-	
-	protected Scheduler getScheduler(){
+
+	protected Scheduler getScheduler() {
 		return this.container.get(Scheduler.class, true);
 	}
 
@@ -144,10 +146,10 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 
 	@Override
 	public WebObject parent(WebObject newParent) {
-		if(!(newParent instanceof AbstractWebObject)){
-			throw new UiException("not supported:"+newParent);
+		if (!(newParent instanceof AbstractWebObject)) {
+			throw new UiException("not supported:" + newParent);
 		}
-		
+
 		if (this.parent != null) {
 			this.parent.removeChild(this);
 			if (this.parent.isAttached()) {// detach?
@@ -170,7 +172,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 				Container c = newParent.getContainer();
 				((ContainerAware) this).setContainer(c);//
 			}
-			((AbstractWebObject)newParent).addChild(this);
+			((AbstractWebObject) newParent).addChild(this);
 			this.parent = newParent;
 			if (newParent.isAttached()) {
 				this.attach();//
@@ -182,12 +184,10 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		return this;
 	}
 
-	
 	public void addChild(WebObject c) {
 		this.childList.add(c);
 	}
 
-	
 	public void removeChild(WebObject c) {
 		this.childList.remove(c);
 	}
@@ -202,8 +202,8 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 			}
 			return null;
 		} else if (rt.size() > 1) {
-			throw new UiException("too many,there are " + rt.size() + " " + cls + "/" + name + " in "
-					+ this.toDebugString());
+			throw new UiException(
+					"too many,there are " + rt.size() + " " + cls + "/" + name + " in " + this.toDebugString());
 
 		}
 		return rt.get(0);
@@ -224,8 +224,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 
 		List<T> rt = new ArrayList<T>();
 		for (WebObject oi : this.childList) {
-			if ((cls == null || InstanceOf.isInstance(cls, oi))
-					&& (name == null || name.equals(oi.getName()))) {
+			if ((cls == null || InstanceOf.isInstance(cls, oi)) && (name == null || name.equals(oi.getName()))) {
 				rt.add((T) oi);
 			}
 		}
@@ -262,9 +261,9 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 
 	@Override
 	public WebClient getClient(boolean force) {
-		
+
 		return this.container.get(WebClient.class, force);
-		
+
 	}
 
 	protected <T extends WebObject> T getTopObject(Class<T> cls) {
@@ -324,12 +323,19 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 
 	@Override
 	public <E extends Event> void dispatch(E evt) {
+		LOG.debug("dispatch event:" + evt);//
 		this.eventDispatcher.dispatch(evt);
+
 		if (evt.isGlobal()) {
 			EventBus eb = this.getEventBus(false);
-			if (eb == null || this == eb) {
+			if (eb == null) {
+				LOG.debug("event bus is null");
+				return;
+			} else if (this == eb) {
+				LOG.debug("event bus already dispatched this event.");
 				return;
 			}
+			LOG.debug("dispatch global event:" + evt + " to event bus.");//
 			eb.dispatch(evt);
 		}
 	}
@@ -370,8 +376,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see core.UiObjectI#find(java.lang.Class,
-	 * java.lang.String, boolean)
+	 * @see core.UiObjectI#find(java.lang.Class, java.lang.String, boolean)
 	 */
 	@Override
 	public <T extends WebObject> T find(Class<T> cls, boolean force) {
@@ -382,9 +387,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * core.UiObjectI#findList(java.lang.Class,
-	 * java.lang.String)
+	 * @see core.UiObjectI#findList(java.lang.Class, java.lang.String)
 	 */
 	@Override
 	public <T extends WebObject> List<T> findList(Class<T> cls) {
@@ -423,6 +426,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 		return this.attached;
 
 	}
+
 	@Override
 	public void attach() {
 		if (!this.attached) {
@@ -449,6 +453,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 			c.attach();
 		}
 	}
+
 	protected void doAttach() {
 		// this.eventHandlers.onOwnerAttach();
 	}
@@ -456,7 +461,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	protected void doDetach() {
 		// this.eventHandlers.onOwnerDettach();
 	}
-	
+
 	@Override
 	public void detach() {
 		if (this.attached) {
@@ -574,9 +579,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * core.UiObjectI#child(com.fs.uicore.api.gwt
-	 * .client.core.UiObjectI)
+	 * @see core.UiObjectI#child(com.fs.uicore.api.gwt .client.core.UiObjectI)
 	 */
 	@Override
 	public WebObject child(WebObject c) {
@@ -601,8 +604,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * core.UiObjectI#attacher(java.lang.Object)
+	 * @see core.UiObjectI#attacher(java.lang.Object)
 	 */
 	@Override
 	public WebObject attacher(Object obj) {
@@ -617,9 +619,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * core.UiObjectI#getAttacher(java.lang.Class,
-	 * boolean)
+	 * @see core.UiObjectI#getAttacher(java.lang.Class, boolean)
 	 */
 	@Override
 	public <T> T getAttacher(Class<T> cls, boolean force) {
@@ -641,9 +641,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object> implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * core.UiObjectI#getAttacherList(java.lang
-	 * .Class)
+	 * @see core.UiObjectI#getAttacherList(java.lang .Class)
 	 */
 	@Override
 	public <T> List<T> getAttacherList(Class<T> cls) {

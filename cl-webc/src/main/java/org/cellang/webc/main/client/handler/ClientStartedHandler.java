@@ -34,12 +34,12 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 	 * @param c
 	 */
 	public ClientStartedHandler(Container c) {
-		super(c);
+		super(c);		
 	}
 
 	@Override
 	public void handle(AfterClientStartEvent e) {
-		LOG.debug("handle event:"+e);
+		LOG.info("handle-event:"+e);
 		
 		this.activeMessageHandlers(this.container, e.getClient());
 

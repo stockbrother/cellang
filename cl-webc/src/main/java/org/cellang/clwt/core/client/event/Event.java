@@ -87,8 +87,7 @@ public class Event extends MsgWrapper {
 		super(msg);
 		Path mpath = msg.getPath();
 		if (!path.isSubPath(mpath, true)) {
-			throw new UiException("event type path:" + path + " is not the super type of message path:"
-					+ mpath);
+			throw new UiException("event type path:" + path + " is not the super type of message path:" + mpath);
 		}
 		this.source = src;
 
@@ -132,7 +131,8 @@ public class Event extends MsgWrapper {
 	 */
 	@Override
 	public String toString() {
-		return "Event,class:" + this.getClass() + "," + super.toString() + ",source:" + this.source;
+		return "Event,class:" + this.getClass() + "," + super.toString() + ",source:" + this.source + ",isClobal:"
+				+ this.isGlobal;
 	}
 
 }

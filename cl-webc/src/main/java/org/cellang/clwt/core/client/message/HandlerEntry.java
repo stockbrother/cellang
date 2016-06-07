@@ -19,21 +19,29 @@ public final class HandlerEntry {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(HandlerEntry.class);
 
 	protected Path path;
-
+	protected MessageDispatcherImpl dispatcher;
 	protected MessageHandlerI handlers;
 
 	protected boolean strict;
 
-	public HandlerEntry(Path p, boolean includeSubPath, MessageHandlerI hdls) {
+	public HandlerEntry(MessageDispatcherImpl dispatcher, Path p, boolean includeSubPath, MessageHandlerI hdls) {
+		this.dispatcher = dispatcher;
 		this.path = p;
 		this.strict = includeSubPath;
 		this.handlers = hdls;
 	}
 
 	public boolean tryHandle(boolean dely, Path p, final MsgWrapper md) {
-		if (!this.isMatch(p)) {
+
+		boolean isMatch = this.isMatch(p);
+
+		LOG.debug(
+				"dispatcher:" + this.dispatcher.name + "tryHandle,dely:" + dely + ",this.path:" + p + ",message:" + md);
+
+		if (!isMatch) {
 			return false;
 		}
+
 		if (dely) {
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
@@ -50,10 +58,11 @@ public final class HandlerEntry {
 	}
 
 	protected void doHandle(MsgWrapper md) {
+		LOG.debug("dispatcher:" + this.dispatcher.name + ",doHandle,message:" + md + ",handlers:" + handlers);//
 		try {
 			this.handlers.handle(md);
 		} catch (Throwable t) {
-			LOG.error("handler exception for msg:" + md, t);
+			LOG.error("dispatcher:" + this.dispatcher.name + ",handler exception for msg:" + md, t);
 		}
 	}
 
