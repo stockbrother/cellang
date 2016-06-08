@@ -1,6 +1,5 @@
 package org.cellang.webc.main.client.handler.action;
 
-import org.cellang.clwt.commons.client.frwk.LoginControlI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
@@ -11,6 +10,7 @@ import org.cellang.clwt.core.client.transfer.Endpoint;
 import org.cellang.webc.main.client.AccountsLDW;
 import org.cellang.webc.main.client.AnonymousAccountLDW;
 import org.cellang.webc.main.client.AutoLoginRequireEvent;
+import org.cellang.webc.main.client.LoginControlI;
 import org.cellang.webc.main.client.RegisteredAccountLDW;
 import org.cellang.webc.main.client.UiHandlerSupport;
 

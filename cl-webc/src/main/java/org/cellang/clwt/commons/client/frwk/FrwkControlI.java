@@ -6,6 +6,7 @@ package org.cellang.clwt.commons.client.frwk;
 
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.webc.main.client.LoginViewI;
 
 /**
  * @author wu

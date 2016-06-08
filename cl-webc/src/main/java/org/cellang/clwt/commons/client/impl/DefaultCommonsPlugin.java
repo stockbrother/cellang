@@ -1,7 +1,5 @@
 package org.cellang.clwt.commons.client.impl;
 
-import javax.swing.text.html.FormView;
-
 import org.cellang.clwt.commons.client.CommonsPlugin;
 import org.cellang.clwt.commons.client.WidgetCreaterSupport;
 import org.cellang.clwt.commons.client.frwk.BodyViewI;
@@ -10,8 +8,6 @@ import org.cellang.clwt.commons.client.frwk.ConsoleViewI;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.FrwkViewI;
 import org.cellang.clwt.commons.client.frwk.HeaderViewI;
-import org.cellang.clwt.commons.client.frwk.LoginControlI;
-import org.cellang.clwt.commons.client.frwk.LoginViewI;
 import org.cellang.clwt.commons.client.frwk.impl.HeaderView;
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
@@ -67,42 +63,16 @@ import org.cellang.clwt.core.client.lang.InstanceOf;
 import org.cellang.clwt.core.client.lang.InstanceOf.CheckerSupport;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;
+import org.cellang.webc.main.client.LoginControlI;
+import org.cellang.webc.main.client.LoginViewI;
 
 public class DefaultCommonsPlugin implements CommonsPlugin {
 
 	@Override
 	public void active(Container c) {
 
-		InstanceOf.addChecker(new InstanceOf.CheckerSupport(ControlManager.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-				return o instanceof ControlManager;
-			}
-
-		});
-
-		InstanceOf.addChecker(new InstanceOf.CheckerSupport(FrwkControlI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-				return o instanceof FrwkControlI;
-			}
-
-		});
-		InstanceOf.addChecker(new InstanceOf.CheckerSupport(ErrorInfosWidgetI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-				return o instanceof ErrorInfosWidgetI;
-			}
-
-		});
-
-	}
-	public void activeWidgetCreater(Container c) {
+		this.activeInstaneOf(c);
 		WebWidgetFactory wf = c.get(WebWidgetFactory.class, true);
-		//
 		wf.addCreater(new WidgetCreaterSupport<AnchorWI>(AnchorWI.class) {
 			@Override
 			public AnchorWI create(Container c, String name, HasProperties<Object> pts) {
@@ -111,7 +81,6 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 
 			}
 		});
-		//
 		wf.addCreater(new WidgetCreaterSupport<ListI>(ListI.class) {
 			@Override
 			public ListI create(Container c, String name, HasProperties<Object> pts) {
@@ -171,6 +140,11 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 
 			}
 		});
+		this.activeWidgetCreater(c, wf);
+
+	}
+
+	public void activeWidgetCreater(Container c, WebWidgetFactory wf) {
 		wf.addCreater(new WidgetCreaterSupport<LabelI>(LabelI.class) {
 			@Override
 			public LabelI create(Container c, String name, HasProperties<Object> pts) {
@@ -223,6 +197,29 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 
 			}
 		});
+
+		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(ErrorInfosWidgetI.class) {
+			@Override
+			public ErrorInfosWidgetI create(Container c, String name, HasProperties<Object> pts) {
+
+				return new ErrorInfosWidgetImpl(c, name);
+
+			}
+		});
+
+		wf.addCreater(new WidgetCreaterSupport<BarWidgetI>(BarWidgetI.class) {
+			@Override
+			public BarWidgetI create(Container c, String name, HasProperties<Object> pts) {
+
+				return new BarWidgetImpl(c, name);
+
+			}
+		});
+
+	}
+
+	public void activeCreater2(Container c, WebWidgetFactory wf) {
+		
 		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(PropertiesEditorI.class) {
 			@Override
 			public PropertiesEditorI create(Container c, String name, HasProperties<Object> pts) {
@@ -241,15 +238,6 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 			}
 		});
 
-		wf.addCreater(new WidgetCreaterSupport<BarWidgetI>(BarWidgetI.class) {
-			@Override
-			public BarWidgetI create(Container c, String name, HasProperties<Object> pts) {
-
-				return new BarWidgetImpl(c, name);
-
-			}
-		});
-
 		wf.addCreater(new WidgetCreaterSupport<EnumEditorI>(EnumEditorI.class) {
 			@Override
 			public EnumEditorI create(Container c, String name, HasProperties<Object> pts) {
@@ -259,15 +247,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 			}
 		});
 
-		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(ErrorInfosWidgetI.class) {
-			@Override
-			public ErrorInfosWidgetI create(Container c, String name, HasProperties<Object> pts) {
 
-				return new ErrorInfosWidgetImpl(c, name);
-
-			}
-		});
-		
 		wf.addCreater(new WidgetCreaterSupport<DateWI>(DateWI.class) {
 			@Override
 			public DateWI create(Container c, String name, HasProperties<Object> pts) {
@@ -288,7 +268,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof AnchorWI;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(ButtonI.class) {
 
 			@Override
@@ -313,7 +293,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof ControlManager;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(ViewI.class) {
 
 			@Override
@@ -462,7 +442,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof ConsoleViewI;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(PropertyModel.class) {
 
 			@Override
@@ -471,16 +451,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof PropertyModel;
 			}
 		});
-				
-		InstanceOf.addChecker(new CheckerSupport(FormView.class) {
 
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof FormView;
-			}
-		});
-		
 		InstanceOf.addChecker(new CheckerSupport(LoginControlI.class) {
 
 			@Override
@@ -498,7 +469,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof HeaderView;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(BarWidgetI.class) {
 
 			@Override
@@ -531,7 +502,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof ErrorInfosWidgetI;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(FrwkControlI.class) {
 
 			@Override
@@ -540,7 +511,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof FrwkControlI;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(DateWI.class) {
 
 			@Override
@@ -549,7 +520,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof DateWI;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(FrwkViewI.class) {
 
 			@Override
@@ -574,7 +545,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 				return o instanceof HeaderViewI;
 			}
 		});
-		
+
 		InstanceOf.addChecker(new CheckerSupport(LoginViewI.class) {
 
 			@Override
@@ -595,7 +566,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 			}
 
 		});
-		
+
 	}
 
 }

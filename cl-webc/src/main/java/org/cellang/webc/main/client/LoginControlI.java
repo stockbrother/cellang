@@ -1,4 +1,4 @@
-package org.cellang.clwt.commons.client.frwk;
+package org.cellang.webc.main.client;
 
 import org.cellang.clwt.commons.client.mvc.Control;
 

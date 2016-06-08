@@ -61,6 +61,7 @@ public class DefaultClientLoader extends ClientLoader {
 
 			@Override
 			public void onUncaughtException(Throwable e) {
+				e.printStackTrace();
 				LOG.error("Uncaught exception is got", e);
 			}
 		});
@@ -138,45 +139,58 @@ public class DefaultClientLoader extends ClientLoader {
 	@Override
 	public Plugins loadClient(Plugin[] spis, EventHandlerI<Event> l) {
 
-		Plugins factory = Plugins.create();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("before loadClient:" + spis);
+		}
+		 
+		try {
+			Plugins	factory = Plugins.create();
 
-		final Container container = factory.getContainer();
-		EventBus eb = container.getEventBus();
-		if (l != null) {
-			eb.addHandler(l);
+			final Container container = factory.getContainer();
+			EventBus eb = container.getEventBus();
+			if (l != null) {
+				eb.addHandler(l);
+			}
+
+			eb.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
+
+				@Override
+				public void handle(AfterClientStartEvent t) {
+					DefaultClientLoader.this.afterClientStart(container);
+				}
+			});
+			eb.addHandler(ClientStartFailureEvent.TYPE, new EventHandlerI<ClientStartFailureEvent>() {
+
+				@Override
+				public void handle(ClientStartFailureEvent t) {
+					//
+					DefaultClientLoader.this.onClientStartFailureEvent(container, t);
+				}
+			});
+			eb.addHandler(ClientConnectLostEvent.TYPE, new EventHandlerI<ClientConnectLostEvent>() {
+
+				@Override
+				public void handle(ClientConnectLostEvent t) {
+					//
+					DefaultClientLoader.this.onClientConnectLostEvent(container, t);
+				}
+			});
+
+			factory.active(spis);
+
+			WebClient client = container.get(WebClient.class, true);
+
+			client.attach();// NOTE
+			return factory;
+		} catch (Throwable t) {
+			LOG.error("failure to load client,will return null", t);
 		}
 
-		eb.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("after loadClient:" + spis);
+		}
 
-			@Override
-			public void handle(AfterClientStartEvent t) {
-				DefaultClientLoader.this.afterClientStart(container);
-			}
-		});
-		eb.addHandler(ClientStartFailureEvent.TYPE, new EventHandlerI<ClientStartFailureEvent>() {
-
-			@Override
-			public void handle(ClientStartFailureEvent t) {
-				//
-				DefaultClientLoader.this.onClientStartFailureEvent(container, t);
-			}
-		});
-		eb.addHandler(ClientConnectLostEvent.TYPE, new EventHandlerI<ClientConnectLostEvent>() {
-
-			@Override
-			public void handle(ClientConnectLostEvent t) {
-				//
-				DefaultClientLoader.this.onClientConnectLostEvent(container, t);
-			}
-		});
-
-		factory.active(spis);
-
-		WebClient client = container.get(WebClient.class, true);
-
-		client.attach();// NOTE
-
-		return factory;
+		return null;
 	}
 
 	/**
@@ -207,9 +221,10 @@ public class DefaultClientLoader extends ClientLoader {
 	 */
 	protected void afterClientStart(Container container) {
 		//
-		LOG.debug("afterClientStart,to hide the client this window is stoped to listening any new message from console!!!!!!!");//
+		LOG.debug(
+				"afterClientStart,to hide the client this window is stoped to listening any new message from console!!!!!!!");//
 		WebClient client = container.get(WebClient.class, true);
-		//this.hide();
+		// this.hide();
 	}
 
 	private void show() {

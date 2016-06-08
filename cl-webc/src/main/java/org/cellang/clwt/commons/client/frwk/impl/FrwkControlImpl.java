@@ -11,18 +11,18 @@ import org.cellang.clwt.commons.client.frwk.ConsoleViewI;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.FrwkViewI;
 import org.cellang.clwt.commons.client.frwk.HeaderViewI;
-import org.cellang.clwt.commons.client.frwk.LoginControlI;
-import org.cellang.clwt.commons.client.frwk.LoginViewI;
-import org.cellang.clwt.commons.client.mvc.support.ControlSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.widget.WebWidget;
+import org.cellang.webc.main.client.WebcControlSupport;
+import org.cellang.webc.main.client.LoginControlI;
+import org.cellang.webc.main.client.LoginViewI;
 
 /**
  * @author wuzhen
  * 
  */
-public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
+public class FrwkControlImpl extends WebcControlSupport implements FrwkControlI {
 
 	/**
 	 * @param c

@@ -35,16 +35,20 @@ public class Plugins {
 	}
 
 	public Plugins active(Plugin[] spis) {
+		LOG.info("before active");
+
 		for (int i = 0; i < spis.length; i++) {
 			this.active(spis[i]);
 		}
+		LOG.info("after active");
 		return this;
 	}
 
 	public Plugins active(Plugin spi) {
-		LOG.info("active plugin:" + spi.getClass().getName());
+		LOG.info("before active plugin:" + spi.getClass().getName());
 		spiList.add(spi);
 		spi.active(this.container);
+		LOG.info("after active plugin:" + spi.getClass().getName());
 		return this;
 	}
 

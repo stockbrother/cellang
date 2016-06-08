@@ -30,7 +30,7 @@
 				<version>2.6</version>
 				<configuration>
 					<excludes>
-						<exclude>**/*ClientStartGwtTest.java</exclude>
+						<exclude>**/*GwtTest.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -39,8 +39,7 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwt.version}</version>
 				<executions>
-					<execution>
-						<phase>package</phase>
+					<execution>						
 						<goals>
 							<goal>compile</goal>
 							<goal>test</goal>
@@ -56,7 +55,7 @@
 					</modules>
 					<copyWebapp>true</copyWebapp>
 					<style>PRETTY</style>
-					
+					<workDir>target</workDir>
 				</configuration>
 			</plugin>
 			<plugin>

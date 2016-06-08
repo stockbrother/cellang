@@ -4,7 +4,6 @@
  */
 package org.cellang.webc.main.client.handler.message;
 
-import org.cellang.clwt.commons.client.frwk.LoginViewI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
@@ -14,6 +13,7 @@ import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.webc.main.client.AccountsLDW;
 import org.cellang.webc.main.client.AnonymousAccountLDW;
 import org.cellang.webc.main.client.ErrorCodes;
+import org.cellang.webc.main.client.LoginViewI;
 import org.cellang.webc.main.client.RegisteredAccountLDW;
 import org.cellang.webc.main.client.UiHandlerSupport;
 import org.cellang.webc.main.client.UiResponse;
