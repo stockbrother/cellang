@@ -1,5 +1,6 @@
 package org.cellang.webc.main.client;
 
+import org.cellang.clwt.commons.client.CommonsPlugin;
 import org.cellang.clwt.core.client.ClientLoader;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.WebClient;
@@ -24,6 +25,7 @@ public class CellangEntryPoint implements EntryPoint {
 
 		Plugin[] spis = new Plugin[] { //
 				(WebCorePlugin) GWT.create(WebCorePlugin.class), //
+				(CommonsPlugin) GWT.create(CommonsPlugin.class), //
 				(CellangClientPlugin) GWT.create(CellangClientPlugin.class) //
 				};
 

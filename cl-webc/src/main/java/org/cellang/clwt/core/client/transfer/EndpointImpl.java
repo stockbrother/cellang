@@ -39,8 +39,8 @@ public class EndpointImpl extends AbstractTransferPoint {
 	/**
 	 * @param md
 	 */
-	public EndpointImpl(Container c, Address uri, MessageDispatcherI md) {
-		super(c, uri, md, new MessageCacheImpl(c));
+	public EndpointImpl(Container c, Address uri) {
+		super(c, uri, new MessageCacheImpl(c));
 		this.protocols = new HashMap<String, UnderlyingProtocol>();
 		this.protocols.put("wskt", new WebSocketProtocol());
 		this.protocols.put("wskts", new WebSocketProtocol());

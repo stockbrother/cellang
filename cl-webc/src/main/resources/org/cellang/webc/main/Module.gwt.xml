@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
-
+	
 	<inherits name='org.cellang.clwt.commons.Module' />
 
 	<source path='client' />
@@ -10,5 +10,7 @@
 	<replace-with class="org.cellang.webc.main.client.CellangClientPluginImpl">
 		<when-type-is class="org.cellang.webc.main.client.CellangClientPlugin" />
 	</replace-with>
+	
+	<set-property name="user.agent" value="gecko1_8"/>
 
 </module>

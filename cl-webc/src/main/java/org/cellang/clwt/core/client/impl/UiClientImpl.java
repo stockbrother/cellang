@@ -11,8 +11,8 @@ import java.util.Map;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.ContainerAwareWebObject;
 import org.cellang.clwt.core.client.UiConstants;
-import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.UiException;
+import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.codec.CodecFactory;
 import org.cellang.clwt.core.client.codec.JsonCodecFactoryC;
 import org.cellang.clwt.core.client.data.MessageData;
@@ -29,16 +29,15 @@ import org.cellang.clwt.core.client.gwtbridge.GwtClosingHandler;
 import org.cellang.clwt.core.client.lang.AbstractHasProperties;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.HasProperties;
-import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.State;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.message.MessageDispatcherImpl;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
-import org.cellang.clwt.core.client.transfer.EndpointImpl;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.EndpointImpl;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration.ProtocolPort;
 import org.cellang.clwt.core.client.widget.WebWidget;
@@ -131,9 +130,9 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	}
 
 	protected Endpoint newEndpoint(int tryIdx) {
-		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
+		
 		Address uri = this.uriList.get(tryIdx);
-		final Endpoint rt = new EndpointImpl(this.container, uri, md);
+		final Endpoint rt = new EndpointImpl(this.container, uri);
 		rt.setProperty(PK_TRYING_INDEX, tryIdx);// the trying idx.
 
 		rt.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
@@ -158,7 +157,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 			}
 		});
 
-		rt.addHandler(Path.valueOf("/endpoint/message/client/init/success"), new MessageHandlerI<MsgWrapper>() {
+		rt.addHandler(UiConstants.P_ENDPOINT_MESSAGE_CLIENT_INIT_SUCCESS, new MessageHandlerI<MsgWrapper>() {
 
 			@Override
 			public void handle(MsgWrapper t) {

@@ -42,8 +42,9 @@ public class InstanceOf {
 
 	private static Map<Class, CheckerI> map = new HashMap<Class, CheckerI>();
 
-	public static void addChecker(CheckerI ck) {
+	public static boolean addChecker(CheckerI ck) {
 		map.put(ck.getCheckClass(), ck);
+		return true;
 	}
 
 	public static boolean isInstance(Class cls, Object o) {

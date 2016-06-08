@@ -73,7 +73,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 	/**
 	 * @param md
 	 */
-	public AbstractTransferPoint(Container c, Address uri, MessageDispatcherI md, MessageCacheI mc) {
+	public AbstractTransferPoint(Container c, Address uri, MessageCacheI mc) {
 		super(c);
 		this.uri = uri;
 		this.protocol = uri.getProtocol();
