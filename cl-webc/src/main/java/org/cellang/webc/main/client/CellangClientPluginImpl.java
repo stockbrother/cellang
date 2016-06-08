@@ -4,14 +4,17 @@ import org.cellang.clwt.commons.client.frwk.impl.FrwkControlImpl;
 import org.cellang.clwt.commons.client.frwk.impl.LoginControlImpl;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.commons.client.mvc.impl.ControlManagerImpl;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.event.AfterClientStartEvent;
-import org.cellang.clwt.core.client.event.EndpointBondEvent;
+import org.cellang.clwt.core.client.event.ClientStartedEvent;
+import org.cellang.clwt.core.client.event.ClientStartingEvent;
 import org.cellang.clwt.core.client.event.EventBus;
+import org.cellang.clwt.core.client.event.LogicalChannelBondEvent;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
+import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.handler.ClientStartedHandler;
+import org.cellang.webc.main.client.handler.ClientStartingHandler;
 import org.cellang.webc.main.client.handler.EndpointBondHandler;
 import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
 
@@ -20,7 +23,7 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 	@Override
 	public void active(Container c) {
 		LOG.info("active");//
-		WebClient client = c.get(WebClient.class, true);
+		ClientObject client = c.get(ClientObject.class, true);
 		
 		ControlManager manager = new ControlManagerImpl(c);
 		
@@ -33,9 +36,11 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 		
 		EventBus eb = client.getEventBus(true);
 		
-		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartedHandler(c));//NOTE
+		eb.addHandler(ClientStartingEvent.TYPE, new ClientStartingHandler(c));//NOTE
 		
-		eb.addHandler(EndpointBondEvent.TYPE, new EndpointBondHandler(c));
+		eb.addHandler(ClientStartedEvent.TYPE, new ClientStartedHandler(c));//NOTE
+		
+		eb.addHandler(LogicalChannelBondEvent.TYPE, new EndpointBondHandler(c));
 		
 		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 		LOG.info("end-active");//

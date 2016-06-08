@@ -1,30 +1,26 @@
 /**
  * Jun 11, 2012
  */
-package org.cellang.clwt.core.client.impl;
+package org.cellang.clwt.core.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.ContainerAwareWebObject;
-import org.cellang.clwt.core.client.UiConstants;
-import org.cellang.clwt.core.client.UiException;
-import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.codec.CodecFactory;
 import org.cellang.clwt.core.client.codec.JsonCodecFactoryC;
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
-import org.cellang.clwt.core.client.event.AfterClientStartEvent;
 import org.cellang.clwt.core.client.event.ClientClosingEvent;
 import org.cellang.clwt.core.client.event.ClientConnectLostEvent;
 import org.cellang.clwt.core.client.event.ClientStartFailureEvent;
-import org.cellang.clwt.core.client.event.EndpointCloseEvent;
-import org.cellang.clwt.core.client.event.EndpointErrorEvent;
-import org.cellang.clwt.core.client.event.EndpointOpenEvent;
+import org.cellang.clwt.core.client.event.ClientStartedEvent;
+import org.cellang.clwt.core.client.event.ClientStartingEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
+import org.cellang.clwt.core.client.event.LogicalChannelCloseEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelErrorEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelOpenEvent;
 import org.cellang.clwt.core.client.gwtbridge.GwtClosingHandler;
 import org.cellang.clwt.core.client.lang.AbstractHasProperties;
 import org.cellang.clwt.core.client.lang.Address;
@@ -32,12 +28,10 @@ import org.cellang.clwt.core.client.lang.HasProperties;
 import org.cellang.clwt.core.client.lang.State;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MessageDispatcherI;
-import org.cellang.clwt.core.client.message.MessageDispatcherImpl;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.Endpoint;
-import org.cellang.clwt.core.client.transfer.EndpointImpl;
+import org.cellang.clwt.core.client.transfer.DefaultLogicalChannel;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration.ProtocolPort;
 import org.cellang.clwt.core.client.widget.WebWidget;
@@ -49,9 +43,9 @@ import com.google.gwt.user.client.Window.ClosingEvent;
 /**
  * @author wu TOTO rename to UiCoreI and impl.
  */
-public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
+public class DefaultClientObject extends ContainerAwareWebObject implements ClientObject {
 
-	private static final WebLogger LOG = WebLoggerFactory.getLogger(UiClientImpl.class);
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(DefaultClientObject.class);
 
 	private String clientId;
 
@@ -65,7 +59,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	private List<Address> uriList;
 
-	private Map<Integer, Endpoint> tryedEndpointMap = new HashMap<Integer, Endpoint>();
+	private Map<Integer, LogicalChannel> tryedEndpointMap = new HashMap<Integer, LogicalChannel>();
 
 	public static final State UNKNOWN = State.valueOf("UNKNOWN");
 
@@ -86,9 +80,9 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	/**
 	 * Note:only set after client start.
 	 */
-	private Endpoint endpoint;
+	private LogicalChannel endpoint;
 
-	public UiClientImpl(Container c, WebWidget root) {
+	public DefaultClientObject(Container c, WebWidget root) {
 		super(c);
 
 		this.root = root;
@@ -100,7 +94,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 			@Override
 			protected void handleInternal(ClosingEvent evt) {
 				//
-				new ClientClosingEvent(UiClientImpl.this).dispatch();
+				new ClientClosingEvent(DefaultClientObject.this).dispatch();
 			}
 		});
 		this.setState(UNKNOWN);
@@ -129,31 +123,31 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	}
 
-	protected Endpoint newEndpoint(int tryIdx) {
+	protected LogicalChannel newEndpoint(int tryIdx) {
 		
 		Address uri = this.uriList.get(tryIdx);
-		final Endpoint rt = new EndpointImpl(this.container, uri);
+		final LogicalChannel rt = new DefaultLogicalChannel(this.container, uri);
 		rt.setProperty(PK_TRYING_INDEX, tryIdx);// the trying idx.
 
-		rt.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
+		rt.addHandler(LogicalChannelOpenEvent.TYPE, new EventHandlerI<LogicalChannelOpenEvent>() {
 
 			@Override
-			public void handle(EndpointOpenEvent t) {
-				UiClientImpl.this.onEndpointOpen(t.getEndPoint());
+			public void handle(LogicalChannelOpenEvent t) {
+				DefaultClientObject.this.onEndpointOpen(t.getEndPoint());
 			}
 		});
-		rt.addHandler(EndpointErrorEvent.TYPE, new EventHandlerI<EndpointErrorEvent>() {
+		rt.addHandler(LogicalChannelErrorEvent.TYPE, new EventHandlerI<LogicalChannelErrorEvent>() {
 
 			@Override
-			public void handle(EndpointErrorEvent t) {
-				UiClientImpl.this.onEndpointError(t.getEndPoint());
+			public void handle(LogicalChannelErrorEvent t) {
+				DefaultClientObject.this.onEndpointError(t.getEndPoint());
 			}
 		});
-		rt.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
+		rt.addHandler(LogicalChannelCloseEvent.TYPE, new EventHandlerI<LogicalChannelCloseEvent>() {
 
 			@Override
-			public void handle(EndpointCloseEvent t) {
-				UiClientImpl.this.onEndpointClose(t);
+			public void handle(LogicalChannelCloseEvent t) {
+				DefaultClientObject.this.onEndpointClose(t);
 			}
 		});
 
@@ -161,7 +155,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 			@Override
 			public void handle(MsgWrapper t) {
-				UiClientImpl.this.onInitSuccess(rt, t);
+				DefaultClientObject.this.onInitSuccess(rt, t);
 			}
 		});
 		return rt;
@@ -174,7 +168,9 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 		}
 
 		this.setState(STARTING);
-
+		
+		new ClientStartingEvent(this).dispatch();
+		
 		this.uriList = new ArrayList<Address>();
 		List<ProtocolPort> ppL = new ArrayList<ProtocolPort>(
 				TransferPointConfiguration.getInstance().getConfiguredList());
@@ -228,7 +224,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 	public boolean tryConnect(int uriIdx) {
 		LOG.info("try connect:" + uriIdx);
-		Endpoint ep = this.tryedEndpointMap.get(uriIdx);
+		LogicalChannel ep = this.tryedEndpointMap.get(uriIdx);
 		if (ep != null) {// tryed before.
 			return true;//
 		}
@@ -252,7 +248,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	/**
 	 * Jan 1, 2013
 	 */
-	protected void onInitSuccess(Endpoint ep, MsgWrapper evt) {
+	protected void onInitSuccess(LogicalChannel ep, MsgWrapper evt) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("onInitSuccess,ep:" + ep + ",evt:" + evt);//
 		}
@@ -290,10 +286,10 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 		this.endpoint = ep;
 		// event
 		this.setState(STARTED);// started is here.
-		new AfterClientStartEvent(this).dispatch();
+		new ClientStartedEvent(this).dispatch();
 	}
 
-	public void onEndpointError(Endpoint ep) {
+	public void onEndpointError(LogicalChannel ep) {
 
 		if (this.isState(STARTED)) {//
 			return;// ignore ,because it may a applevel error.
@@ -314,7 +310,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 		this.tryConnect(uriIdx + 1);
 	}
 
-	public void onEndpointClose(EndpointCloseEvent evt) {
+	public void onEndpointClose(LogicalChannelCloseEvent evt) {
 
 		//
 		if (this.isState(STARTED)) {// if started,not try other method for
@@ -326,7 +322,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 
 		// ws error will delay the ajax request for that the limit is 2
 		// connections.
-		Endpoint ep = evt.getEndPoint();
+		LogicalChannel ep = evt.getEndPoint();
 		if (ep.isOpen()) {
 			// this endpoint is open,but error before client/server is ready, so
 			// we
@@ -347,7 +343,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	 * After client start, is gurantee this.
 	 * 
 	 */
-	public void onEndpointOpen(Endpoint ep) {
+	public void onEndpointOpen(LogicalChannel ep) {
 
 		MsgWrapper req = new MsgWrapper(UiConstants.P_CLIENT_INIT);
 		String locale = this.getPreferedLocale();
@@ -443,7 +439,7 @@ public class UiClientImpl extends ContainerAwareWebObject implements WebClient {
 	 * Jan 1, 2013
 	 */
 	@Override
-	public Endpoint getEndpoint(boolean force) {
+	public LogicalChannel getLogicalChannel(boolean force) {
 		//
 		if (this.endpoint == null && force) {
 			throw new UiException("end point is null, client not started?");

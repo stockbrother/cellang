@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.cellang.clwt.core.client.Container;
+import org.cellang.clwt.core.client.DefaultClientObject;
 import org.cellang.clwt.core.client.event.ClientClosingEvent;
-import org.cellang.clwt.core.client.impl.UiClientImpl;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.Handler;
 import org.cellang.clwt.core.client.logger.WebLogger;
@@ -23,14 +23,14 @@ import com.google.gwt.user.client.Window;
  * @author wu
  * 
  */
-public class EndpointImpl extends AbstractTransferPoint {
-	private static final WebLogger LOG = WebLoggerFactory.getLogger(EndpointImpl.class);
+public class DefaultLogicalChannel extends AbstractLogicalChannel {
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(DefaultLogicalChannel.class);
 	
 	public static interface UnderlyingProtocol {
-		public UnderlyingTransfer createGomet(Address uri, boolean force);
+		public UnderlyingChannel createGomet(Address uri, boolean force);
 	}
 
-	private UnderlyingTransfer socket;
+	private UnderlyingChannel socket;
 
 	private Map<String, UnderlyingProtocol> protocols;
 
@@ -39,7 +39,7 @@ public class EndpointImpl extends AbstractTransferPoint {
 	/**
 	 * @param md
 	 */
-	public EndpointImpl(Container c, Address uri) {
+	public DefaultLogicalChannel(Container c, Address uri) {
 		super(c, uri, new MessageCacheImpl(c));
 		this.protocols = new HashMap<String, UnderlyingProtocol>();
 		this.protocols.put("wskt", new WebSocketProtocol());
@@ -86,12 +86,12 @@ public class EndpointImpl extends AbstractTransferPoint {
 			Window.alert("protocol is not support:" + proS);
 		}
 
-		this.socket.addOpenHandler(new Handler<UnderlyingTransfer>() {
+		this.socket.addOpenHandler(new Handler<UnderlyingChannel>() {
 
 			@Override
-			public void handle(UnderlyingTransfer t) {
+			public void handle(UnderlyingChannel t) {
 				//
-				EndpointImpl.this.onConnected();
+				DefaultLogicalChannel.this.onConnected();
 			}
 		});
 		this.socket.addMessageHandler(new Handler<String>() {
@@ -99,7 +99,7 @@ public class EndpointImpl extends AbstractTransferPoint {
 			@Override
 			public void handle(String t) {
 				//
-				EndpointImpl.this.onRawMessage(t);
+				DefaultLogicalChannel.this.onRawMessage(t);
 
 			}
 		});
@@ -108,7 +108,7 @@ public class EndpointImpl extends AbstractTransferPoint {
 			@Override
 			public void handle(String t) {
 				//
-				EndpointImpl.this.onClosed(t, "");
+				DefaultLogicalChannel.this.onClosed(t, "");
 			}
 		});
 		this.socket.addErrorHandler(new Handler<String>() {
@@ -116,7 +116,7 @@ public class EndpointImpl extends AbstractTransferPoint {
 			@Override
 			public void handle(String t) {
 				//
-				EndpointImpl.this.onError(t);
+				DefaultLogicalChannel.this.onError(t);
 			}
 		});
 

@@ -2,15 +2,11 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 21, 2012
  */
-package org.cellang.clwt.core.client.impl;
+package org.cellang.clwt.core.client;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.ContainerAware;
-import org.cellang.clwt.core.client.Scheduler;
-import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.event.ScheduleEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;

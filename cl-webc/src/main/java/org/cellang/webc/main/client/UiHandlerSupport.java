@@ -7,10 +7,10 @@ package org.cellang.webc.main.client;
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 /**
@@ -25,8 +25,8 @@ public class UiHandlerSupport {
 		this.container = c;
 	}
 
-	protected Endpoint getEndpoint() {
-		return this.getClient(true).getEndpoint(true);
+	protected LogicalChannel getEndpoint() {
+		return this.getClient(true).getLogicalChannel(true);
 	}
 
 	protected MsgWrapper newRequest(Path path) {
@@ -34,15 +34,15 @@ public class UiHandlerSupport {
 	}
 
 	protected void sendMessage(MsgWrapper req) {
-		this.getClient(true).getEndpoint(true).sendMessage(req);//
+		this.getClient(true).getLogicalChannel(true).sendMessage(req);//
 	}
 
 	protected ControlManager getControlManager() {
 		return this.getClient(true).getChild(ControlManager.class, true);
 	}
 
-	protected WebClient getClient(boolean force) {
-		return this.container.get(WebClient.class, force);
+	protected ClientObject getClient(boolean force) {
+		return this.container.get(ClientObject.class, force);
 	}
 
 	protected WebWidget getRootView() {

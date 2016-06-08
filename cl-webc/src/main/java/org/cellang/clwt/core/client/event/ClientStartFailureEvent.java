@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 
 /**
  * @author wu
@@ -15,7 +15,7 @@ public class ClientStartFailureEvent extends ClientEvent {
 			ClientEvent.TYPE, "start-failure");
 
 	/** */
-	public ClientStartFailureEvent(WebClient client) {
+	public ClientStartFailureEvent(ClientObject client) {
 		super(TYPE, client);
 	}
 

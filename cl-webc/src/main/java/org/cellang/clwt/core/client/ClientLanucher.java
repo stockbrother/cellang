@@ -11,7 +11,7 @@ import org.cellang.clwt.core.client.lang.Plugins;
 /**
  * @author wu Test support.
  */
-public abstract class ClientLoader {
+public abstract class ClientLanucher {
 	
 	public abstract Plugins getOrLoadClient(Plugin[] spis, EventHandlerI<Event> l);
 

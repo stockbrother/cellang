@@ -13,17 +13,20 @@ import org.cellang.clwt.commons.client.frwk.FrwkViewI;
 import org.cellang.clwt.commons.client.frwk.HeaderViewI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.logger.WebLogger;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
-import org.cellang.webc.main.client.WebcControlSupport;
+import org.cellang.webc.main.client.AbstractWebcControl;
 import org.cellang.webc.main.client.LoginControlI;
 import org.cellang.webc.main.client.LoginViewI;
+import org.cellang.webc.main.client.handler.ClientStartingHandler;
 
 /**
  * @author wuzhen
  * 
  */
-public class FrwkControlImpl extends WebcControlSupport implements FrwkControlI {
-
+public class FrwkControlImpl extends AbstractWebcControl implements FrwkControlI {
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(FrwkControlImpl.class);
 	/**
 	 * @param c
 	 * @param name
@@ -35,11 +38,16 @@ public class FrwkControlImpl extends WebcControlSupport implements FrwkControlI 
 
 	@Override
 	public void open() {
+		LOG.info("open1");
 		WebWidget root = this.getClient(true).getRoot();
+		LOG.info("open2");
 		FrwkViewI fv = root.getChild(FrwkViewI.class, false);
+		LOG.info("open3");
 		if (fv == null) {
 			fv = new FrwkView(this.container);
+			LOG.info("open4");
 			fv.parent(root);
+			LOG.info("open5");
 		}
 	}
 

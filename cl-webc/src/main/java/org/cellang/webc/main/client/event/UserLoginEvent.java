@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 26, 2012
  */
-package org.cellang.webc.main.client;
+package org.cellang.webc.main.client.event;
 
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.event.Event;

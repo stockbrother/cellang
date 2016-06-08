@@ -5,22 +5,22 @@ package org.cellang.clwt.core.client.event;
 
 import org.cellang.clwt.core.client.data.ErrorInfoData;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
 /**
  * @author wuzhen
  * 
  */
-public class EndpointErrorEvent extends EndpointEvent {
+public class LogicalChannelErrorEvent extends LogicalChannelEvent {
 
-	public static final Type<EndpointErrorEvent> TYPE = new Type<EndpointErrorEvent>(EndpointEvent.TYPE, "error");
+	public static final Type<LogicalChannelErrorEvent> TYPE = new Type<LogicalChannelErrorEvent>(LogicalChannelEvent.TYPE, "error");
 
 	protected ErrorInfosData errors = new ErrorInfosData();
 
 	/**
 	 * @param type
 	 */
-	public EndpointErrorEvent(Endpoint c, String message) {
+	public LogicalChannelErrorEvent(LogicalChannel c, String message) {
 		super(TYPE, c);
 		this.errors.add(new ErrorInfoData("unknow", message));
 	}

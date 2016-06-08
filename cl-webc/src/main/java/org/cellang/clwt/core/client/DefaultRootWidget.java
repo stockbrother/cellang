@@ -1,11 +1,8 @@
 /**
  * Jun 30, 2012
  */
-package org.cellang.clwt.core.client.impl;
+package org.cellang.clwt.core.client;
 
-import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.ContainerAware;
-import org.cellang.clwt.core.client.WebClient;
 import org.cellang.clwt.core.client.lang.WebElement;
 import org.cellang.clwt.core.client.widget.AbstractWebWidget;
 import org.cellang.clwt.core.client.widget.WebWidget;
@@ -25,8 +22,8 @@ public class DefaultRootWidget extends AbstractWebWidget implements WebWidget, C
 
 	/* */
 	@Override
-	public WebClient getClient(boolean force) {
-		WebClient rt = (WebClient) this.container.get(WebClient.class, force);
+	public ClientObject getClient(boolean force) {
+		ClientObject rt = (ClientObject) this.container.get(ClientObject.class, force);
 		return rt;
 	}
 

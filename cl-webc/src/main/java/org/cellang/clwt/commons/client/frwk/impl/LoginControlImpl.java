@@ -6,7 +6,7 @@ package org.cellang.clwt.commons.client.frwk.impl;
 import org.cellang.clwt.commons.client.UiCommonsConstants;
 import org.cellang.clwt.commons.client.frwk.BodyViewI;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.webc.main.client.WebcControlSupport;
+import org.cellang.webc.main.client.AbstractWebcControl;
 import org.cellang.webc.main.client.LoginControlI;
 import org.cellang.webc.main.client.LoginViewI;
 
@@ -14,7 +14,7 @@ import org.cellang.webc.main.client.LoginViewI;
  * @author wuzhen
  * 
  */
-public class LoginControlImpl extends WebcControlSupport implements LoginControlI {
+public class LoginControlImpl extends AbstractWebcControl implements LoginControlI {
 
 	/**
 	 * @param name

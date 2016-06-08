@@ -15,9 +15,9 @@ import org.cellang.clwt.core.client.widget.WebWidget;
  * @author wuzhen
  * 
  */
-public class WebcControlSupport extends AbstractControl {
+public class AbstractWebcControl extends AbstractControl {
 
-	public WebcControlSupport(Container c, String name) {
+	public AbstractWebcControl(Container c, String name) {
 		super(c, name);
 	}
 
@@ -26,7 +26,7 @@ public class WebcControlSupport extends AbstractControl {
 	}
 
 	protected void sendMessage(MsgWrapper req) {
-		this.getClient(true).getEndpoint(true).sendMessage(req);//
+		this.getClient(true).getLogicalChannel(true).sendMessage(req);//
 	}
 
 	public WebWidget getRootView() {

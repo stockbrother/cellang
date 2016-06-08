@@ -1,18 +1,14 @@
 /**
  * Jul 1, 2012
  */
-package org.cellang.clwt.core.client.impl;
+package org.cellang.clwt.core.client;
 
-import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.Scheduler;
-import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.WebCorePlugin;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.lang.Attacher;
 import org.cellang.clwt.core.client.lang.InstanceOf;
 import org.cellang.clwt.core.client.lang.InstanceOf.CheckerSupport;
 import org.cellang.clwt.core.client.lang.WebObject;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.clwt.core.client.widget.DefaultWebWidgetFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;
@@ -44,7 +40,7 @@ public class DefaultWebCorePlugin implements WebCorePlugin {
 		c.add(root);// TODO move to SPI.active();
 
 		// client
-		WebClient client = new UiClientImpl(c, root);
+		ClientObject client = new DefaultClientObject(c, root);
 		c.add(client);
 		//
 
@@ -74,12 +70,12 @@ public class DefaultWebCorePlugin implements WebCorePlugin {
 			}
 		});
 
-		InstanceOf.addChecker(new CheckerSupport(WebClient.class) {
+		InstanceOf.addChecker(new CheckerSupport(ClientObject.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof WebClient;
+				return o instanceof ClientObject;
 
 			}
 		});
@@ -120,12 +116,12 @@ public class DefaultWebCorePlugin implements WebCorePlugin {
 				return o instanceof Attacher;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(Endpoint.class) {
+		InstanceOf.addChecker(new CheckerSupport(LogicalChannel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof Endpoint;
+				return o instanceof LogicalChannel;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(Scheduler.class) {

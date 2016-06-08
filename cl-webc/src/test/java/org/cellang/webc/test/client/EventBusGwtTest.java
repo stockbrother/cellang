@@ -1,11 +1,11 @@
 package org.cellang.webc.test.client;
 
 import org.cellang.clwt.core.client.Container;
+import org.cellang.clwt.core.client.DefaultContainer;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.event.EventBusImpl;
-import org.cellang.clwt.core.client.impl.DefaultContainer;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;
 
 public class EventBusGwtTest extends AbstractGwtTestBase {

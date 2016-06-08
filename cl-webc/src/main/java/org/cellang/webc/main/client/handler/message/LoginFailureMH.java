@@ -8,7 +8,7 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.data.MessageData;
-import org.cellang.clwt.core.client.event.EndpointMessageEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.webc.main.client.AccountsLDW;
 import org.cellang.webc.main.client.AnonymousAccountLDW;
@@ -23,7 +23,7 @@ import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
  * @author wu
  * 
  */
-public class LoginFailureMH extends UiHandlerSupport implements MessageHandlerI<EndpointMessageEvent> {
+public class LoginFailureMH extends UiHandlerSupport implements MessageHandlerI<LogicalChannelMessageEvent> {
 
 	/**
 	 * @param c
@@ -36,7 +36,7 @@ public class LoginFailureMH extends UiHandlerSupport implements MessageHandlerI<
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(EndpointMessageEvent t) {
+	public void handle(LogicalChannelMessageEvent t) {
 		MessageData res = t.getMessage();
 		MessageData req = res.getSource();
 

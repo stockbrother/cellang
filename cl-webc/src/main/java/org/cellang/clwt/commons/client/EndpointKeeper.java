@@ -5,14 +5,14 @@
 package org.cellang.clwt.commons.client;
 
 import org.cellang.clwt.core.client.Scheduler;
-import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.event.EndpointMessageEvent;
+import org.cellang.clwt.core.client.ClientObject;
+import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.event.ScheduleEvent;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
 /**
  * @author wu
@@ -22,23 +22,23 @@ public class EndpointKeeper {
 
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(EndpointKeeper.class);
 
-	protected Endpoint endpoint;
+	protected LogicalChannel endpoint;
 
-	private WebClient client;
+	private ClientObject client;
 
 	private String taskName = "endpoint-keeper";
 
-	public EndpointKeeper(WebClient c) {
-		this.endpoint = c.getEndpoint(true);
+	public EndpointKeeper(ClientObject c) {
+		this.endpoint = c.getLogicalChannel(true);
 		this.client = c;
 
 	}
 
 	public void start() {
-		this.endpoint.addHandler(EndpointMessageEvent.TYPE, new EventHandlerI<EndpointMessageEvent>() {
+		this.endpoint.addHandler(LogicalChannelMessageEvent.TYPE, new EventHandlerI<LogicalChannelMessageEvent>() {
 
 			@Override
-			public void handle(EndpointMessageEvent t) {
+			public void handle(LogicalChannelMessageEvent t) {
 				EndpointKeeper.this.onMessage(t);
 			}
 		});
@@ -73,7 +73,7 @@ public class EndpointKeeper {
 	/**
 	 * Jan 11, 2013
 	 */
-	protected void onMessage(EndpointMessageEvent t) {
+	protected void onMessage(LogicalChannelMessageEvent t) {
 		// TODO /ping/success
 
 	}

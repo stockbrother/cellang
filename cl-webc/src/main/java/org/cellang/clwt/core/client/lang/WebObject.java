@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
@@ -28,7 +28,7 @@ public interface WebObject extends HasProperties<Object> {
 
 	public WebObject getParent();
 
-	public WebClient getClient(boolean force);
+	public ClientObject getClient(boolean force);
 
 	public WebObject parent(WebObject p);
 

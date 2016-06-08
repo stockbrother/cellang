@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 
 /**
  * @author wu
@@ -15,7 +15,7 @@ public class ClientConnectLostEvent extends ClientEvent {
 			"connection-lost");
 
 	/** */
-	public ClientConnectLostEvent(WebClient client) {
+	public ClientConnectLostEvent(ClientObject client) {
 		super(TYPE, client);
 	}
 

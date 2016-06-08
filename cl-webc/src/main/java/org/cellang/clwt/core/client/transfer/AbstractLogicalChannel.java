@@ -13,14 +13,14 @@ import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.data.PropertiesData;
 import org.cellang.clwt.core.client.event.ClientClosingEvent;
-import org.cellang.clwt.core.client.event.EndpointBondEvent;
-import org.cellang.clwt.core.client.event.EndpointBusyEvent;
-import org.cellang.clwt.core.client.event.EndpointCloseEvent;
-import org.cellang.clwt.core.client.event.EndpointErrorEvent;
-import org.cellang.clwt.core.client.event.EndpointFreeEvent;
-import org.cellang.clwt.core.client.event.EndpointMessageEvent;
-import org.cellang.clwt.core.client.event.EndpointOpenEvent;
-import org.cellang.clwt.core.client.event.EndpointUnbondEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelBondEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelBusyEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelCloseEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelErrorEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelFreeEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelOpenEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelUnbondEvent;
 import org.cellang.clwt.core.client.event.StateChangeEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;
@@ -44,9 +44,9 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
-public abstract class AbstractTransferPoint extends AbstractWebObject implements Endpoint {
+public abstract class AbstractLogicalChannel extends AbstractWebObject implements LogicalChannel {
 
-	private static final WebLogger LOG = WebLoggerFactory.getLogger(AbstractTransferPoint.class);
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(AbstractLogicalChannel.class);
 
 	private Codec messageCodec;
 
@@ -60,9 +60,9 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 	private MessageCacheI messageCache;
 
-	private EndpointFreeEvent lastFreeEvent;
+	private LogicalChannelFreeEvent lastFreeEvent;
 
-	private EndpointBusyEvent lastBusyEvent;
+	private LogicalChannelBusyEvent lastBusyEvent;
 
 	private Console console = Console.getInstance();
 
@@ -73,7 +73,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 	/**
 	 * @param md
 	 */
-	public AbstractTransferPoint(Container c, Address uri, MessageCacheI mc) {
+	public AbstractLogicalChannel(Container c, Address uri, MessageCacheI mc) {
 		super(c);
 		this.uri = uri;
 		this.protocol = uri.getProtocol();
@@ -82,23 +82,23 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 			@Override
 			public void handle(StateChangeEvent t) {
-				AbstractTransferPoint.this.onMessageCacheUpdate(t);
+				AbstractLogicalChannel.this.onMessageCacheUpdate(t);
 			}
 		});
 		this.addHandler(
-				EndpointMessageEvent.TYPE.getAsPath().concat(Path.valueOf("/control/status/serverIsReady", '/')),
+				LogicalChannelMessageEvent.TYPE.getAsPath().concat(Path.valueOf("/control/status/serverIsReady", '/')),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
 					public void handle(MsgWrapper t) {
-						AbstractTransferPoint.this.onServerIsReady(t);
+						AbstractLogicalChannel.this.onServerIsReady(t);
 					}
 				});
 		MessageHandlerI<MsgWrapper> bindingMH = new MessageHandlerI<MsgWrapper>() {
 
 			@Override
 			public void handle(MsgWrapper t) {
-				AbstractTransferPoint.this.onBindingSuccess(t);
+				AbstractLogicalChannel.this.onBindingSuccess(t);
 			}
 		};
 		// TODO move to SPI active method.
@@ -109,7 +109,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 			@Override
 			public void handle(MsgWrapper t) {
-				AbstractTransferPoint.this.onUnbindingSuccess(t);
+				AbstractLogicalChannel.this.onUnbindingSuccess(t);
 			}
 		};
 		this.addHandler(Path.valueOf("/endpoint/message/terminal/unbinding/success"), unBindingMH);
@@ -124,7 +124,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		if (this.messageCache.size() == 0) {
 			this.lastBusyEvent = null;
 			if (this.lastFreeEvent == null) {
-				this.lastFreeEvent = new EndpointFreeEvent(this);
+				this.lastFreeEvent = new LogicalChannelFreeEvent(this);
 				this.lastFreeEvent.dispatch();
 			}
 			// else ignore
@@ -132,7 +132,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 			this.lastFreeEvent = null;
 			if (this.lastBusyEvent == null) {
-				this.lastBusyEvent = new EndpointBusyEvent(this);
+				this.lastBusyEvent = new LogicalChannelBusyEvent(this);
 				this.lastBusyEvent.dispatch();
 			}
 		}
@@ -150,7 +150,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 			@Override
 			public void handle(ClientClosingEvent t) {
-				AbstractTransferPoint.this.onClientClosing(t);
+				AbstractLogicalChannel.this.onClientClosing(t);
 			}
 		});
 	}
@@ -173,7 +173,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		this.clientId = md.getString("clientId", true);
 		this.terminalId = md.getString("terminalId", true);
 		this.serverIsReady = true;
-		new EndpointOpenEvent(this).dispatch();
+		new LogicalChannelOpenEvent(this).dispatch();
 	}
 
 	@Override
@@ -226,7 +226,7 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 
 			@Override
 			public void handle(String t) {
-				AbstractTransferPoint.this.onSendFailure(req);
+				AbstractLogicalChannel.this.onSendFailure(req);
 			}
 		});
 	}
@@ -256,13 +256,13 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		this.clientId = null;
 		this.terminalId = null;//
 		LOG.info(getShortName() + " is closed, code:" + code + ",reason:" + reason);
-		new EndpointCloseEvent(this, code, reason).dispatch();
+		new LogicalChannelCloseEvent(this, code, reason).dispatch();
 
 	}
 
 	protected void onError(String msg) {
 		LOG.error(getShortName() + ",error msg:" + msg, null);
-		new EndpointErrorEvent(this, msg).dispatch();
+		new LogicalChannelErrorEvent(this, msg).dispatch();
 
 	}
 
@@ -284,13 +284,13 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 			}
 		}
 		Path p = md.getPath();
-		Path tp = EndpointMessageEvent.TYPE.getAsPath();
+		Path tp = LogicalChannelMessageEvent.TYPE.getAsPath();
 		ErrorInfosData eis = md.getErrorInfos();
 		if (eis.hasError()) {
 			this.console.error(eis);
 		}
 		md.setHeader(MessageData.HK_PATH, tp.concat(p).toString());
-		new EndpointMessageEvent(this, md).dispatch();
+		new LogicalChannelMessageEvent(this, md).dispatch();
 	}
 
 	/*
@@ -339,12 +339,12 @@ public abstract class AbstractTransferPoint extends AbstractWebObject implements
 		String sid = md.getString("sessionId", true);
 		this.userInfo.setProperties(md.getPayloads());
 
-		new EndpointBondEvent(this, this.getSessionId()).dispatch();
+		new LogicalChannelBondEvent(this, this.getSessionId()).dispatch();
 	}
 
 	public void onUnbindingSuccess(MsgWrapper evt) {
 		this.userInfo = null;
-		new EndpointUnbondEvent(this).dispatch();
+		new LogicalChannelUnbondEvent(this).dispatch();
 	}
 
 	/*

@@ -6,7 +6,7 @@ package org.cellang.webc.main.client.handler.message;
 
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.data.MessageData;
-import org.cellang.clwt.core.client.event.EndpointMessageEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.webc.main.client.AccountsLDW;
 import org.cellang.webc.main.client.LoginViewI;
@@ -17,7 +17,7 @@ import org.cellang.webc.main.client.UiHandlerSupport;
  * @author wu
  * 
  */
-public class LoginSuccessMH extends UiHandlerSupport implements MessageHandlerI<EndpointMessageEvent> {
+public class LoginSuccessMH extends UiHandlerSupport implements MessageHandlerI<LogicalChannelMessageEvent> {
 
 	/**
 	 * @param c
@@ -30,7 +30,7 @@ public class LoginSuccessMH extends UiHandlerSupport implements MessageHandlerI<
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(EndpointMessageEvent t) {
+	public void handle(LogicalChannelMessageEvent t) {
 		MessageData res = t.getMessage();
 
 		AccountsLDW accs = AccountsLDW.getInstance();

@@ -6,13 +6,13 @@ import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.WebObject;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.webc.main.client.AccountsLDW;
 import org.cellang.webc.main.client.AnonymousAccountLDW;
-import org.cellang.webc.main.client.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.LoginControlI;
 import org.cellang.webc.main.client.RegisteredAccountLDW;
 import org.cellang.webc.main.client.UiHandlerSupport;
+import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 
 /**
  * 
@@ -36,12 +36,12 @@ public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<
 	public void handle(AutoLoginRequireEvent ae) {
 		//
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
-		Endpoint ep = this.getEndpoint();
+		LogicalChannel ep = this.getEndpoint();
 		AutoLoginHandler.autoLogin(ep, ae.getSource());
 
 	}
 
-	public static void autoLogin(Endpoint endpoint, WebObject esource) {
+	public static void autoLogin(LogicalChannel endpoint, WebObject esource) {
 		ObjectPropertiesData req = new ObjectPropertiesData();
 
 		// this submit

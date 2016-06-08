@@ -8,15 +8,15 @@
 	
 	<source path='client' />
 	
-	<replace-with class="org.cellang.clwt.core.client.impl.DefaultClientLoader">
-		<when-type-is class="org.cellang.clwt.core.client.ClientLoader" />
+	<replace-with class="org.cellang.clwt.core.client.DefaultClientLanucher">
+		<when-type-is class="org.cellang.clwt.core.client.ClientLanucher" />
 	</replace-with>
 	
-	<replace-with class="org.cellang.clwt.core.client.impl.DefaultWebCorePlugin">
+	<replace-with class="org.cellang.clwt.core.client.DefaultWebCorePlugin">
 		<when-type-is class="org.cellang.clwt.core.client.WebCorePlugin" />
 	</replace-with>
 	
-	<replace-with class="org.cellang.clwt.core.client.impl.DefaultContainer">
+	<replace-with class="org.cellang.clwt.core.client.DefaultContainer">
 		<when-type-is class="org.cellang.clwt.core.client.Container" />
 	</replace-with>
 </module>

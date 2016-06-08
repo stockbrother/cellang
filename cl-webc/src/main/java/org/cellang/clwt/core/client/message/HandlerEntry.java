@@ -34,9 +34,9 @@ public final class HandlerEntry {
 	public boolean tryHandle(boolean dely, Path p, final MsgWrapper md) {
 
 		boolean isMatch = this.isMatch(p);
-
-		LOG.debug(
-				"dispatcher:" + this.dispatcher.name + "tryHandle,dely:" + dely + ",this.path:" + p + ",message:" + md);
+//
+//		LOG.trace(
+//				"dispatcher:" + this.dispatcher.name + "tryHandle,dely:" + dely + ",this.path:" + p + ",message:" + md);
 
 		if (!isMatch) {
 			return false;
@@ -58,7 +58,7 @@ public final class HandlerEntry {
 	}
 
 	protected void doHandle(MsgWrapper md) {
-		LOG.debug("dispatcher:" + this.dispatcher.name + ",doHandle,message:" + md + ",handlers:" + handlers);//
+		//LOG.debug("dispatcher:" + this.dispatcher.name + ",doHandle,message:" + md + ",handlers:" + handlers);//
 		try {
 			this.handlers.handle(md);
 		} catch (Throwable t) {

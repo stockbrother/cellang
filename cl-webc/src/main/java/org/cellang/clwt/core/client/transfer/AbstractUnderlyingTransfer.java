@@ -15,7 +15,7 @@ import com.google.gwt.user.client.Timer;
  * @author wu
  * 
  */
-public abstract class AbstractUnderlyingTransfer implements UnderlyingTransfer {
+public abstract class AbstractUnderlyingTransfer implements UnderlyingChannel {
 
 	public static final State UNKNOWN = State.valueOf("unknown");
 
@@ -35,7 +35,7 @@ public abstract class AbstractUnderlyingTransfer implements UnderlyingTransfer {
 
 	protected boolean errorsInOpenning;
 
-	protected CollectionHandler<UnderlyingTransfer> openHandlers = new CollectionHandler<UnderlyingTransfer>();
+	protected CollectionHandler<UnderlyingChannel> openHandlers = new CollectionHandler<UnderlyingChannel>();
 	protected CollectionHandler<String> closeHandlers = new CollectionHandler<String>();
 	protected CollectionHandler<String> errorHandlers = new CollectionHandler<String>();
 	protected CollectionHandler<String> msgHandlers = new CollectionHandler<String>();
@@ -115,7 +115,7 @@ public abstract class AbstractUnderlyingTransfer implements UnderlyingTransfer {
 	 * May 9, 2013
 	 */
 	@Override
-	public void addOpenHandler(final Handler<UnderlyingTransfer> handler) {
+	public void addOpenHandler(final Handler<UnderlyingChannel> handler) {
 		this.openHandlers.addHandler(handler);
 	}
 

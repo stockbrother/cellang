@@ -6,7 +6,7 @@ package org.cellang.clwt.commons.client.widget.impl.error;
 import org.cellang.clwt.commons.client.mvc.widget.ErrorInfosWidgetI;
 import org.cellang.clwt.commons.client.mvc.widget.WidgetSupport;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.data.ErrorInfoData;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
 
@@ -55,7 +55,7 @@ public class ErrorInfosWidgetImpl extends WidgetSupport implements ErrorInfosWid
 	 */
 	@Override
 	public void addErrorInfos(ErrorInfosData errorInfos) {
-		WebClient client = this.getClient(true);
+		ClientObject client = this.getClient(true);
 		
 		for (ErrorInfoData ei : errorInfos.getErrorInfoList()) {
 			Element tr = DOM.createTR();

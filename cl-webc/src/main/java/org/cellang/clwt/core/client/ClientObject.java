@@ -5,18 +5,18 @@ package org.cellang.clwt.core.client;
 
 import org.cellang.clwt.core.client.codec.CodecFactory;
 import org.cellang.clwt.core.client.lang.WebObject;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 /**
  * @author wuzhen
  * 
  */
-public interface WebClient extends WebObject {
+public interface ClientObject extends WebObject {
 
 	public String getClientId();
 
-	public Endpoint getEndpoint(boolean force);
+	public LogicalChannel getLogicalChannel(boolean force);
 
 	public WebWidget getRoot();
 

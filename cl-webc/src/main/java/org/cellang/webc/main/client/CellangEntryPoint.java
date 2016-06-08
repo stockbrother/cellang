@@ -1,9 +1,9 @@
 package org.cellang.webc.main.client;
 
 import org.cellang.clwt.commons.client.CommonsPlugin;
-import org.cellang.clwt.core.client.ClientLoader;
+import org.cellang.clwt.core.client.ClientLanucher;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.WebCorePlugin;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
@@ -17,7 +17,7 @@ import com.google.gwt.core.client.GWT;
 public class CellangEntryPoint implements EntryPoint {
 
 	Container container;
-	WebClient client;
+	ClientObject client;
 
 	@Override
 	public void onModuleLoad() {
@@ -29,7 +29,7 @@ public class CellangEntryPoint implements EntryPoint {
 				(CellangClientPlugin) GWT.create(CellangClientPlugin.class) //
 				};
 
-		Plugins sf = ((ClientLoader) GWT.create(ClientLoader.class)).getOrLoadClient(spis, new EventHandlerI<Event>() {
+		Plugins sf = ((ClientLanucher) GWT.create(ClientLanucher.class)).getOrLoadClient(spis, new EventHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {
@@ -38,7 +38,7 @@ public class CellangEntryPoint implements EntryPoint {
 		});
 
 		this.container = sf.getContainer();
-		client = this.container.get(WebClient.class, true);
+		client = this.container.get(ClientObject.class, true);
 
 		client.start();
 		WebWidget root = client.getRoot();

@@ -25,16 +25,22 @@ public class NullWebLogger extends AbstractWebLogger {
 
 	@Override
 	public void log(int level, Object msg) {
-		// do nothing.
+
 	}
 
-	/*
-	 * Nov 11, 2012
-	 */
 	@Override
 	protected void doLog(int level, Object msg, Throwable t) {
-		//
 
+	}
+
+	@Override
+	public void trace(Object msg) {
+
+	}
+
+	@Override
+	public boolean isTraceEnabled() {
+		return false;
 	}
 
 }

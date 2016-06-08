@@ -16,7 +16,7 @@ import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
 import com.google.gwt.user.client.Element;
 
@@ -57,18 +57,6 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 
 	protected void beforeActionEvent(ActionEvent ae) {
 
-	}
-
-	protected Endpoint getEndpoint() {
-		return this.getClient(true).getEndpoint(true);
-	}
-
-	protected void sendMessage(MsgWrapper req) {
-		this.getEndpoint().sendMessage(req);
-	}
-
-	protected void sendMessage(MessageData req) {
-		this.getEndpoint().sendMessage(req);
 	}
 
 	protected <T extends Control> T getControl(Class<T> cls, boolean force) {

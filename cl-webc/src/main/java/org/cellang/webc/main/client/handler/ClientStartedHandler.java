@@ -10,17 +10,17 @@ import org.cellang.clwt.commons.client.EndpointKeeper;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
-import org.cellang.clwt.core.client.WebClient;
-import org.cellang.clwt.core.client.event.AfterClientStartEvent;
+import org.cellang.clwt.core.client.ClientObject;
+import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.gwtbridge.UiWindow;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.transfer.Endpoint;
-import org.cellang.webc.main.client.AutoLoginRequireEvent;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.webc.main.client.HeaderItems;
 import org.cellang.webc.main.client.UiHandlerSupport;
+import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.handler.message.LoginFailureMH;
 import org.cellang.webc.main.client.handler.message.LoginSuccessMH;
 
@@ -28,7 +28,7 @@ import org.cellang.webc.main.client.handler.message.LoginSuccessMH;
  * @author wuzhen
  * 
  */
-public class ClientStartedHandler extends UiHandlerSupport implements EventHandlerI<AfterClientStartEvent> {
+public class ClientStartedHandler extends UiHandlerSupport implements EventHandlerI<ClientStartedEvent> {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(ClientStartedHandler.class);
 	/**
 	 * @param c
@@ -38,7 +38,7 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 	}
 
 	@Override
-	public void handle(AfterClientStartEvent e) {
+	public void handle(ClientStartedEvent e) {
 		LOG.info("handle-event:"+e);
 		
 		this.activeMessageHandlers(this.container, e.getClient());
@@ -47,11 +47,6 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 		// heatbeat
 		EndpointKeeper ek = new EndpointKeeper(this.getClient(true));
 		ek.start();//
-
-		// start frwk view.
-		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
-		fc.open();
-		fc.addHeaderItem(HeaderItems.USER_LOGIN);
 		//
 		String action = UiWindow.getParameter("action", null);
 		if (action == null) {
@@ -74,8 +69,8 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 		}
 	}
 
-	public void activeMessageHandlers(Container c, WebClient client) {
-		Endpoint ep = client.getEndpoint(true);
+	public void activeMessageHandlers(Container c, ClientObject client) {
+		LogicalChannel ep = client.getLogicalChannel(true);
 		// ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 		// new SignupAnonymousSuccessMH(c));
 		//

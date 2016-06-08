@@ -1,15 +1,15 @@
 package org.cellang.webc.test.client;
 
-import org.cellang.clwt.core.client.event.AfterClientStartEvent;
+import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.Event;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
 public class ClientStartGwtTest extends AbstractGwtTestBase2 {
 
 	private String nick = "user1";
 	private String email = nick + "@domain.com";
 	private String pass = nick;
-	protected Endpoint endpoint;
+	protected LogicalChannel endpoint;
 
 	public void testClientStart() {
 		this.client.start();
@@ -24,15 +24,15 @@ public class ClientStartGwtTest extends AbstractGwtTestBase2 {
 	@Override
 	protected void onEvent(Event e) {
 		System.out.println("onEvent(),evt:" + e);
-		if (e instanceof AfterClientStartEvent) {
-			AfterClientStartEvent afe = (AfterClientStartEvent) e;
+		if (e instanceof ClientStartedEvent) {
+			ClientStartedEvent afe = (ClientStartedEvent) e;
 			this.onClientStart(afe);
 		}
 	}
 
-	private void onClientStart(AfterClientStartEvent afe) {
+	private void onClientStart(ClientStartedEvent afe) {
 		this.tryFinish("start");//
-		this.endpoint = this.client.getEndpoint(true);
+		this.endpoint = this.client.getLogicalChannel(true);
 
 	}
 

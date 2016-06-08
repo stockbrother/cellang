@@ -27,11 +27,15 @@ public interface WebLogger {
 	public void info(Object msg);
 
 	public void debug(Object msg);
+	
+	public void trace(Object msg);
 
 	public void error(Object msg);
 
 	public void error(Object msg, Throwable t);
 
 	public boolean isDebugEnabled();
+	
+	public boolean isTraceEnabled();
 
 }

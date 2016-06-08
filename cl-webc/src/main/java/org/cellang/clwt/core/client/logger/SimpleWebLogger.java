@@ -4,9 +4,9 @@
  */
 package org.cellang.clwt.core.client.logger;
 
-import java.util.Date;
-
 import org.cellang.clwt.core.client.Console;
+import org.cellang.clwt.core.client.data.DateData;
+import org.cellang.clwt.core.client.util.DateUtil;
 import org.cellang.clwt.core.client.util.ExceptionUtil;
 
 /**
@@ -22,7 +22,7 @@ public class SimpleWebLogger extends AbstractWebLogger {
 	@Override
 	public void doLog(int level, Object msg, Throwable t) {
 		String levelS = levelName.get(level);
-		String log = "[" + new Date() + "][" + levelS + "][" + this.name + "]-" + msg;
+		String log = "[" + DateUtil.format(DateData.valueOfNow()) + "][" + levelS + "][" + this.name + "] - " + msg;
 		Console.getInstance().println(log);
 
 		if (t != null) {

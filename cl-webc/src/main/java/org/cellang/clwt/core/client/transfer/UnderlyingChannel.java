@@ -10,7 +10,7 @@ import org.cellang.clwt.core.client.lang.Handler;
  * @author wu
  * 
  */
-public interface UnderlyingTransfer {
+public interface UnderlyingChannel {
 
 	public String getProtocol();
 
@@ -21,7 +21,7 @@ public interface UnderlyingTransfer {
 	public void send(String jsS, Handler<String> onfailure);
 
 	// regist listeners
-	public void addOpenHandler(Handler<UnderlyingTransfer> handler);
+	public void addOpenHandler(Handler<UnderlyingChannel> handler);
 
 	public void addCloseHandler(Handler<String> handler);
 

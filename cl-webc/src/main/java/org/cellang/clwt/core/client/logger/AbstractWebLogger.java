@@ -30,7 +30,17 @@ public abstract class AbstractWebLogger implements WebLogger {
 	public AbstractWebLogger(String name2) {
 		this.name = name2;
 	}
+	
+	@Override
+	public boolean isTraceEnabled() {
+		return this.isLevelEnabled(LEVEL_TRACE);
+	}	
 
+	@Override
+	public void trace(Object msg) {
+		log(WebLogger.LEVEL_TRACE, msg);
+	}
+	@Override
 	public void debug(Object msg) {
 
 		log(WebLogger.LEVEL_DEBUG, msg);
@@ -88,9 +98,6 @@ public abstract class AbstractWebLogger implements WebLogger {
 		log(WebLogger.LEVEL_ERROR, msg, t);
 	}
 
-	/*
-	 * Nov 8, 2012
-	 */
 	@Override
 	public boolean isDebugEnabled() {
 		//

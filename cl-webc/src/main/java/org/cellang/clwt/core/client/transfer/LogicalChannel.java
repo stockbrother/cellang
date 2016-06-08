@@ -15,7 +15,7 @@ import org.cellang.clwt.core.client.message.MsgWrapper;
  * @author wu
  * 
  */
-public interface Endpoint extends WebObject {
+public interface LogicalChannel extends WebObject {
 
 	public static final String D_NAME = "endpoint";
 

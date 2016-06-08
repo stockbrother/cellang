@@ -2,22 +2,22 @@ package org.cellang.webc.test.client;
 
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
-import org.cellang.clwt.core.client.event.AfterClientStartEvent;
-import org.cellang.clwt.core.client.event.EndpointBondEvent;
-import org.cellang.clwt.core.client.event.EndpointUnbondEvent;
+import org.cellang.clwt.core.client.event.ClientStartedEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelBondEvent;
+import org.cellang.clwt.core.client.event.LogicalChannelUnbondEvent;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.transfer.Endpoint;
+import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
 public class SignupGwtTest extends AbstractGwtTestBase2 {
 
 	private String nick = "user1";
 	private String email = nick + "@domain.com";
 	private String pass = nick;
-	protected Endpoint endpoint;
+	protected LogicalChannel endpoint;
 
 	@Override
 	protected void gwtSetUp() throws Exception {
@@ -36,21 +36,21 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	@Override
 	protected void onEvent(Event e) {
 		System.out.println("TestBase.onEvent(),e:" + e);
-		if (e instanceof AfterClientStartEvent) {
-			AfterClientStartEvent afe = (AfterClientStartEvent) e;
+		if (e instanceof ClientStartedEvent) {
+			ClientStartedEvent afe = (ClientStartedEvent) e;
 
 			this.onClientStart(afe);
 		}
-		if (e instanceof EndpointBondEvent) {
+		if (e instanceof LogicalChannelBondEvent) {
 			this.onBond();
-		} else if (e instanceof EndpointUnbondEvent) {
+		} else if (e instanceof LogicalChannelUnbondEvent) {
 			this.onUnbond();
 		}
 	}
 
-	private void onClientStart(AfterClientStartEvent afe) {
+	private void onClientStart(ClientStartedEvent afe) {
 		this.tryFinish("start");//
-		this.endpoint = this.client.getEndpoint(true);		
+		this.endpoint = this.client.getLogicalChannel(true);		
 		
 	}
 

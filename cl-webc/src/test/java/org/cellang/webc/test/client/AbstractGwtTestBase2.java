@@ -3,9 +3,9 @@ package org.cellang.webc.test.client;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.cellang.clwt.core.client.ClientLoader;
+import org.cellang.clwt.core.client.ClientLanucher;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.WebCorePlugin;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
@@ -18,7 +18,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 
 public abstract class AbstractGwtTestBase2 extends AbstractGwtTestBase {
 
-	protected WebClient client;
+	protected ClientObject client;
 	protected Container container;
 
 	@Override
@@ -30,7 +30,7 @@ public abstract class AbstractGwtTestBase2 extends AbstractGwtTestBase {
 				(CellangClientPlugin) GWT.create(CellangClientPlugin.class) //
 		};
 
-		Plugins sf = ((ClientLoader) GWT.create(ClientLoader.class)).getOrLoadClient(spis, new EventHandlerI<Event>() {
+		Plugins sf = ((ClientLanucher) GWT.create(ClientLanucher.class)).getOrLoadClient(spis, new EventHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {
@@ -39,7 +39,7 @@ public abstract class AbstractGwtTestBase2 extends AbstractGwtTestBase {
 		});
 
 		this.container = sf.getContainer();
-		client = this.container.get(WebClient.class, true);
+		client = this.container.get(ClientObject.class, true);
 	}
 
 	protected void onEvent(Event e) {

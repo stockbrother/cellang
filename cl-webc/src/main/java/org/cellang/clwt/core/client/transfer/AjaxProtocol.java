@@ -6,7 +6,7 @@ package org.cellang.clwt.core.client.transfer;
 
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.lang.Address;
-import org.cellang.clwt.core.client.transfer.EndpointImpl.UnderlyingProtocol;
+import org.cellang.clwt.core.client.transfer.DefaultLogicalChannel.UnderlyingProtocol;
 import org.cellang.clwt.core.client.transfer.ajax.AjaxUnderlyingTransfer;
 
 /**
@@ -25,7 +25,7 @@ public class AjaxProtocol implements UnderlyingProtocol {
 	 * May 9, 2013
 	 */
 	@Override
-	public UnderlyingTransfer createGomet(Address uri, boolean force) {
+	public UnderlyingChannel createGomet(Address uri, boolean force) {
 		//
 
 		AjaxUnderlyingTransfer rt = new AjaxUnderlyingTransfer(this.c, uri);

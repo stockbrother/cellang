@@ -18,6 +18,10 @@ public class DateData extends BasicData<Long> {
 		super(t);
 	}
 
+	public static DateData valueOfNow(){
+		return valueOf(System.currentTimeMillis());
+	}
+	
 	public static DateData valueOf(Date date) {
 		return date == null ? null : valueOf(date.getTime());
 	}

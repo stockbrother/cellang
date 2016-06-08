@@ -1,13 +1,11 @@
 /**
  * Jul 1, 2012
  */
-package org.cellang.clwt.core.client.impl;
+package org.cellang.clwt.core.client;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.ContainerAware;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.event.EventBusImpl;
 import org.cellang.clwt.core.client.lang.InstanceOf;

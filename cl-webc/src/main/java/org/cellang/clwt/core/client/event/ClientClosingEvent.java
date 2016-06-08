@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 
 /**
  * @author wu
@@ -17,7 +17,7 @@ public class ClientClosingEvent extends StateChangeEvent {
 	/**
 	 * @param type
 	 */
-	public ClientClosingEvent(WebClient client) {
+	public ClientClosingEvent(ClientObject client) {
 		super(TYPE, client);
 	}
 

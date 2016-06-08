@@ -13,7 +13,7 @@ import java.util.Set;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.ContainerAware;
 import org.cellang.clwt.core.client.Scheduler;
-import org.cellang.clwt.core.client.WebClient;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.event.AttachedEvent;
 import org.cellang.clwt.core.client.event.Event;
@@ -260,9 +260,9 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 	}
 
 	@Override
-	public WebClient getClient(boolean force) {
+	public ClientObject getClient(boolean force) {
 
-		return this.container.get(WebClient.class, force);
+		return this.container.get(ClientObject.class, force);
 
 	}
 
