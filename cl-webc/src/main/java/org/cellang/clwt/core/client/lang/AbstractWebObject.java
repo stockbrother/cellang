@@ -23,8 +23,6 @@ import org.cellang.clwt.core.client.event.Event.Type;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.message.MessageDispatcherI;
-import org.cellang.clwt.core.client.message.MessageDispatcherImpl;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.util.OID;
 
@@ -51,7 +49,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 	protected boolean attached;
 
-	protected MessageDispatcherI eventDispatcher;
+	protected PathBasedDispatcher eventDispatcher;
 
 	protected String name;
 
@@ -89,7 +87,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 		this.attacherList = new ArrayList<Object>();
 		this.logger = log != null ? log : WebLoggerFactory.getLogger(this.getClass());//
 
-		this.eventDispatcher = new MessageDispatcherImpl(name+"-dispatcher");//
+		this.eventDispatcher = new DispatcherImpl(name+"-dispatcher");//
 		this.lazyMap = new HashMap<String, LazyI>();
 		if (pts != null) {
 			this.setProperties(pts);
@@ -324,7 +322,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 	@Override
 	public <E extends Event> void dispatch(E evt) {
 		LOG.debug("dispatch event:" + evt);//
-		this.eventDispatcher.dispatch(evt);
+		this.eventDispatcher.dispatch(evt.getPath(), evt);
 
 		if (evt.isGlobal()) {
 			EventBus eb = this.getEventBus(false);

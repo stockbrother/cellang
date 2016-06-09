@@ -14,14 +14,14 @@ import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 /**
- * @author wu
- * 
+ * @author wu <br>
+ *         TODO rename to a more concrete name.
  */
-public class UiHandlerSupport {
+public class WebcHandlerSupport {
 
 	protected Container container;
 
-	public UiHandlerSupport(Container c) {
+	public WebcHandlerSupport(Container c) {
 		this.container = c;
 	}
 

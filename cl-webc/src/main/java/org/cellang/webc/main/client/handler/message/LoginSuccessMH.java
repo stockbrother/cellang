@@ -11,13 +11,13 @@ import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.webc.main.client.AccountsLDW;
 import org.cellang.webc.main.client.LoginViewI;
 import org.cellang.webc.main.client.RegisteredAccountLDW;
-import org.cellang.webc.main.client.UiHandlerSupport;
+import org.cellang.webc.main.client.WebcHandlerSupport;
 
 /**
  * @author wu
  * 
  */
-public class LoginSuccessMH extends UiHandlerSupport implements MessageHandlerI<LogicalChannelMessageEvent> {
+public class LoginSuccessMH extends WebcHandlerSupport implements MessageHandlerI<LogicalChannelMessageEvent> {
 
 	/**
 	 * @param c

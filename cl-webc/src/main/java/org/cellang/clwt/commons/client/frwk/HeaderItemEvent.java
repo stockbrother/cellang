@@ -16,11 +16,18 @@ public class HeaderItemEvent extends Event {
 
 	public static final Type<HeaderItemEvent> TYPE = new Type<HeaderItemEvent>("header-item");
 
+	private Path headerItemPath;
+	
 	/**
 	 * @param type
 	 */
 	public HeaderItemEvent(WebObject src, Path path) {
-		super(TYPE, src, path);
+		super(TYPE, src);
+		this.headerItemPath = path;
+	}
+
+	public Path getHeaderItemPath() {
+		return headerItemPath;
 	}
 
 }

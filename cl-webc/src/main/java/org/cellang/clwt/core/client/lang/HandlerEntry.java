@@ -1,9 +1,8 @@
 /**
  *  Dec 24, 2012
  */
-package org.cellang.clwt.core.client.message;
+package org.cellang.clwt.core.client.lang;
 
-import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 
@@ -14,24 +13,24 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
  * @author wuzhen
  * 
  */
-public final class HandlerEntry {
+final class HandlerEntry {
 
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(HandlerEntry.class);
 
 	protected Path path;
-	protected MessageDispatcherImpl dispatcher;
-	protected MessageHandlerI handlers;
+	protected DispatcherImpl dispatcher;
+	protected Handler handlers;
 
 	protected boolean strict;
 
-	public HandlerEntry(MessageDispatcherImpl dispatcher, Path p, boolean includeSubPath, MessageHandlerI hdls) {
+	public HandlerEntry(DispatcherImpl dispatcher, Path p, boolean includeSubPath, Handler hdls) {
 		this.dispatcher = dispatcher;
 		this.path = p;
 		this.strict = includeSubPath;
 		this.handlers = hdls;
 	}
 
-	public boolean tryHandle(boolean dely, Path p, final MsgWrapper md) {
+	public boolean tryHandle(boolean dely, Path p, final Object md) {
 
 		boolean isMatch = this.isMatch(p);
 //
@@ -57,7 +56,7 @@ public final class HandlerEntry {
 		return true;
 	}
 
-	protected void doHandle(MsgWrapper md) {
+	protected void doHandle(Object md) {
 		//LOG.debug("dispatcher:" + this.dispatcher.name + ",doHandle,message:" + md + ",handlers:" + handlers);//
 		try {
 			this.handlers.handle(md);
