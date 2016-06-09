@@ -1,5 +1,8 @@
 package org.cellang.clwt.core.client.lang;
 
+/**
+ * TODO update to parameterized type 
+ */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,7 +92,7 @@ public class Path {
 		names.add(name);
 		return Path.valueOf(names);
 	}
-	
+
 	public static Path valueOf(Path par, String name) {
 		return par.getSubPath(name);
 	}

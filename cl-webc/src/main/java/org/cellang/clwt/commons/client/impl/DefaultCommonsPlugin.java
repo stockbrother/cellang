@@ -5,6 +5,7 @@ import org.cellang.clwt.commons.client.WidgetCreaterSupport;
 import org.cellang.clwt.commons.client.frwk.BodyViewI;
 import org.cellang.clwt.commons.client.frwk.BottomViewI;
 import org.cellang.clwt.commons.client.frwk.ConsoleViewI;
+import org.cellang.clwt.commons.client.frwk.FormModel;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.FrwkViewI;
 import org.cellang.clwt.commons.client.frwk.HeaderViewI;
@@ -141,7 +142,8 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 			}
 		});
 		this.activeWidgetCreater(c, wf);
-
+		this.activeCreater2(c, wf);
+		
 	}
 
 	public void activeWidgetCreater(Container c, WebWidgetFactory wf) {
@@ -291,6 +293,14 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 			public boolean isInstance(Object o) {
 
 				return o instanceof ControlManager;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(FormModel.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof FormModel;
 			}
 		});
 

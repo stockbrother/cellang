@@ -27,10 +27,10 @@ import org.cellang.clwt.core.client.lang.AbstractWebObject;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.Handler;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 
 import com.google.gwt.json.client.JSONParser;

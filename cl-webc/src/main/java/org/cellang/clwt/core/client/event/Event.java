@@ -13,8 +13,8 @@ import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 
 /**
- * @author wuzhen
- * 
+ * @author wuzhen <br>
+ *         Event is Message, it is dispatch-able by message dispatcher.
  */
 public class Event extends MsgWrapper {
 
@@ -43,13 +43,13 @@ public class Event extends MsgWrapper {
 			return pt.getAsPath().getSubPath(this.name);
 		}
 	}
-
-	@Deprecated
-	public static interface FilterI {
-
-		public <T extends Event> T filter(Event e);
-
-	}
+//
+//	@Deprecated
+//	public static interface FilterI {
+//
+//		public <T extends Event> T filter(Event e);
+//
+//	}
 
 	public static interface SyncHandlerI<E extends Event> extends EventHandlerI<E>, SynchronizedI {
 

@@ -12,9 +12,9 @@ import org.cellang.clwt.core.client.DefaultClientObject;
 import org.cellang.clwt.core.client.event.ClientClosingEvent;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.Handler;
+import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MessageDispatcherI;
 import org.cellang.clwt.core.client.transfer.ws.WebSocketProtocol;
 
 import com.google.gwt.user.client.Window;

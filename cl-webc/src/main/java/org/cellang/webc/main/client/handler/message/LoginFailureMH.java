@@ -15,7 +15,7 @@ import org.cellang.webc.main.client.AnonymousAccountLDW;
 import org.cellang.webc.main.client.ErrorCodes;
 import org.cellang.webc.main.client.LoginViewI;
 import org.cellang.webc.main.client.RegisteredAccountLDW;
-import org.cellang.webc.main.client.UiHandlerSupport;
+import org.cellang.webc.main.client.WebcHandlerSupport;
 import org.cellang.webc.main.client.UiResponse;
 import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
 
@@ -23,7 +23,7 @@ import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
  * @author wu
  * 
  */
-public class LoginFailureMH extends UiHandlerSupport implements MessageHandlerI<LogicalChannelMessageEvent> {
+public class LoginFailureMH extends WebcHandlerSupport implements MessageHandlerI<LogicalChannelMessageEvent> {
 
 	/**
 	 * @param c

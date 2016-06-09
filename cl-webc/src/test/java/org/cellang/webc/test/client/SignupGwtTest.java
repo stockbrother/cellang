@@ -27,6 +27,7 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	public void testSignupClient() {
 		this.client.start();
 		System.out.println("testSignupClient");
+		this.finishing.add("start");
 		this.finishing.add("signup");
 		//
 		
@@ -51,7 +52,6 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	private void onClientStart(ClientStartedEvent afe) {
 		this.tryFinish("start");//
 		this.endpoint = this.client.getLogicalChannel(true);		
-		
 	}
 
 	protected MsgWrapper newRequest(String path) {

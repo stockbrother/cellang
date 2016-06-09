@@ -47,20 +47,18 @@ public class ItemView extends LightWeightView {
 			}
 		});
 
-		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOutEvent.getType(),
-				new GwtMouseOutHandler() {
-					protected void handleInternal(com.google.gwt.event.dom.client.MouseOutEvent evt) {
-						ItemView.this.onGwtMouseOut(evt);
-					}
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOutEvent.getType(), new GwtMouseOutHandler() {
+			protected void handleInternal(com.google.gwt.event.dom.client.MouseOutEvent evt) {
+				ItemView.this.onGwtMouseOut(evt);
+			}
 
-				});
-		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOverEvent.getType(),
-				new GwtMouseOverHandler() {
-					protected void handleInternal(com.google.gwt.event.dom.client.MouseOverEvent evt) {
-						ItemView.this.onGwtMouseOver(evt);
-					}
+		});
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOverEvent.getType(), new GwtMouseOverHandler() {
+			protected void handleInternal(com.google.gwt.event.dom.client.MouseOverEvent evt) {
+				ItemView.this.onGwtMouseOver(evt);
+			}
 
-				});
+		});
 		this.menu.addHandler(HideEvent.TYPE, new EventHandlerI<HideEvent>() {
 
 			@Override
@@ -110,14 +108,10 @@ public class ItemView extends LightWeightView {
 	}
 
 	protected void onMenuItemClick(String name) {
-		new HeaderItemEvent(this, HeaderItemEvent.TYPE.getAsPath().concat(this.path.getSubPath(name)))
-				.dispatch();
+		new HeaderItemEvent(this, this.path.getSubPath(name)).dispatch();
 
 	}
 
-	/**
-	 * Jan 13, 2013
-	 */
 	public void setDisplayText(boolean toloc, String txt) {
 		//
 		if (toloc) {
@@ -129,7 +123,7 @@ public class ItemView extends LightWeightView {
 
 	private void onClick() {
 		this.select(true);
-		new HeaderItemEvent(this, HeaderItemEvent.TYPE.getAsPath().concat(this.path)).dispatch();
+		new HeaderItemEvent(this, this.path).dispatch();
 	}
 
 	public void select(boolean sel) {
@@ -152,7 +146,7 @@ public class ItemView extends LightWeightView {
 		if (open) {
 			if (this.hasMenu()) {
 				this.menu.openBy(this.anchor);//
-			}// else do nothing.
+			} // else do nothing.
 		} else {
 			this.menu.close();
 		}

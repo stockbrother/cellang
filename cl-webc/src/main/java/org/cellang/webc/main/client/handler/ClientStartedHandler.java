@@ -19,7 +19,7 @@ import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.webc.main.client.HeaderItems;
-import org.cellang.webc.main.client.UiHandlerSupport;
+import org.cellang.webc.main.client.WebcHandlerSupport;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.handler.message.LoginFailureMH;
 import org.cellang.webc.main.client.handler.message.LoginSuccessMH;
@@ -28,7 +28,7 @@ import org.cellang.webc.main.client.handler.message.LoginSuccessMH;
  * @author wuzhen
  * 
  */
-public class ClientStartedHandler extends UiHandlerSupport implements EventHandlerI<ClientStartedEvent> {
+public class ClientStartedHandler extends WebcHandlerSupport implements EventHandlerI<ClientStartedEvent> {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(ClientStartedHandler.class);
 	/**
 	 * @param c

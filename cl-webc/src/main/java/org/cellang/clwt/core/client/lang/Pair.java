@@ -5,7 +5,7 @@ package org.cellang.clwt.core.client.lang;
 
 /**
  * @author wu
- * 
+ * @deprecated use Tuple2
  */
 public class Pair<K, V> {
 

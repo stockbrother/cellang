@@ -11,7 +11,7 @@ import org.cellang.webc.main.client.AccountsLDW;
 import org.cellang.webc.main.client.AnonymousAccountLDW;
 import org.cellang.webc.main.client.LoginControlI;
 import org.cellang.webc.main.client.RegisteredAccountLDW;
-import org.cellang.webc.main.client.UiHandlerSupport;
+import org.cellang.webc.main.client.WebcHandlerSupport;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 
 /**
@@ -20,7 +20,7 @@ import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
  *         <p>
  *         Submit the login email and password
  */
-public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<AutoLoginRequireEvent> {
+public class AutoLoginHandler extends WebcHandlerSupport implements EventHandlerI<AutoLoginRequireEvent> {
 
 	/**
 	 * @param c
