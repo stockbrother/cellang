@@ -18,6 +18,8 @@ import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.WebElement;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -167,11 +169,18 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 
 		ElementWrapper ew = im.getManagedWidget().getElementWrapper();
 
-		String cname = "position-selected";
-		String cname2 = "position-unselected";
+		Style style = ew.getStyle();
+		Display dis = sel ? Display.BLOCK : Display.NONE;
+		style.setDisplay(dis);//
 
-		ew.addClassName(sel ? cname : cname2);// selected
-		ew.removeClassName(sel ? cname2 : cname);// unselected
+		/**
+		 * 
+		 * String cname = "position-selected"; String cname2 =
+		 * "position-unselected";
+		 * 
+		 * ew.addClassName(sel ? cname : cname2);// selected
+		 * ew.removeClassName(sel ? cname2 : cname);// unselected
+		 */
 
 	}
 

@@ -18,6 +18,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -210,7 +211,9 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	@Override
 	public void setVisible(boolean v) {
 		this.visible = v;
-		this.elementWrapper.addAndRemoveClassName(v, "visible", "invisible");
+		Display dis = this.visible?Display.BLOCK:Display.NONE;		
+		//this.elementWrapper.addAndRemoveClassName(v, "visible", "invisible");
+		this.elementWrapper.getStyle().setDisplay(dis);//
 	}
 
 	@Override

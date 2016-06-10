@@ -87,9 +87,6 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 		BottomView tv = new BottomView(this.container);
 		tv.parent(this);
 		
-		//
-		EndpointBusyIndicator ebi = new EndpointBusyIndicator(this.container);
-		ebi.parent(this);
 	}
 
 /*	@Override

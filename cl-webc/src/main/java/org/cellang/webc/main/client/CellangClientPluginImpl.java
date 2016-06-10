@@ -16,9 +16,9 @@ import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.handler.ClientStartedHandler;
 import org.cellang.webc.main.client.handler.ClientStartingHandler;
-import org.cellang.webc.main.client.handler.DispatcherHeaderItemHandler;
 import org.cellang.webc.main.client.handler.EndpointBondHandler;
 import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
+import org.cellang.webc.main.client.handler.headeritem.DispatcherHeaderItemHandler;
 
 public class CellangClientPluginImpl implements CellangClientPlugin {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(CellangClientPluginImpl.class);
@@ -34,6 +34,7 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 
 		manager.child(new FrwkControlImpl(c, "frwk"));
 		manager.child(new LoginControlImpl(c, "login"));
+		//manager.child(new MainControl(c, "main"));
 
 		EventBus eb = client.getEventBus(true);
 

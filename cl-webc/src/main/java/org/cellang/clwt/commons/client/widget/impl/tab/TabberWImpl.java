@@ -190,13 +190,6 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.widget.tab.TabberWI#getTab(java.lang.
-	 * String)
-	 */
 	@Override
 	public TabWI getTab(Path name, boolean force) {
 

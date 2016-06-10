@@ -49,7 +49,7 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 				TabWImpl.this.onGwtClick(event);
 			}//
 		});
-		
+
 		this.setText(true, name);
 
 	}
@@ -112,15 +112,44 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	 */
 	@Override
 	public void setText(boolean i18n, String text) {
-		
-		if(i18n){
-			text = this.getClient(true).localized(text);
+
+		if (i18n) {
+			//
+			/**
+			 * <code>
+			 * IT's strange: getClient_0_g not defined in genereated js.
+			 * text = this.getClient(true).localized(text);
+			 * error to open console view,com.google.gwt.core.client.JavaScriptException: (TypeError) : this.getClient_0_g$ is not a function
+			at Unknown.a4c_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.R3c_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.l4c_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.k4c_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.xQc_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.BQc_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.ZRc_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.lMd_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.kMd_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.SId_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.ZId_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.kr_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.Qq_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.Lq_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.cr_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.Iq_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.vp_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.yp_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.xp_g$/<(org.cellang.webc.main.Module-0.js)
+			at Unknown.callback_0_g$(org.cellang.webc.main.Module-0.js)
+			at Unknown.anonymous(Unknown)
+			</code>
+			 */
+
 		}
-		
+
 		if (this.isSelected()) {
 			text += "*";// TODO other way to show the selected tab.
 		}
-		
+
 		this.element.setInnerText(text);//
 
 	}
@@ -147,7 +176,9 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 		this.addHandler(SelectEvent.TYPE, eh);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.fs.uicommons.api.gwt.client.widget.tab.TabWI#close()
 	 */
 	@Override
@@ -155,7 +186,9 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 		this.stackItem.remove();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.fs.uicommons.api.gwt.client.widget.tab.TabWI#getManaged()
 	 */
 	@Override

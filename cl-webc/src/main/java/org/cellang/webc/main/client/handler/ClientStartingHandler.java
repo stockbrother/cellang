@@ -9,8 +9,11 @@ import org.cellang.clwt.core.client.event.ClientStartingEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
+import org.cellang.clwt.core.client.util.ExceptionUtil;
 import org.cellang.webc.main.client.HeaderItems;
 import org.cellang.webc.main.client.WebcHandlerSupport;
+
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wuzhen <br>
@@ -29,10 +32,26 @@ public class ClientStartingHandler extends WebcHandlerSupport implements EventHa
 	@Override
 	public void handle(ClientStartingEvent e) {
 		// start frwk view.
+		// LOG.debug("handle");//
+		// Window.confirm("client starting handler.");//
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
+		// Window.confirm("client starting handler2.");//
 		fc.open();
-		fc.openConsoleView(true);//		
+
+		try {
+			fc.openConsoleView(true);//
+		} catch (Throwable t) {
+			String msg = ExceptionUtil.getStacktraceAsString(t, "\n");
+			Window.alert("error to open console view," + msg);
+			return;
+		}
+
+		// Window.confirm("client starting handler4.");//
+		// TODO add handler directory here.
+		fc.addHeaderItem(HeaderItems.TOOLS_CONSOLE);
 		fc.addHeaderItem(HeaderItems.USER_LOGIN);
+		fc.addHeaderItem(HeaderItems.USER_SIGNUP);
+
 	}
 
 }

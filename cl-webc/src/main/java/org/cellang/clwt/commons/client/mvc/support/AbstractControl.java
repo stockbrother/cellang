@@ -25,11 +25,6 @@ public abstract class AbstractControl extends AbstractWebObject implements Contr
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uicore.api.gwt.client.support.UiObjectSupport#doAttach()
-	 */
 	@Override
 	protected void doAttach() {
 		super.doAttach();
@@ -37,13 +32,11 @@ public abstract class AbstractControl extends AbstractWebObject implements Contr
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 
 	@Override
 	public ControlManager getManager() {
-
 		return (ControlManager) this.parent;
 
 	}

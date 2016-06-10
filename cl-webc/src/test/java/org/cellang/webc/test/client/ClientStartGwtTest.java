@@ -6,9 +6,7 @@ import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
 public class ClientStartGwtTest extends AbstractGwtTestBase2 {
 
-	private String nick = "user1";
-	private String email = nick + "@domain.com";
-	private String pass = nick;
+	
 	protected LogicalChannel endpoint;
 
 	public void testClientStart() {

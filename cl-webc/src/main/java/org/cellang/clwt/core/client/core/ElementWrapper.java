@@ -19,6 +19,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -53,7 +54,7 @@ public class ElementWrapper {
 	}
 
 	public void setAttribute(String key, String value) {
-		this.element.setAttribute(key, value);
+		this.element.setAttribute(key, value);		
 	}
 
 	public String getAttribute(String key) {
