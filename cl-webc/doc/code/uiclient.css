@@ -1,0 +1,335 @@
+
+a.user-icon {
+	padding:0px;
+}
+a.user-icon img{ /*user image*/
+	width:26px;
+	height:26px;
+	border-radius: 3px;
+}
+
+a.user-icon:hover img {
+	
+}
+
+a.exp-icon img{ /*exp image*/
+	width:26px;
+	height:26px;
+	border-radius: 3px;
+}
+
+a.exp-label {
+	font-weight: bold;	
+}
+
+
+.exps-item {
+	border-left : 0px solid white;
+	margin-top: 0px;
+	border-bottom : 1px dashed #ebebeb;
+	padding-bottom: 6px;
+	padding-left:0px;
+}
+
+.exps-item td{
+	padding: 3px;
+	padding-left:0px;
+}
+.exps-item-count{
+	width: 1%;
+	text-align: right;
+}
+
+.exps-item-count .count{
+	font-weight:bold;
+}
+
+.exps-item-count .info{
+	font-size:6px;
+}
+
+.exps-item:hover {	
+	background: #fefefe;
+}
+
+.exps-item-usericon { /**td**/
+	
+	width:1%;
+	padding-right:6px;
+	vertical-align: top;
+}
+
+.exps-item-expicon { /**td**/
+	width:1%;
+	padding-left:6px;
+	padding-right:6px;
+	vertical-align: bottom;
+}
+
+.exps-item-actions {
+	width:1%;
+	height:30px;
+	align:right;	
+	vertical-align:bottom;
+}
+.exps-item-timestamp {
+	font-size: 9px;
+	color:  #7A7A7A;
+	vertical-align:bottom;
+}
+.exps-item-exptitle {
+	font-weight: bold;
+}
+.exps-item-expbody {
+	color: #505050;
+}
+.exps-item-expimage img{
+
+}
+
+.exps-item button{
+	display: none;
+}
+
+.exps-item:hover button{
+	display: block;
+}
+
+
+.expm-list {
+	height: 360px;
+	width: 600px;
+	overflow: hidden;
+}
+
+.expm-list:hover {
+	overflow: auto;
+}
+
+.facebook-login-button,
+.facebook-login-button:hover {
+	background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yf/r/S-DbSHszr4D.png);
+	background-repeat: no-repeat;
+	display:inline-block;
+	background-color:#5F78AB;
+	color:#FFFFFF;
+	height:22px;
+	font-weight:bold;
+	background-position:0 -133px;
+	padding-left:25px;
+	border-spacing:0;
+	border-bottom:1px solid #1A356E;
+	border-top:1px solid #29447E;
+	border-right:1px solid #29447E;
+	border-collapse:collapse;
+	
+}
+
+/*The td contains list of connected exp*/
+
+.cexplist-td{
+	width:200px;
+}
+
+.cexp-item-td {
+	vertical-align:top;	
+	border-left: 1px solid #EBEBEB;
+}
+
+.cexp-item {
+	border: 1px solid #EBEBEB;
+	
+}
+
+.cexp-item:hover {
+	background: #fefefe;
+}
+
+.cexp-item .user-nick {	
+	font-weight: normal;
+	font-size: 9px;
+}
+
+.expm {
+	margin-top:3px;
+	margin-bottom : 3px;
+	padding:3px;
+	border: 1px solid #ebebeb;
+	border-radius: 1px;
+	border-top-style:double;
+	border-left-style:double;
+	border-bottom-style: groove;
+	border-right-style: groove;
+}
+
+.expm:hover {
+	background: #fefefe;
+}
+.expm-td0 {/*icon*/
+	vertical-align:top;
+}
+.expm-td1{/*message td*/
+	width:100%;
+}
+
+.expm-body {
+	font-weight:normal;
+	margin : 6px;
+}
+
+.expm-nick {
+	font-size :9px;
+	color:#7A7A7A;
+	text-align:right;
+}
+
+.expm-exptitle {
+	font-size:9px;
+	color:#7A7A7A;
+	text-align:right;
+}
+
+.expm-timestamp {
+	font-size:9px;
+	color:#7A7A7A;
+	text-align:left;
+	white-space: nowrap;
+}
+
+.expmi-textarea {
+	text-align:left;
+}
+
+/*H*/
+.hlist-item.search-input-td {
+	width:1%;
+}
+
+.hlist-item.search-myexp-td {
+	width:50%;
+}
+
+.nick {
+	font-size: 22px;
+}
+
+.myexp-textarea textarea{
+	height:60px;
+}
+
+.search input {
+	margin-top : 5px;
+	margin-bottom : 3px;
+	height: 22px;
+	width : 415px;
+	maxlength : 1024;
+}
+
+.uel-item {
+	border-left : 0px solid white;
+	border-bottom : 1px dashed #ebebeb;
+	margin-top: 0px;
+	padding-bottom: 6px;
+	padding-left:0px;
+}
+
+.uel-item td{
+	padding: 3px;
+	padding-left:0px;
+}
+
+.uel-item-status {
+	width:1%;	
+	padding-right: 6px;
+	font-weight: bold;
+}
+.uel-item-status[status='open'] .status{
+	color : #ffffff;
+	background-color: #505050;	
+}
+
+.uel-item-status[status='close'] .status{
+	color : #505050;
+	background-color: #ffffff;	
+}
+
+
+.uel-item-count {
+	width:1%;
+	text-align: right;
+}
+
+.uel-item-count .info {
+	font-size: 6px;
+}
+
+.uel-item-expcount .count {
+	font-size: 16px;
+}
+
+.uel-item-msgcount .count {
+	font-size: 16px;
+}
+
+.uel-item-msgcount.gt0 .count{	
+	color : #FFFFFF;
+	background-color: #505050;	
+}
+
+.uel-item.selected,
+.uel-item:hover {
+	background: #fefefe;
+}
+
+.uel-item-expicon { /**td**/
+	width:1%;
+	padding-left:6px;
+}
+
+.uel-item-usericon { /**td**/
+	width:1%;
+	padding-right:6px;
+}
+
+.uel-item-actions {
+	width:1%;
+	height: 30px;
+	vertical-align:bottom;
+}
+.uel-item-timestamp {
+	font-size: 9px;
+	color: #7A7A7A;
+	vertical-align:bottom;
+}
+.uel-item-exptitle {
+	font-weight:bold;
+}
+
+.uel-item-expbody {
+	color: #505050;
+}
+
+.uel-item button{
+	display: none;
+}
+
+.uel-item:hover button{
+	display: block;
+}
+
+.user-info td.seperator {
+	padding: 2px;
+	border-right: 1px solid #EBEBEB;
+}
+
+.user-info td.last{/*empty,space holder*/
+	width: 100%;
+}
+
+.user-info td.user-icon {
+	vertical-align: top;
+}
+
+
+
+

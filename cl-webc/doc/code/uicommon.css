@@ -1,0 +1,441 @@
+
+/*TODO remove below defs, td.vlist-item,td.hlist-item*/
+td.vlist-item {
+	padding-top:0px;
+	padding-bottom:2px;
+}
+
+td.hlist-item {
+	padding-left:0px;
+	padding-right:2px;
+}
+
+.body {
+	text-align: center;
+}
+
+.body-tabber {
+	
+	border-left: 1px solid #eeeeee;
+	border-right: 1px solid #eeeeee;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1024px;
+	height: 100%;
+	background: #ffffff;
+}
+
+
+.body-tabber-stack {
+	min-height: 600px;
+	height: auto !important;
+	height: 600px;
+}
+
+.bottom-list {
+	background-image:
+		url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAvSURBVBhXYzx//vx/BiyACSZ297UyXBrEZiSoA6QcWRfcKJCEsuhduHEoEshuAACJUg25FTs06wAAAABJRU5ErkJggg==);
+	padding: 6px;
+}
+
+.bottom-list td.vlist-item {
+	text-align: center;
+}
+
+.bottom-bar {
+	color: #ccc;
+}
+
+.bottom-bar td.center {
+	text-align: center;
+}
+
+.bottom-copyright {
+	width: 100%;
+	text-align: center;
+	font-size: 9px;
+	color: #7D7D7D;
+}
+.bottom-item {
+	padding:6px;
+}
+/**
+Console View
+**/
+.console {
+	height: 300px;
+	width: 800px;
+	overflow: hidden;
+	color: #525252;
+	background-color: #ADADAD;
+	box-shadow: 0 1px 1px #ADADAD;
+}
+
+.console:hover {
+	overflow: auto;
+}
+
+.console table {
+	margin: 3px;
+	padding: 3px;
+	border: 0px;
+}
+
+.console td {
+	white-space: nowrap;
+}
+
+/*D...*/
+
+.date-editor input.date{
+	float:left;
+}
+
+/*E...*/
+.endpoint-busy-indicator {
+	position: absolute;
+	border: 2px solid orange;
+	width: 100px;
+	height: 20px;
+	margin: -10px 0 0 -50px;
+	top: 50%;
+	left: 50%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.error-infos {
+	color: red;
+	width: 100%;
+	/*border:1px solid rgba(150, 0, 0, 0.6);*/
+}
+
+.error-id {
+	font-size: 9px;
+	color: #7D7D7D;
+}
+
+.error-code {
+	font-size: 9px;
+	color: #7D7D7D;
+}
+
+
+.header-bar td.left {
+	float: left;
+}
+
+.header-bar td.right {
+	padding-right: 0px;
+	text-align: right;
+}
+
+.header-item {
+	padding:6px;
+	border-radius: 1px;
+	color: #eeeeee;
+	cursor: pointer;
+	float: right;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #000;
+	white-space: nowrap;
+	vertical-align: bottom;
+}
+
+.header-item.selected,.header-item:hover {
+	color: #fafafa;
+	text-decoration: none;
+}
+
+
+.header-item-logo {
+	
+	font-size: 22px;
+	font-variant: bold;
+	padding: 0px;
+}
+
+/*I...*/
+.image-croper div.outer-box{
+	overflow: hidden;
+	position:relative;/*Note, must be relative for hidden the 'absolute' positioned child*/
+}
+
+
+/*parent is thd center td*/
+.image-croper .inner-box { 
+	border:1px solid orange;
+	cursor: pointer;
+}
+
+.image-croper .editing-image-box {
+	position: absolute;	
+	overflow: hidden ;
+}
+
+.image-croper td {
+	overflow: visible;
+	background: gray;
+	opacity: 0.8;
+}
+
+.image-croper td.td00 {
+	
+	vertical-align: top;/*top the zoomer buttons*/
+}
+
+.image-croper td.td11,
+.image-croper.moving td.td11 {
+	border: 1px solid orange;	
+	opacity: 0;
+}
+
+.image-croper td.td22 {
+	height: 50px;
+	width: 200px;
+}
+
+/*show when the mouse moving*/
+.image-croper .mouse-position {
+	color: #F0F0F0;
+	font-size: 8px;
+}
+
+.image-croper.moving td{
+	opacity: 0.5;
+}
+
+.image-croper-toolbar {
+	position: absolute;
+	font-weight: bold;
+	width: 26px;
+	height: 26px;
+	font-size: 20px;	
+	margin-top: 0px;
+	margin-left: 0px;
+}
+.image-croper .zoomer {
+	
+}
+.image-croper .plus {
+	
+}
+
+.image-croper .minus {
+	
+}
+
+.invisible {
+	display: none;
+}
+
+
+/*L...*/
+
+.loader {
+	background-color: #325A96;
+	opacity: 0.8;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	color: #FFFFFF;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.more {
+	align: center;
+	width: 100%;
+}
+
+.opacities {
+	opacity: 0.4;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	border: 1px solid orange;
+}
+
+.opacities * {
+	position: absolute;
+}
+
+.properties-editor-key {
+	float: none;
+	align: right;
+}
+
+.properties-editor-row {
+	border-left: 2px solid white;
+}
+
+.properties-editor-row:hover {
+	border-left: 2px solid #646464;
+}
+
+.properties-editor-value {
+	float: none;
+	align: left;
+}
+
+.visible {
+	display: block;
+}
+
+.vlist-item {
+	text-align: left;
+}
+
+.tabber-layout-right {
+	vertical-align: top;
+	padding-left: 6px;
+	padding-right: 6px;
+	
+}
+
+.tabber-layout-left {
+	border-right: 1px solid #EEEEEE;
+}
+
+.elo-Canvas.invisible {
+	display: block;
+}
+
+.elo-Canvas canvas {
+	border: 1px solid orange;
+	display: block;
+}
+
+.frwk-bottom {
+	width: 100%;
+	text-align: center;
+	color: #325a96;
+}
+
+.panel-header { /*DIV*/
+	border-bottom: 1px solid #EEEEEE;
+}
+
+
+/*Anchor,button*/
+/*BarWidget*/
+
+
+/*FormView*/
+/*Let the column of title to align right*/
+.wgt-FormView .wgt-LabelImpl {
+	float: right;
+}
+
+.wgt-FrwkView {
+	height: 100%;
+}
+
+.wgt-FrwkView>.position-top {
+	height: 100%;
+}
+
+/*HeaderView*/
+.wgt-HeaderView { /*background-color: #034F82;*/
+	background-color: #303030;
+	width: 100%;
+	/*box-shadow: 0 1px 1px #fafafa inset;*/
+	border-bottom: 1px solid #d0d0d0;
+	padding: 0px 0px;
+	margin-bottom: 1px;
+	
+}
+
+.wgt-HeaderView>.position-body {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1024px;
+}
+
+/*Menu*/
+.wgt-MenuWImpl {
+	background-color: #F8F8F8;
+	border: 1px solid #C0C0C0;
+	margin-top: 0px;
+	position: absolute;
+	padding-right: 6px;
+}
+
+.wgt-MenuWImpl ul {
+	list-style: none;
+	margin: 2px 0;
+	padding-left: 0;
+}
+
+.wgt-MenuWImpl .wgt-MenuItemWImpl {
+	color: #034F82;
+	cursor: pointer;
+	display: inline-block;
+	float: none;
+	margin: 0px;
+	height: auto;
+	padding: 3px 3px;
+	position: static;
+	text-decoration: none;
+	text-align: left;
+	white-space: nowrap;
+	width: 100%;
+	text-shadow: 0 0px 0 #000;
+}
+
+.wgt-MenuWImpl li:hover,.wgt-MenuWImpl li:focus,.wgt-MenuItemWImpl:hover
+	{
+	background: #eeeeee;
+}
+
+
+.wgt-StackWImpl .wgt-PanelWImpl.position-unselected {
+	display: none;
+}
+
+.wgt-StackWImpl .position-selected {
+	display: block;
+}
+
+/*Tab*/
+.wgt-TabberWImpl.layout-horizental td.position-header {
+	border-bottom: 1px solid #888;
+	padding: 0px;
+}
+
+.wgt-TabberWImpl.layout-horizental .wgt-TabWImpl.position-unselected {
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+	border-top: 0px solid #ccc;
+	border-bottom: 0px;
+}
+
+/*Vertical Tabber*/
+.tabber-layout-left {
+	vertical-align: top;
+	margin-top: 10px;
+	width: 179px;
+}
+
+.tabber-layout-left ul {
+	list-style: none;
+	margin: 2px 0;
+	padding-left: 0;
+	background-color: #fff;
+}
+
+.tabber-layout-left ul li {
+	color: #034F82;
+	cursor: pointer;
+	padding-top: 3px;
+}
+
+.tabber-layout-left ul .wgt-TabWImpl:hover,.tabber-layout-left ul .wgt-TabWImpl.position-selected
+	{
+	background: #F0F0F0;
+}
+
+/*End of CSS file*/
