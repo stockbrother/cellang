@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.clwt.commons.client.EndpointKeeper;
-import org.cellang.clwt.commons.client.frwk.FrwkControlI;
+import org.cellang.clwt.commons.client.frwk.FrwkViewI;
 import org.cellang.clwt.commons.client.frwk.impl.EndpointBusyIndicator;
-import org.cellang.clwt.commons.client.frwk.impl.FrwkView;
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
-import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.gwtbridge.UiWindow;
@@ -20,7 +19,6 @@ import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
-import org.cellang.webc.main.client.HeaderItems;
 import org.cellang.webc.main.client.WebcHandlerSupport;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.handler.message.LoginFailureMH;
@@ -46,7 +44,7 @@ public class ClientStartedHandler extends WebcHandlerSupport implements EventHan
 
 		//
 		EndpointBusyIndicator ebi = new EndpointBusyIndicator(this.container, e.getLogicalChannel());//
-		ebi.parent(this.getRootView().find(FrwkView.class, true));//
+		ebi.parent(this.getRootView().find(FrwkViewI.class, true));//
 
 		this.activeMessageHandlers(this.container, e.getClient());
 

@@ -144,8 +144,9 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 	@Override
 	public WebObject parent(WebObject newParent) {
-		if (!(newParent instanceof AbstractWebObject)) {
-			throw new UiException("not supported:" + newParent);
+		
+		if (newParent != null && !(newParent instanceof AbstractWebObject)) {
+			throw new UiException("parent type not supported,parent:"+newParent);
 		}
 
 		if (this.parent != null) {

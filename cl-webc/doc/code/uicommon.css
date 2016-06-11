@@ -161,89 +161,12 @@ Console View
 	position:relative;/*Note, must be relative for hidden the 'absolute' positioned child*/
 }
 
-
-/*parent is thd center td*/
-.image-croper .inner-box { 
-	border:1px solid orange;
-	cursor: pointer;
-}
-
-.image-croper .editing-image-box {
-	position: absolute;	
-	overflow: hidden ;
-}
-
-.image-croper td {
-	overflow: visible;
-	background: gray;
-	opacity: 0.8;
-}
-
-.image-croper td.td00 {
-	
-	vertical-align: top;/*top the zoomer buttons*/
-}
-
-.image-croper td.td11,
-.image-croper.moving td.td11 {
-	border: 1px solid orange;	
-	opacity: 0;
-}
-
-.image-croper td.td22 {
-	height: 50px;
-	width: 200px;
-}
-
-/*show when the mouse moving*/
-.image-croper .mouse-position {
-	color: #F0F0F0;
-	font-size: 8px;
-}
-
-.image-croper.moving td{
-	opacity: 0.5;
-}
-
-.image-croper-toolbar {
-	position: absolute;
-	font-weight: bold;
-	width: 26px;
-	height: 26px;
-	font-size: 20px;	
-	margin-top: 0px;
-	margin-left: 0px;
-}
-.image-croper .zoomer {
-	
-}
-.image-croper .plus {
-	
-}
-
-.image-croper .minus {
-	
-}
-
 .invisible {
 	display: none;
 }
 
 
 /*L...*/
-
-.loader {
-	background-color: #325A96;
-	opacity: 0.8;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	color: #FFFFFF;
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	vertical-align: middle;
-}
 
 .more {
 	align: center;
