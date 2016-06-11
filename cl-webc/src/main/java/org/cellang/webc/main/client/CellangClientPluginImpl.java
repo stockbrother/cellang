@@ -11,6 +11,7 @@ import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.ClientStartingEvent;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.event.LogicalChannelBondEvent;
+import org.cellang.clwt.core.client.lang.InstanceOf;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
@@ -26,6 +27,9 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 	@Override
 	public void active(Container c) {
 		LOG.info("active");//
+
+		this.activeInstanceOf(c);
+
 		ClientObject client = c.get(ClientObject.class, true);
 
 		ControlManager manager = new ControlManagerImpl(c);
@@ -34,7 +38,7 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 
 		manager.child(new FrwkControlImpl(c, "frwk"));
 		manager.child(new LoginControlImpl(c, "login"));
-		//manager.child(new MainControl(c, "main"));
+		manager.child(new MainControl(c, "main"));
 
 		EventBus eb = client.getEventBus(true);
 
@@ -47,9 +51,20 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 
 		eb.addHandler(HeaderItemEvent.TYPE, new DispatcherHeaderItemHandler(c));
-		
+
 		LOG.info("end-active");//
-		
+
+	}
+
+	private void activeInstanceOf(Container c) {
+		InstanceOf.addChecker(new InstanceOf.CheckerSupport(MainControlI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+				// TODO Auto-generated method stub
+				return o instanceof MainControlI;
+			}
+		});
 	}
 
 }

@@ -9,6 +9,8 @@ import org.cellang.clwt.commons.client.UiCommonsConstants;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.core.client.Container;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * @author wu
  * 
@@ -35,10 +37,13 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public SignupViewI openSignup() {
 		//
 
+		//Window.alert("open signup view."); this may cause unexpected exception in Firefox console:"Negative entryDepth ... at entry -1"
+		//
 		SignupView rt = this.getOrCreateViewInBody(UiClientConstants.P_SIGNUP, new CreaterI<SignupView>() {
 
 			@Override
 			public SignupView create(Container ct) {
+				//Window.alert("create signup view.");//
 				return new SignupView(ct);
 			}
 		}, true);

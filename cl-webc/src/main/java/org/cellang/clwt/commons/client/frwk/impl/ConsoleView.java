@@ -11,6 +11,8 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.core.ElementWrapper;
 import org.cellang.clwt.core.client.lang.Callback;
 
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -50,9 +52,9 @@ public class ConsoleView extends SimpleView implements ConsoleViewI {
 			}
 		};
 		Console.getInstance().addMessageCallback(this.handler);
-		Console.getInstance().replay(this.handler);
+		Console.getInstance().replay(this.handler);		
 	}
-
+	
 	/**
 	 * New message is arrived. NOTE,this method should not generate any event,or
 	 * to call the Console.pringln();Otherwise,there will be dead loop. Nov 11,
