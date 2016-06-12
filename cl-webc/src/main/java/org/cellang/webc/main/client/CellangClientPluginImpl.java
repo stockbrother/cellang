@@ -3,6 +3,7 @@ package org.cellang.webc.main.client;
 import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.frwk.impl.FrwkControlImpl;
 import org.cellang.clwt.commons.client.frwk.impl.LoginControlImpl;
+import org.cellang.clwt.commons.client.mvc.ActionEvent;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.commons.client.mvc.impl.ControlManagerImpl;
 import org.cellang.clwt.core.client.ClientObject;
@@ -19,6 +20,7 @@ import org.cellang.webc.main.client.handler.ClientStartedHandler;
 import org.cellang.webc.main.client.handler.ClientStartingHandler;
 import org.cellang.webc.main.client.handler.EndpointBondHandler;
 import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
+import org.cellang.webc.main.client.handler.action.DispatcherActionHandler;
 import org.cellang.webc.main.client.handler.headeritem.DispatcherHeaderItemHandler;
 
 public class CellangClientPluginImpl implements CellangClientPlugin {
@@ -51,6 +53,9 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 
 		eb.addHandler(HeaderItemEvent.TYPE, new DispatcherHeaderItemHandler(c));
+		
+		//action
+		eb.addHandler(ActionEvent.TYPE,new DispatcherActionHandler(c));
 
 		LOG.info("end-active");//
 
