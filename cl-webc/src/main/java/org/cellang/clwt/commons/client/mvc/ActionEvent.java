@@ -17,19 +17,22 @@ public class ActionEvent extends Event {
 
 	public static final Type<ActionEvent> TYPE = new Type<ActionEvent>("action");
 
+	private Path actionPath;
+	
 	/**
 	 * @param src
 	 * @param code
 	 */
 	public ActionEvent(WebObject src, Path p) {
-		super(TYPE, src, p);
+		super(TYPE, src);
+		this.actionPath = p;
 	}
 
 	/**
 	 * @return the action
 	 */
-	public String getAction() {
-		return this.getPath().getName();
+	public Path getActionPath() {
+		return this.actionPath;
 	}
 
 }
