@@ -85,8 +85,7 @@ public class ErrorInfo implements ValueI {
 			return false;
 		}
 		ErrorInfo ei = (ErrorInfo) o;
-		return ObjectUtil.isNullSafeEquals(ei.code, this.code)
-				&& ObjectUtil.isNullSafeEquals(ei.message, this.message)
+		return ObjectUtil.isNullSafeEquals(ei.code, this.code) && ObjectUtil.isNullSafeEquals(ei.message, this.message)
 				&& ObjectUtil.isNullSafeEquals(ei.detail, ei.detail);
 	}
 
@@ -130,6 +129,11 @@ public class ErrorInfo implements ValueI {
 	 */
 	public String getId() {
 		return id;
+	}
+
+	public static ErrorInfo valueOf(String code, String message) {
+		//
+		return new ErrorInfo(code, message);
 	}
 
 }

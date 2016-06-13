@@ -8,7 +8,7 @@ public interface CellangServer {
 
 	public MessageI process(MessageI req);
 
-	public void service(MessageContext mc);
+	public MessageI process(MessageI req, Channel channel);
 
 	public void shutdown();
 

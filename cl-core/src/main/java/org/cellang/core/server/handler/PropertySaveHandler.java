@@ -3,9 +3,11 @@
  */
 package org.cellang.core.server.handler;
 
-import java.util.UUID;
+import java.util.List;
 
 import org.cellang.core.Account;
+import org.cellang.core.Property;
+import org.cellang.core.lang.HasProperties;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.elastictable.TableService;
@@ -16,15 +18,15 @@ import org.slf4j.LoggerFactory;
  * @author wu
  * 
  */
-public class SignupSubmitHandler extends AbstracHandler {
+public class PropertySaveHandler extends AbstracHandler {
 
-	private static Logger LOG = LoggerFactory.getLogger(SignupSubmitHandler.class);
+	private static Logger LOG = LoggerFactory.getLogger(PropertySaveHandler.class);
 
 	// protected ConfirmCodeNotifierI confirmCodeNotifier;
 
 	// protected boolean isNeedConfirm = false;
-	
-	public SignupSubmitHandler(TableService ts) {
+
+	public PropertySaveHandler(TableService ts) {
 		super(ts);
 		/*
 		 * ValidatorI<MessageI> vl = this.createValidator("submit");
@@ -38,17 +40,20 @@ public class SignupSubmitHandler extends AbstracHandler {
 
 	// create anonymous account.
 	@Override
-	public void handle(MessageContext hc) {		
-		String email = hc.getRequestMessage().getString("email");
-		String nick = hc.getRequestMessage().getString("nick");
-		String password = hc.getRequestMessage().getString("password");
-		Account an = new Account().forCreate(this.tableService);
-		an.setId(email);// email as the id?
-		an.setEmail(email);//
-		an.setPassword(password);
-		an.setNick(nick);
-		an.setType(Account.TYPE_REGISTERED);
-		an.save(true);
+	public void handle(MessageContext hc) {
+		List<HasProperties<Object>> pL = (List<HasProperties<Object>>) hc.getRequestMessage().getPayload();
+		for (HasProperties<Object> p : pL) {
+
+			String owner = (String) p.getProperty("owner", true);
+			String key = (String) p.getProperty("key", true);
+			Object value = (Object) p.getProperty("value", true);
+
+			Property an = new Property().forCreate(this.tableService);
+			an.setOwner(owner);
+			an.setKey(key);
+			an.setValue(value);//
+			an.save(true);
+		}
 	}
 	/**
 	 * <code> 

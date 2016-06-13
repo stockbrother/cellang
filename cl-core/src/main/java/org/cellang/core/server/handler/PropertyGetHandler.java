@@ -3,9 +3,12 @@
  */
 package org.cellang.core.server.handler;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.cellang.core.Account;
+import org.cellang.core.Property;
+import org.cellang.core.lang.HasProperties;
+import org.cellang.core.lang.MapProperties;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.elastictable.TableService;
@@ -16,15 +19,15 @@ import org.slf4j.LoggerFactory;
  * @author wu
  * 
  */
-public class SignupSubmitHandler extends AbstracHandler {
+public class PropertyGetHandler extends AbstracHandler {
 
-	private static Logger LOG = LoggerFactory.getLogger(SignupSubmitHandler.class);
+	private static Logger LOG = LoggerFactory.getLogger(PropertyGetHandler.class);
 
 	// protected ConfirmCodeNotifierI confirmCodeNotifier;
 
 	// protected boolean isNeedConfirm = false;
-	
-	public SignupSubmitHandler(TableService ts) {
+
+	public PropertyGetHandler(TableService ts) {
 		super(ts);
 		/*
 		 * ValidatorI<MessageI> vl = this.createValidator("submit");
@@ -38,17 +41,19 @@ public class SignupSubmitHandler extends AbstracHandler {
 
 	// create anonymous account.
 	@Override
-	public void handle(MessageContext hc) {		
-		String email = hc.getRequestMessage().getString("email");
-		String nick = hc.getRequestMessage().getString("nick");
-		String password = hc.getRequestMessage().getString("password");
-		Account an = new Account().forCreate(this.tableService);
-		an.setId(email);// email as the id?
-		an.setEmail(email);//
-		an.setPassword(password);
-		an.setNick(nick);
-		an.setType(Account.TYPE_REGISTERED);
-		an.save(true);
+	public void handle(MessageContext hc) {
+		String owner = (String) hc.getRequestMessage().getPayload("owner");
+		int max = 10000;
+		List<Property> pl = this.tableService.getListNewestFirst(Property.class, Property.OWNER, owner, 0, max);
+		if (pl.size() == max) {
+			LOG.warn("max window is met,data retuned may not complete.");//
+		}
+		List<HasProperties<Object>> rt = new ArrayList<HasProperties<Object>>();
+		for (Property p : pl) {
+			HasProperties<Object> pI = p.getTarget();
+			rt.add(pI);//
+		}
+		hc.getResponseMessage().setPayload(rt);//
 	}
 	/**
 	 * <code> 

@@ -10,9 +10,12 @@ import java.util.concurrent.Future;
 import org.cellang.commons.dispatch.DefaultDispatcher;
 import org.cellang.commons.dispatch.Dispatcher;
 import org.cellang.commons.lang.Handler;
+import org.cellang.commons.lang.Path;
 import org.cellang.core.Account;
+import org.cellang.core.lang.ErrorInfo;
 import org.cellang.core.lang.MessageI;
-import org.cellang.core.server.handler.AuthHandler;
+import org.cellang.core.lang.MessageSupport;
+import org.cellang.core.server.handler.LoginHandler;
 import org.cellang.core.server.handler.ClientInitHandler;
 import org.cellang.core.server.handler.ClientIsReadyHandler;
 import org.cellang.core.server.handler.SignupSubmitHandler;
@@ -69,14 +72,18 @@ public class DefaultCellangServer implements CellangServer {
 
 			@Override
 			public void handle(MessageContext t) {
+				t.getResponseMessage().getErrorInfos().add(ErrorInfo.valueOf("handler/not-found",
+						"request type:" + t.getRequestMessage().getPath().toString()));
 				LOG.warn("ignore msg:" + t.getRequestMessage().getPath());
 			}
 
 		});
 		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.REQ_CLIENT_INIT, new ClientInitHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.AUTH_REQ, new AuthHandler(this.tableService));
+		this.dispatcher.addHandler(Messages.AUTH_REQ, new LoginHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.SIGNUP_REQ, new SignupSubmitHandler(this.tableService));
+		this.dispatcher.addHandler(Messages.LOGIN_REQ, new LoginHandler(this.tableService));
+		
 		this.executor = Executors.newCachedThreadPool();
 		this.running = true;
 		LOG.info("stared with home:" + this.home.getAbsolutePath());
@@ -89,19 +96,27 @@ public class DefaultCellangServer implements CellangServer {
 		this.esServer.shutdown();
 		LOG.info("shutdown done");//
 	}
-	
+
 	@Override
-	public MessageI process(MessageI req){
-		return null;
+	public MessageI process(MessageI req) {
+		return process(req, null);
 	}
 
 	@Override
-	public void service(final MessageContext mc) {
+	public MessageI process(MessageI req, Channel channel) {
+		Path p = req.getPath();
+		Path p2 = Path.valueOf(p.getParent(), "response");
+		MessageI res = MessageSupport.newMessage(p2);
+
 		try {
+			res.setHeader(MessageI.HK_SOURCE_ID, req.getId());
+			MessageContext mc = new MessageContext(req, res, channel);
 			this.doService(mc);
 		} catch (Throwable t) {
-			LOG.error("", t);
+			res.getErrorInfos().add(new ErrorInfo(t));
+			LOG.error("add error to response for request message:" + req, t);
 		}
+		return res;
 	}
 
 	protected void doService(final MessageContext mc) {
