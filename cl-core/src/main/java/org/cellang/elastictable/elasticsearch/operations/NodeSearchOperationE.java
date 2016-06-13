@@ -87,6 +87,9 @@ public class NodeSearchOperationE<W extends RowObject> extends
 		}
 		SearchResponse response = srb.execute()//
 				.actionGet();
+		if(LOG.isDebugEnabled()){
+			LOG.debug("search response:"+response);//
+		}
 		SearchHits shs = response.getHits();
 		List<W> nL = new ArrayList<W>();
 

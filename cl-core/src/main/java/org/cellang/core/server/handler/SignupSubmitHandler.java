@@ -44,6 +44,7 @@ public class SignupSubmitHandler extends AbstracHandler {
 		String password = hc.getRequestMessage().getString("password");
 		Account an = new Account().forCreate(this.tableService);
 		an.setId(email);// email as the id?
+		an.setEmail(email);//
 		an.setPassword(password);
 		an.setNick(nick);
 		an.setType(Account.TYPE_REGISTERED);

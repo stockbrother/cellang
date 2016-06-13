@@ -8,28 +8,30 @@ import java.util.Date;
 
 import org.cellang.core.lang.HasProperties;
 import org.cellang.core.lang.MapProperties;
+import org.cellang.elastictable.RowObject;
 import org.cellang.elastictable.TableRow;
 import org.cellang.elastictable.TableService;
-import org.cellang.elastictable.RowObject;
 import org.cellang.elastictable.elasticsearch.ElasticClient;
 import org.cellang.elastictable.elasticsearch.UUIDUtil;
 import org.cellang.elastictable.operations.NodeCreateOperationI;
 import org.cellang.elastictable.result.NodeCreateResultI;
 import org.cellang.elastictable.support.NodeOperationSupport;
 import org.cellang.elastictable.support.ResultSupport;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author wu
  * 
  */
-public class NodeCreateOperationE<W extends RowObject> extends
-		NodeOperationSupport<NodeCreateOperationI<W>, W, NodeCreateResultI> implements
-		NodeCreateOperationI<W> {
-
+public class NodeCreateOperationE<W extends RowObject>
+		extends NodeOperationSupport<NodeCreateOperationI<W>, W, NodeCreateResultI>implements NodeCreateOperationI<W> {
+	private static Logger LOG = LoggerFactory.getLogger(NodeCreateOperationE.class);
 	private ElasticClient elastic;
 
 	private boolean allowNullValue = false;
@@ -61,13 +63,13 @@ public class NodeCreateOperationE<W extends RowObject> extends
 	}
 
 	protected HasProperties<Object> properties() {
-		return (HasProperties<Object>) this.parameters.getProperty(PK_PROPERTIES,
-				true);
+		return (HasProperties<Object>) this.parameters.getProperty(PK_PROPERTIES, true);
 	}
 
 	public void setId(String id) {
 		this.properties().setProperty(TableRow.PK_ID, id);
 	}
+
 	/*
 	 * Oct 27, 2012
 	 */
@@ -136,7 +138,17 @@ public class NodeCreateOperationE<W extends RowObject> extends
 
 		String idx = this.elastic.getIndex();
 		// idx = "index1";
-		IndexResponse response = client.prepareIndex(idx, type, uid).setSource(jb).execute().actionGet();
+		IndexRequestBuilder irb = client.prepareIndex(idx, type, uid).setSource(jb);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("index request builder:" + irb);
+		}
+
+		IndexResponse response = irb.execute().actionGet();
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("index response:" + response);//
+		}
+
 		String rid = response.getId();
 
 		rst.set(rid);//
@@ -164,8 +176,7 @@ public class NodeCreateOperationE<W extends RowObject> extends
 		return (NodeCreateOperationI) super.execute();
 	}
 
-	public static class ResultImpl extends ResultSupport<NodeCreateResultI, String> implements
-			NodeCreateResultI {
+	public static class ResultImpl extends ResultSupport<NodeCreateResultI, String>implements NodeCreateResultI {
 
 		public ResultImpl(TableService ds) {
 			super(ds);

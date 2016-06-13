@@ -13,6 +13,8 @@ import org.cellang.elastictable.meta.DataSchema;
  */
 public class Account extends RowObject {
 
+	public static final String EMAIL = "email";
+
 	public static final String PASSWORD = "password";
 
 	public static final String NICK = "nick";
@@ -33,8 +35,16 @@ public class Account extends RowObject {
 	}
 
 	public static void config(DataSchema cfs) {
-		cfs.addConfig(NodeTypes.ACCOUNT, Account.class).field(PASSWORD).field(NICK).field(TYPE);
+		cfs.addConfig(NodeTypes.ACCOUNT, Account.class).field(EMAIL).field(PASSWORD).field(NICK).field(TYPE);
 
+	}
+
+	public void setEmail(String email) {
+		this.setProperty(EMAIL, email);
+	}
+
+	public String getEmail() {
+		return (String) this.getProperty(EMAIL);
 	}
 
 	public void setPassword(String password) {

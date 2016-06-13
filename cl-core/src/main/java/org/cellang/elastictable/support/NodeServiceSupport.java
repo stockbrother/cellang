@@ -118,6 +118,7 @@ public abstract class NodeServiceSupport implements TableService {
 		}
 		qo.sortTimestamp(true);
 		NodeSearchResultI<T> rst = qo.execute().getResult();
+		rst.assertNoError();
 		T node = rst.first(false);
 		if (node == null) {
 			if (force) {

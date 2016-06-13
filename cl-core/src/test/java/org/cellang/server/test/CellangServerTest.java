@@ -25,16 +25,16 @@ public class CellangServerTest extends TestCase {
 
 		try {
 			MessageI msg = MessageSupport.newMessage().path(Messages.AUTH_REQ);
-			MessageI msg2 = MessageSupport.newMessage().path(Path.valueOf(msg.getPath().getParent(),"response"));
+			
 			String userId = "user1";
 			String password = "password1";
 			msg.setPayload("userId", userId);
 			msg.setPayload("password", password);
-			MessageContext mc = new MessageContext(msg,msg2,null);
-			server.service(mc);
-			MessageI rmsg = mc.getResponseMessage();
-			Assert.assertNotNull(rmsg);
-			rmsg.assertNoError();
+			
+			MessageI msg2 = server.process(msg);
+			
+			Assert.assertNotNull(msg2);
+			msg2.assertNoError();
 
 		} finally {
 			server.shutdown();

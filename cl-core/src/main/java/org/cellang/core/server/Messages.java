@@ -13,7 +13,7 @@ public class Messages {
 
 	public static final Path AUTH_REQ = Path.valueOf("auth/submit/request");
 	
-	public static final Path SIGNUP = Path.valueOf("signup/submit");
+	public static final Path LOGIN_REQ = Path.valueOf("login/submit/request");
 	
 	public static final Path SIGNUP_REQ = Path.valueOf("signup/submit").getSubPath("request");
 

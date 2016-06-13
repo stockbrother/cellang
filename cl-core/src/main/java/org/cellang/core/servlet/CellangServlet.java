@@ -78,13 +78,8 @@ public class CellangServlet extends AjaxCometServlet implements CometListener {
 
 	protected void doService(MessageI req, Comet ct) {
 		Channel channel = this.getChannel0(ct);
-		Path p = req.getPath();
-		Path p2 = Path.valueOf(p.getParent(), "response");
-		MessageI res = MessageSupport.newMessage(p2);
-		res.setHeader(MessageI.HK_SOURCE_ID, req.getId());
 		
-		MessageContext mc = new MessageContext(req,res, channel);
-		this.server.service(mc);
+		MessageI res = this.server.process(req);
 		
 		channel.sendMessage(res);
 

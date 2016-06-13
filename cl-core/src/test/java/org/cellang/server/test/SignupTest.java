@@ -17,26 +17,38 @@ import junit.framework.TestCase;
 public class SignupTest extends TestCase {
 
 	public void test() {
-		
+
 		File home = FileUtil.createTempDir("cl-test-home");
-		
+
 		CellangServer server = new DefaultCellangServer(home);
 		server.start();
 
 		try {
-			MessageI msg = MessageSupport.newMessage().path(Messages.SIGNUP_REQ);
-			msg.setPayload("email", "some-one@some-company.com");
-			msg.setPayload("password","some-password");
-			msg.setPayload("nick","some-nick");
-			
-			MessageI msg2 = MessageSupport.newMessage(Path.valueOf(Messages.SIGNUP_REQ.getParent(),"response"));
-			
-			MessageContext mc = new MessageContext(msg,msg2,null);
-			server.service(mc);
-			
-			MessageI rmsg = mc.getResponseMessage();
-			Assert.assertNotNull(rmsg);
-			rmsg.assertNoError();
+			String email = "some-one@some-company.com";
+			String password = "some-password";
+			String nick = "some-nick";
+			{
+
+				MessageI msg = MessageSupport.newMessage(Messages.SIGNUP_REQ);
+				msg.setPayload("email", email);
+				msg.setPayload("password", password);
+				msg.setPayload("nick", nick);
+
+				MessageI rmsg = server.process(msg);
+
+				Assert.assertNotNull(rmsg);
+				rmsg.assertNoError();
+			}
+			{
+				MessageI msg = MessageSupport.newMessage(Messages.LOGIN_REQ);
+				msg.setPayload("email",email);
+				msg.setPayload("password",password);
+				MessageI res = server.process(msg);
+				Assert.assertNotNull(res);
+				res.assertNoError();
+				
+			}
+			// login
 
 		} finally {
 			server.shutdown();
