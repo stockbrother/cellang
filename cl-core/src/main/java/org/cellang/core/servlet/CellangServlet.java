@@ -1,9 +1,12 @@
 package org.cellang.core.servlet;
 
+import java.io.File;
+
 import javax.servlet.ServletException;
 
 import org.cellang.commons.json.Codec;
 import org.cellang.commons.json.JsonCodecs;
+import org.cellang.commons.lang.Path;
 import org.cellang.commons.transfer.Comet;
 import org.cellang.commons.transfer.CometListener;
 import org.cellang.commons.transfer.servlet.AjaxCometServlet;
@@ -13,7 +16,6 @@ import org.cellang.core.server.CellangServer;
 import org.cellang.core.server.Channel;
 import org.cellang.core.server.DefaultCellangServer;
 import org.cellang.core.server.MessageContext;
-import org.cellang.core.server.Messages;
 import org.cellang.elastictable.elasticsearch.UUIDUtil;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
@@ -30,14 +32,28 @@ public class CellangServlet extends AjaxCometServlet implements CometListener {
 	Codec messageCodec;
 
 	private static final String CHANNEL0 = "CHANNEL0";
+	
+	public static final String PK_home = "home";
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
+		
+		String home = getInitParameter(PK_home, true);
+		File homeDir = new File(home);
+		
 		this.codecs = new JsonCodecs();
 		this.messageCodec = this.codecs.getCodec(MessageI.class);
-		this.server = new DefaultCellangServer();
+		
+		this.server = new DefaultCellangServer(homeDir);
+		this.server.start();
 		this.manager.addListener(this);
+	}
+
+	@Override
+	public void destroy() {
+		this.server.shutdown();
+		super.destroy();
 	}
 
 	/**
@@ -62,13 +78,15 @@ public class CellangServlet extends AjaxCometServlet implements CometListener {
 
 	protected void doService(MessageI req, Comet ct) {
 		Channel channel = this.getChannel0(ct);
-		MessageContext mc = new MessageContext(req, channel);
+		Path p = req.getPath();
+		Path p2 = Path.valueOf(p.getParent(), "response");
+		MessageI res = MessageSupport.newMessage(p2);
+		res.setHeader(MessageI.HK_SOURCE_ID, req.getId());
+		
+		MessageContext mc = new MessageContext(req,res, channel);
 		this.server.service(mc);
-		MessageI res = mc.getResponseMessage();
-
-		if (res != null) {
-			channel.sendMessage(res);
-		}
+		
+		channel.sendMessage(res);
 
 	}
 

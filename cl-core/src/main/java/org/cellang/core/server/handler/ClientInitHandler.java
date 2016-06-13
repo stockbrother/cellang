@@ -9,6 +9,7 @@ import org.cellang.core.server.Channel;
 import org.cellang.core.server.ClientManager;
 import org.cellang.core.server.MessageContext;
 import org.cellang.core.server.Messages;
+import org.cellang.elastictable.TableService;
 import org.cellang.elastictable.elasticsearch.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,10 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ClientInitHandler extends AbstracHandler {
+	public ClientInitHandler(TableService ts) {
+		super(ts);
+	}
+
 	private static final Logger LOG = LoggerFactory.getLogger(ClientInitHandler.class);
 
 	@Override

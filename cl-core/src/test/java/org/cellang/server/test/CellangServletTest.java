@@ -27,6 +27,7 @@ public class CellangServletTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		browser.destroy();
 		super.tearDown();
 
 	}

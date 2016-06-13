@@ -5,9 +5,10 @@ package org.cellang.core.server.handler;
 
 import java.util.UUID;
 
-import org.cellang.core.lang.MessageI;
+import org.cellang.core.Account;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
+import org.cellang.elastictable.TableService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,16 +16,16 @@ import org.slf4j.LoggerFactory;
  * @author wu
  * 
  */
-public class SignupHandler extends AbstracHandler {
+public class SignupSubmitHandler extends AbstracHandler {
 
-	private static Logger LOG = LoggerFactory.getLogger(SignupHandler.class);
+	private static Logger LOG = LoggerFactory.getLogger(SignupSubmitHandler.class);
 
 	// protected ConfirmCodeNotifierI confirmCodeNotifier;
 
 	// protected boolean isNeedConfirm = false;
-
-	public SignupHandler() {
-		super();
+	
+	public SignupSubmitHandler(TableService ts) {
+		super(ts);
 		/*
 		 * ValidatorI<MessageI> vl = this.createValidator("submit");
 		 * vl.addExpression(Constants.P_ERROR_SIGNUP_NICK, prefix +
@@ -37,11 +38,16 @@ public class SignupHandler extends AbstracHandler {
 
 	// create anonymous account.
 	@Override
-	public void handle(MessageContext hc) {
-		String id = UUID.randomUUID().toString();
-		MessageI res = hc.getResponseMessage();
-		res.setPayload("accountId", id);
-		res.setPayload("password", "password");
+	public void handle(MessageContext hc) {		
+		String email = hc.getRequestMessage().getString("email");
+		String nick = hc.getRequestMessage().getString("nick");
+		String password = hc.getRequestMessage().getString("password");
+		Account an = new Account().forCreate(this.tableService);
+		an.setId(email);// email as the id?
+		an.setPassword(password);
+		an.setNick(nick);
+		an.setType(Account.TYPE_REGISTERED);
+		an.save(true);
 	}
 	/**
 	 * <code> 
