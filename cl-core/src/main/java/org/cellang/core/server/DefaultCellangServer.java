@@ -1,5 +1,6 @@
 package org.cellang.core.server;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -9,11 +10,18 @@ import java.util.concurrent.Future;
 import org.cellang.commons.dispatch.DefaultDispatcher;
 import org.cellang.commons.dispatch.Dispatcher;
 import org.cellang.commons.lang.Handler;
+import org.cellang.core.Account;
+import org.cellang.core.lang.MessageI;
 import org.cellang.core.server.handler.AuthHandler;
 import org.cellang.core.server.handler.ClientInitHandler;
 import org.cellang.core.server.handler.ClientIsReadyHandler;
-import org.cellang.core.server.handler.SignupHandler;
+import org.cellang.core.server.handler.SignupSubmitHandler;
 import org.cellang.core.util.ExceptionUtil;
+import org.cellang.elastictable.ElasticTableBuilder;
+import org.cellang.elastictable.MetaInfo;
+import org.cellang.elastictable.TableService;
+import org.cellang.elastictable.meta.DataSchema;
+import org.cellang.elastictable.test.EmbeddedESServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +37,31 @@ public class DefaultCellangServer implements CellangServer {
 
 	private ServerContext serverContext;
 
-	public DefaultCellangServer() {
+	private EmbeddedESServer esServer;
+
+	private TableService tableService;
+
+	private File home;
+
+	public DefaultCellangServer(File home) {
+		this.home = home;
+	}
+
+	@Override
+	public void start() {
+		LOG.info("start... with home:" + this.home.getAbsolutePath());
+		this.esServer = new EmbeddedESServer(home.getAbsolutePath());
+
+		DataSchema sa = DataSchema.newInstance();
+		Account.config(sa);
+
+		this.tableService = ElasticTableBuilder.newInstance()
+				.metaInfo(MetaInfo.newInstance()//
+						.owner("test")//
+						.version("0.0.1-SNAPSHOT")//
+						.password("none"))
+				.schema(sa).client(this.esServer.getClient())//
+				.build();//
 
 		this.serverContext = new ServerContext();
 		this.dispatcher = new DefaultDispatcher<MessageContext>();
@@ -41,22 +73,26 @@ public class DefaultCellangServer implements CellangServer {
 			}
 
 		});
-		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler());
-		this.dispatcher.addHandler(Messages.REQ_CLIENT_INIT, new ClientInitHandler());
-		this.dispatcher.addHandler(Messages.MSG_AUTH, new AuthHandler());
-		this.dispatcher.addHandler(Messages.MSG_SIGNUP, new SignupHandler());
+		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler(this.tableService));
+		this.dispatcher.addHandler(Messages.REQ_CLIENT_INIT, new ClientInitHandler(this.tableService));
+		this.dispatcher.addHandler(Messages.AUTH_REQ, new AuthHandler(this.tableService));
+		this.dispatcher.addHandler(Messages.SIGNUP_REQ, new SignupSubmitHandler(this.tableService));
 		this.executor = Executors.newCachedThreadPool();
-	}
-
-	@Override
-	public void start() {
 		this.running = true;
-
+		LOG.info("stared with home:" + this.home.getAbsolutePath());
 	}
 
 	@Override
 	public void shutdown() {
+		LOG.info("shutdown...");//
 		this.running = false;
+		this.esServer.shutdown();
+		LOG.info("shutdown done");//
+	}
+	
+	@Override
+	public MessageI process(MessageI req){
+		return null;
 	}
 
 	@Override
@@ -64,7 +100,7 @@ public class DefaultCellangServer implements CellangServer {
 		try {
 			this.doService(mc);
 		} catch (Throwable t) {
-			LOG.error("", t);			
+			LOG.error("", t);
 		}
 	}
 

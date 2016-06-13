@@ -4,8 +4,13 @@ import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
+import org.cellang.elastictable.TableService;
 
 public class AuthHandler extends AbstracHandler {
+
+	public AuthHandler(TableService ts) {
+		super(ts);
+	}
 
 	@Override
 	public void handle(MessageContext mc) {

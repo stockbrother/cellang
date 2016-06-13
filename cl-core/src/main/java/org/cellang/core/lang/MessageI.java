@@ -15,10 +15,21 @@ import org.cellang.commons.lang.Path;
  */
 public interface MessageI {
 
+	/**
+	 * Header key, its value is The Type of the message.
+	 */
 	public static final String HK_PATH = "_path";
 
+	/**
+	 * Header key, its value is The identifier of the message.
+	 */
 	public static final String HK_ID = "_id";
 
+	/**
+	 * Header key, its value is The source message's identifier.<br>
+	 * For e.g. if the message is a Response message,the source id the Request
+	 * message.
+	 */
 	public static final String HK_SOURCE_ID = "_source_id";
 
 	public static final String HK_SILENCE = "_silence";
@@ -89,6 +100,5 @@ public interface MessageI {
 	public void setMessage(MessageI msg);
 
 	public MessageI path(Path path);
-	
 
 }

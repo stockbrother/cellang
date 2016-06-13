@@ -1,6 +1,7 @@
 package org.cellang.commons.transfer.test.mock;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Hashtable;
@@ -13,8 +14,9 @@ import java.util.concurrent.TimeUnit;
 import org.cellang.commons.lang.Path;
 import org.cellang.commons.transfer.ajax.AjaxMsg;
 import org.cellang.commons.transfer.servlet.AjaxCometServlet;
-import org.cellang.commons.transfer.test.servlet.MockAjaxCometServlet;
+import org.cellang.core.servlet.CellangServlet;
 import org.cellang.core.util.ExceptionUtil;
+import org.cellang.core.util.FileUtil;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Assert;
@@ -34,20 +36,29 @@ public class ClientWithBrowserMock {
 	public long timeoutForFirstMessage = 5 * 1000;
 
 	public ClientWithBrowserMock(Class<? extends AjaxCometServlet> clazz) {
+		File home = FileUtil.createTempDir("cl-test-home");
+		
 		this.queueCallback = new QueueAjaxMessageCallback();
 		this.executor = Executors.newFixedThreadPool(2);
 		servletRunner = new ServletRunner();
 		Hashtable<String, String> paras = new Hashtable<String, String>();
 		paras.put(AjaxCometServlet.PK_maxIdleTime, 60000 + "");
 		paras.put(AjaxCometServlet.PK_timeoutForFirstMessage, this.timeoutForFirstMessage + "");
+		paras.put(CellangServlet.PK_home, home.getAbsolutePath());//
 		servletRunner.registerServlet(this.contextPath, clazz.getName(), paras);
 		servletClient = servletRunner.newClient();
+	}
+	
+	public void destroy(){
+		this.servletRunner.shutDown();
+		this.servletRunner = null;
+		this.servletClient = null;
 	}
 
 	public String syncConnect() throws Exception {
 		AjaxMsg amsg = new AjaxMsg(AjaxMsg.CONNECT);//
 		this.asyncSend(amsg, null);
-		AjaxMsg am = this.queueCallback.queue.poll(2, TimeUnit.SECONDS);
+		AjaxMsg am = this.queueCallback.queue.poll(20, TimeUnit.SECONDS);
 		Assert.assertNotNull("timeout to get response", am);
 		System.out.println(am);//
 		String sessionId = am.getProperty(AjaxMsg.PK_CONNECT_SESSION_ID);

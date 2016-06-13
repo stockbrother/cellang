@@ -12,8 +12,9 @@ public class MessageContext {
 
 	private Channel channel;
 	
-	public MessageContext(MessageI reqMsg,Channel channel) {
+	public MessageContext(MessageI reqMsg, MessageI resMsg,Channel channel) {
 		this.requestMessage = reqMsg;
+		this.responseMessage = resMsg;
 		this.channel = channel;
 	}
 
