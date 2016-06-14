@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 import org.cellang.core.lang.MapProperties;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,21 +20,21 @@ import org.json.simple.JSONValue;
  */
 public class AjaxMsg extends MapProperties<String> {
 
-	public static final Path CONNECT = Path.valueOf("ajax/connect");
+	public static final NameSpace CONNECT = NameSpace.valueOf("ajax.connect");
 	
-	public static final Path CONNECT_SUCCESS = CONNECT.getSubPath("success");
+	public static final NameSpace CONNECT_SUCCESS = CONNECT.getSubPath("success");
 
-	public static final Path CLOSE = Path.valueOf("ajax/close");
+	public static final NameSpace CLOSE = NameSpace.valueOf("ajax.close");
 	
-	public static final Path CLOSE_SUCCESS = CLOSE.getSubPath("success");
+	public static final NameSpace CLOSE_SUCCESS = CLOSE.getSubPath("success");
 
-	public static final Path MESSAGE = Path.valueOf("ajax/message");
+	public static final NameSpace MESSAGE = NameSpace.valueOf("ajax.message");
 
-	public static final Path ERROR = Path.valueOf("ajax/error");
+	public static final NameSpace ERROR = NameSpace.valueOf("ajax.error");
 
-	public static final Path HEART_BEAT = Path.valueOf("ajax/heart-beat");
+	public static final NameSpace HEART_BEAT = NameSpace.valueOf("ajax.heart-beat");
 	
-	public static final Path INTERRUPT = Path.valueOf("ajax/interrupt");//FOR interrupt,see ajax msg context 
+	public static final NameSpace INTERRUPT = NameSpace.valueOf("ajax.interrupt");//FOR interrupt,see ajax msg context 
 
 	public static final String PK_PATH = "_path";
 
@@ -52,7 +52,7 @@ public class AjaxMsg extends MapProperties<String> {
 		this.setProperties(jo);
 	}
 
-	public AjaxMsg(Path path) {
+	public AjaxMsg(NameSpace path) {
 		this.setProperty(PK_PATH, path.toString());
 	}
 	
@@ -64,13 +64,13 @@ public class AjaxMsg extends MapProperties<String> {
 		return this.isPath(INTERRUPT);
 	}
 
-	public boolean isPath(Path path) {
+	public boolean isPath(NameSpace path) {
 		return path.equals(this.getPath());
 	}
 
-	public Path getPath() {
+	public NameSpace getPath() {
 		String ps = this.getProperty(PK_PATH, true);
-		return Path.valueOf(ps);
+		return NameSpace.valueOf(ps);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class AjaxMsg extends MapProperties<String> {
 
 			String pathS = (String) jo.get(PK_PATH);
 
-			Path path = Path.valueOf(pathS);
+			NameSpace path = NameSpace.valueOf(pathS);
 			AjaxMsg am = new AjaxMsg(path);
 			am.setProperties(jo);
 			rt.add(am);

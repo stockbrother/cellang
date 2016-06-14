@@ -5,19 +5,26 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.cellang.commons.ObjectUtil;
 
-public class Path {
+public class NameSpace {
 
-	private static Map<String, Path> CACHE = new HashMap<String, Path>();
+	private static Map<String, NameSpace> CACHE = new HashMap<String, NameSpace>();
+	
+	public static final char SEP = '.';
 
 	private List<String> nameList;
 
-	public static Path ROOT = Path.valueOf(new String[] {});
+	public static NameSpace ROOT = NameSpace.valueOf(new String[] {});
 
 	public List<String> getNameList() {
 		return nameList;
+	}
+
+	public String[] getNameArray() {
+		return this.nameList.toArray(new String[this.nameList.size()]);
 	}
 
 	public String getName() {
@@ -27,11 +34,11 @@ public class Path {
 		return this.nameList.get(this.nameList.size() - 1);
 	}
 
-	private Path(String[] names) {
+	private NameSpace(String[] names) {
 		this(Arrays.asList(names));
 	}
 
-	private Path(List<String> nl) {
+	private NameSpace(List<String> nl) {
 
 		List<String> nl2 = new ArrayList<String>();
 		for (String s : nl) {
@@ -48,7 +55,7 @@ public class Path {
 		return this.nameList.isEmpty();
 	}
 
-	public Path getParent() {
+	public NameSpace getParent() {
 		if (this.isRoot()) {
 			return null;
 		}
@@ -58,18 +65,18 @@ public class Path {
 			ps.add(name);
 
 		}
-		return new Path(ps);
+		return new NameSpace(ps);
 	}
 
 	public int size() {
 		return this.nameList.size();
 	}
 
-	public boolean isSubPath(Path p) {
+	public boolean isSubPath(NameSpace p) {
 		return this.isSubPath(p, false);
 	}
 
-	public boolean isSubPath(Path p, boolean include) {
+	public boolean isSubPath(NameSpace p, boolean include) {
 		int s1 = this.size();
 		int s2 = p.size();
 		if (include && s1 > s2 || !include && s1 >= s2) {
@@ -86,46 +93,42 @@ public class Path {
 
 	}
 
-	public Path getSubPath(String name) {
+	public NameSpace getSubPath(String name) {
 		List<String> names = new ArrayList<String>();
 		names.addAll(this.nameList);
 		names.add(name);
-		return Path.valueOf(names);
+		return NameSpace.valueOf(names);
 	}
 
-	public static Path valueOf(String name, Path p) {
+	public static NameSpace valueOf(String name, NameSpace p) {
 		List<String> nl = new ArrayList<String>(p.getNameList());
 		nl.add(0, name);
-		return new Path(nl);
+		return new NameSpace(nl);
 	}
 
-	public static Path valueOf(Path par, String name) {
+	public static NameSpace valueOf(NameSpace par, String name) {
 		return par.getSubPath(name);
 	}
 
-	public static Path valueOf(List<String> names) {
-		return new Path(names);
+	public static NameSpace valueOf(List<String> names) {
+		return new NameSpace(names);
 	}
 
-	public static Path valueOf(String[] names) {
+	public static NameSpace valueOf(String[] names) {
 		return valueOf(Arrays.asList(names));
 
 	}
 
-	public static Path valueOf(String name) {
-		Path rt = CACHE.get(name);
+	public static NameSpace valueOf(String name) {
+		NameSpace rt = CACHE.get(name);
 		if (rt != null) {
 			return rt;
 		}
-		rt = valueOf(name, '/');
+		String[] names = name.split("\\" + SEP);
+		rt = valueOf(names);
 		CACHE.put(name, rt);
 		return rt;
 
-	}
-
-	public static Path valueOf(String name, char sep) {
-		String[] names = name.split("" + sep);
-		return valueOf(names);
 	}
 
 	public int length() {
@@ -134,10 +137,10 @@ public class Path {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof Path)) {
+		if (obj == null || !(obj instanceof NameSpace)) {
 			return false;
 		}
-		Path p2 = (Path) obj;
+		NameSpace p2 = (NameSpace) obj;
 		if (p2.size() != this.size()) {
 			return false;
 		}
@@ -171,8 +174,8 @@ public class Path {
 		return rt;
 	}
 
-	public boolean contains(Path path) {
-		Path p = this;
+	public boolean contains(NameSpace path) {
+		NameSpace p = this;
 		while (p != null) {
 			if (path.isSubPath(p, true)) {
 				return true;
@@ -182,38 +185,38 @@ public class Path {
 		return false;
 	}
 
-	public Path removeFirst() {
+	public NameSpace removeFirst() {
 		if (this.isRoot()) {
 			return null;
 		}
 
 		List<String> nL = new ArrayList<String>(this.nameList);
 		nL.remove(0);
-		return Path.valueOf(nL);
+		return NameSpace.valueOf(nL);
 	}
 
-	public Path removeLast() {
+	public NameSpace removeLast() {
 		if (this.isRoot()) {
 			return null;
 		}
 
 		List<String> nL = new ArrayList<String>(this.nameList);
 		nL.remove(nL.size() - 1);
-		return Path.valueOf(nL);
+		return NameSpace.valueOf(nL);
 	}
 
 	/**
 	 * Jan 8, 2013
 	 */
-	public Path concat(Path p) {
+	public NameSpace concat(NameSpace p) {
 		//
 		List<String> names = new ArrayList<String>(this.nameList);
 		names.addAll(p.nameList);
-		return new Path(names);
+		return new NameSpace(names);
 	}
 
 	public String toString(boolean startBySep) {
-		return toString('/', startBySep);
+		return toString(SEP, startBySep);
 	}
 
 	/*
@@ -222,7 +225,7 @@ public class Path {
 	@Override
 	public String toString() {
 		//
-		return toString('/', true);
+		return toString(SEP, true);
 	}
 
 	/*

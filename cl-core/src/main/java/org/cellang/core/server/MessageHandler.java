@@ -1,5 +1,7 @@
 package org.cellang.core.server;
 
-public interface MessageHandler {
+import org.cellang.commons.lang.Handler;
+
+public interface MessageHandler extends Handler<MessageContext> {
 
 }

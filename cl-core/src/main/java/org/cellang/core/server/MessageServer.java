@@ -2,7 +2,7 @@ package org.cellang.core.server;
 
 import org.cellang.core.lang.MessageI;
 
-public interface CellangServer {
+public interface MessageServer {
 
 	public void start();
 

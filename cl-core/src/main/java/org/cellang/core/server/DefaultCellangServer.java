@@ -10,14 +10,17 @@ import java.util.concurrent.Future;
 import org.cellang.commons.dispatch.DefaultDispatcher;
 import org.cellang.commons.dispatch.Dispatcher;
 import org.cellang.commons.lang.Handler;
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 import org.cellang.core.Account;
+import org.cellang.core.Property;
 import org.cellang.core.lang.ErrorInfo;
 import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
-import org.cellang.core.server.handler.LoginHandler;
 import org.cellang.core.server.handler.ClientInitHandler;
 import org.cellang.core.server.handler.ClientIsReadyHandler;
+import org.cellang.core.server.handler.LoginHandler;
+import org.cellang.core.server.handler.PropertyGetHandler;
+import org.cellang.core.server.handler.PropertySaveHandler;
 import org.cellang.core.server.handler.SignupSubmitHandler;
 import org.cellang.core.util.ExceptionUtil;
 import org.cellang.elastictable.ElasticTableBuilder;
@@ -28,7 +31,7 @@ import org.cellang.elastictable.test.EmbeddedESServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultCellangServer implements CellangServer {
+public class DefaultCellangServer implements MessageServer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultCellangServer.class);
 
@@ -57,6 +60,7 @@ public class DefaultCellangServer implements CellangServer {
 
 		DataSchema sa = DataSchema.newInstance();
 		Account.config(sa);
+		Property.config(sa);//
 
 		this.tableService = ElasticTableBuilder.newInstance()
 				.metaInfo(MetaInfo.newInstance()//
@@ -83,7 +87,9 @@ public class DefaultCellangServer implements CellangServer {
 		this.dispatcher.addHandler(Messages.AUTH_REQ, new LoginHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.SIGNUP_REQ, new SignupSubmitHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.LOGIN_REQ, new LoginHandler(this.tableService));
-		
+		this.dispatcher.addHandler(Messages.PROPERTY_SAVE_REQ, new PropertySaveHandler(this.tableService));
+		this.dispatcher.addHandler(Messages.PROPERTY_GET_REQ, new PropertyGetHandler(this.tableService));
+				
 		this.executor = Executors.newCachedThreadPool();
 		this.running = true;
 		LOG.info("stared with home:" + this.home.getAbsolutePath());
@@ -104,8 +110,8 @@ public class DefaultCellangServer implements CellangServer {
 
 	@Override
 	public MessageI process(MessageI req, Channel channel) {
-		Path p = req.getPath();
-		Path p2 = Path.valueOf(p.getParent(), "response");
+		NameSpace p = req.getPath();
+		NameSpace p2 = NameSpace.valueOf(p.getParent(), "response");
 		MessageI res = MessageSupport.newMessage(p2);
 
 		try {

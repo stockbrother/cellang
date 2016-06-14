@@ -6,13 +6,13 @@ import javax.servlet.ServletException;
 
 import org.cellang.commons.json.Codec;
 import org.cellang.commons.json.JsonCodecs;
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 import org.cellang.commons.transfer.Comet;
 import org.cellang.commons.transfer.CometListener;
 import org.cellang.commons.transfer.servlet.AjaxCometServlet;
 import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
-import org.cellang.core.server.CellangServer;
+import org.cellang.core.server.MessageServer;
 import org.cellang.core.server.Channel;
 import org.cellang.core.server.DefaultCellangServer;
 import org.cellang.core.server.MessageContext;
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 public class CellangServlet extends AjaxCometServlet implements CometListener {
 	private static final Logger LOG = LoggerFactory.getLogger(CellangServlet.class);
 
-	CellangServer server;
+	MessageServer server;
 
 	JsonCodecs codecs;
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.commons.ObjectUtil;
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 
 /**
  * @author wu
@@ -31,7 +31,7 @@ public class ErrorInfos implements ValueI {
 		return this;
 	}
 
-	public ErrorInfos addError(Path ecode){
+	public ErrorInfos addError(NameSpace ecode){
 		return this.add(new ErrorInfo(ecode));
 	}
 	@Deprecated

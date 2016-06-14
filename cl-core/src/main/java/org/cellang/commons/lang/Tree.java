@@ -67,9 +67,9 @@ public class Tree<T> {
 
 	private Node<T> root = new Node<T>(null);
 
-	public Node<T> addNode(Path p) {
+	public Node<T> addNode(NameSpace p) {
 
-		Path pp = p.getParent();
+		NameSpace pp = p.getParent();
 		Node<T> pn = this.getNode(pp);
 		if (pn == null) {
 			pn = addNode(pp);
@@ -83,12 +83,12 @@ public class Tree<T> {
 		return pn.addChild(name);
 	}
 
-	public Node<T> getNode(Path p) {
+	public Node<T> getNode(NameSpace p) {
 		List<String> nl = p.getNameList();
 		return root.getNode(nl);
 	}
 
-	public Node<T> getOrCreateNode(Path p) {
+	public Node<T> getOrCreateNode(NameSpace p) {
 		Node<T> rt = this.getNode(p);
 		if (rt != null) {
 			return rt;
@@ -97,7 +97,7 @@ public class Tree<T> {
 		return rt;
 	}
 
-	public List<Node<T>> getChildNodeList(Path p) {
+	public List<Node<T>> getChildNodeList(NameSpace p) {
 		Node<T> node = this.getNode(p);
 		if (node == null) {
 			return new ArrayList<Node<T>>();
@@ -105,7 +105,7 @@ public class Tree<T> {
 		return node.getChildList();
 	}
 
-	public Node<T> addNode(Path p, T t) {
+	public Node<T> addNode(NameSpace p, T t) {
 		// TODO Auto-generated method stub
 		Node<T> rt = this.addNode(p);
 		rt.setTarget(t);
@@ -119,7 +119,7 @@ public class Tree<T> {
 	 * @see
 	 * com.fs.commons.api.struct.Tree#getTarget(com.fs.commons.api.struct.Path)
 	 */
-	public T getTarget(Path p) {
+	public T getTarget(NameSpace p) {
 		Node<T> rt = this.getNode(p);
 		return rt == null ? null : rt.getTarget();
 	}
@@ -131,9 +131,9 @@ public class Tree<T> {
 	 * com.fs.commons.api.struct.Tree#getTargetListInPath(com.fs.commons.api
 	 * .struct.Path)
 	 */
-	public List<T> getTargetListInPath(Path p) {
+	public List<T> getTargetListInPath(NameSpace p) {
 		List<T> rt = new ArrayList<T>();
-		Path tp = p;
+		NameSpace tp = p;
 		while (true) {
 			T t = this.getTarget(tp);
 			rt.add(0, t);

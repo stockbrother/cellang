@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 import org.cellang.commons.transfer.ajax.AjaxMsg;
 import org.cellang.commons.transfer.servlet.AjaxCometServlet;
 import org.cellang.core.servlet.CellangServlet;
@@ -63,7 +63,7 @@ public class ClientWithBrowserMock {
 		System.out.println(am);//
 		String sessionId = am.getProperty(AjaxMsg.PK_CONNECT_SESSION_ID);
 		String pathS = am.getProperty(AjaxMsg.PK_PATH);
-		Assert.assertEquals(AjaxMsg.CONNECT_SUCCESS, Path.valueOf(pathS));//
+		Assert.assertEquals(AjaxMsg.CONNECT_SUCCESS, NameSpace.valueOf(pathS));//
 		Assert.assertNotNull(sessionId);//
 
 		return sessionId;
@@ -77,7 +77,7 @@ public class ClientWithBrowserMock {
 		System.out.println(am);//
 
 		String pathS = am.getProperty(AjaxMsg.PK_PATH);
-		Assert.assertEquals(AjaxMsg.CLOSE_SUCCESS, Path.valueOf(pathS));//
+		Assert.assertEquals(AjaxMsg.CLOSE_SUCCESS, NameSpace.valueOf(pathS));//
 	}
 
 	public void asyncSend(AjaxMsg amsg, String sessionId) {

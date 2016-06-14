@@ -11,5 +11,7 @@ package org.cellang.core;
 public class NodeTypes {
 
 	public static final String ACCOUNT = "account";
+	
+	public static final String PROPERTY = "property";
 
 }
