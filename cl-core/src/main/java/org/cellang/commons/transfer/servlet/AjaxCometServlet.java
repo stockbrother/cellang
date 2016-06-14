@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 import org.cellang.commons.session.Session;
 import org.cellang.commons.session.SessionManager;
 import org.cellang.commons.session.SessionManagerImpl;
@@ -56,7 +56,7 @@ public class AjaxCometServlet extends HttpServlet {
 
 	protected DefaultCometManager manager;
 
-	protected Map<Path, AjaxMsgHandler> handlers;
+	protected Map<NameSpace, AjaxMsgHandler> handlers;
 
 	protected AjaxMsgHandler defaultAjaxMsgHandler;
 
@@ -91,7 +91,7 @@ public class AjaxCometServlet extends HttpServlet {
 
 			this.manager = new DefaultCometManager("ajax");
 
-			this.handlers = new HashMap<Path, AjaxMsgHandler>();
+			this.handlers = new HashMap<NameSpace, AjaxMsgHandler>();
 			// default handler
 			this.defaultAjaxMsgHandler = new AjaxDefaultHandler(this.sessions, this.manager);
 			// handlers
@@ -216,7 +216,7 @@ public class AjaxCometServlet extends HttpServlet {
 		int total = amL.size();
 		for (AjaxMsg am : amL) {
 
-			Path path = am.getPath();
+			NameSpace path = am.getPath();
 			AjaxMsgHandler hdl = this.handlers.get(path);
 			if (hdl == null) {
 				hdl = this.defaultAjaxMsgHandler;

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.cellang.commons.ObjectUtil;
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 
 /**
  * @author wu
@@ -27,7 +27,7 @@ public class ErrorInfo implements ValueI {
 
 	private List<String> detail;
 
-	public ErrorInfo(Path ecode) {
+	public ErrorInfo(NameSpace ecode) {
 		this(ecode == null ? null : ecode.toString());
 	}
 

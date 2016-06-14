@@ -2,10 +2,10 @@ package org.cellang.server.test;
 
 import java.io.File;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
-import org.cellang.core.server.CellangServer;
+import org.cellang.core.server.MessageServer;
 import org.cellang.core.server.DefaultCellangServer;
 import org.cellang.core.server.MessageContext;
 import org.cellang.core.server.Messages;
@@ -20,7 +20,7 @@ public class CellangServerTest extends TestCase {
 		
 		File home = FileUtil.createTempDir("cl-test-home");
 		
-		CellangServer server = new DefaultCellangServer(home);
+		MessageServer server = new DefaultCellangServer(home);
 		server.start();
 
 		try {

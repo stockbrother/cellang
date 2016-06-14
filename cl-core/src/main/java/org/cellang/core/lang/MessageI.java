@@ -7,7 +7,7 @@
  */
 package org.cellang.core.lang;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 
 /**
  * @author wuzhen
@@ -51,7 +51,7 @@ public interface MessageI {
 
 	public String getSourceId();
 
-	public Path getPath();
+	public NameSpace getPath();
 
 	public String getId();
 
@@ -99,6 +99,6 @@ public interface MessageI {
 
 	public void setMessage(MessageI msg);
 
-	public MessageI path(Path path);
+	public MessageI path(NameSpace path);
 
 }

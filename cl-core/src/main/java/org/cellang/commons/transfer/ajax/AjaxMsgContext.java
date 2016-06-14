@@ -4,7 +4,7 @@
  */
 package org.cellang.commons.transfer.ajax;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 
 /**
  * @author wu
@@ -27,7 +27,7 @@ public class AjaxMsgContext {
 	 * May 8, 2013
 	 */
 	public void writeFailure() {
-		Path path = this.am.getPath();
+		NameSpace path = this.am.getPath();
 		path = path.getSubPath("failure");
 		AjaxMsg am = new AjaxMsg(path);
 		this.arc.write(am);

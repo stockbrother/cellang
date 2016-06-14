@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * After serverIsReady, a channel is established. <br>
+ * After serverIsReady, a channel(between client and server) is established. <br>
  * Client use this channel for communication.And client ask to be
  * initialized,read data from server.
  * 

@@ -9,7 +9,7 @@ package org.cellang.core.lang;
 
 import java.util.UUID;
 
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 
 /**
  * @author wuzhen
@@ -41,7 +41,7 @@ public class MessageSupport implements MessageI {
 
 	}
 
-	public static MessageI newMessage(Path p) {
+	public static MessageI newMessage(NameSpace p) {
 		return new MessageImpl(p.toString());
 	}
 
@@ -295,9 +295,9 @@ public class MessageSupport implements MessageI {
 	}
 
 	@Override
-	public Path getPath() {
+	public NameSpace getPath() {
 		String ps = this.getHeader(HK_PATH);
-		return Path.valueOf(ps);
+		return NameSpace.valueOf(ps);
 	}
 
 	@Override
@@ -348,7 +348,7 @@ public class MessageSupport implements MessageI {
 	}
 
 	@Override
-	public MessageI path(Path path) {
+	public MessageI path(NameSpace path) {
 		//
 		if (path == null) {
 			this.setHeader(HK_PATH, null);//

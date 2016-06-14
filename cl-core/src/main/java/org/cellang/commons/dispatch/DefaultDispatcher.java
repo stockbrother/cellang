@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.commons.lang.Handler;
-import org.cellang.commons.lang.Path;
+import org.cellang.commons.lang.NameSpace;
 import org.cellang.commons.lang.Tree;
 import org.cellang.commons.lang.Tree.Node;
 import org.cellang.core.lang.CollectionHandler;
@@ -17,11 +17,11 @@ public class DefaultDispatcher<T> implements Dispatcher<T> {
 
 		protected List<HandlerEntry<T>> handlers = new ArrayList<HandlerEntry<T>>();
 
-		public void addHandler(Path p, boolean strict, Handler<T> h) {
+		public void addHandler(NameSpace p, boolean strict, Handler<T> h) {
 			this.handlers.add(new HandlerEntry<T>(p, strict, h));
 		}
 
-		public int handle(Path p, T sc) {
+		public int handle(NameSpace p, T sc) {
 			int rt = 0;
 			for (HandlerEntry<T> h : handlers) {
 				boolean hs = h.tryHandle(p, sc);
@@ -38,19 +38,19 @@ public class DefaultDispatcher<T> implements Dispatcher<T> {
 
 	private static class HandlerEntry<T> {
 
-		private Path path;
+		private NameSpace path;
 
 		private boolean strict;
 
 		private Handler<T> target;
 
-		public HandlerEntry(Path p, boolean strict, Handler<T> h) {
+		public HandlerEntry(NameSpace p, boolean strict, Handler<T> h) {
 			this.path = p;
 			this.strict = strict;
 			this.target = h;
 		}
 
-		public boolean tryHandle(Path p, T sc) {
+		public boolean tryHandle(NameSpace p, T sc) {
 			if (this.strict && p.equals(this.path) || !this.strict && path.isSubPath(p, true)) {
 				this.target.handle(sc);
 				return true;
@@ -73,7 +73,7 @@ public class DefaultDispatcher<T> implements Dispatcher<T> {
 	}
 
 	@Override
-	public void dispatch(Path p, T ctx) {
+	public void dispatch(NameSpace p, T ctx) {
 
 		List<PathEntryHandler<T>> chL = this.tree.getTargetListInPath(p);
 		int count = 0;
@@ -95,12 +95,12 @@ public class DefaultDispatcher<T> implements Dispatcher<T> {
 	}
 
 	@Override
-	public void addHandler(Path p, Handler<T> h) {
+	public void addHandler(NameSpace p, Handler<T> h) {
 		this.addHandler(p, false, h);
 	}
 
 	@Override
-	public void addHandler(Path p, boolean strict, Handler<T> h) {
+	public void addHandler(NameSpace p, boolean strict, Handler<T> h) {
 		Node<PathEntryHandler<T>> node = this.tree.getOrCreateNode(p);
 		PathEntryHandler<T> cl = node.getTarget();
 		if (cl == null) {
