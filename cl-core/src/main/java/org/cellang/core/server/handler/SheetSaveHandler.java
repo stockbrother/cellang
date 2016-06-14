@@ -3,12 +3,10 @@
  */
 package org.cellang.core.server.handler;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.core.Property;
 import org.cellang.core.lang.HasProperties;
-import org.cellang.core.lang.MapProperties;
+import org.cellang.core.rowobject.SheetRowObject;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.elastictable.TableService;
@@ -19,15 +17,15 @@ import org.slf4j.LoggerFactory;
  * @author wu
  * 
  */
-public class PropertyGetHandler extends AbstracHandler {
+public class SheetSaveHandler extends AbstracHandler {
 
-	private static Logger LOG = LoggerFactory.getLogger(PropertyGetHandler.class);
+	private static Logger LOG = LoggerFactory.getLogger(SheetSaveHandler.class);
 
 	// protected ConfirmCodeNotifierI confirmCodeNotifier;
 
 	// protected boolean isNeedConfirm = false;
 
-	public PropertyGetHandler(TableService ts) {
+	public SheetSaveHandler(TableService ts) {
 		super(ts);
 		/*
 		 * ValidatorI<MessageI> vl = this.createValidator("submit");
@@ -42,18 +40,17 @@ public class PropertyGetHandler extends AbstracHandler {
 	// create anonymous account.
 	@Override
 	public void handle(MessageContext hc) {
-		String owner = (String) hc.getRequestMessage().getPayload("owner");
-		int max = 10000;
-		List<Property> pl = this.tableService.getListNewestFirst(Property.class, Property.OWNER, owner, 0, max);
-		if (pl.size() == max) {
-			LOG.warn("max window is met,data retuned may not complete.");//
-		}
-		List<HasProperties<Object>> rt = new ArrayList<HasProperties<Object>>();
-		for (Property p : pl) {
-			HasProperties<Object> pI = p.getTarget();
-			rt.add(pI);//
-		}
-		hc.getResponseMessage().setPayload(rt);//
+		HasProperties<Object> p = (HasProperties<Object>) hc.getRequestMessage().getPayload();
+
+		String owner = (String) p.getProperty("owner", true);
+		String name = (String) p.getProperty("name", true);
+		List<List<String>> cellTable = (List<List<String>>) p.getProperty("cellTable");
+		SheetRowObject an = new SheetRowObject().forCreate(this.tableService);
+		an.setOwner(owner);
+		an.setName(name);
+		
+		an.save(true);
+
 	}
 	/**
 	 * <code> 

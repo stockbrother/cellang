@@ -1,7 +1,7 @@
 package org.cellang.core.server.handler;
 
 import org.cellang.commons.ObjectUtil;
-import org.cellang.core.Account;
+import org.cellang.core.rowobject.AccountRowObject;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.elastictable.TableService;
@@ -17,7 +17,7 @@ public class LoginHandler extends AbstracHandler {
 
 		String email = mc.getRequestMessage().getString("email", true);
 		String passWd = mc.getRequestMessage().getString("password", true);
-		Account acc = this.tableService.getNewestById(Account.class, email, false);
+		AccountRowObject acc = this.tableService.getNewestById(AccountRowObject.class, email, false);
 
 		if (acc == null) {
 			mc.getResponseMessage().getErrorInfos().addError("user-or-password/not-found");

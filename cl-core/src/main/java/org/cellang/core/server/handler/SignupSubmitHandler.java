@@ -5,7 +5,7 @@ package org.cellang.core.server.handler;
 
 import java.util.UUID;
 
-import org.cellang.core.Account;
+import org.cellang.core.rowobject.AccountRowObject;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.elastictable.TableService;
@@ -42,12 +42,12 @@ public class SignupSubmitHandler extends AbstracHandler {
 		String email = hc.getRequestMessage().getString("email");
 		String nick = hc.getRequestMessage().getString("nick");
 		String password = hc.getRequestMessage().getString("password");
-		Account an = new Account().forCreate(this.tableService);
+		AccountRowObject an = new AccountRowObject().forCreate(this.tableService);
 		an.setId(email);// email as the id?
 		an.setEmail(email);//
 		an.setPassword(password);
 		an.setNick(nick);
-		an.setType(Account.TYPE_REGISTERED);
+		an.setType(AccountRowObject.TYPE_REGISTERED);
 		an.save(true);
 	}
 	/**

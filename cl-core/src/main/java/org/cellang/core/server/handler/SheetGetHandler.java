@@ -3,11 +3,13 @@
  */
 package org.cellang.core.server.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.core.Account;
-import org.cellang.core.Property;
 import org.cellang.core.lang.HasProperties;
+import org.cellang.core.lang.MapProperties;
+import org.cellang.core.rowobject.CellRowObject;
+import org.cellang.core.rowobject.SheetRowObject;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.elastictable.TableService;
@@ -18,15 +20,15 @@ import org.slf4j.LoggerFactory;
  * @author wu
  * 
  */
-public class PropertySaveHandler extends AbstracHandler {
+public class SheetGetHandler extends AbstracHandler {
 
-	private static Logger LOG = LoggerFactory.getLogger(PropertySaveHandler.class);
+	private static Logger LOG = LoggerFactory.getLogger(SheetGetHandler.class);
 
 	// protected ConfirmCodeNotifierI confirmCodeNotifier;
 
 	// protected boolean isNeedConfirm = false;
 
-	public PropertySaveHandler(TableService ts) {
+	public SheetGetHandler(TableService ts) {
 		super(ts);
 		/*
 		 * ValidatorI<MessageI> vl = this.createValidator("submit");
@@ -41,19 +43,24 @@ public class PropertySaveHandler extends AbstracHandler {
 	// create anonymous account.
 	@Override
 	public void handle(MessageContext hc) {
-		List<HasProperties<Object>> pL = (List<HasProperties<Object>>) hc.getRequestMessage().getPayload();
-		for (HasProperties<Object> p : pL) {
+		String sheetId = (String) hc.getRequestMessage().getPayload("sheetId", true);
+		int maxSize = 10000;
+		SheetRowObject rtR = this.tableService.getNewestById(SheetRowObject.class, sheetId, false);
+		List<HasProperties<Object>> rt = new ArrayList<HasProperties<Object>>();
 
-			String owner = (String) p.getProperty("owner", true);
-			String key = (String) p.getProperty("key", true);
-			Object value = (Object) p.getProperty("value", true);
+		if (rtR != null) {
+			HasProperties<Object> rt0 = new MapProperties<Object>();
+			rt0.setProperties(rtR.getTarget());
 
-			Property an = new Property().forCreate(this.tableService);
-			an.setOwner(owner);
-			an.setKey(key);
-			an.setValue(value);//
-			an.save(true);
+			List<CellRowObject> cll = this.tableService.getListNewestFirst(CellRowObject.class, CellRowObject.SHEETID,
+					sheetId, 0, maxSize);
+			List<List<String>> cellTable = new ArrayList<List<String>>();
+
+			rt0.setProperty("cellTable", cellTable);//
+			rt.add(rt0);//
 		}
+		hc.getResponseMessage().setPayload(rt);//
+
 	}
 	/**
 	 * <code> 

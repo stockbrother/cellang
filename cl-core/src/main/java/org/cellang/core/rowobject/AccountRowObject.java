@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 28, 2012
  */
-package org.cellang.core;
+package org.cellang.core.rowobject;
 
 import org.cellang.elastictable.RowObject;
 import org.cellang.elastictable.meta.DataSchema;
@@ -11,7 +11,7 @@ import org.cellang.elastictable.meta.DataSchema;
  * @author wu
  * 
  */
-public class Account extends RowObject {
+public class AccountRowObject extends RowObject {
 
 	public static final String EMAIL = "email";
 
@@ -30,12 +30,12 @@ public class Account extends RowObject {
 	/**
 	 * @param pts
 	 */
-	public Account() {
-		super(NodeTypes.ACCOUNT);
+	public AccountRowObject() {
+		super(RowObjectTypes.ACCOUNT);
 	}
 
 	public static void config(DataSchema cfs) {
-		cfs.addConfig(NodeTypes.ACCOUNT, Account.class).field(EMAIL).field(PASSWORD).field(NICK).field(TYPE);
+		cfs.addConfig(RowObjectTypes.ACCOUNT, AccountRowObject.class).field(EMAIL).field(PASSWORD).field(NICK).field(TYPE);
 
 	}
 

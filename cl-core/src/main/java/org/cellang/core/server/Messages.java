@@ -15,9 +15,11 @@ public class Messages {
 	
 	public static final NameSpace LOGIN_REQ = NameSpace.valueOf("login.submit.request");
 	
-	public static final NameSpace PROPERTY_SAVE_REQ = NameSpace.valueOf("property.save.request");
+	public static final NameSpace SHEET_SAVE_REQ = NameSpace.valueOf("sheet.save.request");
 	
-	public static final NameSpace PROPERTY_GET_REQ = NameSpace.valueOf("property.get.request");
+	public static final NameSpace SHEET_GET_REQ = NameSpace.valueOf("sheet.get.request");
+	
+	public static final NameSpace SHEET_LIST_REQ = NameSpace.valueOf("sheet.list.request");
 	
 	public static final NameSpace SIGNUP_REQ = NameSpace.valueOf("signup.submit").getSubPath("request");
 
