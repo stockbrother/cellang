@@ -54,6 +54,9 @@ public class DataSchema {
 		if (this.getNodeConfig(ntype, false) != null) {
 			throw new RuntimeException("already exist config for type:" + ntype);
 		}
+		if (this.getNodeConfig(wcls, false) != null) {
+			throw new RuntimeException("already exist config for wcls:" + wcls);
+		}
 
 		this.nodeCofigMap.put(ntype, nm);
 		this.nodeCofigMap2.put(wcls, nm);

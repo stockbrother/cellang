@@ -32,16 +32,16 @@ public interface TableService {
 	public <T extends TableOperation> T prepareOperation(Class<T> opc);
 
 	public <W extends RowObject> NodeCountOperationI<W> prepareNodeCount(Class<W> cls);
-	
+
 	public <W extends RowObject> NodeSearchOperationI<W> prepareNodeSearch(Class<W> cls);
 
 	public <W extends RowObject> NodeSearchOperationI<W> prepareNodeSearch(String type);
 
-	public <T extends RowObject> List<T> getListNewestFirst(Class<T> wpcls, String[] fields,
-			Object[] value, int from, int maxSize);
+	public <T extends RowObject> List<T> getListNewestFirst(Class<T> wpcls, String[] fields, Object[] value, int from,
+			int maxSize);
 
-	public <T extends RowObject> List<T> getListNewestFirst(Class<T> wpcls, String fields, Object value,
-			int from, int maxSize);
+	public <T extends RowObject> List<T> getListNewestFirst(Class<T> wpcls, String fields, Object value, int from,
+			int maxSize);
 
 	// TODO remove
 	public <T extends RowObject> T getByUid(Class<T> wpcls, String uid, boolean force);
@@ -55,13 +55,15 @@ public interface TableService {
 
 	public <T extends RowObject> T getNewest(Class<T> wpcls, String[] field, Object[] value, boolean force);
 
-	public <T extends TableOperation> void registerOperation(String name, Class<T> itfCls,
-			Class<? extends T> impCls);
+	public <T extends TableOperation> void registerOperation(String name, Class<T> itfCls, Class<? extends T> impCls);
 
+	/**
+	 * If not refresh, the newly saved data may not query-able.
+	 */
 	public void refresh();
 
 	public <T extends RowObject> boolean deleteByUid(Class<T> wpcls, String uid);
-	
+
 	public <T extends RowObject> boolean updateByUid(Class<T> wpcls, String uid, String field, Object value);
 
 	public <T extends RowObject> boolean updateByUid(Class<T> wpcls, String uid, String[] fields, Object[] values);

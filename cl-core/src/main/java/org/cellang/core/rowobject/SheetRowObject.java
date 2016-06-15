@@ -9,6 +9,10 @@ public class SheetRowObject extends RowObject {
 
 	public static final String NAME = "name";
 
+	public static final String FIRSTROWID = "firstRowId";
+
+	public static final String FIRSTCOLID = "firstColId";
+
 	/**
 	 * @param pts
 	 */
@@ -17,7 +21,8 @@ public class SheetRowObject extends RowObject {
 	}
 
 	public static void config(DataSchema cfs) {
-		cfs.addConfig(RowObjectTypes.SHEET, SheetRowObject.class).field(OWNER).field(NAME);
+		cfs.addConfig(RowObjectTypes.SHEET, SheetRowObject.class).field(OWNER).field(NAME).field(FIRSTROWID)
+				.field(FIRSTCOLID);
 	}
 
 	public void setOwner(String Owner) {
@@ -30,6 +35,22 @@ public class SheetRowObject extends RowObject {
 
 	public void setName(String password) {
 		this.setProperty(NAME, password);
+	}
+
+	public String getFirstRowId() {
+		return (String) this.getProperty(FIRSTROWID);
+	}
+
+	public String getFirstColId() {
+		return (String) this.getProperty(FIRSTCOLID);
+	}
+
+	public void setFirstRowId(String password) {
+		this.setProperty(FIRSTROWID, password);
+	}
+
+	public void setFirstColId(String password) {
+		this.setProperty(FIRSTCOLID, password);
 	}
 
 	public String getName() {

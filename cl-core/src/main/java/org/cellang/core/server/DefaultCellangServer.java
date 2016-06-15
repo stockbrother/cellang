@@ -60,24 +60,13 @@ public class DefaultCellangServer implements MessageServer {
 	@Override
 	public void start() {
 		LOG.info("start... with home:" + this.home.getAbsolutePath());
-		this.esServer = new EmbeddedESServer(home.getAbsolutePath());
-
-		DataSchema sa = DataSchema.newInstance();
-		AccountRowObject.config(sa);
-		CellRowObject.config(sa);//
-		ColumnRowObject.config(sa);
-		RowRowObject.config(sa);
-		SheetRowObject.config(sa);//
-
-		this.tableService = ElasticTableBuilder.newInstance()
-				.metaInfo(MetaInfo.newInstance()//
-						.owner("test")//
-						.version("0.0.1-SNAPSHOT")//
-						.password("none"))
-				.schema(sa).client(this.esServer.getClient())//
-				.build();//
+		this.doStartTableService();
 
 		this.serverContext = new ServerContext();
+
+		// TODO handler should be state-less and dispatcher should be removed.
+		// each message should be self process-able when the context is ready.
+
 		this.dispatcher = new DefaultDispatcher<MessageContext>();
 		this.dispatcher.addDefaultHandler(new Handler<MessageContext>() {
 
@@ -97,10 +86,30 @@ public class DefaultCellangServer implements MessageServer {
 		this.dispatcher.addHandler(Messages.SHEET_SAVE_REQ, new SheetSaveHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.SHEET_LIST_REQ, new SheetListHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.SHEET_GET_REQ, new SheetGetHandler(this.tableService));
-				
+
 		this.executor = Executors.newCachedThreadPool();
 		this.running = true;
 		LOG.info("stared with home:" + this.home.getAbsolutePath());
+	}
+
+	private void doStartTableService() {
+		this.esServer = new EmbeddedESServer(home.getAbsolutePath());
+
+		DataSchema sa = DataSchema.newInstance();
+		AccountRowObject.config(sa);
+		CellRowObject.config(sa);//
+		ColumnRowObject.config(sa);
+		RowRowObject.config(sa);
+		SheetRowObject.config(sa);//
+
+		this.tableService = ElasticTableBuilder.newInstance()
+				.metaInfo(MetaInfo.newInstance()//
+						.owner("test")//
+						.version("0.0.1-SNAPSHOT")//
+						.password("none"))
+				.schema(sa).client(this.esServer.getClient())//
+				.build();//
+
 	}
 
 	@Override

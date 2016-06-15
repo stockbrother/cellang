@@ -34,12 +34,14 @@ public class SheetTest extends TestCase {
 
 			String sheetName = "sheet1";
 			String sheetOwner = "owner1";
+			int rows = 4;
+			int cols = 3;
 			String[] row0 = new String[] { "00", "01", "02" };
 			String[] row1 = new String[] { "10", "11", "12" };
 			String[] row2 = new String[] { "20", "21", "22" };
 			String[] row3 = new String[] { "30", "31", "32" };
 
-			{
+			{// save a sheet
 
 				MessageI msg = MessageSupport.newMessage(Messages.SHEET_SAVE_REQ);
 
@@ -49,10 +51,11 @@ public class SheetTest extends TestCase {
 				cll.add(Arrays.asList(row2));
 				cll.add(Arrays.asList(row3));
 
-
 				HasProperties<Object> sheet = new MapProperties<Object>();
 				sheet.setProperty("owner", sheetOwner);//
 				sheet.setProperty("name", sheetName);//
+				sheet.setProperty("rows", rows);//
+				sheet.setProperty("cols", cols);//
 				sheet.setProperty("cellTable", cll);
 				msg.setPayload(sheet);
 				MessageI rmsg = server.process(msg);
@@ -61,7 +64,7 @@ public class SheetTest extends TestCase {
 				rmsg.assertNoError();
 			}
 			String sheetId = null;
-			{
+			{// list all sheet
 				MessageI msg = MessageSupport.newMessage(Messages.SHEET_LIST_REQ);
 				msg.setPayload("owner", sheetOwner);
 				MessageI res = server.process(msg);
@@ -73,7 +76,7 @@ public class SheetTest extends TestCase {
 				sheetId = (String) sl.get(0).getProperty(TableRow.PK_ID);
 				Assert.assertNotNull(sheetId);//
 			}
-			{
+			{// get a sheet by id.
 				MessageI msg = MessageSupport.newMessage(Messages.SHEET_GET_REQ);
 				msg.setPayload("sheetId", sheetId);
 
@@ -86,14 +89,14 @@ public class SheetTest extends TestCase {
 				Assert.assertEquals(1, pl.size());
 				Assert.assertEquals(sheetOwner, pl.get(0).getProperty("owner"));
 				Assert.assertEquals(sheetName, pl.get(0).getProperty("name"));
-				List<List<String>> cll = (List<List<String>>)pl.get(0).getProperty("cellTable");
+				List<List<String>> cll = (List<List<String>>) pl.get(0).getProperty("cellTable");
 				Assert.assertNotNull(cll);
 				Assert.assertEquals(4, cll.size());
 				Assert.assertArrayEquals(row0, cll.get(0).toArray(new String[0]));
 				Assert.assertArrayEquals(row1, cll.get(1).toArray(new String[0]));
 				Assert.assertArrayEquals(row2, cll.get(2).toArray(new String[0]));
 				Assert.assertArrayEquals(row3, cll.get(3).toArray(new String[0]));
-				
+
 			}
 			// login
 

@@ -3,13 +3,18 @@
  */
 package org.cellang.core.server.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.core.lang.HasProperties;
+import org.cellang.core.rowobject.CellRowObject;
+import org.cellang.core.rowobject.ColumnRowObject;
+import org.cellang.core.rowobject.RowRowObject;
 import org.cellang.core.rowobject.SheetRowObject;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.elastictable.TableService;
+import org.cellang.elastictable.elasticsearch.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,14 +47,86 @@ public class SheetSaveHandler extends AbstracHandler {
 	public void handle(MessageContext hc) {
 		HasProperties<Object> p = (HasProperties<Object>) hc.getRequestMessage().getPayload();
 
+		String sheetId = UUIDUtil.randomStringUUID();
+		String firstRowId = UUIDUtil.randomStringUUID();
+		String firstColId = UUIDUtil.randomStringUUID();
+
 		String owner = (String) p.getProperty("owner", true);
 		String name = (String) p.getProperty("name", true);
+		int rows = (Integer) p.getProperty("rows", true);
+		int cols = (Integer) p.getProperty("cols", true);
+
 		List<List<String>> cellTable = (List<List<String>>) p.getProperty("cellTable");
 		SheetRowObject an = new SheetRowObject().forCreate(this.tableService);
+		an.setId(sheetId);
 		an.setOwner(owner);
 		an.setName(name);
-		
+		an.setFirstRowId(firstRowId);
+		an.setFirstColId(firstColId);		
+
 		an.save(true);
+
+		//
+		List<RowRowObject> rroL = new ArrayList<RowRowObject>();
+		List<ColumnRowObject> croL = new ArrayList<ColumnRowObject>();
+		RowRowObject preR = null;
+		for (int r = 0; r < rows; r++) {
+
+			RowRowObject rro = new RowRowObject().forCreate(this.tableService);
+			if (r == 0) {
+				rro.setId(firstRowId);
+			} else {
+				rro.setId(UUIDUtil.randomStringUUID());
+			}
+
+			rro.setSheetId(sheetId);
+			rroL.add(rro);
+			if (preR != null) {
+				preR.setNextRowId(rro.getId());
+				preR.save();
+			}
+			preR = rro;
+		}
+		preR.setNextRowId(firstRowId);
+		preR.save();
+
+		ColumnRowObject preC = null;
+		for (int c = 0; c < cols; c++) {
+
+			ColumnRowObject cro = new ColumnRowObject().forCreate(this.tableService);
+			if (c == 0) {
+				cro.setId(firstColId);
+			} else {
+				cro.setId(UUIDUtil.randomStringUUID());
+			}
+			cro.setSheetId(sheetId);
+			croL.add(cro);
+			if (preC != null) {
+				preC.setNextColId(cro.getId());
+				preC.save();
+			}
+			preC = cro;
+
+		}
+		preC.setNextColId(firstColId);//
+		preC.save();
+
+		for (int r = 0; r < rows; r++) {
+
+			RowRowObject rro = rroL.get(r);
+
+			for (int c = 0; c < cols; c++) {
+				String value = cellTable.get(r).get(c);
+				ColumnRowObject cro = croL.get(c);
+				CellRowObject cell = new CellRowObject().forCreate(tableService);
+				cell.setSheetId(sheetId);//
+				cell.setColId(cro.getId());
+				cell.setRowId(rro.getId());
+				cell.setValue(value);
+				cell.save();
+			}
+		}
+		this.tableService.refresh();
 
 	}
 	/**

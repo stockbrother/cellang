@@ -30,6 +30,7 @@ public class RowObject extends PropertiesWrapper<Object, HasProperties<Object>> 
 	protected NodeCreateOperationI createOperation;
 
 	protected static Set<String> PK_SYSTEM = new HashSet<String>();
+
 	static {
 		PK_SYSTEM.add(TableRow.PK_ID);
 		PK_SYSTEM.add(TableRow.PK_TIMESTAMP);
@@ -57,7 +58,6 @@ public class RowObject extends PropertiesWrapper<Object, HasProperties<Object>> 
 		return (T) this;
 
 	}
-	
 
 	public void validate(NodeMeta nc, ErrorInfos rt) {
 		List<String> kl = this.target.keyList();// actual data
@@ -91,7 +91,6 @@ public class RowObject extends PropertiesWrapper<Object, HasProperties<Object>> 
 		this.attachTo(pts);
 	}
 
-
 	public <T extends PropertiesWrapper<Object, HasProperties<Object>>> T attachTo(HasProperties<Object> pts,
 			TableService dataService) {
 
@@ -117,6 +116,10 @@ public class RowObject extends PropertiesWrapper<Object, HasProperties<Object>> 
 		super.attachTo(pts);//
 
 		return (T) this;
+	}
+
+	public void setUniqueId(String uid) {
+		this.target.setProperty(TableRow.PK_UNIQUE_ID, uid);//
 	}
 
 	public String getUniqueId() {

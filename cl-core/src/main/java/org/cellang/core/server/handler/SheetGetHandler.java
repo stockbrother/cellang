@@ -4,11 +4,15 @@
 package org.cellang.core.server.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.cellang.core.lang.HasProperties;
 import org.cellang.core.lang.MapProperties;
 import org.cellang.core.rowobject.CellRowObject;
+import org.cellang.core.rowobject.ColumnRowObject;
+import org.cellang.core.rowobject.RowRowObject;
 import org.cellang.core.rowobject.SheetRowObject;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
@@ -49,18 +53,78 @@ public class SheetGetHandler extends AbstracHandler {
 		List<HasProperties<Object>> rt = new ArrayList<HasProperties<Object>>();
 
 		if (rtR != null) {
+
 			HasProperties<Object> rt0 = new MapProperties<Object>();
 			rt0.setProperties(rtR.getTarget());
 
+			List<RowRowObject> rroL = this.tableService.getListNewestFirst(RowRowObject.class, RowRowObject.SHEETID,
+					sheetId, 0, maxSize);
+
+			List<ColumnRowObject> croL = this.tableService.getListNewestFirst(ColumnRowObject.class,
+					ColumnRowObject.SHEETID, sheetId, 0, maxSize);
+
+			rroL = this.sortRow(rtR.getFirstRowId(), rroL);
+			croL = this.sortCol(rtR.getFirstColId(), croL);
+
 			List<CellRowObject> cll = this.tableService.getListNewestFirst(CellRowObject.class, CellRowObject.SHEETID,
 					sheetId, 0, maxSize);
-			List<List<String>> cellTable = new ArrayList<List<String>>();
 
+			List<List<String>> cellTable = new ArrayList<List<String>>();
+			for (int i = 0; i < rroL.size(); i++) {
+				List<String> row = new ArrayList<String>();
+				for (int j = 0; j < croL.size(); j++) {
+					row.add("" + i + "" + j);
+				}
+				cellTable.add(row);
+			}
 			rt0.setProperty("cellTable", cellTable);//
 			rt.add(rt0);//
 		}
 		hc.getResponseMessage().setPayload(rt);//
 
+	}
+
+	// Sort by nextRowId
+	private List<RowRowObject> sortRow(String firstRowId, List<RowRowObject> rroL) {
+		Map<String, RowRowObject> map = new HashMap<String, RowRowObject>();
+		for (int i = 0; i < rroL.size(); i++) {
+			RowRowObject rro = rroL.get(i);
+			map.put(rro.getId(), rro);
+		}
+		List<RowRowObject> rt = new ArrayList<RowRowObject>();
+		String rid = firstRowId;
+		while (true) {
+			RowRowObject next = map.get(rid);
+			if (next == null) {
+				throw new RuntimeException("not found row,rid:" + rid + ",all:" + map);
+			}
+			rt.add(next);
+			rid = next.getNextRowId();
+			if (firstRowId.equals(rid)) {//
+				break;
+			}
+		}
+		return rt;
+	}
+
+	// Sort by nextColId
+	private List<ColumnRowObject> sortCol(String firstId, List<ColumnRowObject> rroL) {
+		Map<String, ColumnRowObject> map = new HashMap<String, ColumnRowObject>();
+		for (int i = 0; i < rroL.size(); i++) {
+			ColumnRowObject rro = rroL.get(i);
+			map.put(rro.getId(), rro);
+		}
+		List<ColumnRowObject> rt = new ArrayList<ColumnRowObject>();
+		String rid = firstId;
+		while (true) {// TODO deadlock
+			ColumnRowObject next = map.get(rid);
+			rt.add(next);
+			rid = next.getNextColId();
+			if (firstId.equals(rid)) {
+				break;
+			}
+		}
+		return rt;
 	}
 	/**
 	 * <code> 

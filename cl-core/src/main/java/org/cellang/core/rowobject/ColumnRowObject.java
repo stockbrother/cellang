@@ -13,7 +13,7 @@ public class ColumnRowObject extends RowObject {
 	}
 
 	public static void config(DataSchema cfs) {
-		cfs.addConfig(RowObjectTypes.COL, RowRowObject.class).field(SHEETID).field(NEXTCOLID);
+		cfs.addConfig(RowObjectTypes.COL, ColumnRowObject.class).field(SHEETID).field(NEXTCOLID);
 	}
 
 	public void setSheetId(String value) {
