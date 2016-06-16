@@ -53,8 +53,11 @@ public class DefaultCellangServer implements MessageServer {
 
 	private File home;
 
-	public DefaultCellangServer(File home) {
+	private ChannelProvider channelProvider;
+
+	public DefaultCellangServer(File home, ChannelProvider cp) {
 		this.home = home;
+		this.channelProvider = cp;
 	}
 
 	@Override
@@ -80,7 +83,6 @@ public class DefaultCellangServer implements MessageServer {
 		});
 		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.REQ_CLIENT_INIT, new ClientInitHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.AUTH_REQ, new LoginHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.SIGNUP_REQ, new SignupSubmitHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.LOGIN_REQ, new LoginHandler(this.tableService));
 		this.dispatcher.addHandler(Messages.SHEET_SAVE_REQ, new SheetSaveHandler(this.tableService));
@@ -121,12 +123,14 @@ public class DefaultCellangServer implements MessageServer {
 	}
 
 	@Override
-	public MessageI process(MessageI req) {
-		return process(req, null);
+	public void process(MessageI req) {
+		String cid = req.getChannelId();
+		Channel c = this.channelProvider.getChannel(cid);
+		process(req, c);
 	}
 
 	@Override
-	public MessageI process(MessageI req, Channel channel) {
+	public void process(MessageI req, Channel channel) {
 		NameSpace p = req.getPath();
 		NameSpace p2 = NameSpace.valueOf(p.getParent(), "response");
 		MessageI res = MessageSupport.newMessage(p2);
@@ -139,7 +143,6 @@ public class DefaultCellangServer implements MessageServer {
 			res.getErrorInfos().add(new ErrorInfo(t));
 			LOG.error("add error to response for request message:" + req, t);
 		}
-		return res;
 	}
 
 	protected void doService(final MessageContext mc) {
@@ -164,6 +167,8 @@ public class DefaultCellangServer implements MessageServer {
 			} catch (ExecutionException e) {
 				throw ExceptionUtil.toRuntimeException(e.getCause());//
 			}
+			MessageI res = mc.getResponseMessage();
+			mc.getChannel().sendMessage(res);//
 		} finally {
 			mc.setServerContext(null);//
 		}

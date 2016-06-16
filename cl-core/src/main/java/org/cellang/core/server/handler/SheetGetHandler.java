@@ -25,6 +25,56 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class SheetGetHandler extends AbstracHandler {
+	private static class Tuple2<A, B> {
+		public A a;
+		public B b;
+
+		public Tuple2(A a, B b) {
+			this.a = a;
+			this.b = b;
+		}
+
+		@Override
+		public int hashCode() {
+			return this.a.hashCode() + this.b.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (!(obj instanceof Tuple2)) {
+				return false;
+			}
+			Tuple2<A, B> tab = (Tuple2<A, B>) obj;
+
+			return tab.a.equals(a) && tab.b.equals(b);
+		}
+
+	}
+
+	private static class CellTableData {// TODO use a index tree.
+
+		private Map<Tuple2<String, String>, CellRowObject> map = new HashMap<Tuple2<String, String>, CellRowObject>();
+
+		public static CellTableData valueOf(List<CellRowObject> cells) {
+			CellTableData rt = new CellTableData();
+
+			for (CellRowObject cr : cells) {
+				Tuple2<String, String> key = new Tuple2<String, String>(cr.getRowId(), cr.getColId());
+				CellRowObject old = rt.map.put(key, cr);
+				if (old != null) {
+					// duplicated?
+				}
+			}
+
+			return rt;
+
+		}
+
+		public CellRowObject getCell(String row, String col) {
+			return map.get(new Tuple2<String, String>(row, col));
+		}
+
+	}
 
 	private static Logger LOG = LoggerFactory.getLogger(SheetGetHandler.class);
 
@@ -68,12 +118,15 @@ public class SheetGetHandler extends AbstracHandler {
 
 			List<CellRowObject> cll = this.tableService.getListNewestFirst(CellRowObject.class, CellRowObject.SHEETID,
 					sheetId, 0, maxSize);
+			CellTableData cells = CellTableData.valueOf(cll);
 
 			List<List<String>> cellTable = new ArrayList<List<String>>();
 			for (int i = 0; i < rroL.size(); i++) {
 				List<String> row = new ArrayList<String>();
 				for (int j = 0; j < croL.size(); j++) {
-					row.add("" + i + "" + j);
+					CellRowObject cellx = cells.getCell(rroL.get(i).getId(), croL.get(j).getId());
+					row.add(cellx.getValue());
+
 				}
 				cellTable.add(row);
 			}

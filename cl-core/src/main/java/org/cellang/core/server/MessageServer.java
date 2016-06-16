@@ -6,9 +6,9 @@ public interface MessageServer {
 
 	public void start();
 
-	public MessageI process(MessageI req);
+	public void process(MessageI req);
 
-	public MessageI process(MessageI req, Channel channel);
+	public void process(MessageI req, Channel channel);
 
 	public void shutdown();
 

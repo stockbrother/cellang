@@ -11,8 +11,6 @@ public class Messages {
 
 	public static final NameSpace RES_CLIENT_INIT_SUCCESS = NameSpace.valueOf("client.init.success");
 
-	public static final NameSpace AUTH_REQ = NameSpace.valueOf("auth.submit.request");
-	
 	public static final NameSpace LOGIN_REQ = NameSpace.valueOf("login.submit.request");
 	
 	public static final NameSpace SHEET_SAVE_REQ = NameSpace.valueOf("sheet.save.request");

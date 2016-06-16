@@ -37,7 +37,7 @@ public interface MessageI {
 	public static final String HK_ERROR_PROCESSOR = "_eprocessor";
 
 	// when this message is processed, the result send to this address.
-	public static final String HK_RESPONSE_ADDRESS = "_resonse_address";
+	public static final String HK_CHANNEL = "_channel";
 
 	public static final String PK_DEFAULT = "_default";
 
@@ -54,8 +54,10 @@ public interface MessageI {
 	public NameSpace getPath();
 
 	public String getId();
+	
+	public void setChannelId(String cid);
 
-	public String getResponseAddress();
+	public String getChannelId();
 
 	public boolean isSilence();
 

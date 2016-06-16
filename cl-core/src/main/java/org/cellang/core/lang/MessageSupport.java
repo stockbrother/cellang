@@ -311,14 +311,14 @@ public class MessageSupport implements MessageI {
 		return this.getHeader(HK_SOURCE_ID);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.commons.api.message.MessageI#getResponseAddress()
-	 */
 	@Override
-	public String getResponseAddress() {
-		return this.getHeader(HK_RESPONSE_ADDRESS);
+	public void setChannelId(String cid) {
+		this.setHeader(HK_CHANNEL, cid);
+	}
+
+	@Override
+	public String getChannelId() {
+		return this.getHeader(HK_CHANNEL);
 	}
 
 	/*

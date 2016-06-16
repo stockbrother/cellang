@@ -9,6 +9,8 @@ import org.cellang.core.server.MessageServer;
 import org.cellang.core.server.DefaultCellangServer;
 import org.cellang.core.server.MessageContext;
 import org.cellang.core.server.Messages;
+import org.cellang.core.server.QueueChannelProvider;
+import org.cellang.core.server.QueueChannelProvider.QueueChannel;
 import org.cellang.core.util.FileUtil;
 
 import junit.framework.Assert;
@@ -19,8 +21,9 @@ public class SignupTest extends TestCase {
 	public void test() {
 
 		File home = FileUtil.createTempDir("cl-test-home");
-
-		MessageServer server = new DefaultCellangServer(home);
+		QueueChannelProvider queuep = new QueueChannelProvider();
+		QueueChannel qc = queuep.createChannel();
+		MessageServer server = new DefaultCellangServer(home, queuep);
 		server.start();
 
 		try {
@@ -30,23 +33,27 @@ public class SignupTest extends TestCase {
 			{
 
 				MessageI msg = MessageSupport.newMessage(Messages.SIGNUP_REQ);
+				msg.setChannelId(qc.getId());
 				msg.setPayload("email", email);
 				msg.setPayload("password", password);
 				msg.setPayload("nick", nick);
 
-				MessageI rmsg = server.process(msg);
+				server.process(msg);
+				MessageI rmsg = qc.queue.poll();
 
 				Assert.assertNotNull(rmsg);
 				rmsg.assertNoError();
 			}
 			{
 				MessageI msg = MessageSupport.newMessage(Messages.LOGIN_REQ);
-				msg.setPayload("email",email);
-				msg.setPayload("password",password);
-				MessageI res = server.process(msg);
+				msg.setChannelId(qc.getId());
+				msg.setPayload("email", email);
+				msg.setPayload("password", password);
+				server.process(msg);
+				MessageI res = qc.queue.poll();
 				Assert.assertNotNull(res);
 				res.assertNoError();
-				
+
 			}
 			// login
 

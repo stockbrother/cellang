@@ -3,9 +3,7 @@ package org.cellang.server.test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.cellang.core.lang.HasProperties;
 import org.cellang.core.lang.MapProperties;
@@ -15,6 +13,8 @@ import org.cellang.core.rowobject.SheetRowObject;
 import org.cellang.core.server.DefaultCellangServer;
 import org.cellang.core.server.MessageServer;
 import org.cellang.core.server.Messages;
+import org.cellang.core.server.QueueChannelProvider;
+import org.cellang.core.server.QueueChannelProvider.QueueChannel;
 import org.cellang.core.util.FileUtil;
 import org.cellang.elastictable.TableRow;
 import org.junit.Assert;
@@ -26,8 +26,9 @@ public class SheetTest extends TestCase {
 	public void test() {
 
 		File home = FileUtil.createTempDir("cl-test-home");
-
-		MessageServer server = new DefaultCellangServer(home);
+		QueueChannelProvider queuep = new QueueChannelProvider();
+		QueueChannel qc = queuep.createChannel();
+		MessageServer server = new DefaultCellangServer(home, queuep);
 		server.start();
 
 		try {
@@ -44,6 +45,7 @@ public class SheetTest extends TestCase {
 			{// save a sheet
 
 				MessageI msg = MessageSupport.newMessage(Messages.SHEET_SAVE_REQ);
+				msg.setChannelId(qc.getId());
 
 				List<List<String>> cll = new ArrayList<List<String>>();
 				cll.add(Arrays.asList(row0));
@@ -58,7 +60,8 @@ public class SheetTest extends TestCase {
 				sheet.setProperty("cols", cols);//
 				sheet.setProperty("cellTable", cll);
 				msg.setPayload(sheet);
-				MessageI rmsg = server.process(msg);
+				server.process(msg);
+				MessageI rmsg = qc.queue.poll();
 
 				Assert.assertNotNull(rmsg);
 				rmsg.assertNoError();
@@ -66,8 +69,10 @@ public class SheetTest extends TestCase {
 			String sheetId = null;
 			{// list all sheet
 				MessageI msg = MessageSupport.newMessage(Messages.SHEET_LIST_REQ);
+				msg.setChannelId(qc.getId());
 				msg.setPayload("owner", sheetOwner);
-				MessageI res = server.process(msg);
+				server.process(msg);
+				MessageI res = qc.queue.poll(); 
 				res.assertNoError();
 				List<HasProperties<Object>> sl = (List<HasProperties<Object>>) res.getPayload();
 				Assert.assertNotNull(sl);//
@@ -78,9 +83,11 @@ public class SheetTest extends TestCase {
 			}
 			{// get a sheet by id.
 				MessageI msg = MessageSupport.newMessage(Messages.SHEET_GET_REQ);
+				msg.setChannelId(qc.getId());
 				msg.setPayload("sheetId", sheetId);
 
-				MessageI res = server.process(msg);
+				server.process(msg);
+				MessageI res = qc.queue.poll(); 
 				Assert.assertNotNull(res);
 				res.assertNoError();
 
