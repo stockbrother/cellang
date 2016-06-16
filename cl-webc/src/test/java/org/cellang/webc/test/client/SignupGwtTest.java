@@ -1,16 +1,13 @@
 package org.cellang.webc.test.client;
 
 import org.cellang.clwt.core.client.data.MessageData;
-import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.event.ClientStartedEvent;
-import org.cellang.clwt.core.client.event.LogicalChannelBondEvent;
-import org.cellang.clwt.core.client.event.LogicalChannelUnbondEvent;
 import org.cellang.clwt.core.client.event.Event;
+import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
 import org.cellang.clwt.core.client.lang.Path;
-import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
+import org.cellang.webc.main.client.Messages;
 
 public class SignupGwtTest extends AbstractGwtTestBase2 {
 
@@ -21,7 +18,7 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 
 	@Override
 	protected void gwtSetUp() throws Exception {
-		super.gwtSetUp();		
+		super.gwtSetUp();
 	}
 
 	public void testSignupClient() {
@@ -30,7 +27,7 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 		this.finishing.add("start");
 		this.finishing.add("signup");
 		//
-		
+
 		this.delayTestFinish(10 * 1000);
 	}
 
@@ -41,17 +38,21 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 			ClientStartedEvent afe = (ClientStartedEvent) e;
 
 			this.onClientStart(afe);
+		} else if (e instanceof LogicalChannelMessageEvent) {
+			LogicalChannelMessageEvent me = (LogicalChannelMessageEvent)e;
+			MessageData md = me.getChannelMessageData();
+			if(Messages.SIGNUP_RES.equals(md.getPath())){
+				this.onSignupConfirmSuccess();
+			}
+			
 		}
-		if (e instanceof LogicalChannelBondEvent) {
-			this.onBond();
-		} else if (e instanceof LogicalChannelUnbondEvent) {
-			this.onUnbond();
-		}
+
 	}
 
 	private void onClientStart(ClientStartedEvent afe) {
 		this.tryFinish("start");//
-		this.endpoint = this.client.getLogicalChannel(true);		
+		this.endpoint = this.client.getLogicalChannel(true);
+		this.signup(email, nick, pass);
 	}
 
 	protected MsgWrapper newRequest(String path) {
@@ -59,44 +60,25 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	}
 
 	protected void signup(String email, String nick, String pass) {
-		MsgWrapper req = newRequest("/signup/submit");
+		MsgWrapper req = newRequest(Messages.SIGNUP_REQ.toString());
+
 		req.setPayload("email", email);
 		req.setPayload("nick", nick);
 		req.setPayload("password", pass);//
-		req.setPayload("isAgree", Boolean.TRUE);//
-		req.setPayload("confirmCodeNotifier", "resp");//
-
 		this.endpoint.sendMessage(req);
 	}
 
 	protected void onSignupRequestSuccess(MsgWrapper evt) {
-		MessageData t = evt.getTarget();
-		String ccode = t.getString("confirmCode", true);
-		MsgWrapper req = this.newRequest("/signup/confirm");
+
+		MsgWrapper req = this.newRequest(Messages.LOGIN_REQ.toString());
 		req.setPayload("email", email);
-		req.setPayload("confirmCode", ccode);
+		req.setPayload("password", pass);
 
 		this.endpoint.sendMessage(req);
 	}
 
-	protected void onSignupConfirmSuccess(MsgWrapper evt) {
-
-	}
-
-	public void onBond() {
-		ObjectPropertiesData ui = this.endpoint.getUserInfo();
-		assertNotNull("user info is null", ui);
-		// ui.getAccountId();
-		// ui.getSessionId();
-		// ui.isAnonymous();
-		this.tryFinish("bond");
-		// this.mc.logout();
-	}
-
-	public void onUnbond() {
-		ObjectPropertiesData ui = this.endpoint.getUserInfo();
-		assertNull("user info is not null", ui);
-		this.tryFinish("unbond");
+	protected void onSignupConfirmSuccess() {
+		this.tryFinish("signup");		
 	}
 
 }

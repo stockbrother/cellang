@@ -11,14 +11,12 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.ClientStartingEvent;
 import org.cellang.clwt.core.client.event.EventBus;
-import org.cellang.clwt.core.client.event.LogicalChannelBondEvent;
 import org.cellang.clwt.core.client.lang.InstanceOf;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.handler.ClientStartedHandler;
 import org.cellang.webc.main.client.handler.ClientStartingHandler;
-import org.cellang.webc.main.client.handler.EndpointBondHandler;
 import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
 import org.cellang.webc.main.client.handler.action.DispatcherActionHandler;
 import org.cellang.webc.main.client.handler.headeritem.DispatcherHeaderItemHandler;
@@ -47,8 +45,6 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 		eb.addHandler(ClientStartingEvent.TYPE, new ClientStartingHandler(c));// NOTE
 
 		eb.addHandler(ClientStartedEvent.TYPE, new ClientStartedHandler(c));// NOTE
-
-		eb.addHandler(LogicalChannelBondEvent.TYPE, new EndpointBondHandler(c));
 
 		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 

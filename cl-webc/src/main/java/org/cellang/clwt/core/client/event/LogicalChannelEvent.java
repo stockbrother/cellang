@@ -3,7 +3,6 @@
  */
 package org.cellang.clwt.core.client.event;
 
-import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
 /**
@@ -19,11 +18,6 @@ public class LogicalChannelEvent extends Event {
 	 */
 	public LogicalChannelEvent(Type<? extends LogicalChannelEvent> type, LogicalChannel source) {
 		super(type, source);
-
-	}
-
-	protected LogicalChannelEvent(Type<? extends LogicalChannelEvent> type, LogicalChannel source, MessageData md) {
-		super(type, source, md);
 	}
 
 	public LogicalChannel getEndPoint() {

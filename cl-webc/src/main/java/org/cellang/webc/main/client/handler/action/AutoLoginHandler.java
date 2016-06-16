@@ -71,7 +71,7 @@ public class AutoLoginHandler extends WebcHandlerSupport implements EventHandler
 			return;
 		}
 
-		endpoint.auth(req);
+		//endpoint.auth(req);
 	}
 
 }

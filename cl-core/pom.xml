@@ -96,6 +96,12 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.21</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.elasticsearch.module</groupId>
+			<artifactId>lang-groovy</artifactId>
+			<version>${elasticsearch.version}</version>			
+		</dependency>
 
 		<!-- scope:test -->
 		<dependency>
@@ -139,13 +145,7 @@
 			<version>4.1.0</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.elasticsearch.module</groupId>
-			<artifactId>lang-groovy</artifactId>
-			<version>${elasticsearch.version}</version>
-			<scope>test</scope>
-		</dependency>
-
+		
 	</dependencies>
 
 </project>

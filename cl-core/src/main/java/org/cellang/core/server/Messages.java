@@ -19,6 +19,6 @@ public class Messages {
 	
 	public static final NameSpace SHEET_LIST_REQ = NameSpace.valueOf("sheet.list.request");
 	
-	public static final NameSpace SIGNUP_REQ = NameSpace.valueOf("signup.submit").getSubPath("request");
+	public static final NameSpace SIGNUP_REQ = NameSpace.valueOf("signup.submit.request");
 
 }

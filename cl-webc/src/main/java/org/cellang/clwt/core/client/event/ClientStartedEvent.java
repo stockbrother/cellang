@@ -14,6 +14,8 @@ import org.cellang.clwt.core.client.transfer.LogicalChannel;
  *         b)After a), clientIsReady message send to server, so server will
  *         assign an clientId and terminalId(logic channel) for this client. c)A
  *         logic channel is build on the endpoint.
+ * 
+ *         //TODO rename to logicalchannel is ok event.
  */
 public class ClientStartedEvent extends ClientEvent {
 	public static Type<ClientStartedEvent> TYPE = new Type<ClientStartedEvent>(ClientEvent.TYPE, "started");

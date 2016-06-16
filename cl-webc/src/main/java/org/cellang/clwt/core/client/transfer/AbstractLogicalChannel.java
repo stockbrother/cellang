@@ -10,28 +10,23 @@ import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.codec.Codec;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.data.MessageData;
-import org.cellang.clwt.core.client.data.ObjectPropertiesData;
-import org.cellang.clwt.core.client.data.PropertiesData;
 import org.cellang.clwt.core.client.event.ClientClosingEvent;
-import org.cellang.clwt.core.client.event.LogicalChannelBondEvent;
+import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.event.LogicalChannelBusyEvent;
 import org.cellang.clwt.core.client.event.LogicalChannelCloseEvent;
 import org.cellang.clwt.core.client.event.LogicalChannelErrorEvent;
 import org.cellang.clwt.core.client.event.LogicalChannelFreeEvent;
 import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
 import org.cellang.clwt.core.client.event.LogicalChannelOpenEvent;
-import org.cellang.clwt.core.client.event.LogicalChannelUnbondEvent;
 import org.cellang.clwt.core.client.event.StateChangeEvent;
-import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.Handler;
 import org.cellang.clwt.core.client.lang.Path;
-import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.clwt.core.client.message.MessageHandlerI;
+import org.cellang.webc.main.client.Messages;
 
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -55,8 +50,6 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 	private String clientId;
 
 	private String terminalId;
-
-	private ObjectPropertiesData userInfo;
 
 	private MessageCacheI messageCache;
 
@@ -85,34 +78,16 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 				AbstractLogicalChannel.this.onMessageCacheUpdate(t);
 			}
 		});
-		this.addHandler(
-				LogicalChannelMessageEvent.TYPE.getAsPath().concat(Path.valueOf("/control/status/serverIsReady", '/')),
-				new MessageHandlerI<MsgWrapper>() {
-
-					@Override
-					public void handle(MsgWrapper t) {
-						AbstractLogicalChannel.this.onServerIsReady(t);
-					}
-				});
-		MessageHandlerI<MsgWrapper> bindingMH = new MessageHandlerI<MsgWrapper>() {
+		// TODo dispatching messageData from server.
+		this.addHandler(LogicalChannelMessageEvent.TYPE, new EventHandlerI<LogicalChannelMessageEvent>() {
 
 			@Override
-			public void handle(MsgWrapper t) {
-				AbstractLogicalChannel.this.onBindingSuccess(t);
+			public void handle(LogicalChannelMessageEvent t) {
+				if (Messages.MSG_SERVER_IS_READY.equals(t.getChannelMessageData().getPath())) {
+					AbstractLogicalChannel.this.onServerIsReady(t);
+				}
 			}
-		};
-		// TODO move to SPI active method.
-		this.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), bindingMH);
-		this.addHandler(Path.valueOf("/endpoint/message/terminal/binding/success"), bindingMH);
-
-		MessageHandlerI<MsgWrapper> unBindingMH = new MessageHandlerI<MsgWrapper>() {
-
-			@Override
-			public void handle(MsgWrapper t) {
-				AbstractLogicalChannel.this.onUnbindingSuccess(t);
-			}
-		};
-		this.addHandler(Path.valueOf("/endpoint/message/terminal/unbinding/success"), unBindingMH);
+		});
 
 	}
 
@@ -206,12 +181,6 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 		// applevel message sending.
 		this.assertIsReady();
 
-		if (this.userInfo != null) {
-			req.setHeader("sessionId", this.getSessionId());//
-		}
-
-		req.setHeader("_resonse_address", "tid://" + this.terminalId);
-
 		this.sendMessageDirect(req);
 
 	}
@@ -246,7 +215,7 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 	protected void onConnected() {
 		// wait server is ready
 		LOG.info(getShortName() + " is open, clientIsReady send to server and waiting server is ready.");
-		MessageData req = new MessageData("/control/status/clientIsReady");
+		MessageData req = new MessageData(Messages.MSG_CLIENT_IS_READY);
 		this.sendMessageDirect(req);
 
 	}
@@ -289,7 +258,7 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 		if (eis.hasError()) {
 			this.console.error(eis);
 		}
-		md.setHeader(MessageData.HK_PATH, tp.concat(p).toString());
+
 		new LogicalChannelMessageEvent(this, md).dispatch();
 	}
 
@@ -304,49 +273,6 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 
 	}
 
-	@Override
-	public void auth(PropertiesData<Object> pts) {
-		MessageData req = new MessageData("/terminal/auth");
-		req.setPayloads(pts);
-		this.sendMessage(req);
-	}
-
-	/*
-	 * Dec 23, 2012
-	 */
-	@Override
-	public boolean isBond() {
-		//
-		return this.userInfo != null;
-	}
-
-	/*
-	 * Dec 23, 2012
-	 */
-	@Override
-	public String getSessionId() {
-		//
-		return this.userInfo.getString("sessionId", true);
-	}
-
-	/**
-	 * Dec 23, 2012
-	 */
-	public void onBindingSuccess(MsgWrapper evt) {
-		MessageData md = evt.getTarget();
-		LOG.info(getShortName() + ",onBindingSuccess:" + md);
-		this.userInfo = new ObjectPropertiesData();
-		String sid = md.getString("sessionId", true);
-		this.userInfo.setProperties(md.getPayloads());
-
-		new LogicalChannelBondEvent(this, this.getSessionId()).dispatch();
-	}
-
-	public void onUnbindingSuccess(MsgWrapper evt) {
-		this.userInfo = null;
-		new LogicalChannelUnbondEvent(this).dispatch();
-	}
-
 	/*
 	 * Jan 1, 2013
 	 */
@@ -357,31 +283,6 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 
 	private String getShortName() {
 		return "endpoint(" + this.uri + ")";
-	}
-
-	/*
-	 * Jan 2, 2013
-	 */
-	@Override
-	public void logout() {
-		//
-		if (!this.isBond()) {
-			throw new UiException(getShortName() + " not bound yet.");
-		}
-
-		MessageData req = new MessageData("/terminal/unbinding");
-		req.setPayload("sessionId", this.getSessionId());
-
-		this.sendMessage(req);
-	}
-
-	/*
-	 * Jan 2, 2013
-	 */
-	@Override
-	public ObjectPropertiesData getUserInfo() {
-		//
-		return this.userInfo;
 	}
 
 	@Override

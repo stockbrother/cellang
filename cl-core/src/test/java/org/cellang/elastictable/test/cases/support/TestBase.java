@@ -10,9 +10,9 @@ import org.cellang.core.util.FileUtil;
 import org.cellang.elastictable.ElasticTableBuilder;
 import org.cellang.elastictable.MetaInfo;
 import org.cellang.elastictable.TableService;
+import org.cellang.elastictable.elasticsearch.EmbeddedESServer;
 import org.cellang.elastictable.meta.DataSchema;
 import org.cellang.elastictable.operations.DumpOperationI;
-import org.cellang.elastictable.test.EmbeddedESServer;
 import org.cellang.elastictable.test.MockObject;
 
 import junit.framework.TestCase;

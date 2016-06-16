@@ -30,8 +30,8 @@ import org.cellang.core.util.ExceptionUtil;
 import org.cellang.elastictable.ElasticTableBuilder;
 import org.cellang.elastictable.MetaInfo;
 import org.cellang.elastictable.TableService;
+import org.cellang.elastictable.elasticsearch.EmbeddedESServer;
 import org.cellang.elastictable.meta.DataSchema;
-import org.cellang.elastictable.test.EmbeddedESServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

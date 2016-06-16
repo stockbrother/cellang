@@ -102,12 +102,13 @@ public class Path {
 	}
 
 	public static Path valueOf(String name, char sep) {
-		String[] names = name.split("" + sep);
+		String[] names = name.split("\\" + sep);
 		return valueOf(names);
 	}
 
 	public static Path valueOf(String name) {
-		return valueOf(name, '/');
+		name = name.replace('/', '.');
+		return valueOf(name, '.');
 	}
 
 	public static Path valueOf(String[] names) {
@@ -154,7 +155,7 @@ public class Path {
 	@Override
 	public String toString() {
 		//
-		return toString('/');
+		return toString('.');
 	}
 
 	/*

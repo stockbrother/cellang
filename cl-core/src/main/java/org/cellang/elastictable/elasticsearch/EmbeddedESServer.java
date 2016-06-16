@@ -1,4 +1,4 @@
-package org.cellang.elastictable.test;
+package org.cellang.elastictable.elasticsearch;
 
 import java.util.Collection;
 

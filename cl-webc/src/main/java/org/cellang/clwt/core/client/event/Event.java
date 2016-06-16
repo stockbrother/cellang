@@ -79,11 +79,11 @@ public class Event extends MsgWrapper {
 		this(type, src, new MessageData(path));
 	}
 
-	protected Event(Type<? extends Event> type, WebObject src, MessageData msg) {
+	private Event(Type<? extends Event> type, WebObject src, MessageData msg) {
 		this(type.getAsPath(), src, msg);
 	}
 
-	protected Event(Path path, WebObject src, MessageData msg) {
+	private Event(Path path, WebObject src, MessageData msg) {
 		super(msg);
 		Path mpath = msg.getPath();
 		if (!path.isSubPath(mpath, true)) {

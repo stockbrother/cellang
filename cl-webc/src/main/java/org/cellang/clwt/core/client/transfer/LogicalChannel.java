@@ -5,8 +5,6 @@
 package org.cellang.clwt.core.client.transfer;
 
 import org.cellang.clwt.core.client.data.MessageData;
-import org.cellang.clwt.core.client.data.ObjectPropertiesData;
-import org.cellang.clwt.core.client.data.PropertiesData;
 import org.cellang.clwt.core.client.lang.Address;
 import org.cellang.clwt.core.client.lang.WebObject;
 import org.cellang.clwt.core.client.message.MsgWrapper;
@@ -30,16 +28,6 @@ public interface LogicalChannel extends WebObject {
 	public void close();
 
 	public boolean isOpen();
-
-	public void auth(PropertiesData<Object> pts);
-
-	public void logout();
-
-	public boolean isBond();
-
-	public String getSessionId();
-
-	public ObjectPropertiesData getUserInfo();
 
 	public void destroy();
 

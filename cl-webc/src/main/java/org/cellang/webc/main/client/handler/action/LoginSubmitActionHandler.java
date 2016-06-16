@@ -4,6 +4,8 @@ import org.cellang.clwt.commons.client.ActionHandlerSupport;
 import org.cellang.clwt.commons.client.mvc.ActionEvent;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
+import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.webc.main.client.LoginViewI;
 
 /**
@@ -30,20 +32,14 @@ public class LoginSubmitActionHandler extends ActionHandlerSupport {
 
 		LoginViewI lm = this.findView(LoginViewI.class, true);
 		lm.clearErrorInfo();//
-		ObjectPropertiesData req = new ObjectPropertiesData();
-
-		// this submit
-
-		req.setProperty("type", ("registered"));
-		req.setProperty("isSaved", Boolean.FALSE);
 
 		String email = lm.getEmail();
-
 		String password = lm.getPassword();
-		req.setProperty("email", (email));
-		req.setProperty("password", (password));
-		
-		this.getEndpoint().auth(req);
+
+		MsgWrapper msg = new MsgWrapper(Path.valueOf("login.submit.request"));
+		msg.setPayload("email", email);
+		msg.setPayload("password", password);
+		this.sendMessage(msg);
 	}
 
 }

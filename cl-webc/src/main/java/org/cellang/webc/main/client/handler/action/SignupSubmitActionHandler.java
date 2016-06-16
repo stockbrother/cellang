@@ -35,7 +35,7 @@ public class SignupSubmitActionHandler extends FormDataAP {
 //
 //		// this submit
 
-		MsgWrapper req = this.newRequest(Path.valueOf("/signup/submit"));
+		MsgWrapper req = this.newRequest(Path.valueOf("/signup/submit/request"));
 		this.processFormData(ae, req);
 		this.sendMessage(req);
 		

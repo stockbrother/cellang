@@ -32,6 +32,10 @@
 			<param-name>timeoutForFirstMessage</param-name>
 			<param-value>30000</param-value>
 		</init-param>
+		<init-param>
+			<param-name>home</param-name>
+			<param-value>target</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
