@@ -48,7 +48,7 @@
 					
 				</executions>
 				<configuration>
-					<includes>**/*GwtTest.java</includes>
+					<includes>**/*SignupGwtTest.java</includes>
 					<runTarget>home.html</runTarget>
 					<modules>
 						<module>org.cellang.webc.main.Module</module>
@@ -125,6 +125,18 @@
 			<artifactId>cl-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>${elasticsearch.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.module</groupId>
+			<artifactId>lang-groovy</artifactId>
+			<version>${elasticsearch.version}</version>		
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.fusesource.restygwt</groupId>
