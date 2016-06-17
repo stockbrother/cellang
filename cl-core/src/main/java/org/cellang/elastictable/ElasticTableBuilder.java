@@ -227,7 +227,7 @@ public class ElasticTableBuilder {
 			// throw RuntimeException.toRtE(t);
 			// }
 			CreateIndexResponse res = af.actionGet();
-
+			
 			boolean ack = res.isAcknowledged();
 
 			if (!ack) {

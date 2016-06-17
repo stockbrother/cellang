@@ -12,6 +12,12 @@ import org.elasticsearch.script.groovy.GroovyPlugin;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Note when "http.enabled" set to "false",
+ * 
+ * @author wuzhen
+ *
+ */
 public class EmbeddedESServer {
 	private static class PluginEnabledNode extends Node {
 		public PluginEnabledNode(Settings settings, Collection<Class<? extends Plugin>> plugins) {
@@ -25,7 +31,9 @@ public class EmbeddedESServer {
 	public EmbeddedESServer(String home) {
 		this.home = home;
 		Settings.Builder elasticsearchSettings = Settings.settingsBuilder()//
-				.put("http.enabled", "false")//
+				// .put("cluster.name", "cluster")//
+				// .put("http.enabled", "false")//Why "false" of http.enabled
+				// cause the index exists return always false?
 				.put("path.home", home)//
 				.put("script.inline", true)//
 				.put("script.indexed", true)//
