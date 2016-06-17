@@ -9,7 +9,7 @@ package org.cellang.clwt.core.client.logger;
  * 
  */
 public interface WebLogger {
-
+	
 	public static final int LEVEL_DISABLE = -1;
 
 	public static final int LEVEL_ERROR = 0;
@@ -22,6 +22,8 @@ public interface WebLogger {
 
 	public static final int LEVEL_TRACE = 40;
 
+	public static final int LEVEL_DEFAULT = LEVEL_INFO;
+	
 	public String getName();
 
 	public void info(Object msg);

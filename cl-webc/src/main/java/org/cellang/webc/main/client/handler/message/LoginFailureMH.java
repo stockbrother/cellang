@@ -5,25 +5,21 @@
 package org.cellang.webc.main.client.handler.message;
 
 import org.cellang.clwt.core.client.Container;
-import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.ErrorInfosData;
 import org.cellang.clwt.core.client.data.MessageData;
-import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.webc.main.client.AccountsLDW;
-import org.cellang.webc.main.client.AnonymousAccountLDW;
 import org.cellang.webc.main.client.ErrorCodes;
 import org.cellang.webc.main.client.LoginViewI;
-import org.cellang.webc.main.client.RegisteredAccountLDW;
-import org.cellang.webc.main.client.WebcHandlerSupport;
 import org.cellang.webc.main.client.UiResponse;
-import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
+import org.cellang.webc.main.client.WebcHandlerSupport;
 
 /**
  * @author wu
  * 
  */
-public class LoginFailureMH extends WebcHandlerSupport implements MessageHandlerI<LogicalChannelMessageEvent> {
+public class LoginFailureMH extends WebcHandlerSupport implements MessageHandlerI<MsgWrapper> {
 
 	/**
 	 * @param c
@@ -36,7 +32,7 @@ public class LoginFailureMH extends WebcHandlerSupport implements MessageHandler
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(LogicalChannelMessageEvent t) {
+	public void handle(MsgWrapper t) {
 		MessageData res = t.getMessage();
 		MessageData req = res.getSource();
 
@@ -63,27 +59,6 @@ public class LoginFailureMH extends WebcHandlerSupport implements MessageHandler
 			return;
 		}
 		
-		String type = req.getString("type", true);
-		if (type.equals("registered")) {//
-			RegisteredAccountLDW acc1 = accs.getRegistered();
-			acc1.invalid();// try using the anonymous login.
-			// try auto auth with anonymous
-			AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());// try
-																			// again,with
-																			// anonymous
-		} else if (type.equals("anonymous")) {
-			AnonymousAccountLDW acc2 = accs.getAnonymous();
-			acc2.invalid();// clean and try again: create a new
-							// anonymous and login
-			AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());// try
-																			// agin,
-																			// signup
-																			// anonymous
-			// again
-
-		} else {
-			throw new UiException("bug,no this type:" + type);
-		}
 
 	}
 }

@@ -16,8 +16,12 @@ import org.cellang.clwt.core.client.lang.Path;
 public class MsgWrapper extends AbstractHasProperties<Object> {
 
 	public static final String HK_REQUEST_ID = "_requestId";
-	
+
 	protected MessageData target;
+
+	public static MsgWrapper valueOf(MessageData md) {
+		return new MsgWrapper(md);
+	}
 
 	public MsgWrapper(String path) {
 		this(Path.valueOf(path));

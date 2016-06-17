@@ -96,7 +96,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 		Method m = this.resource.post().text(text);
 		// Content-Type: text/plain; charset=ISO-8859-1
 		m.header("Content-Type", "application/json; charset=UTF-8");
-		m.header("Content-Length", "" + len(text));
+		// m.header("Content-Length", "" + len(text));
 		m.header("x-fs-debug", "debug:" + am.getPath());
 		// session id is in request header.
 		if (this.sid != null) {
@@ -121,6 +121,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 				//
 			}
 		};
+		// NOTE: this will be blocking with GwtTest.
 		m.send(jcb);
 	}
 
@@ -187,7 +188,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 		// return;
 		// }
 
-		this.scheduler.scheduleTimer(0, new Handler<Object>() {
+		this.scheduler.scheduleDelay(new Handler<Object>() {
 
 			@Override
 			public void handle(Object t) {
@@ -257,6 +258,10 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	 * Only send if connected,else stop the heart beat.
 	 */
 	protected boolean doSendHeartBeat(String sid) {
+
+		// TODO,when test with GwtTest, send message to server will hang up the
+		// client,and the event already scheduled/delayed is not able to be
+		// handled.
 
 		AjaxMsgWrapper am = new AjaxMsgWrapper(AjaxMsgWrapper.HEART_BEAT);
 		this.doRequest(am);

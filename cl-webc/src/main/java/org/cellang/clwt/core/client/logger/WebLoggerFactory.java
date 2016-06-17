@@ -117,7 +117,8 @@ public class WebLoggerFactory {
 
 	}
 
-	private static Map<Integer, String> levelName = new HashMap<Integer, String>();
+	public static Map<Integer, String> levelName = new HashMap<Integer, String>();
+
 	static {
 
 		levelName.put(WebLogger.LEVEL_DISABLE, "DISABLE");
@@ -128,18 +129,29 @@ public class WebLoggerFactory {
 		levelName.put(WebLogger.LEVEL_ERROR, "ERROR");
 
 	}
+
 	private static WebLogger NULL = new NullWebLogger("null");
 
 	private static Configurations CONFIGURATIONS;
+
 	static {
 		// add the root logger config.
-		String ll = GwtBridge.getWindowLocationParameter("fs.logLevel", "TRACE");
+		String ll = GwtBridge.getWindowLocationParameter("fs.logLevel", levelName.get(WebLogger.LEVEL_DEFAULT));//
 		ll = ll.toUpperCase();
 		int level = WebLoggerFactory.getLevel(ll, true);
 		CONFIGURATIONS = new Configurations(level);
 	}
 
 	private static WebLoggerFactory ME = new WebLoggerFactory();
+
+	/**
+	 * Configure the root logger level.
+	 * 
+	 * @param level
+	 */
+	public static void configure(int level) {
+		configure((String) null, level);
+	}
 
 	public static void configure(String name, int level) {
 		configure(new Configuration(name, level));

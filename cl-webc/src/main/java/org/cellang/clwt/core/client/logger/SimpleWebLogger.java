@@ -21,8 +21,9 @@ public class SimpleWebLogger extends AbstractWebLogger {
 
 	@Override
 	public void doLog(int level, Object msg, Throwable t) {
-		String levelS = levelName.get(level);
-		String log = "[" + DateUtil.format(DateData.valueOfNow()) + "][" + levelS + "][" + this.name + "] - " + msg;
+		String levelS = WebLoggerFactory.levelName.get(level);
+		String log = "[" + DateUtil.format(DateData.valueOfNow()) + "] [" + levelS + "] [" + this.name
+				+ "] (Unknow client source line number.) - " + msg;
 		Console.getInstance().println(log);
 
 		if (t != null) {

@@ -13,7 +13,7 @@ import org.elasticsearch.node.NodeBuilder;
 public class IndexExistTest {
 
 	public void test() {
-		File homeDir = new File("tagert" + File.separator + "indexExistTest");
+		File homeDir = new File("taget" + File.separator + "indexExistTest");
 		if (!homeDir.exists()) {
 			homeDir.mkdir();
 		}

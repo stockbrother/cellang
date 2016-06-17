@@ -1,5 +1,6 @@
 package org.cellang.webc.test.client;
 
+import org.cellang.clwt.commons.client.CommonsPlugin;
 import org.cellang.clwt.core.client.ClientLanucher;
 import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.Container;
@@ -23,6 +24,7 @@ public abstract class AbstractGwtTestBase2 extends AbstractGwtTestBase {
 
 		Plugin[] spis = new Plugin[] { //
 				(WebCorePlugin) GWT.create(WebCorePlugin.class), //
+				(CommonsPlugin) GWT.create(CommonsPlugin.class), //
 				(CellangClientPlugin) GWT.create(CellangClientPlugin.class) //
 		};
 

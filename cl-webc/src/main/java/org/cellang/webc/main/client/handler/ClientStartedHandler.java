@@ -80,8 +80,8 @@ public class ClientStartedHandler extends WebcHandlerSupport implements EventHan
 		// ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 		// new SignupAnonymousSuccessMH(c));
 		//
-		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), new LoginSuccessMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMH(c));
+		ep.addHandler("server-messages",Path.valueOf("/terminal/auth/success"), new LoginSuccessMH(c));
+		ep.addHandler("server-messages",Path.valueOf("/terminal/auth/failure"), new LoginFailureMH(c));
 		// ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/success"),
 		// new PasswordForgotSuccessMH(
 		// c));

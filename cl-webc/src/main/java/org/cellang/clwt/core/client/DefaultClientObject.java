@@ -36,6 +36,7 @@ import org.cellang.clwt.core.client.transfer.TransferPointConfiguration;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration.ProtocolPort;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;
+import org.cellang.webc.main.client.Messages;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -124,7 +125,7 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 	}
 
 	protected LogicalChannel newEndpoint(int tryIdx) {
-		
+
 		Address uri = this.uriList.get(tryIdx);
 		final LogicalChannel rt = new DefaultLogicalChannel(this.container, uri);
 		rt.setProperty(PK_TRYING_INDEX, tryIdx);// the trying idx.
@@ -151,7 +152,7 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 			}
 		});
 
-		rt.addHandler(UiConstants.P_ENDPOINT_MESSAGE_CLIENT_INIT_SUCCESS, new MessageHandlerI<MsgWrapper>() {
+		rt.addHandler("server-messages", Messages.RES_CLIENT_INIT_SUCCESS, new MessageHandlerI<MsgWrapper>() {
 
 			@Override
 			public void handle(MsgWrapper t) {
@@ -168,9 +169,9 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 		}
 
 		this.setState(STARTING);
-		
+
 		new ClientStartingEvent(this).dispatch();
-		
+
 		this.uriList = new ArrayList<Address>();
 		List<ProtocolPort> ppL = new ArrayList<ProtocolPort>(
 				TransferPointConfiguration.getInstance().getConfiguredList());
@@ -344,7 +345,7 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 	 * 
 	 */
 	public void onEndpointOpen(LogicalChannel ep) {
-
+		LOG.info("endpoint is open,send init client request.");//
 		MsgWrapper req = new MsgWrapper(UiConstants.P_CLIENT_INIT);
 		String locale = this.getPreferedLocale();
 

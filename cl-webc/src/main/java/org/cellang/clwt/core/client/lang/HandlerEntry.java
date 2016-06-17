@@ -13,7 +13,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
  * @author wuzhen
  * 
  */
-final class HandlerEntry {
+public final class HandlerEntry {
 
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(HandlerEntry.class);
 
@@ -33,15 +33,20 @@ final class HandlerEntry {
 	public boolean tryHandle(boolean dely, Path p, final Object md) {
 
 		boolean isMatch = this.isMatch(p);
-//
-//		LOG.trace(
-//				"dispatcher:" + this.dispatcher.name + "tryHandle,dely:" + dely + ",this.path:" + p + ",message:" + md);
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("tryHandle,this.path:" + this.path + ",event.path:" + p + ",isMatch:" + isMatch//
+					+ ",handlers:" + this.handlers + ",dispatcherName:" + this.dispatcher.name + ",dely:" + dely
+					+ ",this.path:" + p + ",message:" + md);
+		}
 
 		if (!isMatch) {
 			return false;
 		}
 
 		if (dely) {
+			if (LOG.isTraceEnabled()) {
+				LOG.trace("scheduleDeferred,handler:" + this.handlers);
+			}
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
 				@Override
@@ -51,13 +56,19 @@ final class HandlerEntry {
 				}
 			});
 		} else {
+			if (LOG.isTraceEnabled()) {
+				LOG.trace("no deferred handle,handler:" + this.handlers);
+			}
 			HandlerEntry.this.doHandle(md);
 		}
 		return true;
 	}
 
 	protected void doHandle(Object md) {
-		//LOG.debug("dispatcher:" + this.dispatcher.name + ",doHandle,message:" + md + ",handlers:" + handlers);//
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("doHandle," + this.dispatcher.name + ",doHandle,message:" + md + ",handlers:" + handlers);//
+		}
+
 		try {
 			this.handlers.handle(md);
 		} catch (Throwable t) {

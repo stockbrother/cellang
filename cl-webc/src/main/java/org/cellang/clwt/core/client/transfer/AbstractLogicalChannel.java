@@ -21,10 +21,13 @@ import org.cellang.clwt.core.client.event.LogicalChannelOpenEvent;
 import org.cellang.clwt.core.client.event.StateChangeEvent;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;
 import org.cellang.clwt.core.client.lang.Address;
+import org.cellang.clwt.core.client.lang.DispatcherImpl;
 import org.cellang.clwt.core.client.lang.Handler;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
+import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.webc.main.client.Messages;
 
@@ -57,6 +60,8 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 
 	private LogicalChannelBusyEvent lastBusyEvent;
 
+	protected PathBasedDispatcher serverMessageDispatcher;
+
 	private Console console = Console.getInstance();
 
 	protected Address uri;
@@ -68,6 +73,7 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 	 */
 	public AbstractLogicalChannel(Container c, Address uri, MessageCacheI mc) {
 		super(c);
+		this.serverMessageDispatcher = new DispatcherImpl(name + "-server-message-dispatcher");//
 		this.uri = uri;
 		this.protocol = uri.getProtocol();
 		this.messageCache = mc;
@@ -83,12 +89,25 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 
 			@Override
 			public void handle(LogicalChannelMessageEvent t) {
+				
+				LOG.trace(t.getChannelMessageData().getPath());
+				
 				if (Messages.MSG_SERVER_IS_READY.equals(t.getChannelMessageData().getPath())) {
-					AbstractLogicalChannel.this.onServerIsReady(t);
+					LOG.trace("isServerIsReady　Message");
+					AbstractLogicalChannel.this.onServerIsReady(t.getChannelMessageData());
 				}
 			}
 		});
 
+	}
+
+	@Override
+	public void addHandler(String topic, Path path, MessageHandlerI<MsgWrapper> mh) {
+		if (topic.equals("server-messages")) {
+			this.serverMessageDispatcher.addHandler(path, mh);
+		} else {
+			throw new RuntimeException("TODO");
+		}
 	}
 
 	/**
@@ -143,12 +162,12 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 	 * 
 	 * @param e
 	 */
-	protected void onServerIsReady(MsgWrapper e) {
-		MessageData md = e.getMessage();
+	protected void onServerIsReady(MessageData md) {
 		this.clientId = md.getString("clientId", true);
 		this.terminalId = md.getString("terminalId", true);
 		this.serverIsReady = true;
-		new LogicalChannelOpenEvent(this).dispatch();
+		LOG.info("serverIsReady,clientId:"+this.clientId+",terminalId:"+this.terminalId);
+		new LogicalChannelOpenEvent(this).dispatch();		
 	}
 
 	@Override
@@ -179,8 +198,10 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 	@Override
 	public void sendMessage(MessageData req) {
 		// applevel message sending.
+		if(LOG.isTraceEnabled()){			
+			LOG.trace("sendMessage:"+req);//
+		}
 		this.assertIsReady();
-
 		this.sendMessageDirect(req);
 
 	}
@@ -188,6 +209,9 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 	// do not add any additional header, sent the message directly.
 	private void sendMessageDirect(final MessageData req) {
 		//
+		if(LOG.isTraceEnabled()){			
+			LOG.trace("sendMessageDirect:"+req);//
+		}
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
 		this.messageCache.addMessage(req);// for later reference
@@ -258,6 +282,7 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 		if (eis.hasError()) {
 			this.console.error(eis);
 		}
+		this.serverMessageDispatcher.dispatch(p, MsgWrapper.valueOf(md));
 
 		new LogicalChannelMessageEvent(this, md).dispatch();
 	}

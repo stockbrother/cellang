@@ -6,7 +6,9 @@ package org.cellang.clwt.core.client.transfer;
 
 import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.lang.Address;
+import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.WebObject;
+import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
 
 /**
@@ -22,7 +24,7 @@ public interface LogicalChannel extends WebObject {
 	public void sendMessage(MsgWrapper req);
 
 	public Address getUri();
-	
+
 	public void open();
 
 	public void close();
@@ -30,5 +32,7 @@ public interface LogicalChannel extends WebObject {
 	public boolean isOpen();
 
 	public void destroy();
+
+	public void addHandler(String topic, Path path, MessageHandlerI<MsgWrapper> mh);
 
 }

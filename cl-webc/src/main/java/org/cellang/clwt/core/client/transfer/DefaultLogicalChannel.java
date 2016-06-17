@@ -11,10 +11,14 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.DefaultClientObject;
 import org.cellang.clwt.core.client.event.ClientClosingEvent;
 import org.cellang.clwt.core.client.lang.Address;
+import org.cellang.clwt.core.client.lang.DispatcherImpl;
 import org.cellang.clwt.core.client.lang.Handler;
+import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
+import org.cellang.clwt.core.client.message.MessageHandlerI;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.transfer.ws.WebSocketProtocol;
 
 import com.google.gwt.user.client.Window;
@@ -25,7 +29,7 @@ import com.google.gwt.user.client.Window;
  */
 public class DefaultLogicalChannel extends AbstractLogicalChannel {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(DefaultLogicalChannel.class);
-	
+
 	public static interface UnderlyingProtocol {
 		public UnderlyingChannel createGomet(Address uri, boolean force);
 	}
@@ -35,6 +39,7 @@ public class DefaultLogicalChannel extends AbstractLogicalChannel {
 	private Map<String, UnderlyingProtocol> protocols;
 
 	private long openTimeout = 3000;//
+
 
 	/**
 	 * @param md
@@ -47,6 +52,7 @@ public class DefaultLogicalChannel extends AbstractLogicalChannel {
 
 		this.protocols.put("http", new AjaxProtocol(c));
 		this.protocols.put("https", new AjaxProtocol(c));
+		
 
 	}
 
@@ -73,9 +79,9 @@ public class DefaultLogicalChannel extends AbstractLogicalChannel {
 
 	@Override
 	public void open() {
-		LOG.info("open endpoint:"+this.name+",uri:"+this.uri.toString());//
+		LOG.info("open endpoint:" + this.name + ",uri:" + this.uri.toString());//
 		super.open();
-		
+
 		String proS = uri.getProtocol();
 
 		UnderlyingProtocol pro = this.protocols.get(proS);

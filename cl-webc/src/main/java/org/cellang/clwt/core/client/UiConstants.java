@@ -19,6 +19,4 @@ public class UiConstants {
 	// send to server.
 	public static Path P_CLIENT_INIT = Path.valueOf("/client/init");
 	
-	public static Path P_ENDPOINT_MESSAGE_CLIENT_INIT_SUCCESS = Path.valueOf("/endpoint/message/client/init/success");
-
 }

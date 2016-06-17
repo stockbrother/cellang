@@ -322,19 +322,27 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 	@Override
 	public <E extends Event> void dispatch(E evt) {
-		LOG.debug("dispatch event:" + evt);//
+		if(LOG.isTraceEnabled()){
+			LOG.trace("dispatch event:" + evt);//
+		}
 		this.eventDispatcher.dispatch(evt.getPath(), evt);
 
 		if (evt.isGlobal()) {
 			EventBus eb = this.getEventBus(false);
 			if (eb == null) {
-				LOG.debug("event bus is null");
+				if(LOG.isTraceEnabled()){
+					LOG.trace("event bus is null");
+				}
 				return;
 			} else if (this == eb) {
-				LOG.debug("event bus already dispatched this event.");
+				if(LOG.isTraceEnabled()){
+					LOG.trace("event bus already dispatched this event.");
+				}	
 				return;
 			}
-			LOG.debug("dispatch global event:" + evt + " to event bus.");//
+			if(LOG.isTraceEnabled()){
+				LOG.trace("dispatch global event:" + evt + " to event bus.");//				
+			}
 			eb.dispatch(evt);
 		}
 	}

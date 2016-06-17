@@ -3,6 +3,8 @@ package org.cellang.webc.main.client;
 import org.cellang.clwt.core.client.lang.Path;
 
 public class Messages {
+	
+	
 	public static final Path MSG_CLIENT_IS_READY = Path.valueOf("control.status.clientIsReady");
 																
 	public static final Path MSG_SERVER_IS_READY = Path.valueOf("control.status.serverIsReady");

@@ -1,5 +1,6 @@
 package org.cellang.webc.main.client;
 
+import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.frwk.impl.FrwkControlImpl;
 import org.cellang.clwt.commons.client.frwk.impl.LoginControlImpl;
@@ -58,6 +59,7 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 	}
 
 	private void activeInstanceOf(Container c) {
+				
 		InstanceOf.addChecker(new InstanceOf.CheckerSupport(MainControlI.class) {
 
 			@Override

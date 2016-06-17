@@ -16,7 +16,7 @@ import org.cellang.clwt.core.client.logger.WebLoggerFactory;
  */
 public class DispatcherImpl implements PathBasedDispatcher {
 
-	private static final WebLogger logger = WebLoggerFactory.getLogger(DispatcherImpl.class);//
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(DispatcherImpl.class);//
 
 	protected List<HandlerEntry> handlers;
 
@@ -41,14 +41,14 @@ public class DispatcherImpl implements PathBasedDispatcher {
 		} catch (Throwable t) {
 
 			if (this.exceptionHandlers.size() == 0) {
-				logger.error("exception got when dispatch message:" + msg, t);
+				LOG.error("exception got when dispatch message:" + msg, t);
 			} else {
 				try {
 
 					this.exceptionHandlers.handle(new DispatchingException(t, msg));
 
 				} catch (Throwable e2) {
-					logger.error("exception's exception", e2);
+					LOG.error("exception's exception", e2);
 				} finally {
 
 				}
@@ -57,7 +57,9 @@ public class DispatcherImpl implements PathBasedDispatcher {
 	}
 
 	protected void doDispatch(Path p, Object t) {
-		// logger.debug("dispatcher:" + ",handle msg:" + t);
+		if(LOG.isTraceEnabled()){			
+			LOG.trace("doDispatch,path:" + p + ",object:" + t);
+		}
 
 		List<HandlerEntry> hls = new ArrayList<HandlerEntry>(this.handlers);
 		int matches = 0;
@@ -72,8 +74,10 @@ public class DispatcherImpl implements PathBasedDispatcher {
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
-				logger.debug("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:" + this.name
-						+ ",all handlers:" + hls);
+				if (LOG.isTraceEnabled()) {
+					LOG.trace("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:" + this.name
+							+ ",all handlers:" + hls);
+				}
 			}
 		}
 

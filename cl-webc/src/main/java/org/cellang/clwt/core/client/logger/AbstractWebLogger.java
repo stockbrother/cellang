@@ -4,9 +4,6 @@
  */
 package org.cellang.clwt.core.client.logger;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.cellang.clwt.core.client.logger.WebLoggerFactory.Configuration;
 
 /**
@@ -16,16 +13,6 @@ import org.cellang.clwt.core.client.logger.WebLoggerFactory.Configuration;
 public abstract class AbstractWebLogger implements WebLogger {
 
 	protected String name;
-
-	protected static Map<Integer, String> levelName = new HashMap<Integer, String>();
-
-	static {
-		levelName.put(WebLogger.LEVEL_DEBUG, "DEBUG");
-		levelName.put(WebLogger.LEVEL_INFO, "INFO");
-		levelName.put(WebLogger.LEVEL_WARN, "ERROR");
-		levelName.put(WebLogger.LEVEL_ERROR, "ERROR");
-
-	}
 
 	public AbstractWebLogger(String name2) {
 		this.name = name2;

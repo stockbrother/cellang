@@ -51,7 +51,7 @@ public class InstanceOf {
 		CheckerI ck = map.get(cls);
 		if (ck == null) {
 			throw new UiException("no instanceof checker found:" + cls
-					+ ",please add it in the your");
+					+ ",either a plugin not actived or not added it in the your plugin.");
 		}
 		return ck.isInstance(o);
 	}

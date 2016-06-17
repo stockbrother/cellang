@@ -4,8 +4,15 @@ import org.cellang.clwt.core.client.data.MessageData;
 import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
+import org.cellang.clwt.core.client.lang.AbstractWebObject;
+import org.cellang.clwt.core.client.lang.CollectionHandler;
+import org.cellang.clwt.core.client.lang.DispatcherImpl;
+import org.cellang.clwt.core.client.lang.HandlerEntry;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.logger.WebLogger;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MsgWrapper;
+import org.cellang.clwt.core.client.transfer.AbstractLogicalChannel;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.webc.main.client.Messages;
 
@@ -22,6 +29,16 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	}
 
 	public void testSignupClient() {
+		WebLoggerFactory.configure(WebLogger.LEVEL_DEBUG);//
+		WebLoggerFactory.configure(AbstractLogicalChannel.class,WebLogger.LEVEL_TRACE);
+		WebLoggerFactory.configure(AbstractWebObject.class,WebLogger.LEVEL_TRACE);
+		WebLoggerFactory.configure(DispatcherImpl.class,WebLogger.LEVEL_TRACE);
+		WebLoggerFactory.configure(CollectionHandler.class,WebLogger.LEVEL_TRACE);
+		WebLoggerFactory.configure(HandlerEntry.class,WebLogger.LEVEL_TRACE);
+		
+		
+		
+		
 		this.client.start();
 		System.out.println("testSignupClient");
 		this.finishing.add("start");
@@ -34,19 +51,20 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	@Override
 	protected void onEvent(Event e) {
 		System.out.println("TestBase.onEvent(),e:" + e);
+		/**
 		if (e instanceof ClientStartedEvent) {
 			ClientStartedEvent afe = (ClientStartedEvent) e;
 
 			this.onClientStart(afe);
 		} else if (e instanceof LogicalChannelMessageEvent) {
-			LogicalChannelMessageEvent me = (LogicalChannelMessageEvent)e;
+			LogicalChannelMessageEvent me = (LogicalChannelMessageEvent) e;
 			MessageData md = me.getChannelMessageData();
-			if(Messages.SIGNUP_RES.equals(md.getPath())){
+			if (Messages.SIGNUP_RES.equals(md.getPath())) {
 				this.onSignupConfirmSuccess();
 			}
-			
-		}
 
+		}
+**/
 	}
 
 	private void onClientStart(ClientStartedEvent afe) {
@@ -78,7 +96,7 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	}
 
 	protected void onSignupConfirmSuccess() {
-		this.tryFinish("signup");		
+		this.tryFinish("signup");
 	}
 
 }
