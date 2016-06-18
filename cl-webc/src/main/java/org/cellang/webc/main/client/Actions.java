@@ -4,7 +4,6 @@
  */
 package org.cellang.webc.main.client;
 
-import org.cellang.clwt.commons.client.mvc.ActionEvent;
 import org.cellang.clwt.core.client.lang.Path;
 
 /**

@@ -26,7 +26,6 @@ public class SignupView extends FormsView implements SignupViewI {
 
 	public static String HEADER_ITEM_SIGNUP = "signup";//
 
-
 	private ViewReferenceI managed;
 
 	/**
@@ -37,28 +36,28 @@ public class SignupView extends FormsView implements SignupViewI {
 		//
 		this.addAction(Actions.A_SIGNUP_SUBMIT);
 
-		//ButtonI fb = this.addAction(Actions.A_SIGNUP_FBLOGIN);
-		//fb.getElement().addClassName("facebook-login-button");
+		// ButtonI fb = this.addAction(Actions.A_SIGNUP_FBLOGIN);
+		// fb.getElement().addClassName("facebook-login-button");
 		// form1
 		FormViewI def = this.getDefaultForm();
 		// actions for form1
 		def.getFormModel().addAction(Actions.A_SIGNUP_SUBMIT);
-		//def.getFormModel().addAction(Actions.A_SIGNUP_FBLOGIN);
+		// def.getFormModel().addAction(Actions.A_SIGNUP_FBLOGIN);
 
 		// fields1
 		def.addField("nick", String.class);
-		Map<String,Object> pts= new HashMap<String,Object>();
+		Map<String, Object> pts = new HashMap<String, Object>();
 		pts.put(StringEditorI.PK_ISPASSWORD, Boolean.TRUE);
 		def.addField("password", String.class, pts);
 		def.addField("email", String.class);
 
 	}
-//
-//	// show or hidden this view by model value
-//	protected void onSignupRequired(ModelValueEvent e) {
-//		boolean sr = e.getValue(Boolean.FALSE);
-//		this.managed.select(sr);//
-//	}
+	//
+	// // show or hidden this view by model value
+	// protected void onSignupRequired(ModelValueEvent e) {
+	// boolean sr = e.getValue(Boolean.FALSE);
+	// this.managed.select(sr);//
+	// }
 
 	/*
 	 * Mar 28, 2013
@@ -77,6 +76,26 @@ public class SignupView extends FormsView implements SignupViewI {
 	public String getPassword() {
 		FormViewI def = this.getDefaultForm();
 		return def.getFieldData("password");
+	}
+
+	@Override
+	public void setEmail(String email) {
+		this.getDefaultForm().setFieldValue("email", email);
+	}
+
+	@Override
+	public void setPassword(String pass) {
+		this.getDefaultForm().setFieldValue("password", pass);//
+	}
+
+	@Override
+	public String getNick() {
+		return this.getDefaultForm().getFieldData("nick");
+	}
+
+	@Override
+	public void setNick(String nick) {
+		this.getDefaultForm().setFieldValue("nick", nick);//
 	}
 
 }

@@ -14,6 +14,14 @@ public interface SignupViewI extends ViewI {
 
 	public String getEmail();
 	
+	public String getNick();
+
 	public String getPassword();
+
+	public void setEmail(String email);
+
+	public void setPassword(String pass);
+	
+	public void setNick(String nick);
 
 }

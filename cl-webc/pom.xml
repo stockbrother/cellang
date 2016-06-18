@@ -39,16 +39,17 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwt.version}</version>
 				<executions>
-					<execution>						
+					<execution>
 						<goals>
 							<goal>compile</goal>
 							<goal>test</goal>
 						</goals>
 					</execution>
-					
+
 				</executions>
 				<configuration>
-					<includes>**/*SignupGwtTest.java</includes>
+					<!-- CHange here for test special gwt test case. -->
+					<includes>**/*SignupByViewGwtTest.java</includes>
 					<runTarget>home.html</runTarget>
 					<modules>
 						<module>org.cellang.webc.main.Module</module>
@@ -135,7 +136,7 @@
 		<dependency>
 			<groupId>org.elasticsearch.module</groupId>
 			<artifactId>lang-groovy</artifactId>
-			<version>${elasticsearch.version}</version>		
+			<version>${elasticsearch.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
