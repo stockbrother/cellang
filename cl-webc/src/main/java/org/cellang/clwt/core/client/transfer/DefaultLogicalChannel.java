@@ -47,8 +47,8 @@ public class DefaultLogicalChannel extends AbstractLogicalChannel {
 	public DefaultLogicalChannel(Container c, Address uri) {
 		super(c, uri, new MessageCacheImpl(c));
 		this.protocols = new HashMap<String, UnderlyingProtocol>();
-		this.protocols.put("wskt", new WebSocketProtocol());
-		this.protocols.put("wskts", new WebSocketProtocol());
+		//this.protocols.put("wskt", new WebSocketProtocol());
+		//this.protocols.put("wskts", new WebSocketProtocol());
 
 		this.protocols.put("http", new AjaxProtocol(c));
 		this.protocols.put("https", new AjaxProtocol(c));

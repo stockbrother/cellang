@@ -45,7 +45,7 @@ public class EndpointKeeper {
 
 		int hbI = this.client.getParameterAsInt(UiCommonsConstants.RK_COMET_HEARTBEATINTERVAL, -1);
 		if (hbI < 5 * 1000) {// must longer than 5 second
-			LOG.error("parameter of interval for heart beat too short:"+hbI);
+			LOG.error("parameter of interval for heart beat too short:" + hbI);
 			return;
 		}
 		Scheduler s = this.endpoint.getContainer().get(Scheduler.class, true);

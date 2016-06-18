@@ -1,14 +1,11 @@
 /**
  *  Jan 31, 2013
  */
-package org.cellang.clwt.commons.client.frwk.impl;
+package org.cellang.webc.main.client;
 
 import org.cellang.clwt.commons.client.UiCommonsConstants;
 import org.cellang.clwt.commons.client.frwk.BodyViewI;
 import org.cellang.clwt.core.client.Container;
-import org.cellang.webc.main.client.AbstractWebcControl;
-import org.cellang.webc.main.client.LoginControlI;
-import org.cellang.webc.main.client.LoginViewI;
 
 /**
  * @author wuzhen

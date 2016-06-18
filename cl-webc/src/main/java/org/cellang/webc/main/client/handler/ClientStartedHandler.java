@@ -48,31 +48,10 @@ public class ClientStartedHandler extends WebcHandlerSupport implements EventHan
 
 		this.activeMessageHandlers(this.container, e.getClient());
 
-		//
 		// heatbeat
 		EndpointKeeper ek = new EndpointKeeper(this.getClient(true));
 		ek.start();//
-		//
-		String action = UiWindow.getParameter("action", null);
-		if (action == null) {
-			// TODO remove this event
-			new AutoLoginRequireEvent(e.getSource()).dispatch();
-		} else {
-			Map<String, List<String>> pm = com.google.gwt.user.client.Window.Location.getParameterMap();
-			if (action.equals("pf")) {
-				// String pfId = UiWindow.getParameter("pfId", null);
-				// if (pfId == null) {
-				// throw new UiException("pfId is null");
-				// }
-				// LoginControlI lc = this.getControl(LoginControlI.class,
-				// true);
-				// PasswordResetViewI pv = lc.openPasswordResetView();
-				// pv.setPfId(pfId);
-				throw new UiException("todo");
-			} else {
-				throw new UiException("no this action:" + action);
-			}
-		}
+		
 	}
 
 	public void activeMessageHandlers(Container c, ClientObject client) {

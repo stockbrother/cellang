@@ -21,14 +21,11 @@ public class AjaxProtocol implements UnderlyingProtocol {
 		this.c = c;
 	}
 
-	/*
-	 * May 9, 2013
-	 */
 	@Override
 	public UnderlyingChannel createGomet(Address uri, boolean force) {
 		//
 
-		AjaxUnderlyingTransfer rt = new AjaxUnderlyingTransfer(this.c, uri);
+		AjaxUnderlyingTransfer rt = new AjaxUnderlyingTransfer(this.c, uri, false);
 		return rt;
 
 	}

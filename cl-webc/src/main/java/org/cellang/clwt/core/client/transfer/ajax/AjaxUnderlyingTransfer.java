@@ -51,11 +51,14 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 
 	private int requests;
 
+	private boolean enableHeartbeat;
+
 	/**
 	 * @param wso
 	 */
-	public AjaxUnderlyingTransfer(Container c, Address uri) {
+	public AjaxUnderlyingTransfer(Container c, Address uri, boolean enableHeartbeat) {
 		super(uri);
+		this.enableHeartbeat = enableHeartbeat;
 		this.scheduler = c.get(Scheduler.class, true);
 		this.resource = new Resource(this.uri.getUri());
 
@@ -121,7 +124,9 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 				//
 			}
 		};
-		// NOTE: this will be blocking with GwtTest.
+		// NOTE: this is not async, it is synchronizing for response, so this
+		// calling will be blocking with GwtTest,not sure it the same with real
+		// browser.
 		m.send(jcb);
 	}
 
@@ -187,7 +192,9 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 		// // if not open for some error,how to do?
 		// return;
 		// }
-
+		if (!this.enableHeartbeat) {
+			return;
+		}
 		this.scheduler.scheduleDelay(new Handler<Object>() {
 
 			@Override

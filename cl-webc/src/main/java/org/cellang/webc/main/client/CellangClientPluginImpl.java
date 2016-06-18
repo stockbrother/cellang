@@ -3,7 +3,6 @@ package org.cellang.webc.main.client;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.frwk.impl.FrwkControlImpl;
-import org.cellang.clwt.commons.client.frwk.impl.LoginControlImpl;
 import org.cellang.clwt.commons.client.mvc.ActionEvent;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.commons.client.mvc.impl.ControlManagerImpl;

@@ -1,18 +1,15 @@
-package org.cellang.clwt.commons.client.frwk.impl;
+package org.cellang.webc.main.client;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.cellang.clwt.commons.client.frwk.FormViewI;
+import org.cellang.clwt.commons.client.frwk.impl.FormsView;
 import org.cellang.clwt.commons.client.mvc.widget.ButtonI;
 import org.cellang.clwt.commons.client.mvc.widget.LabelI;
 import org.cellang.clwt.commons.client.mvc.widget.StringEditorI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.gwtbridge.GwtKeyDownHandler;
-import org.cellang.webc.main.client.AccountsLDW;
-import org.cellang.webc.main.client.Actions;
-import org.cellang.webc.main.client.LoginViewI;
-import org.cellang.webc.main.client.RegisteredAccountLDW;
 
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
