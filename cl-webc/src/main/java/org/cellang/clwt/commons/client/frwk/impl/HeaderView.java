@@ -15,7 +15,9 @@ import org.cellang.clwt.commons.client.widget.MenuItemWI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
+import org.cellang.clwt.core.client.lang.DispatcherImpl;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.lang.Position;
 
 /**
@@ -28,6 +30,8 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 
 	private Map<Path, ItemView> itemViewMap = new HashMap<Path, ItemView>();
 
+	private PathBasedDispatcher dispatcher;
+
 	/**
 	 * @param ctn
 	 */
@@ -36,6 +40,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		this.itemList = this.factory.create(BarWidgetI.class);
 		this.itemList.parent(this);//
 		this.itemList.getElement().addClassName("header-bar");
+		this.dispatcher = new DispatcherImpl("header-item-dispatcher");
 
 	}
 
@@ -84,7 +89,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		} else if (path.size() == 2) {
 			ItemView rt = this.getOrCreateItem(path.getParent(), left);
 			MenuItemWI m = rt.getOrAddMenuItem(path.getName());
-			m.addHandler(HeaderItemEvent.TYPE, hdl);//
+			rt.addHandler(HeaderItemEvent.TYPE, hdl);//
 
 		} else {
 			throw new UiException("not support deeper menu for path:" + path);
@@ -114,6 +119,22 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 			return;
 		}
 		this.addItem(path, null);
+	}
+
+	@Override
+	public void _clickItem(Path path) {
+		if (path.size() == 1) {
+			ItemView iv = this.getItem(path);
+			iv._click();
+		}else if(path.size()==2){
+			ItemView iv = this.getItem(path.getParent());
+			if (iv == null) {
+				throw new RuntimeException("no this item:" + path);
+			}
+			iv._clickMenuItem(path.getName());
+		}else{
+			throw new RuntimeException("not supported.");
+		}
 	}
 
 }

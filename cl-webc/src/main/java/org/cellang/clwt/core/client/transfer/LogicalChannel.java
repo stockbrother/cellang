@@ -16,6 +16,9 @@ import org.cellang.clwt.core.client.message.MsgWrapper;
  * 
  */
 public interface LogicalChannel extends WebObject {
+	public static final Path MSG_CLIENT_IS_READY = Path.valueOf("control.status.clientIsReady");
+	
+	public static final Path MSG_SERVER_IS_READY = Path.valueOf("control.status.serverIsReady");
 
 	public static final String D_NAME = "endpoint";
 

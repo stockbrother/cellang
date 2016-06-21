@@ -4,6 +4,7 @@
 package org.cellang.clwt.core.client;
 
 import org.cellang.clwt.core.client.codec.CodecFactory;
+import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.WebObject;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.clwt.core.client.widget.WebWidget;
@@ -13,7 +14,7 @@ import org.cellang.clwt.core.client.widget.WebWidget;
  * 
  */
 public interface ClientObject extends WebObject {
-
+	public static final Path RES_CLIENT_INIT_SUCCESS = Path.valueOf("client.init.success");
 	public String getClientId();
 
 	public LogicalChannel getLogicalChannel(boolean force);

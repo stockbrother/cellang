@@ -29,7 +29,6 @@ import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.webc.main.client.Messages;
 
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -92,7 +91,7 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 				
 				LOG.trace(t.getChannelMessageData().getPath());
 				
-				if (Messages.MSG_SERVER_IS_READY.equals(t.getChannelMessageData().getPath())) {
+				if (MSG_SERVER_IS_READY.equals(t.getChannelMessageData().getPath())) {
 					LOG.trace("isServerIsReady　Message");
 					AbstractLogicalChannel.this.onServerIsReady(t.getChannelMessageData());
 				}
@@ -239,7 +238,7 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 	protected void onConnected() {
 		// wait server is ready
 		LOG.info(getShortName() + " is open, clientIsReady send to server and waiting server is ready.");
-		MessageData req = new MessageData(Messages.MSG_CLIENT_IS_READY);
+		MessageData req = new MessageData(MSG_CLIENT_IS_READY);
 		this.sendMessageDirect(req);
 
 	}

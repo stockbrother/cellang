@@ -49,6 +49,7 @@ public interface WebObject extends HasProperties<Object> {
 	public <E extends Event> void addHandler(EventHandlerI<E> l);
 
 	// use EventBusI.addHandler
+	// TODO return a boolean to tell if the object sink this type of event.
 	public <E extends Event> void addHandler(Event.Type<E> ec, EventHandlerI<E> l);
 
 	public <W extends MsgWrapper> void addHandler(Path path, MessageHandlerI<W> mh);

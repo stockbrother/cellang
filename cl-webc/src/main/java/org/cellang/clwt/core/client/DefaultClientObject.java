@@ -36,7 +36,6 @@ import org.cellang.clwt.core.client.transfer.TransferPointConfiguration;
 import org.cellang.clwt.core.client.transfer.TransferPointConfiguration.ProtocolPort;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;
-import org.cellang.webc.main.client.Messages;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -152,7 +151,7 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 			}
 		});
 
-		rt.addHandler("server-messages", Messages.RES_CLIENT_INIT_SUCCESS, new MessageHandlerI<MsgWrapper>() {
+		rt.addHandler("server-messages", RES_CLIENT_INIT_SUCCESS, new MessageHandlerI<MsgWrapper>() {
 
 			@Override
 			public void handle(MsgWrapper t) {

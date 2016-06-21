@@ -73,13 +73,17 @@ public class HeaderItemGwtTest extends AbstractGwtTestBase2 {
 		this.tryFinish("starting");
 		
 		FrwkControlI fc = this.getControlManager().getControl(FrwkControlI.class, true);
-		fc.addHeaderItem(Path.valueOf("abc.def"), new EventHandlerI<HeaderItemEvent>() {
+		fc.open();
+		Path ITEM = Path.valueOf("abc.def");
+		
+		fc.addHeaderItem(ITEM, new EventHandlerI<HeaderItemEvent>() {
 
 			@Override
 			public void handle(HeaderItemEvent t) {
 				HeaderItemGwtTest.this.onHeaderItem(t);
 			}
 		});
+		fc.getHeaderView()._clickItem(ITEM);
 	}
 
 	protected void onHeaderItem(HeaderItemEvent t) {

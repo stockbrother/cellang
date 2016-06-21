@@ -22,5 +22,7 @@ public interface HeaderViewI extends ViewI {
 	public void setItemDisplayText(Path path, boolean toloc, String text);
 
 	public void tryRemoveItem(Path path);
+	
+	public void _clickItem(Path path);
 
 }

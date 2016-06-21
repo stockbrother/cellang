@@ -137,6 +137,11 @@ public class ItemView extends LightWeightView {
 		this.anchor.getElementWrapper().addAndRemoveClassName(sel, "selected", "unselected");
 
 	}
+	
+	public void _clickMenuItem(String name){
+		MenuItemWI mi = this.menu.getItem(name);
+		mi._click();
+	}
 
 	protected boolean hasMenu() {
 		return !this.menu.getChildList(MenuItemWI.class).isEmpty();
