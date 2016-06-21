@@ -4,8 +4,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.wpanel;
 
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
-import org.cellang.clwt.commons.client.mvc.widget.WindowPanelWI;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
+import org.cellang.clwt.commons.client.widget.WindowPanelWI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.event.SizeChangeEvent;

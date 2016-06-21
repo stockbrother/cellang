@@ -9,7 +9,7 @@ import org.cellang.clwt.commons.client.mvc.ActionEvent;
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.commons.client.mvc.ViewI;
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.ErrorInfosData;

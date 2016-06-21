@@ -4,12 +4,12 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.tab;
 
-import org.cellang.clwt.commons.client.mvc.widget.StackItemI;
-import org.cellang.clwt.commons.client.mvc.widget.ViewReferenceI;
-import org.cellang.clwt.commons.client.mvc.widget.WidgetSupport;
 import org.cellang.clwt.commons.client.widget.PanelWI;
 import org.cellang.clwt.commons.client.widget.SelectEvent;
+import org.cellang.clwt.commons.client.widget.StackItemI;
 import org.cellang.clwt.commons.client.widget.TabWI;
+import org.cellang.clwt.commons.client.widget.ViewReferenceI;
+import org.cellang.clwt.commons.client.widget.WidgetSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.widget.WebWidget;

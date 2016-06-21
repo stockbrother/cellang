@@ -7,11 +7,14 @@ package org.cellang.clwt.commons.client.frwk.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.frwk.HeaderViewI;
 import org.cellang.clwt.commons.client.mvc.simple.SimpleView;
 import org.cellang.clwt.commons.client.widget.BarWidgetI;
+import org.cellang.clwt.commons.client.widget.MenuItemWI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
+import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.Position;
 
@@ -50,36 +53,38 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 	}
 
 	/*
-	 *Mar 30, 2013
+	 * Mar 30, 2013
 	 */
 	@Override
 	public void tryRemoveItem(Path path) {
 		ItemView iv = this.getItem(path);
-		if(iv == null){
+		if (iv == null) {
 			return;
 		}
 		iv.parent(null);
 		this.itemViewMap.remove(iv);
 	}
-	public ItemView getItem(Path path){
+
+	public ItemView getItem(Path path) {
 		ItemView rt = this.itemViewMap.get(path);
 		return rt;
 	}
 
 	@Override
-	public void addItem(Path path) {
-		this.addItem(path, false);
+	public void addItem(Path path, EventHandlerI<HeaderItemEvent> hdl) {
+		this.addItem(path, false, hdl);
 	}
 
 	@Override
-	public void addItem(Path path, boolean left) {
+	public void addItem(Path path, boolean left, EventHandlerI<HeaderItemEvent> hdl) {
 
 		if (path.size() == 1) {
 			ItemView rt = this.getOrCreateItem(path, left);
+			rt.addHandler(HeaderItemEvent.TYPE, hdl);//
 		} else if (path.size() == 2) {
 			ItemView rt = this.getOrCreateItem(path.getParent(), left);
-
-			rt.getOrAddMenuItem(path.getName());
+			MenuItemWI m = rt.getOrAddMenuItem(path.getName());
+			m.addHandler(HeaderItemEvent.TYPE, hdl);//
 
 		} else {
 			throw new UiException("not support deeper menu for path:" + path);
@@ -100,16 +105,15 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 	}
 
 	/*
-	 *Mar 30, 2013
+	 * Mar 30, 2013
 	 */
 	@Override
 	public void addItemIfNotExist(Path path) {
-		// 
-		if(null != this.getItem(path)){
+		//
+		if (null != this.getItem(path)) {
 			return;
 		}
-		this.addItem(path);
+		this.addItem(path, null);
 	}
-
 
 }

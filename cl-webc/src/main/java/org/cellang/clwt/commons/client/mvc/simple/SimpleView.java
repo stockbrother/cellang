@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.clwt.commons.client.mvc.support.ViewSupport;
-import org.cellang.clwt.commons.client.mvc.widget.ButtonI;
-import org.cellang.clwt.commons.client.mvc.widget.ErrorInfosWidgetI;
-import org.cellang.clwt.commons.client.mvc.widget.ListI;
+import org.cellang.clwt.commons.client.widget.ButtonI;
+import org.cellang.clwt.commons.client.widget.ErrorInfosWidgetI;
+import org.cellang.clwt.commons.client.widget.ListI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.data.ErrorInfosData;

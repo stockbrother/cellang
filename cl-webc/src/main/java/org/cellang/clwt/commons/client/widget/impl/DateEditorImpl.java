@@ -5,7 +5,7 @@ package org.cellang.clwt.commons.client.widget.impl;
 
 import java.util.Date;
 
-import org.cellang.clwt.commons.client.mvc.widget.DateEditorI;
+import org.cellang.clwt.commons.client.widget.DateEditorI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.data.DateData;
 import org.cellang.clwt.core.client.gwtbridge.GwtChangeHandler;

@@ -2,7 +2,7 @@ package org.cellang.clwt.commons.client.frwk.impl;
 
 import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.mvc.simple.LightWeightView;
-import org.cellang.clwt.commons.client.mvc.widget.AnchorWI;
+import org.cellang.clwt.commons.client.widget.AnchorWI;
 import org.cellang.clwt.commons.client.widget.MenuItemWI;
 import org.cellang.clwt.commons.client.widget.MenuWI;
 import org.cellang.clwt.core.client.Container;

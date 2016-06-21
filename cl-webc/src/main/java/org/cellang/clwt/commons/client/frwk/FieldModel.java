@@ -4,7 +4,7 @@
  */
 package org.cellang.clwt.commons.client.frwk;
 
-import org.cellang.clwt.commons.client.mvc.widget.EditorI;
+import org.cellang.clwt.commons.client.widget.EditorI;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.Callback;
 import org.cellang.clwt.core.client.lang.Handler;

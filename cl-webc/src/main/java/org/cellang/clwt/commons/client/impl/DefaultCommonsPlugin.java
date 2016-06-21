@@ -13,31 +13,31 @@ import org.cellang.clwt.commons.client.frwk.impl.HeaderView;
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.commons.client.mvc.ViewI;
-import org.cellang.clwt.commons.client.mvc.widget.AnchorWI;
-import org.cellang.clwt.commons.client.mvc.widget.BooleanEditorI;
-import org.cellang.clwt.commons.client.mvc.widget.ButtonI;
-import org.cellang.clwt.commons.client.mvc.widget.DateEditorI;
-import org.cellang.clwt.commons.client.mvc.widget.DateWI;
-import org.cellang.clwt.commons.client.mvc.widget.EditorI;
-import org.cellang.clwt.commons.client.mvc.widget.EnumEditorI;
-import org.cellang.clwt.commons.client.mvc.widget.ErrorInfosWidgetI;
-import org.cellang.clwt.commons.client.mvc.widget.ImageI;
-import org.cellang.clwt.commons.client.mvc.widget.IntegerEditorI;
-import org.cellang.clwt.commons.client.mvc.widget.LabelI;
-import org.cellang.clwt.commons.client.mvc.widget.ListI;
-import org.cellang.clwt.commons.client.mvc.widget.PropertiesEditorI;
-import org.cellang.clwt.commons.client.mvc.widget.PropertiesEditorI.PropertyModel;
-import org.cellang.clwt.commons.client.mvc.widget.StackWI;
-import org.cellang.clwt.commons.client.mvc.widget.StringEditorI;
-import org.cellang.clwt.commons.client.mvc.widget.TableI;
-import org.cellang.clwt.commons.client.mvc.widget.ViewReferenceI;
-import org.cellang.clwt.commons.client.mvc.widget.WindowPanelWI;
+import org.cellang.clwt.commons.client.widget.AnchorWI;
 import org.cellang.clwt.commons.client.widget.BarWidgetI;
+import org.cellang.clwt.commons.client.widget.BooleanEditorI;
+import org.cellang.clwt.commons.client.widget.ButtonI;
+import org.cellang.clwt.commons.client.widget.DateEditorI;
+import org.cellang.clwt.commons.client.widget.DateWI;
+import org.cellang.clwt.commons.client.widget.EditorI;
+import org.cellang.clwt.commons.client.widget.EnumEditorI;
+import org.cellang.clwt.commons.client.widget.ErrorInfosWidgetI;
+import org.cellang.clwt.commons.client.widget.ImageI;
+import org.cellang.clwt.commons.client.widget.IntegerEditorI;
+import org.cellang.clwt.commons.client.widget.LabelI;
+import org.cellang.clwt.commons.client.widget.ListI;
 import org.cellang.clwt.commons.client.widget.MenuItemWI;
 import org.cellang.clwt.commons.client.widget.MenuWI;
 import org.cellang.clwt.commons.client.widget.PanelWI;
+import org.cellang.clwt.commons.client.widget.PropertiesEditorI;
+import org.cellang.clwt.commons.client.widget.StackWI;
+import org.cellang.clwt.commons.client.widget.StringEditorI;
 import org.cellang.clwt.commons.client.widget.TabWI;
 import org.cellang.clwt.commons.client.widget.TabberWI;
+import org.cellang.clwt.commons.client.widget.TableI;
+import org.cellang.clwt.commons.client.widget.ViewReferenceI;
+import org.cellang.clwt.commons.client.widget.WindowPanelWI;
+import org.cellang.clwt.commons.client.widget.PropertiesEditorI.PropertyModel;
 import org.cellang.clwt.commons.client.widget.impl.BooleanEditorImpl;
 import org.cellang.clwt.commons.client.widget.impl.DateEditorImpl;
 import org.cellang.clwt.commons.client.widget.impl.EnumEditorImpl;
@@ -462,15 +462,6 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 			}
 		});
 
-		InstanceOf.addChecker(new CheckerSupport(LoginControlI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof LoginControlI;
-			}
-		});
-
 		InstanceOf.addChecker(new CheckerSupport(HeaderView.class) {
 
 			@Override
@@ -556,16 +547,6 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 			}
 		});
 
-		InstanceOf.addChecker(new CheckerSupport(LoginViewI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof LoginViewI;
-
-			}
-
-		});
 		InstanceOf.addChecker(new CheckerSupport(BottomViewI.class) {
 
 			@Override

@@ -6,11 +6,11 @@ package org.cellang.clwt.commons.client.widget.impl.tab;
 
 import java.util.List;
 
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
-import org.cellang.clwt.commons.client.mvc.widget.StackItemI;
-import org.cellang.clwt.commons.client.mvc.widget.StackWI;
 import org.cellang.clwt.commons.client.widget.ClosingEvent;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.PanelWI;
+import org.cellang.clwt.commons.client.widget.StackItemI;
+import org.cellang.clwt.commons.client.widget.StackWI;
 import org.cellang.clwt.commons.client.widget.TabWI;
 import org.cellang.clwt.commons.client.widget.TabberWI;
 import org.cellang.clwt.commons.client.widget.impl.util.ListMap;

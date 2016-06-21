@@ -9,9 +9,9 @@ import java.util.Map;
 
 import org.cellang.clwt.commons.client.frwk.FormViewI;
 import org.cellang.clwt.commons.client.frwk.impl.FormsView;
-import org.cellang.clwt.commons.client.mvc.widget.ButtonI;
-import org.cellang.clwt.commons.client.mvc.widget.StringEditorI;
-import org.cellang.clwt.commons.client.mvc.widget.ViewReferenceI;
+import org.cellang.clwt.commons.client.widget.ButtonI;
+import org.cellang.clwt.commons.client.widget.StringEditorI;
+import org.cellang.clwt.commons.client.widget.ViewReferenceI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;

@@ -4,6 +4,7 @@
 package org.cellang.clwt.commons.client.frwk;
 
 import org.cellang.clwt.commons.client.mvc.ViewI;
+import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.Path;
 
 /**
@@ -12,13 +13,13 @@ import org.cellang.clwt.core.client.lang.Path;
  */
 public interface HeaderViewI extends ViewI {
 
-	public void addItem(Path path);
-	
-	public void addItem(Path path, boolean left);
-	
+	public void addItem(Path path, EventHandlerI<HeaderItemEvent> hdl);
+
+	public void addItem(Path path, boolean left, EventHandlerI<HeaderItemEvent> hdl);
+
 	public void addItemIfNotExist(Path path);
 
-	public void setItemDisplayText(Path path,boolean toloc, String text);
+	public void setItemDisplayText(Path path, boolean toloc, String text);
 
 	public void tryRemoveItem(Path path);
 

@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.tab;
 
-import org.cellang.clwt.commons.client.mvc.widget.StackWI;
+import org.cellang.clwt.commons.client.widget.StackWI;
 import org.cellang.clwt.commons.client.widget.TabWI;
 import org.cellang.clwt.core.client.core.ElementWrapper;
 

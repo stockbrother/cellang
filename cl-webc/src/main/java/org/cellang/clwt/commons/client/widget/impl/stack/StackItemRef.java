@@ -3,8 +3,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.stack;
 
-import org.cellang.clwt.commons.client.mvc.widget.StackItemI;
-import org.cellang.clwt.commons.client.mvc.widget.StackWI;
+import org.cellang.clwt.commons.client.widget.StackItemI;
+import org.cellang.clwt.commons.client.widget.StackWI;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.widget.WebWidget;
 

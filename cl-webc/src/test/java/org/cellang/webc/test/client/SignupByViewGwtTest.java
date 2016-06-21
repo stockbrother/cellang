@@ -16,7 +16,7 @@ import org.cellang.webc.main.client.MainControlI;
 import org.cellang.webc.main.client.Messages;
 import org.cellang.webc.main.client.SignupViewI;
 
-public class SignupByViewGwtTest extends AbstractGwtTestBase2 {
+public class SignupByViewGwtTest extends AbstractGwtTestBase3 {
 
 	private String nick = "user1";
 	private String email = nick + "@domain.com";
@@ -26,6 +26,7 @@ public class SignupByViewGwtTest extends AbstractGwtTestBase2 {
 	@Override
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
+		this.loadClient();
 	}
 
 	public void testSignupClient() {

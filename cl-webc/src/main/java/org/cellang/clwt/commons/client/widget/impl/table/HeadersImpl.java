@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.clwt.commons.client.mvc.widget.TableI;
+import org.cellang.clwt.commons.client.widget.TableI;
 import org.cellang.clwt.commons.client.widget.impl.table.support.TableHelper;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;

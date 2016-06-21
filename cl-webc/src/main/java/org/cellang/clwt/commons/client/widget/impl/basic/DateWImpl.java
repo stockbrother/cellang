@@ -3,8 +3,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.basic;
 
-import org.cellang.clwt.commons.client.mvc.widget.DateWI;
-import org.cellang.clwt.commons.client.mvc.widget.WidgetSupport;
+import org.cellang.clwt.commons.client.widget.DateWI;
+import org.cellang.clwt.commons.client.widget.WidgetSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.data.DateData;
 import org.cellang.clwt.core.client.util.DateUtil;

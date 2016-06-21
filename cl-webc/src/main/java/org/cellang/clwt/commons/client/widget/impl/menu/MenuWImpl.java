@@ -5,7 +5,7 @@
 package org.cellang.clwt.commons.client.widget.impl.menu;
 
 import org.cellang.clwt.commons.client.UiCommonsConstants;
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.MenuItemWI;
 import org.cellang.clwt.commons.client.widget.MenuWI;
 import org.cellang.clwt.core.client.Container;

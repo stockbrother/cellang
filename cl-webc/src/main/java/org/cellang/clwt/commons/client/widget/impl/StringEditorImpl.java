@@ -4,7 +4,7 @@
 package org.cellang.clwt.commons.client.widget.impl;
 
 import org.cellang.clwt.commons.client.UiCommonsConstants;
-import org.cellang.clwt.commons.client.mvc.widget.StringEditorI;
+import org.cellang.clwt.commons.client.widget.StringEditorI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.event.KeyDownEvent;

@@ -4,12 +4,13 @@ import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.Event;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
 
-public class ClientStartGwtTest extends AbstractGwtTestBase2 {
+public class ClientStartGwtTest extends AbstractGwtTestBase3 {
 
 	
 	protected LogicalChannel endpoint;
 
 	public void testClientStart() {
+		this.loadClient();
 		this.client.start();
 		System.out.println("testClientStart");
 

@@ -4,8 +4,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.menu;
 
-import org.cellang.clwt.commons.client.mvc.widget.WidgetSupport;
 import org.cellang.clwt.commons.client.widget.MenuItemWI;
+import org.cellang.clwt.commons.client.widget.WidgetSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.ClickEvent;
 

@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.table.support;
 
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.impl.table.TableImpl;
 import org.cellang.clwt.core.client.Container;
 

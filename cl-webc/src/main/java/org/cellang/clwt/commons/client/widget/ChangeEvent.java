@@ -3,7 +3,6 @@
  */
 package org.cellang.clwt.commons.client.widget;
 
-import org.cellang.clwt.commons.client.mvc.widget.EditorI;
 import org.cellang.clwt.core.client.event.Event;
 
 /**

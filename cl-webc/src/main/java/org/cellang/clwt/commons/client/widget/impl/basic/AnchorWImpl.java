@@ -3,8 +3,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.basic;
 
-import org.cellang.clwt.commons.client.mvc.widget.AnchorWI;
-import org.cellang.clwt.commons.client.mvc.widget.WidgetSupport;
+import org.cellang.clwt.commons.client.widget.AnchorWI;
+import org.cellang.clwt.commons.client.widget.WidgetSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.core.ElementWrapper;
 import org.cellang.clwt.core.client.event.ClickEvent;

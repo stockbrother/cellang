@@ -3,8 +3,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.bar;
 
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.BarWidgetI;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.Position;

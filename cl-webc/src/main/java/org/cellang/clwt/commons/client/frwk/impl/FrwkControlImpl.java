@@ -3,6 +3,7 @@
  */
 package org.cellang.clwt.commons.client.frwk.impl;
 
+import org.cellang.clwt.commons.client.AbstractCommonsControl;
 import org.cellang.clwt.commons.client.CreaterI;
 import org.cellang.clwt.commons.client.UiCommonsConstants;
 import org.cellang.clwt.commons.client.frwk.BodyViewI;
@@ -10,13 +11,14 @@ import org.cellang.clwt.commons.client.frwk.BottomViewI;
 import org.cellang.clwt.commons.client.frwk.ConsoleViewI;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.FrwkViewI;
+import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.frwk.HeaderViewI;
 import org.cellang.clwt.core.client.Container;
+import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
-import org.cellang.webc.main.client.AbstractWebcControl;
 import org.cellang.webc.main.client.LoginControlI;
 import org.cellang.webc.main.client.LoginViewI;
 import org.cellang.webc.main.client.handler.ClientStartingHandler;
@@ -25,8 +27,9 @@ import org.cellang.webc.main.client.handler.ClientStartingHandler;
  * @author wuzhen
  * 
  */
-public class FrwkControlImpl extends AbstractWebcControl implements FrwkControlI {
+public class FrwkControlImpl extends AbstractCommonsControl implements FrwkControlI {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(FrwkControlImpl.class);
+
 	/**
 	 * @param c
 	 * @param name
@@ -52,8 +55,8 @@ public class FrwkControlImpl extends AbstractWebcControl implements FrwkControlI
 	}
 
 	@Override
-	public void addHeaderItem(Path path) {
-		this.addHeaderItem(path, false);
+	public void addHeaderItem(Path path, EventHandlerI<HeaderItemEvent> hdl) {
+		this.addHeaderItem(path, false, hdl);
 	}
 
 	protected FrwkViewI getFrwkView() {
@@ -61,8 +64,8 @@ public class FrwkControlImpl extends AbstractWebcControl implements FrwkControlI
 	}
 
 	@Override
-	public void addHeaderItem(Path path, boolean left) {
-		this.getFrwkView().getHeader().addItem(path, left);
+	public void addHeaderItem(Path path, boolean left, EventHandlerI<HeaderItemEvent> hdl) {
+		this.getFrwkView().getHeader().addItem(path, left, hdl);
 
 	}
 
@@ -109,15 +112,14 @@ public class FrwkControlImpl extends AbstractWebcControl implements FrwkControlI
 	@Override
 	public ConsoleViewI openConsoleView(boolean show) {
 		BodyViewI bv = this.getFrwkView().getBodyView();
-		ConsoleViewI rt = bv.getOrCreateItem(UiCommonsConstants.P_CONSOLE_VIEW,
-				new CreaterI<ConsoleViewI>() {
+		ConsoleViewI rt = bv.getOrCreateItem(UiCommonsConstants.P_CONSOLE_VIEW, new CreaterI<ConsoleViewI>() {
 
-					@Override
-					public ConsoleViewI create(Container ct) {
+			@Override
+			public ConsoleViewI create(Container ct) {
 
-						return new ConsoleView(ct);
-					}
-				}, show);
+				return new ConsoleView(ct);
+			}
+		}, show);
 		return rt;
 	}
 }

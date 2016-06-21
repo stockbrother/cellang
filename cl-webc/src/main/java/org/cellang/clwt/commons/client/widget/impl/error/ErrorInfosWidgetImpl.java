@@ -3,9 +3,9 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.error;
 
-import org.cellang.clwt.commons.client.mvc.widget.ErrorInfosWidgetI;
-import org.cellang.clwt.commons.client.mvc.widget.WidgetSupport;
 import org.cellang.clwt.core.client.Container;
+import org.cellang.clwt.commons.client.widget.ErrorInfosWidgetI;
+import org.cellang.clwt.commons.client.widget.WidgetSupport;
 import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.data.ErrorInfoData;
 import org.cellang.clwt.core.client.data.ErrorInfosData;

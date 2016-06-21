@@ -49,7 +49,7 @@
 				</executions>
 				<configuration>
 					<!-- CHange here for test special gwt test case. -->
-					<includes>**/*SignupByViewGwtTest.java</includes>
+					<includes>**/*HeaderItemGwtTest.java</includes>
 					<runTarget>home.html</runTarget>
 					<modules>
 						<module>org.cellang.webc.main.Module</module>

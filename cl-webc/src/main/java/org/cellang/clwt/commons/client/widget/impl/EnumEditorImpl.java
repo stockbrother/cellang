@@ -6,7 +6,7 @@ package org.cellang.clwt.commons.client.widget.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.clwt.commons.client.mvc.widget.EnumEditorI;
+import org.cellang.clwt.commons.client.widget.EnumEditorI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.util.ObjectUtil;

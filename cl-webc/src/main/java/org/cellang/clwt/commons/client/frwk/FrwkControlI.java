@@ -5,6 +5,7 @@
 package org.cellang.clwt.commons.client.frwk;
 
 import org.cellang.clwt.commons.client.mvc.Control;
+import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.webc.main.client.LoginViewI;
 
@@ -19,9 +20,9 @@ public interface FrwkControlI extends Control {
 
 	public void addHeaderItemIfNotExist(Path path);
 
-	public void addHeaderItem(Path path);
+	public void addHeaderItem(Path path, EventHandlerI<HeaderItemEvent> hdl);
 
-	public void addHeaderItem(Path path, boolean left);
+	public void addHeaderItem(Path path, boolean left, EventHandlerI<HeaderItemEvent> hdl);
 
 	public HeaderViewI getHeaderView();
 

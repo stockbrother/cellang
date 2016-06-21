@@ -3,9 +3,9 @@
  */
 package org.cellang.clwt.commons.client.widget.impl;
 
-import org.cellang.clwt.commons.client.mvc.widget.EditorI;
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.ChangeEvent;
+import org.cellang.clwt.commons.client.widget.EditorI;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.lang.HasProperties;
 import org.cellang.clwt.core.client.util.ObjectUtil;

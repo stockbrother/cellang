@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.clwt.commons.client.mvc.ViewI;
-import org.cellang.clwt.commons.client.mvc.widget.EditorI;
+import org.cellang.clwt.commons.client.widget.EditorI;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.lang.Callback;
 import org.cellang.clwt.core.client.lang.Path;

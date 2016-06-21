@@ -7,9 +7,9 @@ package org.cellang.clwt.commons.client.widget.impl.stack;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
-import org.cellang.clwt.commons.client.mvc.widget.StackItemI;
-import org.cellang.clwt.commons.client.mvc.widget.StackWI;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
+import org.cellang.clwt.commons.client.widget.StackItemI;
+import org.cellang.clwt.commons.client.widget.StackWI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.core.ElementWrapper;

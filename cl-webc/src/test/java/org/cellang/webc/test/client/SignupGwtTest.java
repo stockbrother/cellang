@@ -12,7 +12,7 @@ import org.cellang.clwt.core.client.transfer.AbstractLogicalChannel;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.webc.main.client.Messages;
 
-public class SignupGwtTest extends AbstractGwtTestBase2 {
+public class SignupGwtTest extends AbstractGwtTestBase3 {
 
 	private String nick = "user1";
 	private String email = nick + "@domain.com";
@@ -22,19 +22,17 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	@Override
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
+		WebLoggerFactory.configure(WebLogger.LEVEL_DEBUG);//
+		WebLoggerFactory.configure(AbstractLogicalChannel.class, WebLogger.LEVEL_TRACE);
+		// WebLoggerFactory.configure(AbstractWebObject.class,WebLogger.LEVEL_TRACE);
+		// WebLoggerFactory.configure(DispatcherImpl.class,WebLogger.LEVEL_TRACE);
+		// WebLoggerFactory.configure(CollectionHandler.class,WebLogger.LEVEL_TRACE);
+		// WebLoggerFactory.configure(HandlerEntry.class,WebLogger.LEVEL_TRACE);
+		this.loadClient();
 	}
 
 	public void testSignupClient() {
-		WebLoggerFactory.configure(WebLogger.LEVEL_DEBUG);//
-		WebLoggerFactory.configure(AbstractLogicalChannel.class,WebLogger.LEVEL_TRACE);
-		//WebLoggerFactory.configure(AbstractWebObject.class,WebLogger.LEVEL_TRACE);
-		//WebLoggerFactory.configure(DispatcherImpl.class,WebLogger.LEVEL_TRACE);
-		//WebLoggerFactory.configure(CollectionHandler.class,WebLogger.LEVEL_TRACE);
-		//WebLoggerFactory.configure(HandlerEntry.class,WebLogger.LEVEL_TRACE);
-		
-		
-		
-		
+
 		this.client.start();
 		System.out.println("testSignupClient");
 		this.finishing.add("start");
@@ -47,7 +45,7 @@ public class SignupGwtTest extends AbstractGwtTestBase2 {
 	@Override
 	protected void onEvent(Event e) {
 		System.out.println("TestBase.onEvent(),e:" + e);
-		
+
 		if (e instanceof ClientStartedEvent) {
 			ClientStartedEvent afe = (ClientStartedEvent) e;
 

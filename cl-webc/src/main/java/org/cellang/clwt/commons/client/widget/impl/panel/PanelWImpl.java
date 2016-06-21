@@ -4,8 +4,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.panel;
 
-import org.cellang.clwt.commons.client.mvc.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.ClosingEvent;
+import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.PanelWI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.gwtbridge.GwtClickHandler;

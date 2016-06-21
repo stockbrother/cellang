@@ -12,6 +12,10 @@ import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.util.ExceptionUtil;
 import org.cellang.webc.main.client.HeaderItems;
 import org.cellang.webc.main.client.WebcHandlerSupport;
+import org.cellang.webc.main.client.handler.headeritem.ConsoleHeaderItemHandler;
+import org.cellang.webc.main.client.handler.headeritem.CreateTableHeaderItemHandler;
+import org.cellang.webc.main.client.handler.headeritem.UserLoginHeaderItemHandler;
+import org.cellang.webc.main.client.handler.headeritem.UserSignupHeaderItemHandler;
 
 import com.google.gwt.user.client.Window;
 
@@ -31,6 +35,7 @@ public class ClientStartingHandler extends WebcHandlerSupport implements EventHa
 
 	@Override
 	public void handle(ClientStartingEvent e) {
+		Container c = this.container;
 		// start frwk view.
 		// LOG.debug("handle");//
 		// Window.confirm("client starting handler.");//
@@ -48,9 +53,11 @@ public class ClientStartingHandler extends WebcHandlerSupport implements EventHa
 
 		// Window.confirm("client starting handler4.");//
 		// TODO add handler directory here.
-		fc.addHeaderItem(HeaderItems.TOOLS_CONSOLE);
-		fc.addHeaderItem(HeaderItems.USER_LOGIN);
-		fc.addHeaderItem(HeaderItems.USER_SIGNUP);
+	
+		fc.addHeaderItem(HeaderItems.TOOLS_CONSOLE, new ConsoleHeaderItemHandler(c));
+		fc.addHeaderItem(HeaderItems.USER_LOGIN, new UserLoginHeaderItemHandler(c));
+		fc.addHeaderItem(HeaderItems.USER_SIGNUP, new UserSignupHeaderItemHandler(c));
+		fc.addHeaderItem(HeaderItems.CREATE_TABLE, new CreateTableHeaderItemHandler(c));
 
 	}
 

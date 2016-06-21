@@ -1,7 +1,5 @@
 package org.cellang.webc.main.client;
 
-import org.cellang.clwt.commons.client.frwk.FrwkControlI;
-import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.frwk.impl.FrwkControlImpl;
 import org.cellang.clwt.commons.client.mvc.ActionEvent;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
@@ -12,6 +10,7 @@ import org.cellang.clwt.core.client.event.ClientStartedEvent;
 import org.cellang.clwt.core.client.event.ClientStartingEvent;
 import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.lang.InstanceOf;
+import org.cellang.clwt.core.client.lang.InstanceOf.CheckerSupport;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
@@ -19,7 +18,6 @@ import org.cellang.webc.main.client.handler.ClientStartedHandler;
 import org.cellang.webc.main.client.handler.ClientStartingHandler;
 import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
 import org.cellang.webc.main.client.handler.action.DispatcherActionHandler;
-import org.cellang.webc.main.client.handler.headeritem.DispatcherHeaderItemHandler;
 
 public class CellangClientPluginImpl implements CellangClientPlugin {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(CellangClientPluginImpl.class);
@@ -48,17 +46,34 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 
 		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 
-		eb.addHandler(HeaderItemEvent.TYPE, new DispatcherHeaderItemHandler(c));
-		
-		//action
-		eb.addHandler(ActionEvent.TYPE,new DispatcherActionHandler(c));
+		// action
+		eb.addHandler(ActionEvent.TYPE, new DispatcherActionHandler(c));
 
 		LOG.info("end-active");//
 
 	}
 
 	private void activeInstanceOf(Container c) {
-				
+
+		InstanceOf.addChecker(new CheckerSupport(LoginControlI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof LoginControlI;
+			}
+		});
+
+		InstanceOf.addChecker(new CheckerSupport(LoginViewI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof LoginViewI;
+
+			}
+
+		});
 		InstanceOf.addChecker(new InstanceOf.CheckerSupport(MainControlI.class) {
 
 			@Override

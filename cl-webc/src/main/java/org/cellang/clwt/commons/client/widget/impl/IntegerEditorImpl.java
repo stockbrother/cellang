@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.commons.client.widget.impl;
 
-import org.cellang.clwt.commons.client.mvc.widget.IntegerEditorI;
+import org.cellang.clwt.commons.client.widget.IntegerEditorI;
 import org.cellang.clwt.core.client.Container;
 
 import com.google.gwt.event.dom.client.ChangeHandler;

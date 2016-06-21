@@ -3,8 +3,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.basic;
 
-import org.cellang.clwt.commons.client.mvc.widget.LabelI;
-import org.cellang.clwt.commons.client.mvc.widget.WidgetSupport;
+import org.cellang.clwt.commons.client.widget.LabelI;
+import org.cellang.clwt.commons.client.widget.WidgetSupport;
 import org.cellang.clwt.core.client.Container;
 
 import com.google.gwt.dom.client.Element;

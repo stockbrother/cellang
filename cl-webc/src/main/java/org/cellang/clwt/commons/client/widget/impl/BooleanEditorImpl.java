@@ -3,7 +3,7 @@
  */
 package org.cellang.clwt.commons.client.widget.impl;
 
-import org.cellang.clwt.commons.client.mvc.widget.BooleanEditorI;
+import org.cellang.clwt.commons.client.widget.BooleanEditorI;
 import org.cellang.clwt.core.client.Container;
 
 import com.google.gwt.dom.client.InputElement;

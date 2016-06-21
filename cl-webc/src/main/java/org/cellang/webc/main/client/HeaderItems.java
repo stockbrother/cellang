@@ -23,4 +23,6 @@ public class HeaderItems {
 
 	public static final Path USER_LOGOUT = Path.valueOf("user/logout");
 
+	public static final Path CREATE_TABLE = Path.valueOf("create.table");
+
 }
