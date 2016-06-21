@@ -14,4 +14,3 @@ DONE.
 ```
 copy web.xml for mvn gwt:test
 ```
-
