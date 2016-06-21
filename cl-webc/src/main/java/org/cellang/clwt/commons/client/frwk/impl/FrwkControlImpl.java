@@ -15,7 +15,9 @@ import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.commons.client.frwk.HeaderViewI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
+import org.cellang.clwt.core.client.lang.DispatcherImpl;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
@@ -30,27 +32,29 @@ import org.cellang.webc.main.client.handler.ClientStartingHandler;
 public class FrwkControlImpl extends AbstractCommonsControl implements FrwkControlI {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(FrwkControlImpl.class);
 
+	private PathBasedDispatcher headerItemDispatcher;
+
 	/**
 	 * @param c
 	 * @param name
 	 */
 	public FrwkControlImpl(Container c, String name) {
 		super(c, name);
-
+		this.headerItemDispatcher = new DispatcherImpl("header-item-dispatcher");
 	}
 
 	@Override
 	public void open() {
-		LOG.info("open1");
+		
+
 		WebWidget root = this.getClient(true).getRoot();
-		LOG.info("open2");
+
 		FrwkViewI fv = root.getChild(FrwkViewI.class, false);
-		LOG.info("open3");
+
 		if (fv == null) {
 			fv = new FrwkView(this.container);
-			LOG.info("open4");
 			fv.parent(root);
-			LOG.info("open5");
+
 		}
 	}
 

@@ -59,6 +59,8 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 	protected Container container;
 
+	protected Set<Path> globalEventSet;
+	
 	public AbstractWebObject(Container c) {
 		this(c, null);
 	}
@@ -321,13 +323,22 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 	}
 
 	@Override
+	public <T extends Event> void addGlobalEvent(Event.Type<T> type) {
+		if(this.globalEventSet == null){
+			this.globalEventSet = new HashSet<Path>();
+		}
+		this.globalEventSet.add(type.getAsPath());
+	}
+
+	@Override
 	public <E extends Event> void dispatch(E evt) {
 		if(LOG.isTraceEnabled()){
 			LOG.trace("dispatch event:" + evt);//
 		}
 		this.eventDispatcher.dispatch(evt.getPath(), evt);
 
-		if (evt.isGlobal()) {
+		if (this.globalEventSet == null || (this.globalEventSet.contains(evt.getPath()))) {
+			
 			EventBus eb = this.getEventBus(false);
 			if (eb == null) {
 				if(LOG.isTraceEnabled()){

@@ -12,10 +12,9 @@ import org.cellang.clwt.core.client.lang.WebElement;
  * 
  */
 public interface WebWidget extends WebElement {
-	
 
 	public static interface CreaterI<T extends WebWidget> {
-		
+
 		public Class<T> getWidgetType();
 
 		public T create(Container c, String name, HasProperties<Object> pts);

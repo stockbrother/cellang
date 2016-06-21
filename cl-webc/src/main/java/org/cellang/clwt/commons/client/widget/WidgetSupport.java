@@ -5,6 +5,8 @@ package org.cellang.clwt.commons.client.widget;
 
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.UiException;
+import org.cellang.clwt.core.client.event.Event;
+import org.cellang.clwt.core.client.event.Event.Type;
 import org.cellang.clwt.core.client.lang.HasProperties;
 import org.cellang.clwt.core.client.lang.WebObject;
 import org.cellang.clwt.core.client.widget.AbstractWebWidget;

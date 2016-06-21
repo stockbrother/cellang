@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.cellang.clwt.commons.client.frwk.FormViewI;
 import org.cellang.clwt.commons.client.frwk.impl.FormsView;
-import org.cellang.clwt.commons.client.widget.ButtonI;
 import org.cellang.clwt.commons.client.widget.LabelI;
 import org.cellang.clwt.commons.client.widget.StringEditorI;
 import org.cellang.clwt.core.client.Container;
@@ -34,10 +33,7 @@ public class LoginView extends FormsView implements LoginViewI {
 		this.accountLabel = this.factory.create(LabelI.class);
 		this.accountLabel.parent(this);
 		this.addAction(Actions.A_LOGIN_SUBMIT);
-		this.addAction(Actions.A_PASSWORD_FORGOT);
-		ButtonI fb = this.addAction(Actions.A_LOGIN_FACEBOOK);
-		fb.getElement().addClassName("facebook-login-button");
-
+		
 		FormViewI def = this.getDefaultForm();
 		def.addField(FK_EMAIL, String.class);//
 		

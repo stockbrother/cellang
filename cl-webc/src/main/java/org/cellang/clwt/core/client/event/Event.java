@@ -65,8 +65,6 @@ public class Event extends MsgWrapper {
 
 	protected WebObject source;
 
-	protected boolean isGlobal = true;
-
 	public Event(Type<? extends Event> type) {
 		this(type, null);
 	}
@@ -91,10 +89,6 @@ public class Event extends MsgWrapper {
 		}
 		this.source = src;
 
-	}
-
-	public boolean isGlobal() {
-		return this.isGlobal;
 	}
 
 	/**
@@ -131,8 +125,7 @@ public class Event extends MsgWrapper {
 	 */
 	@Override
 	public String toString() {
-		return "Event,class:" + this.getClass() + "," + super.toString() + ",source:" + this.source + ",isClobal:"
-				+ this.isGlobal;
+		return "Event,class:" + this.getClass() + "," + super.toString() + ",source:" + this.source ;
 	}
 
 }

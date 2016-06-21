@@ -46,6 +46,8 @@ public interface WebObject extends HasProperties<Object> {
 
 	public void removeChild(WebObject c);
 
+	public <T extends Event> void addGlobalEvent(Event.Type<T> type);
+	
 	public <E extends Event> void addHandler(EventHandlerI<E> l);
 
 	// use EventBusI.addHandler
