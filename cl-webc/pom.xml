@@ -43,6 +43,7 @@
 						<goals>
 							<goal>compile</goal>
 							<goal>test</goal>
+							<goal>run</goal>
 						</goals>
 					</execution>
 

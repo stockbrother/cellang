@@ -10,20 +10,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.ContainerAware;
 import org.cellang.clwt.core.client.Scheduler;
-import org.cellang.clwt.core.client.ClientObject;
 import org.cellang.clwt.core.client.UiException;
-import org.cellang.clwt.core.client.event.AttachedEvent;
 import org.cellang.clwt.core.client.event.Event;
-import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.event.Event.Type;
+import org.cellang.clwt.core.client.event.EventBus;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
-import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
+import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.clwt.core.client.util.OID;
 
 /**
@@ -60,7 +59,9 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 	protected Container container;
 
 	protected Set<Path> globalEventSet;
-	
+
+	protected Map<Class, Map<String, List>> getChildList_cache = new HashMap<Class, Map<String, List>>();
+
 	public AbstractWebObject(Container c) {
 		this(c, null);
 	}
@@ -89,7 +90,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 		this.attacherList = new ArrayList<Object>();
 		this.logger = log != null ? log : WebLoggerFactory.getLogger(this.getClass());//
 
-		this.eventDispatcher = new DispatcherImpl(name+"-dispatcher");//
+		this.eventDispatcher = new DispatcherImpl(name + "-dispatcher");//
 		this.lazyMap = new HashMap<String, LazyI>();
 		if (pts != null) {
 			this.setProperties(pts);
@@ -146,11 +147,11 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 	@Override
 	public WebObject parent(WebObject newParent) {
-		
-		if (newParent != null && !(newParent instanceof AbstractWebObject)) {
-			throw new UiException("parent type not supported,parent:"+newParent);
-		}
 
+		if (newParent != null && !(newParent instanceof AbstractWebObject)) {
+			throw new UiException("parent type not supported,parent:" + newParent);
+		}
+		//this.getChildList_cache = null;
 		if (this.parent != null) {
 			this.parent.removeChild(this);
 			if (this.parent.isAttached()) {// detach?
@@ -181,16 +182,18 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 		} else {
 			this.parent = newParent;
 		}
-
+		//this.getChildList_cache = new HashMap<Class, Map<String, List>>();
 		return this;
 	}
 
 	public void addChild(WebObject c) {
 		this.childList.add(c);
+		this.getChildList_cache.clear();
 	}
 
 	public void removeChild(WebObject c) {
 		this.childList.remove(c);
+		this.getChildList_cache.clear();
 	}
 
 	@Override
@@ -222,8 +225,27 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 	}
 
 	public <T extends WebObject> List<T> getChildList(Class<T> cls, String name) {
-
-		List<T> rt = new ArrayList<T>();
+		if(this.getChildList_cache == null){
+			return this.doGetChildList(cls, name);
+		}
+		
+		Map<String, List> lmap = this.getChildList_cache.get(cls);
+		if (lmap != null) {
+			List list = lmap.get(name);
+			if (list != null) {
+				return list;
+			}
+		}else{
+			lmap = new HashMap<String,List>();
+			this.getChildList_cache.put(cls, lmap);
+		}
+		
+		List<T> rt = this.doGetChildList(cls, name);
+		lmap.put(name, rt);
+		return rt;
+	}
+	public <T extends WebObject> List<T> doGetChildList(Class<T> cls, String name) {
+		List<T> rt = rt = new ArrayList<T>();
 		for (WebObject oi : this.childList) {
 			if ((cls == null || InstanceOf.isInstance(cls, oi)) && (name == null || name.equals(oi.getName()))) {
 				rt.add((T) oi);
@@ -231,7 +253,6 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 		}
 		return rt;
 	}
-
 	public List<WebObject> getCopiedChildList() {
 		return new ArrayList<WebObject>(this.childList);
 	}
@@ -324,7 +345,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 	@Override
 	public <T extends Event> void addGlobalEvent(Event.Type<T> type) {
-		if(this.globalEventSet == null){
+		if (this.globalEventSet == null) {
 			this.globalEventSet = new HashSet<Path>();
 		}
 		this.globalEventSet.add(type.getAsPath());
@@ -332,27 +353,27 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 	@Override
 	public <E extends Event> void dispatch(E evt) {
-		if(LOG.isTraceEnabled()){
+		if (LOG.isTraceEnabled()) {
 			LOG.trace("dispatch event:" + evt);//
 		}
 		this.eventDispatcher.dispatch(evt.getPath(), evt);
 
 		if (this.globalEventSet == null || (this.globalEventSet.contains(evt.getPath()))) {
-			
+
 			EventBus eb = this.getEventBus(false);
 			if (eb == null) {
-				if(LOG.isTraceEnabled()){
+				if (LOG.isTraceEnabled()) {
 					LOG.trace("event bus is null");
 				}
 				return;
 			} else if (this == eb) {
-				if(LOG.isTraceEnabled()){
+				if (LOG.isTraceEnabled()) {
 					LOG.trace("event bus already dispatched this event.");
-				}	
+				}
 				return;
 			}
-			if(LOG.isTraceEnabled()){
-				LOG.trace("dispatch global event:" + evt + " to event bus.");//				
+			if (LOG.isTraceEnabled()) {
+				LOG.trace("dispatch global event:" + evt + " to event bus.");//
 			}
 			eb.dispatch(evt);
 		}
@@ -451,7 +472,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 
 			this.doAttach();
 			this.attached = true;// attached.
-			new AttachedEvent(this).dispatch();// TODO sync event?
+			//new AttachedEvent(this).dispatch();// TODO sync event?
 
 			//
 			List<Attacher> aL = this.getAttacherList(Attacher.class);
