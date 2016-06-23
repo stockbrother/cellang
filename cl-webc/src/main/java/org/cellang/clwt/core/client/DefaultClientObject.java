@@ -384,7 +384,7 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 	}
 
 	protected WebWidgetFactory getWidgetFactory() {
-		return this.getContainer().get(WebWidgetFactory.class, true);
+		return this.getContainer().getWidgetFactory(true);
 
 	}
 

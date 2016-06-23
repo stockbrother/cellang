@@ -98,7 +98,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 	}
 
 	protected Scheduler getScheduler() {
-		return this.container.get(Scheduler.class, true);
+		return this.container.getScheduler(true);
 	}
 
 	/*
@@ -284,7 +284,7 @@ public class AbstractWebObject extends AbstractHasProperties<Object>implements W
 	@Override
 	public ClientObject getClient(boolean force) {
 
-		return this.container.get(ClientObject.class, force);
+		return this.container.getClient(force);
 
 	}
 

@@ -24,7 +24,7 @@ public abstract class AbstractWebWidget extends AbstractWebElement implements We
 
 	protected AbstractWebWidget(Container c, String name, Element element, HasProperties<Object> pts) {
 		super(c, name, element, pts);
-		this.factory = c.get(WebWidgetFactory.class, true);
+		this.factory = c.getWidgetFactory(true);
 	}
 
 	@Override

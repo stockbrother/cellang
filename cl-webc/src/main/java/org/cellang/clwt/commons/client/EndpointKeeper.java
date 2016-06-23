@@ -48,7 +48,7 @@ public class EndpointKeeper {
 			LOG.error("parameter of interval for heart beat too short:" + hbI);
 			return;
 		}
-		Scheduler s = this.endpoint.getContainer().get(Scheduler.class, true);
+		Scheduler s = this.endpoint.getContainer().getScheduler(true);
 
 		s.scheduleRepeat(taskName, hbI, new EventHandlerI<ScheduleEvent>() {
 

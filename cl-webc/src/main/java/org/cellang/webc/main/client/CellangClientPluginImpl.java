@@ -28,7 +28,7 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 
 		this.activeInstanceOf(c);
 
-		ClientObject client = c.get(ClientObject.class, true);
+		ClientObject client = c.getClient(true);
 
 		ControlManager manager = new ControlManagerImpl(c);
 

@@ -38,7 +38,7 @@ public class CellangEntryPoint implements EntryPoint {
 		});
 
 		this.container = sf.getContainer();
-		client = this.container.get(ClientObject.class, true);
+		client = this.container.getClient(true);
 
 		client.start();
 		WebWidget root = client.getRoot();

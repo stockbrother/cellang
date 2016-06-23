@@ -62,7 +62,7 @@ public class MessageCacheImpl extends AbstractWebObject implements MessageCacheI
 		super(c);
 		this.entryMap = new HashMap<String, Entry>();
 		this.container = c;
-		this.scheduler = c.get(Scheduler.class, true);
+		this.scheduler = c.getScheduler(true);
 	}
 
 	@Override

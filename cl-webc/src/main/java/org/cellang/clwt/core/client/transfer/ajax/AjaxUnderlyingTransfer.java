@@ -59,7 +59,7 @@ public class AjaxUnderlyingTransfer extends AbstractUnderlyingTransfer {
 	public AjaxUnderlyingTransfer(Container c, Address uri, boolean enableHeartbeat) {
 		super(uri);
 		this.enableHeartbeat = enableHeartbeat;
-		this.scheduler = c.get(Scheduler.class, true);
+		this.scheduler = c.getScheduler(true);
 		this.resource = new Resource(this.uri.getUri());
 
 		//

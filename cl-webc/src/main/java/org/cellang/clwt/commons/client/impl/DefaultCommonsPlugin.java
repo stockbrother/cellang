@@ -73,7 +73,7 @@ public class DefaultCommonsPlugin implements CommonsPlugin {
 	public void active(Container c) {
 
 		this.activeInstaneOf(c);
-		WebWidgetFactory wf = c.get(WebWidgetFactory.class, true);
+		WebWidgetFactory wf = c.getWidgetFactory(true);
 		wf.addCreater(new WidgetCreaterSupport<AnchorWI>(AnchorWI.class) {
 			@Override
 			public AnchorWI create(Container c, String name, HasProperties<Object> pts) {

@@ -23,7 +23,7 @@ public class DefaultRootWidget extends AbstractWebWidget implements WebWidget, C
 	/* */
 	@Override
 	public ClientObject getClient(boolean force) {
-		ClientObject rt = (ClientObject) this.container.get(ClientObject.class, force);
+		ClientObject rt = (ClientObject) this.container.getClient(force);
 		return rt;
 	}
 

@@ -25,30 +25,30 @@ public class DefaultWebCorePlugin implements WebCorePlugin {
 
 		this.activeInstanceOfChecker();
 
-		c.add(new DefaultScheduler(c));
+		c.setScheduler(new DefaultScheduler(c));
 
 		//
 		this.activeWidgetAndFactory(c);
 
 		// RootI widget
-		WebWidgetFactory wf = c.get(WebWidgetFactory.class, true);
+		WebWidgetFactory wf = c.getWidgetFactory(true);
 
 		//WebWidget root = wf.create(RootI.class);
 		WebWidget root = new DefaultRootWidget(c,"root");
 		// root
 		// model
-		c.add(root);// TODO move to SPI.active();
+		//c.add(root);// TODO move to SPI.active();
 
 		// client
 		ClientObject client = new DefaultClientObject(c, root);
-		c.add(client);
+		c.setClient(client);
 		//
 
 	}
 
 	protected void activeWidgetAndFactory(Container c) {
 		WebWidgetFactory wf = new DefaultWebWidgetFactory(c);
-		c.add(wf);//
+		c.setWidgetFactory(wf);//
 //		wf.addCreater(new AbstractWebWidgetCreater<RootI>(RootI.class) {
 //
 //			@Override

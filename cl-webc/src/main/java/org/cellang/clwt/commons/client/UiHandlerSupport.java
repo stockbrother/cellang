@@ -42,7 +42,7 @@ public class UiHandlerSupport {
 	}
 
 	protected ClientObject getClient(boolean force) {
-		return this.container.get(ClientObject.class, force);
+		return this.container.getClient(force);
 	}
 
 	protected WebWidget getRootView() {

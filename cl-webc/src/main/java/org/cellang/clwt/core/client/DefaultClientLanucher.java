@@ -108,7 +108,7 @@ public class DefaultClientLanucher extends ClientLanucher {
 
 			factory.active(spis);
 
-			ClientObject client = container.get(ClientObject.class, true);
+			ClientObject client = container.getClient(true);
 
 			client.attach();// NOTE
 			return factory;
@@ -153,7 +153,7 @@ public class DefaultClientLanucher extends ClientLanucher {
 		//
 		LOG.debug(
 				"afterClientStart,to hide the client this window is stoped to listening any new message from console!!!!!!!");//
-		ClientObject client = container.get(ClientObject.class, true);
+		ClientObject client = container.getClient(true);
 		// this.hide();
 	}
 

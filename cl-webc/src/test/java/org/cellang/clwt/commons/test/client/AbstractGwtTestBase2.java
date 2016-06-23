@@ -34,7 +34,7 @@ public abstract class AbstractGwtTestBase2 extends AbstractGwtTestBase {
 				});
 
 		this.container = sf.getContainer();
-		client = this.container.get(ClientObject.class, true);
+		client = this.container.getClient(true);
 	}
 
 	protected abstract Plugin[] getPlugins();
