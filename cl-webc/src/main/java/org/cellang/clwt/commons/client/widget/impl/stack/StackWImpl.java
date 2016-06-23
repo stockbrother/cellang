@@ -123,14 +123,11 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	@Override
 	public void remove(Path path) {
 		StackItemI si = this.getByPath(path, false);
-		si.remove();
+		this.removeElement(si.getManagedWidget());//
 		this.itemList.remove(si);
 
 	}
 
-	/*
-	 * Nov 10, 2012
-	 */
 	@Override
 	public void appendElement(WebElement cw) {
 		Element ele = DOM.createDiv();

@@ -179,16 +179,6 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.uicommons.api.gwt.client.widget.tab.TabWI#close()
-	 */
-	@Override
-	public void close() {
-		this.stackItem.remove();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.fs.uicommons.api.gwt.client.widget.tab.TabWI#getManaged()
 	 */
 	@Override

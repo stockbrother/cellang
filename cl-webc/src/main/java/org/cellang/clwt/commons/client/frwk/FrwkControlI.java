@@ -7,7 +7,6 @@ package org.cellang.clwt.commons.client.frwk;
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.clwt.core.client.lang.Path;
-import org.cellang.webc.main.client.LoginViewI;
 
 /**
  * @author wu
@@ -27,9 +26,6 @@ public interface FrwkControlI extends Control {
 	public HeaderViewI getHeaderView();
 
 	public BottomViewI getBottomView();
-
-	@Deprecated // remove
-	public LoginViewI openLoginView(boolean show);
 
 	public ConsoleViewI openConsoleView(boolean show);
 

@@ -47,7 +47,7 @@ public class DateEditorImpl extends EditorSupport<DateData> implements DateEdito
 		//this.input.setAttribute("value", FS);//init value
 		
 
-		ObjectElementHelper oeh = new ObjectElementHelper(input,this);//TODO
+		ObjectElementHelper oeh = new ObjectElementHelper(input);//TODO
 
 		oeh.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new GwtChangeHandler() {
 

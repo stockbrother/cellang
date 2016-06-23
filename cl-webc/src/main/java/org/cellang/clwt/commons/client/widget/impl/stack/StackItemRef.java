@@ -72,8 +72,4 @@ public class StackItemRef implements StackItemI {
 		return this.isSelected;
 	}
 
-	@Override
-	public void remove() {
-		
-	}
 }

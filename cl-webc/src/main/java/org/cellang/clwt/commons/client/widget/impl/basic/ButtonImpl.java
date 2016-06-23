@@ -9,6 +9,8 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.ClickEvent;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.lang.State;
+import org.cellang.clwt.core.client.logger.WebLogger;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -19,6 +21,7 @@ import com.google.gwt.user.client.Element;
  * 
  */
 public class ButtonImpl extends WidgetSupport implements ButtonI {
+	private static final WebLogger LOG = WebLoggerFactory.getLogger(ButtonImpl.class);
 
 	private State state;
 
@@ -41,19 +44,20 @@ public class ButtonImpl extends WidgetSupport implements ButtonI {
 		String txt2 = txt;
 		if (toloc) {
 			String tkey = Path.valueOf("tip").concat(Path.valueOf(txt)).toString();
-			txt2 = this.localized(txt);//			
+			txt2 = this.localized(txt);//
 			title = this.localized(tkey);
 		}
 		Element ele = this.getElement();
 
 		ele.setInnerText(txt2);//
-		if(title!=null){
-			ele.setTitle(title);// TODO replace this			
+		if (title != null) {
+			ele.setTitle(title);// TODO replace this
 		}
 
 	}
 
 	public void onGwtClick(com.google.gwt.event.dom.client.ClickEvent event) {
+		LOG.info("onGwtClick,event:" + event);
 		if (this.disable) {
 			return;
 		}

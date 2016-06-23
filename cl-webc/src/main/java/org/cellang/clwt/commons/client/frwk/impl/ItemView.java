@@ -69,6 +69,7 @@ public class ItemView extends LightWeightView {
 		});
 
 		this.anchor.getElementWrapper().addClassName("header-item" + path.toString('-'));
+		
 	}
 
 	/**

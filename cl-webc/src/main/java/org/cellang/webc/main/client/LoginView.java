@@ -50,15 +50,16 @@ public class LoginView extends FormsView implements LoginViewI {
 			def.setFieldValue(FK_EMAIL, acc1.getEmail());
 			def.setFieldValue(FK_PASSWORD, acc1.getPassword());
 		}
-		this.addGwtEventHandler(KeyDownEvent.getType(), new GwtKeyDownHandler() {
-
-			@Override
-			protected void handleInternal(com.google.gwt.event.dom.client.KeyDownEvent evt) {
-				if (evt.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					LoginView.this.dispatchActionEvent(Actions.A_LOGIN_SUBMIT);
-				}
-			}
-		});
+		
+//		this.addGwtEventHandler(KeyDownEvent.getType(), new GwtKeyDownHandler() {
+//
+//			@Override
+//			protected void handleInternal(com.google.gwt.event.dom.client.KeyDownEvent evt) {
+//				if (evt.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+//					LoginView.this.dispatchActionEvent(Actions.A_LOGIN_SUBMIT);
+//				}
+//			}
+//		});
 	}
 
 	/*

@@ -39,7 +39,8 @@ public class PanelWImpl extends LayoutSupport implements PanelWI {
 		this.header.setClassName("panel-header");
 		this.element.appendChild(this.header);
 
-		this.close = new ObjectElementHelper(DOM.createButton(),this);
+		this.close = new ObjectElementHelper(DOM.createButton());
+		
 		this.close.getElement().setInnerText("X");
 		this.close.getElement().addClassName("button");
 		this.close.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {

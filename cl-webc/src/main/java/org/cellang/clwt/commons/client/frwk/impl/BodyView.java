@@ -14,6 +14,8 @@ import org.cellang.clwt.core.client.MapProperties;
 import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.HasProperties;
 import org.cellang.clwt.core.client.lang.Path;
+import org.cellang.clwt.core.client.logger.WebLogger;
+import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 import com.google.gwt.user.client.Window;
@@ -24,6 +26,8 @@ import com.google.gwt.user.client.Window;
  */
 public class BodyView extends LightWeightView implements BodyViewI {
 
+	private static WebLogger LOG = WebLoggerFactory.getLogger(BodyView.class);
+	
 	private TabberWI tabber;// TODO replace by a stack and a menu view.
 
 	// private Map<Path, WebWidget> itemMap = new HashMap<Path, WebWidget>();

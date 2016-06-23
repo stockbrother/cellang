@@ -20,6 +20,4 @@ public interface TabWI extends WebWidget, SelectableI {
 	
 	public WebWidget getManaged();
 
-	public void close();
-
 }

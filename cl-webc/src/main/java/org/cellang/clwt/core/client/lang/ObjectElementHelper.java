@@ -27,14 +27,12 @@ public class ObjectElementHelper extends ElementWrapper implements EventListener
 
 	protected int eventsToSink;
 
-	protected WebElement owner;
-
 	protected boolean attching;
 
-	public ObjectElementHelper(Element ele, WebElement owner) {
+	public ObjectElementHelper(Element ele) {
 		super(ele);
-		this.owner = owner;
 		this.target = new HandlerManager(ele);//
+		DOM.setEventListener(element, this);
 	}
 
 	@Override
@@ -61,8 +59,7 @@ public class ObjectElementHelper extends ElementWrapper implements EventListener
 		return addHandler(type, eh.cast());
 	}
 
-	@Deprecated
-	protected <H extends EventHandler> HandlerRegistration addHandler(
+	public <H extends EventHandler> HandlerRegistration addHandler(
 			DomEvent.Type<H> type, final H handler) {
 		int bit = Event.getTypeInt(type.getName());
 		this.sinkEvents(bit);
@@ -71,6 +68,7 @@ public class ObjectElementHelper extends ElementWrapper implements EventListener
 	}
 
 	protected void sinkEvents(int eventBitsToAdd) {
+		DOM.sinkEvents(element, eventBitsToAdd | DOM.getEventsSunk(element));
 		// if attaching,means call by attach from widget
 		// if attached,may call by addGwtHandler();
 //		if (this.attching || this.owner.isAttached()) {// attaching,or the
@@ -82,23 +80,23 @@ public class ObjectElementHelper extends ElementWrapper implements EventListener
 	}
 
 	// attach calling by the widget which is not attached,but is attaching.
-	public void attach() {
-		this.attching = true;
-		try {
-			DOM.setEventListener(element, this);
-			int bitsToAdd = eventsToSink;
-			eventsToSink = -1;
-			if (bitsToAdd > 0) {
-				sinkEvents(bitsToAdd);
-			}
-		} finally {
-			this.attching = false;
-		}
-
-	}
-
-	public void detach() {
-		DOM.setEventListener(element, null);
-	}
+//	public void attach() {
+//		this.attching = true;
+//		try {
+//			
+//			int bitsToAdd = eventsToSink;
+//			eventsToSink = -1;
+//			if (bitsToAdd > 0) {
+//				sinkEvents(bitsToAdd);
+//			}
+//		} finally {
+//			this.attching = false;
+//		}
+//
+//	}
+//
+//	public void detach() {
+//		DOM.setEventListener(element, null);
+//	}
 
 }

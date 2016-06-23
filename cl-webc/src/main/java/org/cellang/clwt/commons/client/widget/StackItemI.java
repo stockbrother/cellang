@@ -8,5 +8,5 @@ package org.cellang.clwt.commons.client.widget;
  * 
  */
 public interface StackItemI extends ViewReferenceI {
-	public void remove();
+	
 }

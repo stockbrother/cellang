@@ -19,6 +19,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -43,8 +44,6 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	
 	protected GwtScrollHandler scrollHandler;
 
-	protected ObjectElementHelper elementHelper;
-
 	public AbstractWebElement(Container c, Element element) {
 		this(c, null, element);
 	}
@@ -66,12 +65,22 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 		//TODO remove this class name
 		this.elementWrapper.addClassName(this.getStyleClassName(""));
 		// name-uiObjectName
-		this.elementWrapper.addClassName("name-" + this.getName());
-		
-		this.elementHelper = new ObjectElementHelper(this.element,this);
-		
+		this.elementWrapper.addClassName("name-" + this.getName());				
 	}
 
+	
+	public <E extends GwtEvent<H>, H extends EventHandler> HandlerRegistration addGwtEventHandler(
+			DomEvent.Type<H> type, GwtHandlerI<E, H> eh) {
+		return this.addGwtHandler(type, eh.cast());
+	}
+	
+	// use another Method for error catch
+	public final <H extends EventHandler> HandlerRegistration addGwtHandler(DomEvent.Type<H> type,
+			final H handler) {
+		ObjectElementHelper helper = new ObjectElementHelper(this.element);
+		return helper.addHandler(type, handler);
+	}
+	
 	protected String getChildName(String cname) {
 		if (this.name != null) {
 			cname = this.name + "-" + cname;
@@ -106,22 +115,6 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	public Element getElement() {
 
 		return this.element;
-	}
-
-	@Override
-	public <E extends GwtEvent<H>, H extends EventHandler> HandlerRegistration addGwtEventHandler(
-			DomEvent.Type<H> type, GwtHandlerI<E, H> eh) {
-		
-		return this.elementHelper.addGwtHandler(type, eh);
-
-	}
-
-	@Override
-	@Deprecated
-	// use another Method for error catch
-	public final <H extends EventHandler> HandlerRegistration addGwtHandler(DomEvent.Type<H> type,
-			final H handler) {
-		return this.elementHelper.addHandler(type, handler);
 	}
 
 	protected Element removeChild() {
@@ -187,27 +180,5 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 																			elem.style.display = visible ? '' : 'none';
 																			}-*/;
 
-	/*
-	 *May 14, 2013
-	 */
-	@Override
-	public <E extends Event> void addHandler(Type<E> ec, final EventHandlerI<E> l) {
-		super.addHandler(ec, l);
-		//TODO toward a more generic method. sink event?
-		if(this.scrollHandler == null && ScrollEvent.TYPE.equals(ec)){//
-			
-			this.scrollHandler = new GwtScrollHandler(){
-
-				@Override
-				protected void handleInternal(com.google.gwt.event.dom.client.ScrollEvent evt) {
-					Point topLeft = Point.valueOf(0, 0);
-					ScrollEvent se = new ScrollEvent(topLeft,AbstractWebElement.this);
-					se.dispatch();
-				}
-			};
-			
-			this.addGwtEventHandler(com.google.gwt.event.dom.client.ScrollEvent.getType(), this.scrollHandler);
-		}
-	}
-
+	
 }

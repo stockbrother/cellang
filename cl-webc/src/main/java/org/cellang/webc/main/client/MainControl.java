@@ -9,8 +9,6 @@ import org.cellang.clwt.commons.client.UiCommonsConstants;
 import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.core.client.Container;
 
-import com.google.gwt.user.client.Window;
-
 /**
  * @author wu
  * 
@@ -63,7 +61,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public LoginViewI openLoginView(boolean show) {
 		// 
-		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
+		LoginControlI fc = this.getControl(LoginControlI.class, true);
 		
 		return fc.openLoginView(show);
 	}

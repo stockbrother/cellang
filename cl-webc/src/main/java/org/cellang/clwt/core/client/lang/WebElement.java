@@ -4,12 +4,7 @@
 package org.cellang.clwt.core.client.lang;
 
 import org.cellang.clwt.core.client.core.ElementWrapper;
-import org.cellang.clwt.core.client.gwtbridge.GwtHandlerI;
 
-import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -26,14 +21,6 @@ public interface WebElement extends WebObject {
 
 	public void setVisible(boolean v);
 
-	public <E extends GwtEvent<H>, H extends EventHandler> HandlerRegistration addGwtEventHandler(
-			DomEvent.Type<H> type, GwtHandlerI<E, H> eh);
-
-	@Deprecated
-	// should not depends on GWT event?
-	public <H extends EventHandler> HandlerRegistration addGwtHandler(
-			DomEvent.Type<H> type, final H handler);
-	
 	public void appendElement(WebElement we);
 	
 	public void removeElement(WebElement we);

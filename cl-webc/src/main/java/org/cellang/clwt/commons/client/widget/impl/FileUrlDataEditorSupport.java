@@ -56,7 +56,7 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 		this.functional = FileReaderJSO.isSupport();
 		
 		if (this.functional) {
-			this.input = new ObjectElementHelper(DOM.createElement("input"),this);
+			this.input = new ObjectElementHelper(DOM.createElement("input"));
 			//this.getMasterHelper().append(this.input);//
 			this.input.setAttribute("type", "file");
 			this.input.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(),

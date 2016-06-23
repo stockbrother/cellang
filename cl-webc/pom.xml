@@ -50,7 +50,7 @@
 				</executions>
 				<configuration>
 					<!-- CHange here for test special gwt test case. -->
-					<includes>**/*HeaderItemGwtTest.java</includes>
+					<includes>**/*TabberWidgetGwtTest.java</includes>
 					<runTarget>home.html</runTarget>
 					<modules>
 						<module>org.cellang.webc.main.Module</module>

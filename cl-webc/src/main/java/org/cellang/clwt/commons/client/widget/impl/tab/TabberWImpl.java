@@ -90,7 +90,8 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	public boolean remove(Path path) {
 		// remove tabthis.
 		TabWI t = this.getTab(path, false);
-
+		this.tabMap.remove(path.toString());
+		this.tabList.remove(t);//
 		if (t == null) {
 			return false;
 		}

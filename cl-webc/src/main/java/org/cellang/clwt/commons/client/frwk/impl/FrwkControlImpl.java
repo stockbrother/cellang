@@ -21,9 +21,6 @@ import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.widget.WebWidget;
-import org.cellang.webc.main.client.LoginControlI;
-import org.cellang.webc.main.client.LoginViewI;
-import org.cellang.webc.main.client.handler.ClientStartingHandler;
 
 /**
  * @author wuzhen
@@ -71,17 +68,6 @@ public class FrwkControlImpl extends AbstractCommonsControl implements FrwkContr
 	@Override
 	public void addHeaderItem(Path path, boolean left, EventHandlerI<HeaderItemEvent> hdl) {
 		this.getFrwkView().getHeader().addItem(path, left, hdl);
-
-	}
-
-	/*
-	 * Feb 1, 2013
-	 */
-	@Override
-	public LoginViewI openLoginView(boolean show) {
-		//
-		LoginControlI lc = this.getControl(LoginControlI.class, true);
-		return lc.openLoginView(show);
 
 	}
 
