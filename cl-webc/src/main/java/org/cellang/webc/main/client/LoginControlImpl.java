@@ -48,4 +48,10 @@ public class LoginControlImpl extends AbstractCommonsControl implements LoginCon
 		return lv;
 	}
 
+	@Override
+	public LoginViewI getLoginView() {
+		
+		return this.getBodyView().getItem(UiCommonsConstants.LOGIN_VIEW, false);//
+	}
+
 }

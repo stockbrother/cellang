@@ -29,15 +29,20 @@ public abstract class AbstractControl extends AbstractWebObject implements Contr
 	public String getName() {
 		return name;
 	}
+	protected ControlManager getControlManager() {
 
-	@Override
-	public ControlManager getManager() {
-		return (ControlManager) this.parent;
-
+		return (ControlManager)this.getClient(true).getProperty(ControlManager.class.getName(), true);
 	}
 
+//
+//	@Override
+//	public ControlManager getManager() {
+//		return (ControlManager) this.parent;
+//
+//	}
+
 	protected <T extends Control> T getControl(Class<T> cls, boolean force) {
-		return this.getManager().getControl(cls, force);
+		return this.getControlManager().getControl(cls, force);
 	}
 
 }

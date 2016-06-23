@@ -2,10 +2,12 @@ package org.cellang.webc.main.client.handler.action;
 
 import org.cellang.clwt.commons.client.ActionHandlerSupport;
 import org.cellang.clwt.commons.client.mvc.ActionEvent;
+import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.message.MsgWrapper;
+import org.cellang.webc.main.client.LoginControlI;
 import org.cellang.webc.main.client.LoginViewI;
 
 /**
@@ -22,6 +24,10 @@ public class LoginSubmitActionHandler extends ActionHandlerSupport {
 	public LoginSubmitActionHandler(Container c) {
 		super(c);
 	}
+	protected ControlManager getControlManager() {
+
+		return (ControlManager)this.getClient(true).getProperty(ControlManager.class.getName(), true);
+	}
 
 	/*
 	 * Jan 2, 2013
@@ -29,8 +35,9 @@ public class LoginSubmitActionHandler extends ActionHandlerSupport {
 	@Override
 	public void handle(ActionEvent ae) {
 		//
-
-		LoginViewI lm = (LoginViewI) this.container.getClient(true).getProperty(LoginViewI.class.getName(), true);
+		LoginControlI lc = this.getControlManager().getControl(LoginControlI.class, true);
+		
+		LoginViewI lm = lc.getLoginView();
 		lm.clearErrorInfo();//
 
 		String email = lm.getEmail();

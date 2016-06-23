@@ -15,6 +15,8 @@ public interface PanelWI extends CompositeI{
 
 	public void setClosable(boolean b);
 	
+	public void setContent(WebElement we);
+	
 	public WebElement getContent();
 
 }
