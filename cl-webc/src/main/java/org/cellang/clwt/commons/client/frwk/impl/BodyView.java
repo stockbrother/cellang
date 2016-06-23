@@ -56,7 +56,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 			throw new UiException("already exist:" + path + ",widget:" + old);
 		}
 		final PanelWI prt = this.factory.create(PanelWI.class);
-		prt.appendElement(w);
+		prt.setContent(w);
 		
 		final TabWI sitem = this.tabber.addTab(path, prt);
 		//w.parent(prt);		

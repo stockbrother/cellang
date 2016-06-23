@@ -56,17 +56,14 @@ public class PanelWImpl extends LayoutSupport implements PanelWI {
 		this.setClosable(false);
 	}
 	
-	
-
 	@Override
-	public void appendElement(WebElement we) {
+	public void setContent(WebElement we){
 		if(this.content != null){
 			throw new UiException("duplicated");
 		}
-		super.appendElement(we);		
+		this.content = we;
+		this.appendElement(we);
 	}
-
-
 
 	protected void onClose() {
 		new ClosingEvent(this).dispatch();

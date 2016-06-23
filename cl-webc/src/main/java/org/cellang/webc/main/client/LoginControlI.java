@@ -9,6 +9,8 @@ public interface LoginControlI extends Control {
 	 */
 	public LoginViewI openLoginView(boolean show);
 	
+	public LoginViewI getLoginView();
+	
 	//public PasswordResetViewI openPasswordResetView();
 
 }

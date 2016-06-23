@@ -13,7 +13,7 @@ import org.cellang.clwt.core.client.lang.WebObject;
 public interface Control extends WebObject {
 
 	public String getName();
-
-	public ControlManager getManager();
+//
+//	public ControlManager getManager();
 
 }
