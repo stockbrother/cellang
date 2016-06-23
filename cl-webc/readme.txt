@@ -10,7 +10,6 @@ mvn verify
 mvn gwt:test
 ```
 
-
 ------------------------
 
 Done.
