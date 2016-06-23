@@ -38,8 +38,8 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		pts.setProperty(TabberWI.PK_IS_CLOSABLE, Boolean.TRUE);
 		pts.setProperty(TabberWI.PK_IS_REVERSE, Boolean.TRUE);
 		this.tabber = this.factory.create(TabberWI.class, this.getChildName("tabber"), pts);//
-		this.tabber.parent(this);
-
+		//this.tabber.parent(this);
+		this.appendElement(this.tabber);//
 	}
 
 	/**
@@ -52,9 +52,12 @@ public class BodyView extends LightWeightView implements BodyViewI {
 			throw new UiException("already exist:" + path + ",widget:" + old);
 		}
 		final PanelWI prt = this.factory.create(PanelWI.class);
+		prt.appendElement(w);
+		
 		final TabWI sitem = this.tabber.addTab(path, prt);
-		w.parent(prt);
+		//w.parent(prt);		
 		// this.itemMap.put(path, w);
+		
 		return w;
 	}
 
@@ -82,7 +85,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 			return null;
 		}
 		PanelWI p = (PanelWI) ta.getManaged();
-		return (T) p.getChildWidgetList().get(0);//
+		return (T) p.getContent();
 
 	}
 

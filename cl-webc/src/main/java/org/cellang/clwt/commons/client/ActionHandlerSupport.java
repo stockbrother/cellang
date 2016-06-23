@@ -5,7 +5,6 @@
 package org.cellang.clwt.commons.client;
 
 import org.cellang.clwt.commons.client.mvc.ActionEvent;
-import org.cellang.clwt.commons.client.mvc.ViewI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 
@@ -19,7 +18,4 @@ public abstract class ActionHandlerSupport extends UiHandlerSupport implements E
 		super(c);
 	}
 
-	protected <T extends ViewI> T findView(Class<T> vcls, boolean force) {
-		return this.getClient(true).getRoot().find(vcls, force);
-	}
 }

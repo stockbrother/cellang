@@ -39,8 +39,8 @@ public class HeaderItemGwtTest extends AbstractGwtTestBase2 {
 		this.loadClient();
 
 		ControlManager manager = new ControlManagerImpl(this.container);
-		manager.parent(client);
-		manager.child(new FrwkControlImpl(this.container, "frwk"));
+		client.setProperty(ControlManager.class.getName(), manager);//
+		manager.addControl(FrwkControlI.class, new FrwkControlImpl(this.container, "frwk"));
 
 		this.client.start();
 		System.out.println("testHeaderItem");
@@ -66,16 +66,16 @@ public class HeaderItemGwtTest extends AbstractGwtTestBase2 {
 	}
 
 	protected ControlManager getControlManager() {
-		return this.client.getChild(ControlManager.class, true);
+		return (ControlManager) this.client.getProperty(ControlManager.class.getName(), true);
 	}
 
 	private void onClientStarting(ClientStartingEvent afe) {
 		this.tryFinish("starting");
-		
+
 		FrwkControlI fc = this.getControlManager().getControl(FrwkControlI.class, true);
 		fc.open();
 		Path ITEM = Path.valueOf("abc.def");
-		
+
 		fc.addHeaderItem(ITEM, new EventHandlerI<HeaderItemEvent>() {
 
 			@Override

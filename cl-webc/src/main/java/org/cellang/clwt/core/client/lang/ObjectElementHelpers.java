@@ -19,9 +19,9 @@ public class ObjectElementHelpers {
 
 	private Map<String, ObjectElementHelper> helpers = new HashMap<String, ObjectElementHelper>();
 
-	private WebObject owner;
+	private WebElement owner;
 
-	public ObjectElementHelpers(WebObject owner) {
+	public ObjectElementHelpers(WebElement owner) {
 		this.owner = owner;
 	}
 

@@ -75,16 +75,17 @@ public class SimpleView extends ViewSupport {
 		// TODO header
 		this.errorInfoDisplay = this.factory.create(ErrorInfosWidgetI.class);
 		this.errorInfoDisplay.setProperty("_parentElement", this.header);
-		this.errorInfoDisplay.parent(this);
+		this.appendElement(this.errorInfoDisplay);
 		// footer:
 
 		this.actionListInFooter = this.factory.create(ListI.class);
 		this.actionListInFooter.setProperty("_parentElement", this.footer);
-		this.actionListInFooter.parent(this);
+		this.appendElement(this.actionListInFooter);
+		
 
 		this.actionListInHeader = this.factory.create(ListI.class);
 		this.actionListInHeader.setProperty("_parentElement", this.header);
-		this.actionListInHeader.parent(this);
+		this.appendElement(this.actionListInHeader);
 
 	}
 
@@ -110,7 +111,7 @@ public class SimpleView extends ViewSupport {
 		b = this.factory.create(ButtonI.class);// TODO,
 		b.setText(true, aname + "");
 
-		b.parent(parent);
+		parent.appendElement(b);
 		// click event is raised in button,not button's model
 		b.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 

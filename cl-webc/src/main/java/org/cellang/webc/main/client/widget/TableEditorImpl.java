@@ -49,7 +49,7 @@ public class TableEditorImpl extends EditorSupport<TableData> implements TableEd
 		this.columnList = new ArrayList<ColumnModel>();
 		this.table = this.factory.create(TableI.class);
 
-		this.child(this.table);
+		this.appendElement(this.table);
 	}
 
 	@Override

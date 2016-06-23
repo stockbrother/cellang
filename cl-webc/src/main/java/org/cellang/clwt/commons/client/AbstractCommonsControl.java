@@ -33,7 +33,7 @@ public class AbstractCommonsControl extends AbstractControl {
 		return this.getClient(true).getRoot();
 	}
 	protected FrwkViewI getFrwkView() {
-		return this.getRootView().getChild(FrwkViewI.class, true);
+		return (FrwkViewI)this.getRootView().getProperty(FrwkViewI.class.getName(), true);
 	}
 	protected BodyViewI getBodyView(){
 		return this.getFrwkView().getBodyView();

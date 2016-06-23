@@ -26,11 +26,6 @@ public abstract class AbstractControl extends AbstractWebObject implements Contr
 	}
 
 	@Override
-	protected void doAttach() {
-		super.doAttach();
-	}
-
-	@Override
 	public String getName() {
 		return name;
 	}

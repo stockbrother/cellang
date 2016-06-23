@@ -3,7 +3,6 @@
  */
 package org.cellang.clwt.core.client;
 
-import org.cellang.clwt.core.client.lang.WebElement;
 import org.cellang.clwt.core.client.widget.AbstractWebWidget;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
@@ -25,12 +24,6 @@ public class DefaultRootWidget extends AbstractWebWidget implements WebWidget, C
 	public ClientObject getClient(boolean force) {
 		ClientObject rt = (ClientObject) this.container.getClient(force);
 		return rt;
-	}
-
-	@Override
-	protected void processAddChildElementObject(WebElement ceo) {
-		this.elementWrapper.append(ceo.getElement());//
-
 	}
 
 	/**

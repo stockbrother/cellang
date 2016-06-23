@@ -27,9 +27,9 @@ public class TableImpl extends LayoutSupport implements TableI {
 		this.element.setAttribute("cellspading", "0");
 		
 		this.headers = new HeadersImpl(this.container,this);
-		this.child(this.headers);
+		this.appendElement(this.headers);
 		this.body = new BodyImpl(this.container,this);
-		this.child(this.body);//
+		this.appendElement(this.body);//
 	}
 
 

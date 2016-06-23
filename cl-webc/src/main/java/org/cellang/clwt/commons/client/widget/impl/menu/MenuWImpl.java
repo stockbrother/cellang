@@ -4,6 +4,9 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.menu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.cellang.clwt.commons.client.UiCommonsConstants;
 import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.MenuItemWI;
@@ -40,6 +43,8 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	protected Element ul;
 
 	protected Timer timerToHide;
+	
+	protected Map<String,MenuItemWI> childMap = new HashMap<String,MenuItemWI>();
 
 	public MenuWImpl(Container c, String name) {
 		super(c, name, DOM.createDiv());
@@ -98,12 +103,10 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 		if (rt != null) {
 			throw new UiException("menu item duplicated:" + name + ",in menu:" + this.getName());
 		}
-
 		rt = new MenuItemWImpl(this.container, name);
-
 		rt.setText(true, name);
-
-		this.child(rt);
+		this.appendElement(rt);
+		this.childMap.put(name, rt);
 		return rt;
 	}
 
@@ -111,7 +114,7 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	 * Nov 12, 2012
 	 */
 	@Override
-	protected void processAddChildElementObject(WebElement cw) {
+	public void appendElement(WebElement cw) {
 		//
 		if (!(cw instanceof MenuItemWI)) {
 			throw new UiException("node allowed child type:" + cw);
@@ -193,17 +196,13 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	 */
 	@Override
 	public MenuItemWI getItem(String name) {
-		return this.getChild(MenuItemWI.class, name, false);
+		return this.childMap.get(name);
 
 	}
 
-	/*
-	 * Mar 30, 2013
-	 */
 	@Override
-	public void attach() {
-		//
-		super.attach();
+	public int size() {
+		return this.childMap.size();
 	}
 
 }

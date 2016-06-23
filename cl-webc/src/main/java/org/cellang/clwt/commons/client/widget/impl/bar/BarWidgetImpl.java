@@ -24,9 +24,6 @@ import com.google.gwt.user.client.Element;
  */
 public class BarWidgetImpl extends LayoutSupport implements BarWidgetI {
 
-	private static final String CPK_LOCACTION_IN_BAR = BarWidgetImpl.class
-			.getName() + "_loc";
-
 	private Element table;
 	private Element tableRow;
 
@@ -37,8 +34,8 @@ public class BarWidgetImpl extends LayoutSupport implements BarWidgetI {
 	private Element rightTd;
 
 	/** */
-	public BarWidgetImpl(Container c,String name) {
-		super(c,name, DOM.createTable());
+	public BarWidgetImpl(Container c, String name) {
+		super(c, name, DOM.createTable());
 		this.table = this.getElement();
 		this.elementWrapper.setAttribute("cellspacing", "0");
 		this.elementWrapper.setAttribute("cellspading", "0");
@@ -63,15 +60,9 @@ public class BarWidgetImpl extends LayoutSupport implements BarWidgetI {
 
 	}
 
-	private Element createAlignedTd() {
-		Element td = DOM.createTD();
-
-		return td;
-	}
-
 	@Override
-	protected void processAddChildElementObject(WebElement cw) {
-		Position loc = this.getLocOfChild(cw);
+	public void addItem(Position loc, WebWidget cw) {
+
 		Element td = null;
 		if (loc.equals(BarWidgetI.P_CENTER)) {
 			td = this.centerTd;
@@ -84,32 +75,6 @@ public class BarWidgetImpl extends LayoutSupport implements BarWidgetI {
 		}
 
 		DOM.appendChild(td, cw.getElement());//
-
-	}
-
-	@Override
-	protected void onRemoveChild(Element ele, WebWidget cw) {
-		throw new UiException("TODO");
-	}
-
-	public Position getLocOfChild(WebElement cw) {
-
-		return (Position) cw.getProperty(CPK_LOCACTION_IN_BAR,
-				BarWidgetI.P_LEFT);
-
-	}
-
-	public void setLocOfChild(WebWidget cw, Position loc) {
-		cw.setProperty(CPK_LOCACTION_IN_BAR, loc);
-	}
-
-	/*
-	 * Nov 9, 2012
-	 */
-	@Override
-	public void addItem(Position loc, WebWidget cw) {
-		this.setLocOfChild(cw, loc);
-		this.child(cw);
 
 	}
 

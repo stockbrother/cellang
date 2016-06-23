@@ -38,7 +38,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 	public HeaderView(Container c) {
 		super(c, "header");
 		this.itemList = this.factory.create(BarWidgetI.class);
-		this.itemList.parent(this);//
+		this.appendElement(this.itemList);//
 		this.itemList.getElement().addClassName("header-bar");
 		this.headerItemDispatcher = new DispatcherImpl("header-item-dispatcher");
 
@@ -73,7 +73,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		if (iv == null) {
 			return;
 		}
-		iv.parent(null);
+		this.removeElement(iv);//
 		this.itemViewMap.remove(iv);
 	}
 

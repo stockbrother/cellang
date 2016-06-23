@@ -3,6 +3,8 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.tab;
 
+import java.util.List;
+
 import org.cellang.clwt.commons.client.widget.StackWI;
 import org.cellang.clwt.commons.client.widget.TabWI;
 import org.cellang.clwt.core.client.core.ElementWrapper;

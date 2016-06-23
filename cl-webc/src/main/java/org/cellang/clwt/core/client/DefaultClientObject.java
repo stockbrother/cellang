@@ -98,6 +98,7 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 			}
 		});
 		this.setState(UNKNOWN);
+		this.cf = new JsonCodecFactoryC();
 	}
 
 	private int getWindowLocationPort() {
@@ -113,14 +114,6 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 			pro = pro.substring(0, pro.length() - 1);
 		}
 		return pro;
-	}
-
-	@Override
-	public void doAttach() {
-
-		// TODO move to SPI.active.
-		this.cf = new JsonCodecFactoryC();
-
 	}
 
 	protected LogicalChannel newEndpoint(int tryIdx) {
@@ -395,26 +388,6 @@ public class DefaultClientObject extends ContainerAwareWebObject implements Clie
 		return root;
 	}
 
-	/* */
-	@Override
-	public void attach() {
-
-		super.attach();
-		this.root.attach();// TODO remove this call,add root as a child.
-
-	}
-
-	/* */
-	@Override
-	public void detach() {
-		this.root.detach();//
-		super.detach();
-
-	}
-
-	/*
-	 * Nov 26, 2012
-	 */
 	@Override
 	public String getClientId() {
 		//

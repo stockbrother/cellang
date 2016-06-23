@@ -31,7 +31,7 @@ public class LoginView extends FormsView implements LoginViewI {
 		super(c, name);
 
 		this.accountLabel = this.factory.create(LabelI.class);
-		this.accountLabel.parent(this);
+		this.appendElement(this.accountLabel);
 		this.addAction(Actions.A_LOGIN_SUBMIT);
 		
 		FormViewI def = this.getDefaultForm();
@@ -59,12 +59,6 @@ public class LoginView extends FormsView implements LoginViewI {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void doAttach() {
-		super.doAttach();
-
 	}
 
 	/*

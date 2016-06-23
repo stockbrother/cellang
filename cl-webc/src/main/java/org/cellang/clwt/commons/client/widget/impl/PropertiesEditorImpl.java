@@ -43,7 +43,7 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 		this.propertyMap = new HashMap<String, PropertyModel>();
 		this.table = this.factory.create(TableI.class);
 
-		this.child(this.table);
+		this.appendElement(this.table);
 	}
 
 	@Override

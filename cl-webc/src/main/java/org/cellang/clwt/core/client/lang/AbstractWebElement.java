@@ -32,8 +32,6 @@ import com.google.gwt.user.client.Element;
  */
 public abstract class AbstractWebElement extends AbstractWebObject implements WebElement {
 
-	protected ObjectElementHelpers helpers;
-
 	protected Element element;
 
 	protected ElementWrapper elementWrapper;
@@ -45,10 +43,7 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	
 	protected GwtScrollHandler scrollHandler;
 
-	protected static final String HK_MASTER = "_master";// helper for the top
-														// element
-	
-	
+	protected ObjectElementHelper elementHelper;
 
 	public AbstractWebElement(Container c, Element element) {
 		this(c, null, element);
@@ -72,8 +67,9 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 		this.elementWrapper.addClassName(this.getStyleClassName(""));
 		// name-uiObjectName
 		this.elementWrapper.addClassName("name-" + this.getName());
-		this.helpers = new ObjectElementHelpers(this);
-		this.helpers.addHelper(HK_MASTER, this.element);//
+		
+		this.elementHelper = new ObjectElementHelper(this.element,this);
+		
 	}
 
 	protected String getChildName(String cname) {
@@ -85,10 +81,6 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 
 	protected String getClassNamePrefix() {
 		return "elo-";
-	}
-
-	protected ObjectElementHelper getMasterHelper() {
-		return this.helpers.getHelper(HK_MASTER, true);
 	}
 
 	protected String getStyleClassName(String prefix) {
@@ -119,7 +111,8 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	@Override
 	public <E extends GwtEvent<H>, H extends EventHandler> HandlerRegistration addGwtEventHandler(
 			DomEvent.Type<H> type, GwtHandlerI<E, H> eh) {
-		return this.helpers.getHelper(HK_MASTER, true).addGwtHandler(type, eh);
+		
+		return this.elementHelper.addGwtHandler(type, eh);
 
 	}
 
@@ -128,7 +121,7 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	// use another Method for error catch
 	public final <H extends EventHandler> HandlerRegistration addGwtHandler(DomEvent.Type<H> type,
 			final H handler) {
-		return this.helpers.getHelper(HK_MASTER, true).addHandler(type, handler);
+		return this.elementHelper.addHandler(type, handler);
 	}
 
 	protected Element removeChild() {
@@ -142,53 +135,16 @@ public abstract class AbstractWebElement extends AbstractWebObject implements We
 	}
 
 	@Override
-	public void attach() {
-		super.attach();
-
-	}
-
-	@Override
-	public void doAttach() {
-		super.doAttach();
-		this.helpers.attach();
-	}
-
-	@Override
-	public void doDetach() {
-		this.helpers.detach();
-		super.doDetach();
-	}
-
-	@Override
-	public void addChild(WebObject c) {
-		if (c == null || !(c instanceof WebElement)) {
-			throw new UiException("child is null or not a widget:" + c);
+	public void appendElement(WebElement we){
+		if(we.getElement().hasParentElement()){
+			throw new UiException("has parent already.");
 		}
-		super.addChild(c);
-		if ((c instanceof WebElement)) {
-			this.processAddChildElementObject((WebElement) c);
-		}
+		this.elementWrapper.append(we.getElement());//
 	}
 
-	protected void processAddChildElementObject(WebElement ce) {
-		Element ele = ce.getElement();
-		if(ele.hasParentElement()){
-			return;
-		}
-		this.elementWrapper.append(ce.getElement());//
-
-	}
-
-	/* */
 	@Override
-	public void removeChild(WebObject c) {
-		super.removeChild(c);
-		WebWidget cw = (WebWidget) c;
-		this.onRemoveChild(this.element, cw);
-	}
-
-	protected void onRemoveChild(Element ele, WebWidget cw) {
-		cw.getElement().removeFromParent();// TODO
+	public void removeElement(WebElement cw) {
+		cw.getElement().removeFromParent();		
 	}
 
 	@Override

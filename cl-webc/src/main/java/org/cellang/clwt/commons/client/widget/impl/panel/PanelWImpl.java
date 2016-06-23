@@ -8,8 +8,10 @@ import org.cellang.clwt.commons.client.widget.ClosingEvent;
 import org.cellang.clwt.commons.client.widget.LayoutSupport;
 import org.cellang.clwt.commons.client.widget.PanelWI;
 import org.cellang.clwt.core.client.Container;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.gwtbridge.GwtClickHandler;
 import org.cellang.clwt.core.client.lang.ObjectElementHelper;
+import org.cellang.clwt.core.client.lang.WebElement;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.DOM;
@@ -25,6 +27,7 @@ public class PanelWImpl extends LayoutSupport implements PanelWI {
 
 	protected Element header;
 	protected ObjectElementHelper close;
+	protected WebElement content;
 
 	/**
 	 * @param ele
@@ -36,7 +39,7 @@ public class PanelWImpl extends LayoutSupport implements PanelWI {
 		this.header.setClassName("panel-header");
 		this.element.appendChild(this.header);
 
-		this.close = this.helpers.addHelper("Close", DOM.createButton());
+		this.close = new ObjectElementHelper(DOM.createButton(),this);
 		this.close.getElement().setInnerText("X");
 		this.close.getElement().addClassName("button");
 		this.close.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
@@ -51,10 +54,19 @@ public class PanelWImpl extends LayoutSupport implements PanelWI {
 		// this.header.appendChild(DOM.createDiv());//right filler
 		this.setClosable(false);
 	}
+	
+	
 
-	/**
-	 * 
-	 */
+	@Override
+	public void appendElement(WebElement we) {
+		if(this.content != null){
+			throw new UiException("duplicated");
+		}
+		super.appendElement(we);		
+	}
+
+
+
 	protected void onClose() {
 		new ClosingEvent(this).dispatch();
 	}
@@ -69,5 +81,12 @@ public class PanelWImpl extends LayoutSupport implements PanelWI {
 			this.header.addClassName("invisible");
 			this.header.removeClassName("visible");
 		}
+	}
+
+
+
+	@Override
+	public WebElement getContent() {
+		return this.content;
 	}
 }

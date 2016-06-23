@@ -39,14 +39,9 @@ public class WindowPanelWImpl extends LayoutSupport implements WindowPanelWI {
 		this.getElementWrapper().moveTo(Point.valueOf(0, 0));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uicore.api.gwt.client.support.WidgetSupport#doAttach()
-	 */
-	@Override
-	public void doAttach() {
-		super.doAttach();
+	//TODO
+	private void doAttach() {
+		
 		//
 		this.addHandler(SizeChangeEvent.TYPE, 
 				new EventHandlerI<SizeChangeEvent>() {

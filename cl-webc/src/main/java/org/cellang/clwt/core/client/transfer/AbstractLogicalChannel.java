@@ -97,6 +97,14 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 				}
 			}
 		});
+		this.messageCache.start();
+		this.getClient(true).addHandler(ClientClosingEvent.TYPE, new EventHandlerI<ClientClosingEvent>() {
+
+			@Override
+			public void handle(ClientClosingEvent t) {
+				AbstractLogicalChannel.this.onClientClosing(t);
+			}
+		});
 
 	}
 
@@ -129,23 +137,6 @@ public abstract class AbstractLogicalChannel extends AbstractWebObject implement
 				this.lastBusyEvent.dispatch();
 			}
 		}
-	}
-
-	/*
-	 * Dec 20, 2012
-	 */
-	@Override
-	protected void doAttach() {
-		super.doAttach();
-
-		this.messageCache.start();
-		this.getClient(true).addHandler(ClientClosingEvent.TYPE, new EventHandlerI<ClientClosingEvent>() {
-
-			@Override
-			public void handle(ClientClosingEvent t) {
-				AbstractLogicalChannel.this.onClientClosing(t);
-			}
-		});
 	}
 
 	/**

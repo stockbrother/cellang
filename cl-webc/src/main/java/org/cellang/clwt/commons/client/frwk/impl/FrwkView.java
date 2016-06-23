@@ -40,6 +40,12 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 	private TDWrapper right;
 
 	private Element bottom;
+	
+	HeaderViewI headerView;
+	
+	BodyViewI bodyView;
+	
+	BottomViewI bottomView;
 
 	/**
 	 * @param ele
@@ -77,16 +83,14 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 
 		//
 
-		HeaderView hv = new HeaderView(this.container);
-
-		hv.parent(this);
-
-		BodyView bv = new BodyView(this.container);
-		bv.parent(this);
+		this.headerView = new HeaderView(this.container);
+		this.appendElement(this.headerView);
 		
-		BottomView tv = new BottomView(this.container);
-		tv.parent(this);
+		this.bodyView = new BodyView(this.container);
+		this.appendElement(this.bodyView);
 		
+		this.bottomView = new BottomView(this.container);
+		this.appendElement(this.bottomView);
 	}
 
 /*	@Override
@@ -97,13 +101,12 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 */
 	@Override
 	public BodyViewI getBodyView() {
-		return this.getChild(BodyViewI.class, true);
-
+		return this.bodyView;
 	}
 
 	@Override
 	public HeaderViewI getHeader() {
-		return this.getChild(HeaderViewI.class, true);
+		return this.headerView;
 	}
 
 	/*
@@ -111,8 +114,7 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 	 */
 	@Override
 	public BottomViewI getBottom() {
-		// 
-		return this.getChild(BottomViewI.class, true);
+		return this.bottomView;
 	}
 
 }

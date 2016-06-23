@@ -65,7 +65,7 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 
 	protected ControlManager getControlManager() {
 
-		return this.getClient(true).getChild(ControlManager.class, true);
+		return (ControlManager)this.getClient(true).getProperty(ControlManager.class.getName(), true);
 	}
 
 	/*

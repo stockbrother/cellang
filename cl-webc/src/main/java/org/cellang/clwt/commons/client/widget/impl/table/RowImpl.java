@@ -28,7 +28,7 @@ public class RowImpl extends TableHelper implements TableI.RowI {
 	@Override
 	public CellI createCell() {
 		CellI rt = new CellImpl(this.container, this);
-		this.child(rt);
+		this.appendElement(rt);//
 		return rt;
 
 	}

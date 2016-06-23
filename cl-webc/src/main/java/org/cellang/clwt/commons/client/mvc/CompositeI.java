@@ -13,8 +13,8 @@ import org.cellang.clwt.core.client.widget.WebWidget;
  */
 public interface CompositeI extends WebWidget {
 
-	public CompositeI child(WebWidget w);
-
-	public List<WebWidget> getChildWidgetList();
+//	public CompositeI child(WebWidget w);
+//
+//	public List<WebWidget> getChildWidgetList();
 
 }

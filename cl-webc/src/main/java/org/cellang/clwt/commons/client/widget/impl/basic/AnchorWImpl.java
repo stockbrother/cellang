@@ -40,7 +40,7 @@ public class AnchorWImpl extends WidgetSupport implements AnchorWI {
 	/* */
 	@Override
 	public void click() {
-		this.assertAttached();
+		//TODO attached?
 		this.getElementWrapper().click();
 	}
 

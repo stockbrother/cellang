@@ -4,6 +4,9 @@
  */
 package org.cellang.clwt.commons.client.frwk;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.cellang.clwt.commons.client.mvc.ModelSupport;
 import org.cellang.clwt.core.client.UiException;
 
@@ -14,8 +17,10 @@ import org.cellang.clwt.core.client.UiException;
 public class FormsModel extends ModelSupport {
 
 	public static final String DEFAULT_FORM = "default";
-	
+
 	private FormModel currentForm;
+
+	protected Map<String, FormModel> formMap = new HashMap<String, FormModel>();
 
 	/**
 	 * @param name
@@ -27,7 +32,12 @@ public class FormsModel extends ModelSupport {
 	}
 
 	public FormModel getForm(String name, boolean force) {
-		return this.getChild(FormModel.class, name, force);
+
+		FormModel rt = this.formMap.get(name);
+		if (rt == null && force) {
+			throw new UiException("no this form:" + name);
+		}
+		return rt;
 	}
 
 	public FormModel getDefaultForm() {
@@ -47,7 +57,7 @@ public class FormsModel extends ModelSupport {
 			throw new UiException("existed form:" + name + ",in:" + this);
 		}
 		FormModel rt = new FormModel(name);
-		rt.parent(this);//
+		this.formMap.put(name, rt);//
 		// this will cause the view updated into the right screen.
 		return rt;
 	}

@@ -18,4 +18,5 @@ public interface ListI extends WebWidget {
 	public static final String PK_LIST_ITEM_CLASSNAME = "itemClassName"; 
 
 	public int getSize();
+	
 }

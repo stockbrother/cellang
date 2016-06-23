@@ -70,7 +70,7 @@ public class SignupByViewGwtTest extends AbstractGwtTestBase3 {
 
 	private void onClientStart(ClientStartedEvent afe) {
 		this.tryFinish("start");//
-		ControlManager cm = this.client.find(ControlManager.class, true);
+		ControlManager cm = (ControlManager) this.client.getProperty(ControlManager.class.getName(), true);
 		MainControlI mc = cm.getControl(MainControlI.class, true);
 		SignupViewI sv = mc.openSignup();
 		sv.setEmail(this.email);

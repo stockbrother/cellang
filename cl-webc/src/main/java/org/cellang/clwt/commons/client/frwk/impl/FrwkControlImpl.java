@@ -49,12 +49,12 @@ public class FrwkControlImpl extends AbstractCommonsControl implements FrwkContr
 
 		WebWidget root = this.getClient(true).getRoot();
 
-		FrwkViewI fv = root.getChild(FrwkViewI.class, false);
+		FrwkViewI fv = (FrwkViewI)root.getProperty(FrwkViewI.class.getName(), false);
 
 		if (fv == null) {
 			fv = new FrwkView(this.container);
-			fv.parent(root);
-
+			root.getElementWrapper().append(fv.getElementWrapper());
+			root.setProperty(FrwkViewI.class.getName(), fv);//
 		}
 	}
 
@@ -64,7 +64,8 @@ public class FrwkControlImpl extends AbstractCommonsControl implements FrwkContr
 	}
 
 	protected FrwkViewI getFrwkView() {
-		return this.getRootView().getChild(FrwkViewI.class, true);
+		WebWidget root = this.getClient(true).getRoot();
+		return (FrwkViewI)root.getProperty(FrwkViewI.class.getName(), false);
 	}
 
 	@Override

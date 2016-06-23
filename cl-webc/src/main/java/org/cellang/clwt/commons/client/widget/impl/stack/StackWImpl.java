@@ -101,7 +101,7 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 		this.itemList.add(rt);// NOTE,rt is the child of the widget's model
 		rt.select(select);
 		child.setProperty("_item_path", path);
-		this.child(child);
+		this.appendElement(child);
 
 		return rt;
 	}
@@ -123,7 +123,7 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	@Override
 	public void remove(Path path) {
 		StackItemI si = this.getByPath(path, false);
-		si.getManagedWidget().parent(null);
+		si.remove();
 		this.itemList.remove(si);
 
 	}
@@ -132,16 +132,16 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	 * Nov 10, 2012
 	 */
 	@Override
-	protected void processAddChildElementObject(WebElement cw) {
+	public void appendElement(WebElement cw) {
 		Element ele = DOM.createDiv();
-
 		DOM.appendChild(ele, cw.getElement());//
 		DOM.appendChild(this.element, ele);
 	}
 
 	@Override
-	protected void onRemoveChild(Element ele, WebWidget cw) {
+	public void removeElement(WebElement cw) {
 		Element ce = cw.getElement();
+		//DIV as the shell,parent is DIV.
 		ce.getParentElement().removeFromParent();
 	}
 

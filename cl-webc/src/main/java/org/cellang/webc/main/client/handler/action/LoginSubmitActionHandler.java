@@ -30,7 +30,7 @@ public class LoginSubmitActionHandler extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		//
 
-		LoginViewI lm = this.findView(LoginViewI.class, true);
+		LoginViewI lm = (LoginViewI) this.container.getClient(true).getProperty(LoginViewI.class.getName(), true);
 		lm.clearErrorInfo();//
 
 		String email = lm.getEmail();

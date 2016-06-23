@@ -19,6 +19,8 @@ public interface MenuWI extends CompositeI {
 	public MenuItemWI addItem(String name, MenuWI subm);
 
 	public MenuItemWI getItem(String name);
+	
+	public int size();
 
 	public void openBy(WebWidget src);
 

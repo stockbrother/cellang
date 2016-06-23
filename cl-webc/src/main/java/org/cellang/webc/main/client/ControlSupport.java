@@ -21,36 +21,7 @@ public class ControlSupport extends AbstractControl {
 	public ControlSupport(Container c, String name) {
 		super(c, name);
 	}
-//
-//	public <T extends ModelI> T getOrCreateModel(ModelI parent, Class<T> cls, String name, CreaterI<T> crt) {
-//		T rt = parent.getChild(cls, name, false);
-//		if (rt != null) {
-//			return rt;
-//		}
-//		rt = crt.create(this.container);
-//		rt.parent(parent);
-//		return rt;
-//	}
-//
-//	public <T extends ModelI> T getOrCreateModel(ModelI parent, Class<T> cls, CreaterI<T> crt) {
-//		T rt = parent.getChild(cls, false);
-//		if (rt != null) {
-//			return rt;
-//		}
-//		rt = crt.create(this.container);
-//		rt.parent(parent);
-//		return rt;
-//	}
 
-	public <T extends WebWidget> T getOrCreateView(WebWidget parent, Class<T> cls, CreaterI<T> crt) {
-		T rt = parent.getChild(cls, false);
-		if (rt != null) {
-			return rt;
-		}
-		rt = crt.create(this.container);
-		rt.parent(parent);
-		return rt;
-	}
 	public <T extends WebWidget> T getOrCreateViewInBody(Path path, CreaterI<T> crt) {
 		return this.getOrCreateViewInBody(path, crt, false);
 	}
@@ -72,7 +43,7 @@ public class ControlSupport extends AbstractControl {
 	}
 
 	protected FrwkViewI getFrwkView() {
-		return this.getRootView().getChild(FrwkViewI.class, true);
+		return (FrwkViewI)this.getRootView().getProperty(FrwkViewI.class.getName(), true);
 	}
 
 	protected BodyViewI getBodyView() {

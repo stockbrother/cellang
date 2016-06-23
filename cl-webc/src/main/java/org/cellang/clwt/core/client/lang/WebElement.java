@@ -33,9 +33,13 @@ public interface WebElement extends WebObject {
 	// should not depends on GWT event?
 	public <H extends EventHandler> HandlerRegistration addGwtHandler(
 			DomEvent.Type<H> type, final H handler);
-
+	
+	public void appendElement(WebElement we);
+	
+	public void removeElement(WebElement we);
+	
 	@Deprecated
 	// use ElementWrapper.click()
 	public void _click();
-
+	
 }

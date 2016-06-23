@@ -27,11 +27,11 @@ public class ObjectElementHelper extends ElementWrapper implements EventListener
 
 	protected int eventsToSink;
 
-	protected WebObject owner;
+	protected WebElement owner;
 
 	protected boolean attching;
 
-	public ObjectElementHelper(Element ele, WebObject owner) {
+	public ObjectElementHelper(Element ele, WebElement owner) {
 		super(ele);
 		this.owner = owner;
 		this.target = new HandlerManager(ele);//
@@ -73,12 +73,12 @@ public class ObjectElementHelper extends ElementWrapper implements EventListener
 	protected void sinkEvents(int eventBitsToAdd) {
 		// if attaching,means call by attach from widget
 		// if attached,may call by addGwtHandler();
-		if (this.attching || this.owner.isAttached()) {// attaching,or the
-														// widget is attached.
-			DOM.sinkEvents(element, eventBitsToAdd | DOM.getEventsSunk(element));
-		} else {// save value,wait attach
-			this.eventsToSink |= eventBitsToAdd;
-		}
+//		if (this.attching || this.owner.isAttached()) {// attaching,or the
+//														// widget is attached.
+//			DOM.sinkEvents(element, eventBitsToAdd | DOM.getEventsSunk(element));
+//		} else {// save value,wait attach
+//			this.eventsToSink |= eventBitsToAdd;
+//		}
 	}
 
 	// attach calling by the widget which is not attached,but is attaching.

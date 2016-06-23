@@ -28,32 +28,4 @@ public class LayoutSupport extends WidgetSupport implements CompositeI {
 		super(c, name, ele, pts);
 	}
 
-	/* */
-	@Override
-	public CompositeI child(WebWidget w) {
-		w.parent(this);
-		return this;
-	}
-
-	@Override
-	public void attach() {
-		super.attach();
-		for (WebWidget w : this.getChildWidgetList()) {
-			w.attach();
-		}
-	}
-
-	@Override
-	public void detach() {
-		for (WebWidget w : this.getChildWidgetList()) {
-			w.detach();
-		}
-		super.detach();
-	}
-
-	@Override
-	public List<WebWidget> getChildWidgetList() {
-		return this.getChildList(WebWidget.class);
-	}
-
 }

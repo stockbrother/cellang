@@ -4,7 +4,10 @@
  */
 package org.cellang.clwt.commons.client.widget.impl.tab;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.cellang.clwt.commons.client.widget.ClosingEvent;
 import org.cellang.clwt.commons.client.widget.LayoutSupport;
@@ -23,7 +26,6 @@ import org.cellang.clwt.core.client.lang.WebElement;
 import org.cellang.clwt.core.client.widget.WebWidget;
 
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 
 /**
  * @author wu
@@ -41,6 +43,9 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	private boolean isReverse;
 
+	private Map<String, TabWI> tabMap = new HashMap<String, TabWI>();
+	
+	private List<TabWI> tabList = new ArrayList<TabWI>();
 
 	/**
 	 * @param ele
@@ -58,13 +63,13 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		}
 
 		this.stack = this.factory.create(StackWI.class, this.getChildName("stack"));
-		
-		this.child(this.stack);//
+
+		this.appendElement(this.stack);//
 
 	}
 
 	@Override
-	protected void processAddChildElementObject(WebElement cw) {
+	public void appendElement(WebElement cw) {
 		if (cw instanceof StackWI) {
 			this.layout.setStack((StackWI) cw);
 		} else if (cw instanceof TabWI) {
@@ -73,7 +78,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	}
 
 	@Override
-	protected void onRemoveChild(Element ele, WebWidget cw) {
+	public void removeElement(WebElement cw) {
 		if (cw instanceof StackWI) {
 			// should not here
 		} else if (cw instanceof TabWI) {
@@ -90,7 +95,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 			return false;
 		}
 		boolean sel = t.isSelected();
-		t.parent(null);
+		this.removeElement(t);
 		// remove panel
 		this.stack.remove(path);
 		this.history.remove(path);
@@ -104,7 +109,8 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	@Override
 	public List<TabWI> getTabList() {
-		return this.getChildList(TabWI.class);
+		
+		return this.tabList;
 	}
 
 	/**
@@ -136,16 +142,18 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		StackItemI sitem = this.stack.insert(name, pw, sel);//
 
 		if (content != null) {
-			pw.child(content);
+			pw.appendElement(content);
 		}
 
-		TabWImpl rt = new TabWImpl(this.container, name.toString(), pw, content, sitem, this);// TODO
+		TabWImpl rt = new TabWImpl(this.container, name.toString(), pw, content, sitem, this);// 
+		this.tabList.add(rt);
+		this.tabMap.put(name.toString(), rt);//
 		// not
 		// is
 		// a
 		// widget.
 		// first must select
-		this.child(rt);//
+		this.appendElement(rt);//
 		this.history.put(name, rt);
 		if (sel) {
 			rt.select();
@@ -167,7 +175,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	}
 
 	public int getSize() {
-		return this.getChildList(TabWI.class).size();
+		return this.tabList.size();
 
 	}
 
@@ -177,7 +185,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	}
 
 	public void _select(String name) {
-		List<TabWI> tabL = this.getChildList(TabWI.class);
+		List<TabWI> tabL = this.getTabList();
 		for (TabWI tb : tabL) {
 			boolean sel = tb.getName().equals(name);
 			TabWImpl ti = (TabWImpl) tb;
@@ -193,7 +201,11 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	@Override
 	public TabWI getTab(Path name, boolean force) {
 
-		return this.getChild(TabWI.class, name.toString(), force);
+		TabWI rt = this.tabMap.get(name.toString());
+		if (rt == null && force) {
+			throw new UiException("no this tab:" + name);
+		}
+		return rt;
 	}
 
 	/*
@@ -204,7 +216,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	 */
 	@Override
 	public TabWI getSelected(boolean force) {
-		List<TabWI> tl = this.getChildList(TabWI.class);
+		List<TabWI> tl = this.getTabList();
 		for (TabWI t : tl) {
 			if (t.isSelected()) {
 				return t;

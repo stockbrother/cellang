@@ -56,15 +56,6 @@ public class DefaultLogicalChannel extends AbstractLogicalChannel {
 
 	}
 
-	/*
-	 * Dec 20, 2012
-	 */
-	@Override
-	protected void doAttach() {
-		super.doAttach();
-
-	}
-
 	/**
 	 * Apr 4, 2013
 	 */
@@ -145,8 +136,7 @@ public class DefaultLogicalChannel extends AbstractLogicalChannel {
 	}
 
 	@Override
-	public void destroy() {
-		this.parent(null);
+	public void destroy() {		
 		this.eventDispatcher.cleanAllHanlders();
 	}
 

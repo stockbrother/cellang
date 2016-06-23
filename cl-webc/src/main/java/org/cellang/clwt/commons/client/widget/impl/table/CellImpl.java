@@ -30,7 +30,7 @@ public class CellImpl extends TableHelper implements TableI.CellI {
 	/* */
 	@Override
 	public CellI child(WebWidget w) {
-		super.child(w);
+		this.appendElement(w);//
 		return this;
 
 	}

@@ -26,7 +26,7 @@ public class BodyImpl extends TableHelper implements TableI.BodyI {
 	@Override
 	public RowI createRow() {
 		RowI rt = new RowImpl(this.container, this);
-		this.child(rt);//
+		this.appendElement(rt);//
 		return rt;
 
 	}

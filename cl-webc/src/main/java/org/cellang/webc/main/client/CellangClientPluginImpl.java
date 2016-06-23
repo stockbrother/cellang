@@ -1,5 +1,6 @@
 package org.cellang.webc.main.client;
 
+import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.impl.FrwkControlImpl;
 import org.cellang.clwt.commons.client.mvc.ActionEvent;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
@@ -31,12 +32,11 @@ public class CellangClientPluginImpl implements CellangClientPlugin {
 		ClientObject client = c.getClient(true);
 
 		ControlManager manager = new ControlManagerImpl(c);
+		client.setProperty(ControlManager.class.getName(), manager);//
 
-		manager.parent(client);
-
-		manager.child(new FrwkControlImpl(c, "frwk"));
-		manager.child(new LoginControlImpl(c, "login"));
-		manager.child(new MainControl(c, "main"));
+		manager.addControl(FrwkControlI.class, new FrwkControlImpl(c, "frwk"));
+		manager.addControl(LoginControlI.class, new LoginControlImpl(c, "login"));
+		manager.addControl(MainControlI.class, new MainControl(c, "main"));
 
 		EventBus eb = client.getEventBus(true);
 

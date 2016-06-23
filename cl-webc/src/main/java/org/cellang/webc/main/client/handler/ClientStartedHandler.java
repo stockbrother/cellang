@@ -44,7 +44,8 @@ public class ClientStartedHandler extends WebcHandlerSupport implements EventHan
 
 		//
 		EndpointBusyIndicator ebi = new EndpointBusyIndicator(this.container, e.getLogicalChannel());//
-		ebi.parent(this.getRootView().find(FrwkViewI.class, true));//
+		//this.getRootView().getProperty(FrwkViewI.class.getName(), true)
+		//ebi.parent();//TODO
 
 		this.activeMessageHandlers(this.container, e.getClient());
 

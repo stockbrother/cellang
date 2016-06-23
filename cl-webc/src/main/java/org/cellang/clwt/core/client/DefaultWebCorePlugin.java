@@ -4,7 +4,6 @@
 package org.cellang.clwt.core.client;
 
 import org.cellang.clwt.core.client.event.EventBus;
-import org.cellang.clwt.core.client.lang.Attacher;
 import org.cellang.clwt.core.client.lang.InstanceOf;
 import org.cellang.clwt.core.client.lang.InstanceOf.CheckerSupport;
 import org.cellang.clwt.core.client.lang.WebObject;
@@ -105,15 +104,6 @@ public class DefaultWebCorePlugin implements WebCorePlugin {
 
 				return o instanceof EventBus;
 
-			}
-		});
-
-		InstanceOf.addChecker(new CheckerSupport(Attacher.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof Attacher;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(LogicalChannel.class) {

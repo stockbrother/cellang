@@ -5,6 +5,7 @@
 package org.cellang.clwt.commons.client.widget;
 
 import org.cellang.clwt.commons.client.mvc.CompositeI;
+import org.cellang.clwt.core.client.lang.WebElement;
 
 /**
  * @author wu
@@ -13,5 +14,7 @@ import org.cellang.clwt.commons.client.mvc.CompositeI;
 public interface PanelWI extends CompositeI{
 
 	public void setClosable(boolean b);
+	
+	public WebElement getContent();
 
 }

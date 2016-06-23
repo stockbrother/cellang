@@ -60,7 +60,7 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 		this.lengthLimit = ll;
 
 		this.element.appendChild(this.stringElement);
-		ObjectElementHelper oeh = this.helpers.addHelper("stringElement", stringElement);
+		ObjectElementHelper oeh = new ObjectElementHelper(stringElement,this);//TODO
 		oeh.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new GwtChangeHandler() {
 
 			@Override

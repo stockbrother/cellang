@@ -29,49 +29,32 @@ public class WidgetSupport extends AbstractWebWidget {
 		super(c, name, ele, pts);
 	}
 
-	@Override
-	public WebObject parent(WebObject parent) {
-		WebWidget old = (WebWidget) this.parent;
 
-		if (parent != null && !(parent instanceof WebWidget)) {
-			throw new UiException("cannot set a none widget parent");
-		}
-		super.parent(parent);
-
-		this.onSetParent(old, (WebWidget) parent);
-
-		return this;
-	}
-
+	//TODO
 	protected void onSetParent(WebWidget old, WebWidget newP) {
 
 		if (old != null && newP != null) {
 			throw new UiException("changing parent not suported, current parent:" + old + ",new parent:" + newP
 					+ " for widget:" + this + "");
 		}
-
-		if (old != null && old.isAttached()) {
-			this.detach();
-		}
-
-		if (newP != null && newP.isAttached()) {
-			this.attach();
-		}
+//
+//		if (old != null && old.isAttached()) {
+//			this.detach();
+//		}
+//
+//		if (newP != null && newP.isAttached()) {
+//			this.attach();
+//		}
 
 	}
-
-	@Override
-	public boolean isAttached() {
-		return attached;
-	}
+//
+//	@Override
+//	public boolean isAttached() {
+//		return attached;
+//	}
 
 	protected String localized(String key) {
 		return this.getClient(true).localized(key);
-	}
-
-	@Override
-	public void addChild(WebObject c) {
-		super.addChild(c);
 	}
 
 }

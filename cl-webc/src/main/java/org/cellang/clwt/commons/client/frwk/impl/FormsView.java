@@ -47,7 +47,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 		this.formViewMap = new HashMap<String, FormViewI>();
 		this.formsModel = new FormsModel(null);
 		this.tabber = this.factory.create(TabberWI.class);
-		this.tabber.parent(this);//
+		this.appendElement(this.tabber);//		
 		this.addForm(FM_DEFAULT);
 
 	}

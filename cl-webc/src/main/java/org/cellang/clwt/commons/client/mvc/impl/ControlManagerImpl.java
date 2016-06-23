@@ -1,8 +1,12 @@
 package org.cellang.clwt.commons.client.mvc.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.commons.client.mvc.ControlManager;
 import org.cellang.clwt.core.client.Container;
+import org.cellang.clwt.core.client.UiException;
 import org.cellang.clwt.core.client.lang.AbstractWebObject;
 
 /**
@@ -12,6 +16,8 @@ import org.cellang.clwt.core.client.lang.AbstractWebObject;
  */
 public class ControlManagerImpl extends AbstractWebObject implements ControlManager {
 
+	protected Map<String, Control> controlMap = new HashMap<String, Control>();
+
 	/**
 	 * @param c
 	 */
@@ -20,19 +26,18 @@ public class ControlManagerImpl extends AbstractWebObject implements ControlMana
 	}
 
 	@Override
-	public ControlManager addControl(Control c) {
-		this.child(c);//
+	public <T extends Control> ControlManager addControl(Class<T> cls, T c) {
+		this.controlMap.put(cls.getName(), c);
 		return this;
 	}
 
 	@Override
-	public <T extends Control> T getControl(Class<T> cls, String name, boolean force) {
-		return this.getChild(cls, name, force);
-	}
-
-	@Override
 	public <T extends Control> T getControl(Class<T> cls, boolean force) {
-		return this.getChild(cls, null, force);
+		Control rt = this.controlMap.get(cls.getName());
+		if (rt == null && force) {
+			throw new UiException("no this control:" + cls);
+		}
+		return (T) rt;
 	}
 
 }

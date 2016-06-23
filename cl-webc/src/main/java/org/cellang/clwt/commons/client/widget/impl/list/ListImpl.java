@@ -62,11 +62,11 @@ public class ListImpl extends LayoutSupport implements ListI {
 	 */
 	@Override
 	public int getSize() {
-		return this.getChildWidgetList().size();
+		return this.childList.size();
 	}
 
 	@Override
-	protected void processAddChildElementObject(WebElement ceo) {
+	public void appendElement(WebElement ceo) {
 		
 		WebWidget before = null;
 		int idx = this.childList.size();//last as default
@@ -113,12 +113,11 @@ public class ListImpl extends LayoutSupport implements ListI {
 	
 
 	@Override
-	protected void onRemoveChild(Element ele, WebWidget cw) {
+	public void removeElement(WebElement cw) {
 		ElementWrapper epe = (ElementWrapper) cw.getProperty("externalParentElement");
 		//TRWrapper,or TDWrapper
 		epe.getElement().removeFromParent();
 		this.childList.remove(cw);//NOTE,equals
-		super.onRemoveChild(ele, cw);
 	}
 
 }

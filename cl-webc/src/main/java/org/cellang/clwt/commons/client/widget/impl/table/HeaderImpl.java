@@ -35,7 +35,7 @@ public class HeaderImpl extends TableHelper implements TableI.HeaderI {
 	/* */
 	@Override
 	public TableI.HeaderI child(WebWidget w) {
-		super.child(w);
+		this.appendElement(w);//
 		return this;
 
 	}

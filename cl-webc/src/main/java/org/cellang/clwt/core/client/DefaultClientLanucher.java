@@ -110,7 +110,6 @@ public class DefaultClientLanucher extends ClientLanucher {
 
 			ClientObject client = container.getClient(true);
 
-			client.attach();// NOTE
 			return factory;
 		} catch (Throwable t) {
 			LOG.error("failure to load client,will return null", t);

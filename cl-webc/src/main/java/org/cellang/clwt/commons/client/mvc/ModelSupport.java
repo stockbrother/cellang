@@ -34,15 +34,6 @@ public class ModelSupport extends AbstractWebObject implements Model {
 		return this.name;
 	}
 
-	@Override
-	public WebObject parent(WebObject parent) {
-		if (parent != null && !(parent instanceof Model)) {
-			throw new UiException("parent of model must be model,but is:" + parent);
-		}
-		super.parent(parent);
-		return this;
-	}
-
 	protected void _setProperty(String key, Object value) {
 		super.setProperty(key, value);
 	}

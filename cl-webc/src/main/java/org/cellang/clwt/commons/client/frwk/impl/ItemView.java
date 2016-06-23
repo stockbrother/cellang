@@ -33,12 +33,13 @@ public class ItemView extends LightWeightView {
 
 		this.anchor = this.factory.create(AnchorWI.class);
 		this.anchor.getElement().addClassName("header-item");
-		this.anchor.parent(this);//
+		this.appendElement(this.anchor);//
 		this.setDisplayText(true, this.path.toString());//
 		this.menu = this.factory.create(MenuWI.class);
 		this.menu.setVisible(false);// init is not shown.
-		this.menu.parent(this);
-
+		//this.menu.parent(this);
+		this.appendElement(this.menu);//
+		
 		this.anchor.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
@@ -144,7 +145,7 @@ public class ItemView extends LightWeightView {
 	}
 
 	protected boolean hasMenu() {
-		return !this.menu.getChildList(MenuItemWI.class).isEmpty();
+		return this.menu.size() > 0;
 	}
 
 	protected void tryOpenCloseMenu(boolean open) {

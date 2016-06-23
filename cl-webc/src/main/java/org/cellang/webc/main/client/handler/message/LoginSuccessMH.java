@@ -48,7 +48,7 @@ public class LoginSuccessMH extends WebcHandlerSupport implements MessageHandler
 		// not saved info,but user provided info,so notify user this
 		// error.
 
-		LoginViewI lv = this.getRootView().find(LoginViewI.class, true);
+		LoginViewI lv = (LoginViewI) this.container.getClient(true).getProperty(LoginViewI.class.getName(), true);
 		if (!lv.isSavingAccount()) {
 			return;
 		}

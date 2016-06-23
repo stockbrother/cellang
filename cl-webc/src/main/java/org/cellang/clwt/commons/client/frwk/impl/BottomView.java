@@ -36,17 +36,20 @@ public class BottomView extends SimpleView implements BottomViewI {
 		this.outer = this.factory.create(ListI.class, this.getChildName("outer"), ListI.PK_IS_VERTICAL,
 				Boolean.TRUE);
 		this.outer.getElement().addClassName("bottom-list");
-		this.outer.parent(this);
+		//this.outer.parent(this);
+		this.appendElement(this.outer);
+		
 		{
 			//
 			this.bar = this.factory.create(BarWidgetI.class);
 			this.bar.getElementWrapper().addClassName("bottom-bar");
-			this.bar.parent(this.outer);//
+			this.outer.appendElement(this.bar);
+			
 		}
 		{//
 			this.copyRight = this.factory.create(LabelI.class);
 			this.copyRight.getElementWrapper().addClassName("bottom-copyright");
-			this.copyRight.parent(this.outer);
+			this.outer.appendElement(this.copyRight);			
 			this.copyRight.setText("/copyright", true);
 		}
 	}

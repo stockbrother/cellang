@@ -38,7 +38,7 @@ public class UiHandlerSupport {
 	}
 
 	protected ControlManager getControlManager() {
-		return this.getClient(true).getChild(ControlManager.class, true);
+		return (ControlManager)this.getClient(true).getProperty(ControlManager.class.getName(), true);
 	}
 
 	protected ClientObject getClient(boolean force) {
