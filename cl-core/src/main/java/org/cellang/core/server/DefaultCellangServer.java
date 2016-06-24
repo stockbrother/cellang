@@ -9,29 +9,19 @@ import java.util.concurrent.Future;
 
 import org.cellang.commons.dispatch.DefaultDispatcher;
 import org.cellang.commons.dispatch.Dispatcher;
+import org.cellang.commons.jdbc.ConnectionPoolWrapper;
 import org.cellang.commons.lang.Handler;
 import org.cellang.commons.lang.NameSpace;
+import org.cellang.core.entity.EntityService;
+import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.cellang.core.lang.ErrorInfo;
 import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
-import org.cellang.core.rowobject.AccountRowObject;
-import org.cellang.core.rowobject.CellRowObject;
-import org.cellang.core.rowobject.ColumnRowObject;
-import org.cellang.core.rowobject.RowRowObject;
-import org.cellang.core.rowobject.SheetRowObject;
 import org.cellang.core.server.handler.ClientInitHandler;
 import org.cellang.core.server.handler.ClientIsReadyHandler;
 import org.cellang.core.server.handler.LoginHandler;
-import org.cellang.core.server.handler.SheetGetHandler;
-import org.cellang.core.server.handler.SheetListHandler;
-import org.cellang.core.server.handler.SheetSaveHandler;
 import org.cellang.core.server.handler.SignupSubmitHandler;
 import org.cellang.core.util.ExceptionUtil;
-import org.cellang.elastictable.ElasticTableBuilder;
-import org.cellang.elastictable.MetaInfo;
-import org.cellang.elastictable.TableService;
-import org.cellang.elastictable.elasticsearch.EmbeddedESServer;
-import org.cellang.elastictable.meta.DataSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,10 +37,6 @@ public class DefaultCellangServer implements MessageServer {
 
 	private ServerContext serverContext;
 
-	private EmbeddedESServer esServer;
-
-	private TableService tableService;
-
 	private File home;
 
 	private ChannelProvider channelProvider;
@@ -58,14 +44,16 @@ public class DefaultCellangServer implements MessageServer {
 	public DefaultCellangServer(File home, ChannelProvider cp) {
 		this.home = home;
 		this.channelProvider = cp;
+
 	}
 
 	@Override
 	public void start() {
 		LOG.info("start... with home:" + this.home.getAbsolutePath());
-		this.doStartTableService();
-
-		this.serverContext = new ServerContext();
+		File dbHome = new File(home.getAbsolutePath() + File.separator + "db");
+		String dbName = "h2db";
+		EntityService es = EntityService.newInstance(dbHome, dbName);
+		this.serverContext = new ServerContext(es);
 
 		// TODO handler should be state-less and dispatcher should be removed.
 		// each message should be self process-able when the context is ready.
@@ -81,44 +69,20 @@ public class DefaultCellangServer implements MessageServer {
 			}
 
 		});
-		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.REQ_CLIENT_INIT, new ClientInitHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.SIGNUP_REQ, new SignupSubmitHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.LOGIN_REQ, new LoginHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.SHEET_SAVE_REQ, new SheetSaveHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.SHEET_LIST_REQ, new SheetListHandler(this.tableService));
-		this.dispatcher.addHandler(Messages.SHEET_GET_REQ, new SheetGetHandler(this.tableService));
+		this.dispatcher.addHandler(Messages.MSG_CLIENT_IS_READY, new ClientIsReadyHandler());
+		this.dispatcher.addHandler(Messages.REQ_CLIENT_INIT, new ClientInitHandler());
+		this.dispatcher.addHandler(Messages.SIGNUP_REQ, new SignupSubmitHandler());
+		this.dispatcher.addHandler(Messages.LOGIN_REQ, new LoginHandler());
 
 		this.executor = Executors.newCachedThreadPool();
 		this.running = true;
 		LOG.info("stared with home:" + this.home.getAbsolutePath());
 	}
 
-	private void doStartTableService() {
-		this.esServer = new EmbeddedESServer(home.getAbsolutePath());
-
-		DataSchema sa = DataSchema.newInstance();
-		AccountRowObject.config(sa);
-		CellRowObject.config(sa);//
-		ColumnRowObject.config(sa);
-		RowRowObject.config(sa);
-		SheetRowObject.config(sa);//
-
-		this.tableService = ElasticTableBuilder.newInstance()
-				.metaInfo(MetaInfo.newInstance()//
-						.owner("test")//
-						.version("0.0.1-SNAPSHOT")//
-						.password("none"))
-				.schema(sa).client(this.esServer.getClient())//
-				.build();//
-
-	}
-
 	@Override
 	public void shutdown() {
 		LOG.info("shutdown...");//
 		this.running = false;
-		this.esServer.shutdown();
 		LOG.info("shutdown done");//
 	}
 

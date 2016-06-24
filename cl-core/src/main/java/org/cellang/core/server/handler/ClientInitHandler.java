@@ -1,5 +1,7 @@
 package org.cellang.core.server.handler;
 
+import java.util.UUID;
+
 import org.cellang.core.lang.HasProperties;
 import org.cellang.core.lang.MapProperties;
 import org.cellang.core.lang.MessageI;
@@ -9,8 +11,6 @@ import org.cellang.core.server.Channel;
 import org.cellang.core.server.ClientManager;
 import org.cellang.core.server.MessageContext;
 import org.cellang.core.server.Messages;
-import org.cellang.elastictable.TableService;
-import org.cellang.elastictable.elasticsearch.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +23,13 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ClientInitHandler extends AbstracHandler {
-	public ClientInitHandler(TableService ts) {
-		super(ts);
+	
+	private static final Logger LOG = LoggerFactory.getLogger(ClientInitHandler.class);
+
+	public ClientInitHandler() {
+		super();
 	}
 
-	private static final Logger LOG = LoggerFactory.getLogger(ClientInitHandler.class);
 
 	@Override
 	public void handle(MessageContext t) {
@@ -37,7 +39,7 @@ public class ClientInitHandler extends AbstracHandler {
 		MessageI msg = MessageSupport.newMessage(Messages.RES_CLIENT_INIT_SUCCESS);
 		String preferedLocale = (String) msg.getPayload("preferedLocale");
 		Channel cn = t.getChannel();
-		String clientId = UUIDUtil.randomStringUUID();
+		String clientId = UUID.randomUUID().toString();
 		Object client = new Object();// store client info(session).
 		ClientManager.ME.putClient(clientId, client);
 		msg.setPayload("clientId", clientId);

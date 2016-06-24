@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.lang.MessageI;
-import org.cellang.elastictable.elasticsearch.UUIDUtil;
 
 public class QueueChannelProvider implements ChannelProvider {
 	public static class QueueChannel extends Channel {

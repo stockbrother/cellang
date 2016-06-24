@@ -1,5 +1,7 @@
 package org.cellang.core.server.handler;
 
+import java.util.UUID;
+
 import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
 import org.cellang.core.server.AbstracHandler;
@@ -7,8 +9,6 @@ import org.cellang.core.server.Channel;
 import org.cellang.core.server.ClientManager;
 import org.cellang.core.server.MessageContext;
 import org.cellang.core.server.Messages;
-import org.cellang.elastictable.TableService;
-import org.cellang.elastictable.elasticsearch.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ClientIsReadyHandler extends AbstracHandler {
-	public ClientIsReadyHandler(TableService ts) {
-		super(ts);
+	public ClientIsReadyHandler() {
+		super();
 	}
 
 	private static final Logger LOG = LoggerFactory.getLogger(ClientIsReadyHandler.class);
@@ -41,7 +41,7 @@ public class ClientIsReadyHandler extends AbstracHandler {
 		}
 		MessageI msg = MessageSupport.newMessage(Messages.MSG_SERVER_IS_READY);
 		Channel cn = t.getChannel();
-		String clientId = UUIDUtil.randomStringUUID();
+		String clientId = UUID.randomUUID().toString();
 		Object client = new Object();// store client info(session).
 		ClientManager.ME.putClient(clientId, client);
 		msg.setPayload("clientId", clientId);

@@ -1,10 +1,22 @@
 package org.cellang.core.server;
 
-public class ServerContext {
-	
-	public ServerContext() {
+import org.cellang.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.core.entity.EntityService;
+import org.h2.jdbcx.JdbcConnectionPool;
 
+public class ServerContext {
+
+	private EntityService entityService;
+	
+	private String dbUrl;
+
+	public ServerContext(EntityService es) {
+		this.entityService = es;
 	}
 
+	public EntityService getEntityService() {
+
+		return this.entityService;
+	}
 
 }

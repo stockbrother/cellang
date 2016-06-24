@@ -3,9 +3,9 @@ package org.cellang.commons.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
-
-public class ConnectionPoolWrapper {
+public abstract class ConnectionPoolWrapper {
 
 	private static ParameterProvider EMPTY = new ParameterProvider() {
 
@@ -30,22 +30,26 @@ public class ConnectionPoolWrapper {
 
 	};
 
-	public ConnectionPoolWrapper() {
-
-	}
-
 	public long executeUpdate(String sql) {
 		Long rt = (Long) execute(sql, EMPTY, UPDATE);
 		return rt.longValue();
+	}
+
+	public Long executeUpdate(String sql, List<Object> pp) {
+		return this.executeUpdate(sql, pp.toArray(new Object[pp.size()]));
 	}
 
 	public Long executeUpdate(String sql, Object[] pp) {
 		return (Long) execute(sql, new ArrayParameterProvider(pp), UPDATE);
 	}
 
+	public abstract Connection openConnection() throws SQLException;
+	
+	public abstract void close();
+
 	public Object execute(String sql, ParameterProvider pp, PreparedStatementExecutor pse) {
 		try {
-			Connection c = null;//
+			Connection c = this.openConnection();
 			try {
 
 				PreparedStatement ps = c.prepareStatement(sql);
