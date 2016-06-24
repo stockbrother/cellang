@@ -19,11 +19,12 @@ public class SignupSubmitHandler extends AbstracHandler {
 	
 	// create anonymous account.
 	@Override
-	public void handle(MessageContext hc) {		
+	public void handle(MessageContext hc) {
 		String email = hc.getRequestMessage().getString("email");
 		String nick = hc.getRequestMessage().getString("nick");
 		String password = hc.getRequestMessage().getString("password");
-		AccountEntity an = new AccountEntity();		
+		AccountEntity an = new AccountEntity();
+		an.setId(email);//
 		an.setEmail(email);//
 		an.setPassword(password);
 		an.setNick(nick);

@@ -23,6 +23,7 @@ public class InsertRowOperation extends JdbcOperation<Void> {
 
 	@Override
 	public Void execute() {
+		//TODO static sql.
 		StringBuffer sql = new StringBuffer().append("insert into ").append(this.tableName).append(" (");
 		for (int i = 0; i < valueList.size(); i++) {
 			String name = columnList.get(i);

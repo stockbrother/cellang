@@ -14,6 +14,7 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 	// private static String SQL0 = "create table " +
 	// PropertiesTable.T_PROPERTIES + "(name varchar,value varchar) ";
 	private static Map<Class, String> typeMap = new HashMap<Class, String>();
+
 	static {
 		typeMap.put(String.class, "varchar");
 		typeMap.put(Date.class, "datetime");
@@ -23,6 +24,7 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 	}
 	private String tableName;
 	private List<Tuple2<String, Class>> columnList = new ArrayList<Tuple2<String, Class>>();
+	private List<String> primaryKeyList = new ArrayList<String>();
 
 	public CreateTableOperation(ConnectionPoolWrapper cpw, String table) {
 		super(cpw);
@@ -41,15 +43,30 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 				throw new RuntimeException("not supported type:" + column.b);
 			}
 			sql.append(typeS);
+			
 			if (i < columnList.size() - 1) {
 				sql.append(",");
 			}
 		}
 		sql.append(")");
-
+		if (!this.primaryKeyList.isEmpty()) {
+			sql.append("primary key(");
+			for (int i = 0; i < this.primaryKeyList.size(); i++) {
+				String name = this.primaryKeyList.get(i);
+				sql.append(name);
+				if (i < this.primaryKeyList.size() - 1) {
+					sql.append(",");
+				}
+			}
+			sql.append(")");
+		}
 		this.poolWrapper.executeUpdate(sql.toString());
 
 		return null;
+	}
+
+	public void addPrimaryKey(String name) {
+		this.primaryKeyList.add(name);
 	}
 
 	public void addColumn(String name, Class type) {

@@ -20,14 +20,24 @@ public class EntityServiceTest extends TestCase {
 		String nick = "nick1";
 		String password = "password1";
 		AccountEntity ae = new AccountEntity();
+		ae.setId(email);//
 		ae.setEmail(email);
 		ae.setNick(nick);
 		ae.setPassword(password);
 
 		es.save(ae);
-
+		Exception exp = null;
+		try{			
+			es.save(ae);
+		}catch(Exception e){
+			exp = e;
+		}
+		
+		assertNotNull("duplicated exception not raised.",exp);
+		
 		AccountEntity ae2 = es.getAccount(email);
 		assertNotNull(ae2);
+		assertEquals(email, ae2.getId());
 		assertEquals(email, ae2.getEmail());
 		assertEquals(nick, ae2.getNick());
 		assertEquals(password, ae2.getPassword());
