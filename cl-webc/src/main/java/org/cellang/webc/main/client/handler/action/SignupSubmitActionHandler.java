@@ -6,7 +6,7 @@ import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.message.MsgWrapper;
-import org.cellang.webc.main.client.SignupViewI;
+import org.cellang.webc.main.client.widget.SignupViewI;
 
 /**
  * 

@@ -65,7 +65,7 @@ import org.cellang.clwt.core.client.lang.InstanceOf.CheckerSupport;
 import org.cellang.clwt.core.client.widget.WebWidget;
 import org.cellang.clwt.core.client.widget.WebWidgetFactory;
 import org.cellang.webc.main.client.LoginControlI;
-import org.cellang.webc.main.client.LoginViewI;
+import org.cellang.webc.main.client.widget.LoginViewI;
 
 public class DefaultCommonsPlugin implements CommonsPlugin {
 

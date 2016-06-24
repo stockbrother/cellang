@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Jan 14, 2013
  */
-package org.cellang.webc.main.client;
+package org.cellang.webc.main.client.handler;
 
 import org.cellang.clwt.commons.client.mvc.Control;
 import org.cellang.clwt.commons.client.mvc.ControlManager;

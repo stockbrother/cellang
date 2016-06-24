@@ -48,9 +48,8 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 				sql.append(",");
 			}
 		}
-		sql.append(")");
 		if (!this.primaryKeyList.isEmpty()) {
-			sql.append("primary key(");
+			sql.append(",primary key(");
 			for (int i = 0; i < this.primaryKeyList.size(); i++) {
 				String name = this.primaryKeyList.get(i);
 				sql.append(name);
@@ -60,6 +59,7 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 			}
 			sql.append(")");
 		}
+		sql.append(")");
 		this.poolWrapper.executeUpdate(sql.toString());
 
 		return null;

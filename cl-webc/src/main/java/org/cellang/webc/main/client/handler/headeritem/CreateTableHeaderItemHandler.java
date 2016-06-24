@@ -1,10 +1,10 @@
 package org.cellang.webc.main.client.handler.headeritem;
 
-import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
-import org.cellang.webc.main.client.WebcHandlerSupport;
+import org.cellang.webc.main.client.MainControlI;
+import org.cellang.webc.main.client.handler.WebcHandlerSupport;
 
 public class CreateTableHeaderItemHandler extends WebcHandlerSupport implements EventHandlerI<HeaderItemEvent> {
 
@@ -15,8 +15,8 @@ public class CreateTableHeaderItemHandler extends WebcHandlerSupport implements 
 	@Override
 	public void handle(HeaderItemEvent t) {
 		
-		FrwkControlI mc = this.getControl(FrwkControlI.class, true);
-		mc.openConsoleView(true);//
+		MainControlI mc = this.getControl(MainControlI.class, true);
+		mc.openCreateTableView(true);//
 		
 	}
 

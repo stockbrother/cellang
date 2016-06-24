@@ -10,9 +10,9 @@ import org.cellang.clwt.core.client.event.LogicalChannelMessageEvent;
 import org.cellang.clwt.core.client.message.MessageHandlerI;
 import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.webc.main.client.AccountsLDW;
-import org.cellang.webc.main.client.LoginViewI;
 import org.cellang.webc.main.client.RegisteredAccountLDW;
-import org.cellang.webc.main.client.WebcHandlerSupport;
+import org.cellang.webc.main.client.handler.WebcHandlerSupport;
+import org.cellang.webc.main.client.widget.LoginViewI;
 
 /**
  * @author wu

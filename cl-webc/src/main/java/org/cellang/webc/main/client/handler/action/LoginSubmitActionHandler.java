@@ -8,7 +8,7 @@ import org.cellang.clwt.core.client.data.ObjectPropertiesData;
 import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.message.MsgWrapper;
 import org.cellang.webc.main.client.LoginControlI;
-import org.cellang.webc.main.client.LoginViewI;
+import org.cellang.webc.main.client.widget.LoginViewI;
 
 /**
  * 

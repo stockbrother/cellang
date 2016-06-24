@@ -1,4 +1,4 @@
-package org.cellang.webc.main.client;
+package org.cellang.webc.main.client.widget;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +9,9 @@ import org.cellang.clwt.commons.client.widget.LabelI;
 import org.cellang.clwt.commons.client.widget.StringEditorI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.gwtbridge.GwtKeyDownHandler;
+import org.cellang.webc.main.client.AccountsLDW;
+import org.cellang.webc.main.client.Actions;
+import org.cellang.webc.main.client.RegisteredAccountLDW;
 
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;

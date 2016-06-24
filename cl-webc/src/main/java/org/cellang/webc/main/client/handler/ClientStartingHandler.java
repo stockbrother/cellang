@@ -11,7 +11,6 @@ import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.util.ExceptionUtil;
 import org.cellang.webc.main.client.HeaderItems;
-import org.cellang.webc.main.client.WebcHandlerSupport;
 import org.cellang.webc.main.client.handler.headeritem.ConsoleHeaderItemHandler;
 import org.cellang.webc.main.client.handler.headeritem.CreateTableHeaderItemHandler;
 import org.cellang.webc.main.client.handler.headeritem.UserLoginHeaderItemHandler;

@@ -4,7 +4,7 @@ import org.cellang.clwt.commons.client.frwk.HeaderItemEvent;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.event.Event.EventHandlerI;
 import org.cellang.webc.main.client.LoginControlI;
-import org.cellang.webc.main.client.WebcHandlerSupport;
+import org.cellang.webc.main.client.handler.WebcHandlerSupport;
 
 public class UserLoginHeaderItemHandler extends WebcHandlerSupport implements EventHandlerI<HeaderItemEvent> {
 

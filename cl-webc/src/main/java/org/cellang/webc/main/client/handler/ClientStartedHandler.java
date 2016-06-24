@@ -19,7 +19,6 @@ import org.cellang.clwt.core.client.lang.Path;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.clwt.core.client.transfer.LogicalChannel;
-import org.cellang.webc.main.client.WebcHandlerSupport;
 import org.cellang.webc.main.client.event.AutoLoginRequireEvent;
 import org.cellang.webc.main.client.handler.message.LoginFailureMH;
 import org.cellang.webc.main.client.handler.message.LoginSuccessMH;

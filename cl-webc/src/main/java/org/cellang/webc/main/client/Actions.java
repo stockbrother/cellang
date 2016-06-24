@@ -47,6 +47,9 @@ public class Actions {
 	public static final Path A_PROFILE_SUBMIT = A_PROFILE.getSubPath("submit");
 
 	public static final Path A_PROFILE_INIT = A_PROFILE.getSubPath("init");
-
+	
+	public static final Path A_TABLE_ADDCOLUMN = Path.valueOf("table.add-column");
+	
+	public static final Path A_TABLE_SAVE = Path.valueOf("table.save");
 
 }

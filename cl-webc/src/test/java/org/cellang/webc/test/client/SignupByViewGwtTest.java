@@ -14,7 +14,7 @@ import org.cellang.clwt.core.client.transfer.LogicalChannel;
 import org.cellang.webc.main.client.Actions;
 import org.cellang.webc.main.client.MainControlI;
 import org.cellang.webc.main.client.Messages;
-import org.cellang.webc.main.client.SignupViewI;
+import org.cellang.webc.main.client.widget.SignupViewI;
 
 public class SignupByViewGwtTest extends AbstractGwtTestBase3 {
 

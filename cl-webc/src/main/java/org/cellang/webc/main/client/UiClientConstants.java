@@ -20,6 +20,9 @@ public class UiClientConstants {
 	public static final String AK_FORMS_MODEL = "formsModel";
 
 	public static final String NK_ID = "id_";
+	
+	public static final Path VIEW_CREATE_TABLE = Path.valueOf("view.create-table");
+	
 	public static final Path P_SIGNUP = Path.valueOf("/signup");
 
 	public static final Path P_HTML = Path.valueOf("/open/resource/html");

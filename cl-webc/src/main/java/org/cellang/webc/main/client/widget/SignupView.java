@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 17, 2012
  */
-package org.cellang.webc.main.client;
+package org.cellang.webc.main.client.widget;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +15,7 @@ import org.cellang.clwt.commons.client.widget.ViewReferenceI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
+import org.cellang.webc.main.client.Actions;
 
 /**
  * @author wu

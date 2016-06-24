@@ -9,6 +9,8 @@ import org.cellang.clwt.commons.client.frwk.BodyViewI;
 import org.cellang.clwt.core.client.Container;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
+import org.cellang.webc.main.client.widget.LoginView;
+import org.cellang.webc.main.client.widget.LoginViewI;
 
 /**
  * @author wuzhen

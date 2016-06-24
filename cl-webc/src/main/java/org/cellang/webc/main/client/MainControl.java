@@ -6,8 +6,11 @@ package org.cellang.webc.main.client;
 
 import org.cellang.clwt.commons.client.CreaterI;
 import org.cellang.clwt.commons.client.UiCommonsConstants;
-import org.cellang.clwt.commons.client.frwk.FrwkControlI;
 import org.cellang.clwt.core.client.Container;
+import org.cellang.webc.main.client.widget.CreateTableView;
+import org.cellang.webc.main.client.widget.LoginViewI;
+import org.cellang.webc.main.client.widget.SignupView;
+import org.cellang.webc.main.client.widget.SignupViewI;
 
 /**
  * @author wu
@@ -69,6 +72,19 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public void closeLoginView() {
 		this.getBodyView().tryCloseItem(UiCommonsConstants.LOGIN_VIEW);
+	}
+
+
+	@Override
+	public void openCreateTableView(boolean show) {
+		CreateTableView rt = this.getOrCreateViewInBody(UiClientConstants.VIEW_CREATE_TABLE, new CreaterI<CreateTableView>() {
+
+			@Override
+			public CreateTableView create(Container ct) {
+				//Window.alert("create signup view.");//
+				return new CreateTableView(ct);
+			}
+		}, true);
 	}
 
 

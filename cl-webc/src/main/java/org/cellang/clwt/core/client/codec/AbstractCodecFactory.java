@@ -3,7 +3,9 @@
  */
 package org.cellang.clwt.core.client.codec;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.cellang.clwt.core.client.UiException;
@@ -29,6 +31,9 @@ public class AbstractCodecFactory implements CodecFactory {
 		if (oldx != null) {
 			throw new UiException("duplicated:" + cls + ",oldx:" + oldx);
 		}
+		if(cls.equals(List.class)){
+			this.classMap.put(ArrayList.class, tc);
+		}
 		Codec old = this.jcMap.put(tc, cd);
 		if (old != null) {
 			throw new UiException("duplicated:" + tc);
@@ -39,9 +44,11 @@ public class AbstractCodecFactory implements CodecFactory {
 	/* */
 	@Override
 	public <T> Codec<T> getCodec(Class<T> dataCls) {
+
 		String tc = this.classMap.get(dataCls);
 		if (tc == null) {
-			throw new UiException("no codec found for data class:" + dataCls);
+			throw new UiException(
+					"no codec found for data class:" + dataCls + ",all supported cls:" + this.classMap.keySet());
 		}
 		return this.getCodec(tc);
 

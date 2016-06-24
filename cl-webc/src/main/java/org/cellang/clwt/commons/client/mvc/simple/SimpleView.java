@@ -100,7 +100,9 @@ public class SimpleView extends ViewSupport {
 	public ButtonI addAction(final Path aname, boolean hide) {
 		return this.addAction(aname, hide, this.actionListInFooter);
 	}
-
+	
+	//TODO addAction with handler.
+	
 	public ButtonI addAction(final Path aname, boolean hide, ListI parent) {
 		// listen to the button clicked event,which is button state is changed.
 		ButtonI b = this.actionMap.get(aname);

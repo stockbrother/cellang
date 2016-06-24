@@ -9,7 +9,7 @@ import org.cellang.clwt.core.client.lang.PathBasedDispatcher;
 import org.cellang.clwt.core.client.logger.WebLogger;
 import org.cellang.clwt.core.client.logger.WebLoggerFactory;
 import org.cellang.webc.main.client.Actions;
-import org.cellang.webc.main.client.WebcHandlerSupport;
+import org.cellang.webc.main.client.handler.WebcHandlerSupport;
 
 public class DispatcherActionHandler extends WebcHandlerSupport implements EventHandlerI<ActionEvent> {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(DispatcherActionHandler.class);

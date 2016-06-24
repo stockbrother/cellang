@@ -19,6 +19,7 @@ import org.cellang.webc.main.client.handler.ClientStartedHandler;
 import org.cellang.webc.main.client.handler.ClientStartingHandler;
 import org.cellang.webc.main.client.handler.action.AutoLoginHandler;
 import org.cellang.webc.main.client.handler.action.DispatcherActionHandler;
+import org.cellang.webc.main.client.widget.LoginViewI;
 
 public class CellangClientPluginImpl implements CellangClientPlugin {
 	private static final WebLogger LOG = WebLoggerFactory.getLogger(CellangClientPluginImpl.class);
