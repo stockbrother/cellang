@@ -20,6 +20,7 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 		typeMap.put(Date.class, "datetime");
 		typeMap.put(Long.class, "bigint");
 		typeMap.put(BigDecimal.class, "decimal");
+		typeMap.put(Integer.class, "int");
 
 	}
 	private String tableName;

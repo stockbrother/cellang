@@ -18,6 +18,8 @@ public class EntityService {
 
 	private ConnectionPoolWrapper pool;
 	private static String SELECT_ACCOUNT_BY_EMAIL = "select * from " + AccountEntity.tableName + " where email = ?";
+	private static String SELECT_BALANCESHEET_BY_CORPID = "select * from " + BalanceSheetEntity.tableName
+			+ " where corpId = ?";
 
 	private EntityService(ConnectionPoolWrapper rt) {
 		this.pool = rt;
@@ -44,9 +46,25 @@ public class EntityService {
 		// check if need to create table.
 
 		// create tables
-		CreateTableOperation cto = new CreateTableOperation(this.pool, AccountEntity.tableName);
-		AccountEntity.fillCreate(cto);
-		cto.execute();
+		{
+
+			CreateTableOperation cto = new CreateTableOperation(this.pool, AccountEntity.tableName);
+			AccountEntity.fillCreate(cto);
+			cto.execute();
+		}
+		{
+
+			CreateTableOperation cto = new CreateTableOperation(this.pool, BalanceItemEntity.tableName);
+			BalanceItemEntity.fillCreate(cto);
+			cto.execute();
+		}
+		{
+
+			CreateTableOperation cto = new CreateTableOperation(this.pool, BalanceSheetEntity.tableName);
+			BalanceSheetEntity.fillCreate(cto);
+			cto.execute();
+		}
+
 	}
 
 	public void close() {
@@ -72,10 +90,41 @@ public class EntityService {
 		return rt;
 	}
 
+	public void save(BalanceSheetEntity se) {
+		InsertRowOperation insertOp = new InsertRowOperation(this.pool, BalanceSheetEntity.tableName);
+		se.fillInsert(insertOp);
+		insertOp.execute();
+	}
+
 	public void save(AccountEntity an) {
 		InsertRowOperation insertOp = new InsertRowOperation(this.pool, AccountEntity.tableName);
 		an.fillInsert(insertOp);
 		insertOp.execute();
+	}
+
+	public void save(BalanceItemEntity ie) {
+		InsertRowOperation insertOp = new InsertRowOperation(this.pool, BalanceItemEntity.tableName);
+		ie.fillInsert(insertOp);
+		insertOp.execute();
+	}
+
+	public BalanceSheetEntity getBalanceSheetByCorpId(String corpId) {
+		ResultSetProcessor rsp = new ResultSetProcessor() {
+
+			@Override
+			public Object process(ResultSet rs) throws SQLException {
+				BalanceSheetEntity rt = null;
+				while (rs.next()) {
+					rt = new BalanceSheetEntity();
+					rt.extractFrom(rs);
+					break;
+				}
+				return rt;
+			}
+		};
+		BalanceSheetEntity rt = (BalanceSheetEntity) pool.executeQuery(SELECT_BALANCESHEET_BY_CORPID,
+				new Object[] { corpId }, rsp);
+		return rt;
 	}
 
 }
