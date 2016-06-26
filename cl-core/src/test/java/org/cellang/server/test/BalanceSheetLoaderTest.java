@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.cellang.core.balancesheet.BalanceSheetLoader;
+import org.cellang.core.BalanceSheetFileProcessor;
 import org.cellang.core.entity.BalanceSheetEntity;
 import org.cellang.core.entity.EntityService;
 import org.cellang.core.util.FileUtil;
@@ -18,7 +18,7 @@ public class BalanceSheetLoaderTest extends TestCase {
 		dbHome = new File(dbHome, "db");
 		String dbName = "h2db";
 		EntityService es = EntityService.newInstance(dbHome, dbName);
-		BalanceSheetLoader sl = new BalanceSheetLoader(es);
+		BalanceSheetFileProcessor sl = new BalanceSheetFileProcessor(es);
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("org/cellang/balancesheet/Book1.csv");
 		InputStreamReader rd = new InputStreamReader(is);
 		sl.load(rd);
@@ -26,5 +26,6 @@ public class BalanceSheetLoaderTest extends TestCase {
 		BalanceSheetEntity se = es.getBalanceSheetByCorpId(corpId);
 		assertNotNull(se);
 		assertEquals(corpId, se.getCorpId());
+		
 	}
 }

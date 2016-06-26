@@ -1,24 +1,43 @@
-package org.cellang.core.balancesheet;
+package org.cellang.core;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Map;
 
 import org.cellang.commons.util.UUIDUtil;
+import org.cellang.core.balancesheet.MapWrapper;
 import org.cellang.core.entity.BalanceItemEntity;
 import org.cellang.core.entity.BalanceSheetEntity;
 import org.cellang.core.entity.EntityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public class BalanceSheetLoader {
+public class BalanceSheetFileProcessor extends FileProcessor {
+	private static final Logger LOG = LoggerFactory.getLogger(BalanceSheetFileProcessor.class);
+	
 	EntityService es;
-
-	public BalanceSheetLoader(EntityService es) {
+	public BalanceSheetFileProcessor(EntityService es) {
 		this.es = es;
 	}
+
+	@Override
+	public void process(File file) {
+		LOG.info("process file:" + file.getAbsolutePath());
+		FileReader fr;
+		try {
+			fr = new FileReader(file);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		this.load(fr);
+	}
+	
 
 	public void load(Reader rd) {
 		CSVReader reader = new CSVReader(rd);
@@ -47,12 +66,10 @@ public class BalanceSheetLoader {
 			}
 			BigDecimal unit = headers.getAsBigDecimal("单位", true);
 			String corpId = headers.get("公司代码", true);
-			String corpName = headers.get("公司名称", true);
 			Date reportDate = headers.getAsDate("报告日期");
 			BalanceSheetEntity be = new BalanceSheetEntity();
 			be.setId(UUIDUtil.randomStringUUID());
 			be.setCorpId(corpId);
-			be.setCorpName(corpName);
 			be.setQuanter(4);
 			be.setReportDate(reportDate);
 			es.save(be);
@@ -74,7 +91,4 @@ public class BalanceSheetLoader {
 
 	}
 
-	private void doLoad() {
-
-	}
 }

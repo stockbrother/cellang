@@ -10,7 +10,6 @@ import org.cellang.commons.jdbc.InsertRowOperation;
 public class BalanceSheetEntity extends EntityObject {
 	public static final String tableName = "balancesheet";
 	private String corpId;
-	private String corpName;
 	private Date reportDate;
 	private int quanter;
 
@@ -20,14 +19,6 @@ public class BalanceSheetEntity extends EntityObject {
 
 	public void setCorpId(String corpId) {
 		this.corpId = corpId;
-	}
-
-	public String getCorpName() {
-		return corpName;
-	}
-
-	public void setCorpName(String name) {
-		this.corpName = name;
 	}
 
 	public Date getReportDate() {
@@ -49,7 +40,6 @@ public class BalanceSheetEntity extends EntityObject {
 	public void fillInsert(InsertRowOperation insert) {
 		insert.addValue("id", this.id);//
 		insert.addValue("corpId", this.corpId);
-		insert.addValue("corpName", this.corpName);
 		insert.addValue("reportDate", this.reportDate);
 		insert.addValue("quanter", this.quanter);
 
@@ -58,7 +48,6 @@ public class BalanceSheetEntity extends EntityObject {
 	public void extractFrom(ResultSet rs) throws SQLException {
 		this.id = rs.getString("id");//
 		this.corpId = rs.getString("corpId");
-		this.corpName = rs.getString("corpName");
 		this.reportDate = rs.getDate("reportDate");
 		this.quanter = rs.getInt("quanter");//
 	}
@@ -66,7 +55,6 @@ public class BalanceSheetEntity extends EntityObject {
 	public static void fillCreate(CreateTableOperation cto) {
 		cto.addColumn("id", String.class);
 		cto.addColumn("corpId", String.class);
-		cto.addColumn("corpName", String.class);
 		cto.addColumn("reportDate", Date.class);
 		cto.addColumn("quanter", Integer.class);
 		cto.addPrimaryKey("id");//

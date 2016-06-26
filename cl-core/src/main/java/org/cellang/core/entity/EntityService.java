@@ -3,11 +3,13 @@ package org.cellang.core.entity;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.cellang.commons.jdbc.ConnectionPoolWrapper;
 import org.cellang.commons.jdbc.CreateTableOperation;
 import org.cellang.commons.jdbc.InsertRowOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
+import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,10 @@ public class EntityService {
 
 	private EntityService(ConnectionPoolWrapper rt) {
 		this.pool = rt;
+	}
+
+	public ConnectionPoolWrapper getPool() {
+		return pool;
 	}
 
 	public static EntityService newInstance(File dbHome, String dbName) {
@@ -46,6 +52,28 @@ public class EntityService {
 		// check if need to create table.
 
 		// create tables
+		{
+
+			CreateTableOperation cto = new CreateTableOperation(this.pool, DateInfoEntity.tableName);
+			DateInfoEntity.fillCreate(cto);
+			cto.execute();
+			int year = 2015 - 1900;
+			for (int i = 0; i < 10; i++) {
+				DateInfoEntity di = new DateInfoEntity();
+				di.setId(UUIDUtil.randomStringUUID());
+				di.setValue(new Date(year--, 11, 31));
+
+				InsertRowOperation insertOp = new InsertRowOperation(this.pool, DateInfoEntity.tableName);
+				di.fillInsert(insertOp);
+				insertOp.execute();
+			}
+		}
+		{
+
+			CreateTableOperation cto = new CreateTableOperation(this.pool, CorpInfoEntity.tableName);
+			CorpInfoEntity.fillCreate(cto);
+			cto.execute();
+		}
 		{
 
 			CreateTableOperation cto = new CreateTableOperation(this.pool, AccountEntity.tableName);
@@ -92,6 +120,12 @@ public class EntityService {
 
 	public void save(BalanceSheetEntity se) {
 		InsertRowOperation insertOp = new InsertRowOperation(this.pool, BalanceSheetEntity.tableName);
+		se.fillInsert(insertOp);
+		insertOp.execute();
+	}
+
+	public void save(CorpInfoEntity se) {
+		InsertRowOperation insertOp = new InsertRowOperation(this.pool, CorpInfoEntity.tableName);
 		se.fillInsert(insertOp);
 		insertOp.execute();
 	}
