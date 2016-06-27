@@ -41,10 +41,10 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 			sql.append(" ");
 			String typeS = typeMap.get(column.b);
 			if (typeS == null) {
-				throw new RuntimeException("not supported type:" + column.b);
+				throw new RuntimeException("not supported type:" + column.b + ",tableName:" + tableName);
 			}
 			sql.append(typeS);
-			
+
 			if (i < columnList.size() - 1) {
 				sql.append(",");
 			}

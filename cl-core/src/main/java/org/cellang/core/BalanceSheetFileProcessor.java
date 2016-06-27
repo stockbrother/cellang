@@ -63,7 +63,10 @@ public class BalanceSheetFileProcessor extends FileProcessor {
 				}
 				String key = next[0];
 				key = key.trim();
-
+				if (key.length() == 0 && next.length <= 1) {
+					// ignore this empty line.
+					continue;
+				}
 				currentMap.put(key, new CsvRow(lineNumber, next));
 			}
 			//
@@ -80,7 +83,6 @@ public class BalanceSheetFileProcessor extends FileProcessor {
 				BalanceSheetEntity be = new BalanceSheetEntity();
 				be.setId(UUIDUtil.randomStringUUID());
 				be.setCorpId(corpId);
-				be.setQuanter(4);
 				be.setReportDate(reportDate);
 				es.save(be);
 

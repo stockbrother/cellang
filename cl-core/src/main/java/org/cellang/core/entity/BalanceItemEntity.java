@@ -2,9 +2,6 @@ package org.cellang.core.entity;
 
 import java.math.BigDecimal;
 
-import org.cellang.commons.jdbc.CreateTableOperation;
-import org.cellang.commons.jdbc.InsertRowOperation;
-
 public class BalanceItemEntity extends EntityObject {
 	public static final String tableName = "balanceitem";
 	
@@ -36,12 +33,4 @@ public class BalanceItemEntity extends EntityObject {
 		this.balanceSheetId = balanceSheetId;
 	}
 
-	public static void fillCreate(CreateTableOperation cto) {
-		cto.addColumn("id", String.class);
-		cto.addColumn("balanceSheetId", String.class);
-		cto.addColumn("key", String.class);
-		cto.addColumn("value", BigDecimal.class);
-		cto.addPrimaryKey("id");//
-
-	}
 }

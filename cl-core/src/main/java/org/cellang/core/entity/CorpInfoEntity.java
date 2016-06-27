@@ -29,11 +29,4 @@ public class CorpInfoEntity extends EntityObject {
 		this.name = name;
 	}
 
-	public static void fillCreate(CreateTableOperation cto) {
-		cto.addColumn("id", String.class);
-		cto.addColumn("code", String.class);
-		cto.addColumn("name", String.class);
-		cto.addPrimaryKey("id");//
-
-	}
 }

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cellang.commons.jdbc.CreateTableOperation;
 import org.cellang.commons.jdbc.InsertRowOperation;
 
 public class EntityConfig {
@@ -27,6 +28,8 @@ public class EntityConfig {
 	static {
 		// converterMap.put("", value)
 	}
+
+	private String createViewSql;
 
 	public EntityConfig(Class<? extends EntityObject> cls, String tableName) {
 		this.entityClass = cls;
@@ -118,6 +121,23 @@ public class EntityConfig {
 			}
 		}
 		return entity;
+	}
+
+	public void fillCreate(CreateTableOperation cto) {
+		for (Map.Entry<String, Method> en : this.setMethodMap.entrySet()) {
+			Class ptype = en.getValue().getParameterTypes()[0];
+			String name = en.getKey();
+			cto.addColumn(name, ptype);
+		}
+		cto.addPrimaryKey("id");//
+	}
+
+	public String getCreateViewSql() {
+		return this.createViewSql;
+	}
+
+	public void setCreateViewSql(String sql) {
+		this.createViewSql = sql;
 	}
 
 }

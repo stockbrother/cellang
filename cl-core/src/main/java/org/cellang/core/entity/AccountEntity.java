@@ -4,12 +4,6 @@
  */
 package org.cellang.core.entity;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.cellang.commons.jdbc.CreateTableOperation;
-import org.cellang.commons.jdbc.InsertRowOperation;
-
 /**
  * @author wu
  * 
@@ -58,13 +52,5 @@ public class AccountEntity extends EntityObject {
 		this.type = type;
 	}
 
-	public static void fillCreate(CreateTableOperation cto) {
-		cto.addColumn("id", String.class);
-		cto.addColumn("email", String.class);
-		cto.addColumn("password", String.class);
-		cto.addColumn("nick", String.class);
-		cto.addPrimaryKey("id");//
-
-	}
 
 }

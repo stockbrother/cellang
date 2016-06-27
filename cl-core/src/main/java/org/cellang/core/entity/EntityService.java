@@ -31,6 +31,37 @@ public class EntityService {
 		this.entityConfigFactory.addEntity(new EntityConfig(BalanceSheetEntity.class, BalanceSheetEntity.tableName));
 		this.entityConfigFactory.addEntity(new EntityConfig(CorpInfoEntity.class, CorpInfoEntity.tableName));
 		this.entityConfigFactory.addEntity(new EntityConfig(DateInfoEntity.class, DateInfoEntity.tableName));
+		String sql = "select concat(t.code,to_char(t.date,'-yyyy-MM-dd')),t.code,t.date,t.fzhj,t.syzqyhj,cast(round(t.fzhj/t.syzqyhj,2) as decimal) from(" //
+				+ "select "//
+				+ " ci.code code"//
+				+ ",di.value date"//
+				+ ",("//
+				+ "  select bi.value from " + BalanceItemEntity.tableName + " bi" //
+				+ "  ," + BalanceSheetEntity.tableName + " bs" //
+				+ "  where bi.balanceSheetId = bs.id and bs.corpId=ci.code"//
+				+ "  and bi.key='资产总计' and bs.reportDate=di.value" //
+				+ ") zczj" //
+				+ ",("//
+				+ "  select bi.value from " + BalanceItemEntity.tableName + " bi" //
+				+ "  ," + BalanceSheetEntity.tableName + " bs" //
+				+ "  where bi.balanceSheetId = bs.id and bs.corpId=ci.code"//
+				+ "  and bi.key='所有者权益合计' and bs.reportDate=di.value" //
+				+ ") syzqyhj" //
+				+ ",("//
+				+ "  select bi.value from " + BalanceItemEntity.tableName + " bi" //
+				+ "  ," + BalanceSheetEntity.tableName + " bs" //
+				+ "  where bi.balanceSheetId = bs.id and bs.corpId=ci.code"//
+				+ "  and bi.key='负债合计' and bs.reportDate=di.value" //
+				+ ") fzhj" //
+				+ " from " + CorpInfoEntity.tableName + " ci" //
+				+ "," + DateInfoEntity.tableName + " di"//
+				+ ") t"//
+		;
+		sql = "create view " + FuzhaiQuanyiBiEntity.tableName + "(id,corpId,reportDate,fuzhai,quanyi,fzqyb) as " + sql;
+		EntityConfig ec = new EntityConfig(FuzhaiQuanyiBiEntity.class, FuzhaiQuanyiBiEntity.tableName);
+		ec.setCreateViewSql(sql);
+		this.entityConfigFactory.addEntity(ec);
+
 	}
 
 	public ConnectionPoolWrapper getPool() {
@@ -50,53 +81,18 @@ public class EntityService {
 			LOG.warn("db file exists:" + dbFile);//
 		} else {
 			LOG.warn("initializing db,db file not exists: " + dbFile);//
-			rt.initilizeDB();
-		}
-		return rt;
-	}
+			// create tables
+			rt.entityConfigFactory.initTables(pool);
 
-	private void initilizeDB() {
-		// check if need to create table.
-
-		// create tables
-		{
-
-			CreateTableOperation cto = new CreateTableOperation(this.pool, DateInfoEntity.tableName);
-			DateInfoEntity.fillCreate(cto);
-			cto.execute();
 			int year = 2015 - 1900;
 			for (int i = 0; i < 10; i++) {
 				DateInfoEntity di = new DateInfoEntity();
 				di.setId(UUIDUtil.randomStringUUID());
 				di.setValue(new Date(year--, 11, 31));
-				this.save(di);
+				rt.save(di);
 			}
 		}
-		{
-
-			CreateTableOperation cto = new CreateTableOperation(this.pool, CorpInfoEntity.tableName);
-			CorpInfoEntity.fillCreate(cto);
-			cto.execute();
-		}
-		{
-
-			CreateTableOperation cto = new CreateTableOperation(this.pool, AccountEntity.tableName);
-			AccountEntity.fillCreate(cto);
-			cto.execute();
-		}
-		{
-
-			CreateTableOperation cto = new CreateTableOperation(this.pool, BalanceItemEntity.tableName);
-			BalanceItemEntity.fillCreate(cto);
-			cto.execute();
-		}
-		{
-
-			CreateTableOperation cto = new CreateTableOperation(this.pool, BalanceSheetEntity.tableName);
-			BalanceSheetEntity.fillCreate(cto);
-			cto.execute();
-		}
-
+		return rt;
 	}
 
 	public void close() {
@@ -115,6 +111,10 @@ public class EntityService {
 			throw new RuntimeException("too many:" + rtL.size());
 		}
 		return rtL.get(0);
+	}
+
+	public <T> List<T> getList(Class cls) {
+		return getList(cls, new String[] {}, new Object[] {});
 	}
 
 	public <T> List<T> getList(Class cls, String[] fields, Object[] args) {
