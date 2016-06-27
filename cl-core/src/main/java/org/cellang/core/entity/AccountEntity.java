@@ -58,20 +58,6 @@ public class AccountEntity extends EntityObject {
 		this.type = type;
 	}
 
-	public void fillInsert(InsertRowOperation insert) {
-		insert.addValue("id", this.id);//
-		insert.addValue("email", email);
-		insert.addValue("password", password);
-		insert.addValue("nick", nick);
-	}
-
-	public void extractFrom(ResultSet rs) throws SQLException {
-		this.id = rs.getString("id");//
-		this.email = rs.getString("email");
-		this.nick = rs.getString("nick");
-		this.password = rs.getString("password");
-	}
-
 	public static void fillCreate(CreateTableOperation cto) {
 		cto.addColumn("id", String.class);
 		cto.addColumn("email", String.class);

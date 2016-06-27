@@ -13,16 +13,6 @@ public class DateInfoEntity extends EntityObject {
 
 	private Date value;
 
-	public void fillInsert(InsertRowOperation insert) {
-		insert.addValue("id", this.id);//
-		insert.addValue("value", value);
-	}
-
-	public void extractFrom(ResultSet rs) throws SQLException {
-		this.id = rs.getString("id");//
-		this.value = rs.getDate("value");
-	}
-
 	public static void fillCreate(CreateTableOperation cto) {
 		cto.addColumn("id", String.class);
 		cto.addColumn("value", Date.class);

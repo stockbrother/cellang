@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.cellang.commons.jdbc.CreateTableOperation;
-import org.cellang.commons.jdbc.InsertRowOperation;
 
 public class CorpInfoEntity extends EntityObject {
 
@@ -28,18 +27,6 @@ public class CorpInfoEntity extends EntityObject {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void fillInsert(InsertRowOperation insert) {
-		insert.addValue("id", this.id);//
-		insert.addValue("code", code);
-		insert.addValue("name", name);
-	}
-
-	public void extractFrom(ResultSet rs) throws SQLException {
-		this.id = rs.getString("id");//
-		this.code = rs.getString("code");
-		this.name = rs.getString("name");
 	}
 
 	public static void fillCreate(CreateTableOperation cto) {

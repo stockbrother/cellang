@@ -3,7 +3,9 @@ package org.cellang.core.entity;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.cellang.commons.jdbc.ConnectionPoolWrapper;
 import org.cellang.commons.jdbc.CreateTableOperation;
@@ -19,12 +21,16 @@ public class EntityService {
 	private static final Logger LOG = LoggerFactory.getLogger(EntityService.class);
 
 	private ConnectionPoolWrapper pool;
-	private static String SELECT_ACCOUNT_BY_EMAIL = "select * from " + AccountEntity.tableName + " where email = ?";
-	private static String SELECT_BALANCESHEET_BY_CORPID = "select * from " + BalanceSheetEntity.tableName
-			+ " where corpId = ?";
+
+	private EntityConfigFactory entityConfigFactory = new EntityConfigFactory();
 
 	private EntityService(ConnectionPoolWrapper rt) {
 		this.pool = rt;
+		this.entityConfigFactory.addEntity(new EntityConfig(AccountEntity.class, AccountEntity.tableName));
+		this.entityConfigFactory.addEntity(new EntityConfig(BalanceItemEntity.class, BalanceItemEntity.tableName));
+		this.entityConfigFactory.addEntity(new EntityConfig(BalanceSheetEntity.class, BalanceSheetEntity.tableName));
+		this.entityConfigFactory.addEntity(new EntityConfig(CorpInfoEntity.class, CorpInfoEntity.tableName));
+		this.entityConfigFactory.addEntity(new EntityConfig(DateInfoEntity.class, DateInfoEntity.tableName));
 	}
 
 	public ConnectionPoolWrapper getPool() {
@@ -39,6 +45,7 @@ public class EntityService {
 		LOG.info("dbUrl:" + dbUrl);
 		ConnectionPoolWrapper pool = H2ConnectionPoolWrapper.newInstance(dbUrl, "sa", "sa");
 		EntityService rt = new EntityService(pool);
+
 		if (dbExists) {
 			LOG.warn("db file exists:" + dbFile);//
 		} else {
@@ -62,10 +69,7 @@ public class EntityService {
 				DateInfoEntity di = new DateInfoEntity();
 				di.setId(UUIDUtil.randomStringUUID());
 				di.setValue(new Date(year--, 11, 31));
-
-				InsertRowOperation insertOp = new InsertRowOperation(this.pool, DateInfoEntity.tableName);
-				di.fillInsert(insertOp);
-				insertOp.execute();
+				this.save(di);
 			}
 		}
 		{
@@ -99,66 +103,50 @@ public class EntityService {
 		this.pool.close();
 	}
 
-	public AccountEntity getAccount(String id) {
+	public <T> T getSingle(Class cls, String field, Object arg) {
+		return getSingle(cls, new String[] { field }, new Object[] { arg });
+	}
+
+	public <T> T getSingle(Class cls, String[] fields, Object[] args) {
+		List<T> rtL = this.getList(cls, fields, args);
+		if (rtL.isEmpty()) {
+			return null;
+		} else if (rtL.size() > 1) {
+			throw new RuntimeException("too many:" + rtL.size());
+		}
+		return rtL.get(0);
+	}
+
+	public <T> List<T> getList(Class cls, String[] fields, Object[] args) {
+		EntityConfig ec = this.entityConfigFactory.get(cls);
 
 		ResultSetProcessor rsp = new ResultSetProcessor() {
 
 			@Override
 			public Object process(ResultSet rs) throws SQLException {
-				AccountEntity rt = null;
+
+				List<T> rt = new ArrayList<T>();
 				while (rs.next()) {
-					rt = new AccountEntity();
-					rt.extractFrom(rs);
-					break;
+					T rtI = (T) ec.extractFrom(rs);
+					rt.add(rtI);
 				}
 				return rt;
 			}
 		};
-		AccountEntity rt = (AccountEntity) pool.executeQuery(SELECT_ACCOUNT_BY_EMAIL, new Object[] { id }, rsp);
+		String sql = "select * from " + ec.getTableName() + " where 1=1";
+		for (int i = 0; i < fields.length; i++) {
+			sql += " and " + fields[i] + "=?";
+		}
+		List<T> rt = (List<T>) pool.executeQuery(sql, args, rsp);
 		return rt;
 	}
 
-	public void save(BalanceSheetEntity se) {
-		InsertRowOperation insertOp = new InsertRowOperation(this.pool, BalanceSheetEntity.tableName);
-		se.fillInsert(insertOp);
+	public void save(EntityObject se) {
+		Class cls = se.getClass();
+		EntityConfig ec = this.entityConfigFactory.get(cls);
+		InsertRowOperation insertOp = new InsertRowOperation(this.pool, ec.getTableName());
+		ec.fillInsert(se, insertOp);
 		insertOp.execute();
-	}
-
-	public void save(CorpInfoEntity se) {
-		InsertRowOperation insertOp = new InsertRowOperation(this.pool, CorpInfoEntity.tableName);
-		se.fillInsert(insertOp);
-		insertOp.execute();
-	}
-
-	public void save(AccountEntity an) {
-		InsertRowOperation insertOp = new InsertRowOperation(this.pool, AccountEntity.tableName);
-		an.fillInsert(insertOp);
-		insertOp.execute();
-	}
-
-	public void save(BalanceItemEntity ie) {
-		InsertRowOperation insertOp = new InsertRowOperation(this.pool, BalanceItemEntity.tableName);
-		ie.fillInsert(insertOp);
-		insertOp.execute();
-	}
-
-	public BalanceSheetEntity getBalanceSheetByCorpId(String corpId) {
-		ResultSetProcessor rsp = new ResultSetProcessor() {
-
-			@Override
-			public Object process(ResultSet rs) throws SQLException {
-				BalanceSheetEntity rt = null;
-				while (rs.next()) {
-					rt = new BalanceSheetEntity();
-					rt.extractFrom(rs);
-					break;
-				}
-				return rt;
-			}
-		};
-		BalanceSheetEntity rt = (BalanceSheetEntity) pool.executeQuery(SELECT_BALANCESHEET_BY_CORPID,
-				new Object[] { corpId }, rsp);
-		return rt;
 	}
 
 }

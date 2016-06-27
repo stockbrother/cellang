@@ -23,9 +23,9 @@ public class BalanceSheetLoaderTest extends TestCase {
 		InputStreamReader rd = new InputStreamReader(is);
 		sl.load(rd);
 		String corpId = "601857";
-		BalanceSheetEntity se = es.getBalanceSheetByCorpId(corpId);
+		BalanceSheetEntity se = es.getSingle(BalanceSheetEntity.class, "corpId", corpId);
 		assertNotNull(se);
 		assertEquals(corpId, se.getCorpId());
-		
+
 	}
 }

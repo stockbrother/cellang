@@ -36,13 +36,6 @@ public class BalanceItemEntity extends EntityObject {
 		this.balanceSheetId = balanceSheetId;
 	}
 
-	public void fillInsert(InsertRowOperation insert) {
-		insert.addValue("id", this.id);//
-		insert.addValue("balanceSheetId", this.balanceSheetId);
-		insert.addValue("key", this.key);
-		insert.addValue("value", this.value);
-	}
-
 	public static void fillCreate(CreateTableOperation cto) {
 		cto.addColumn("id", String.class);
 		cto.addColumn("balanceSheetId", String.class);

@@ -16,7 +16,7 @@ public class LoginHandler extends AbstracHandler {
 		String email = mc.getRequestMessage().getString("email", true);
 		String passWd = mc.getRequestMessage().getString("password", false);
 		
-		AccountEntity acc = mc.getServerContext().getEntityService().getAccount(email);
+		AccountEntity acc = mc.getServerContext().getEntityService().getSingle(AccountEntity.class, "email",email);
 
 		if (acc == null) {
 			mc.getResponseMessage().getErrorInfos().addError("user-or-password.not-found");

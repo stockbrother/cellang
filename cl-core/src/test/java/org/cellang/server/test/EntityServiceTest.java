@@ -27,15 +27,15 @@ public class EntityServiceTest extends TestCase {
 
 		es.save(ae);
 		Exception exp = null;
-		try{			
+		try {
 			es.save(ae);
-		}catch(Exception e){
+		} catch (Exception e) {
 			exp = e;
 		}
-		
-		assertNotNull("duplicated exception not raised.",exp);
-		
-		AccountEntity ae2 = es.getAccount(email);
+
+		assertNotNull("duplicated exception not raised.", exp);
+
+		AccountEntity ae2 = es.getSingle(AccountEntity.class, "email", email);
 		assertNotNull(ae2);
 		assertEquals(email, ae2.getId());
 		assertEquals(email, ae2.getEmail());
@@ -45,7 +45,7 @@ public class EntityServiceTest extends TestCase {
 		es.close();
 
 		EntityService es2 = EntityService.newInstance(dbHome, dbName);
-		AccountEntity aeX = es2.getAccount(email);
+		AccountEntity aeX = es2.getSingle(AccountEntity.class, "email", email);
 		assertNotNull(aeX);
 
 	}
