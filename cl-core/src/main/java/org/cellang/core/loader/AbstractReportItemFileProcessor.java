@@ -1,4 +1,4 @@
-package org.cellang.core;
+package org.cellang.core.loader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,21 +12,33 @@ import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.balancesheet.CsvHeaderRowMap;
 import org.cellang.core.balancesheet.CsvRow;
 import org.cellang.core.balancesheet.CsvRowMap;
-import org.cellang.core.entity.BalanceItemEntity;
-import org.cellang.core.entity.BalanceSheetEntity;
+import org.cellang.core.entity.AbstractReportEntity;
+import org.cellang.core.entity.AbstractReportItemEntity;
+import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public class BalanceSheetFileProcessor extends FileProcessor {
-	private static final Logger LOG = LoggerFactory.getLogger(BalanceSheetFileProcessor.class);
+public abstract class AbstractReportItemFileProcessor<T extends AbstractReportEntity, I extends AbstractReportItemEntity>
+		extends FileProcessor {
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractReportItemFileProcessor.class);
 
 	EntityService es;
+	Class<T> reportEntityCls;
+	Class<I> itemEntityCls;
+	EntityConfig reportEntityConfig;
 
-	public BalanceSheetFileProcessor(EntityService es) {
+	EntityConfig itemEntityConfig;
+
+	public AbstractReportItemFileProcessor(EntityService es, Class<T> entityCls, Class<I> cls2) {
 		this.es = es;
+		this.reportEntityCls = entityCls;
+		this.itemEntityCls = cls2;
+		this.reportEntityConfig = this.es.getEntityConfigFactory().get(this.reportEntityCls);
+		this.itemEntityConfig = this.es.getEntityConfigFactory().get(this.itemEntityCls);
+
 	}
 
 	@Override
@@ -80,7 +92,8 @@ public class BalanceSheetFileProcessor extends FileProcessor {
 				if (reportDate == null) {
 					break;
 				}
-				BalanceSheetEntity be = new BalanceSheetEntity();
+				AbstractReportEntity be = (AbstractReportEntity) this.reportEntityConfig.newEntity();
+
 				be.setId(UUIDUtil.randomStringUUID());
 				be.setCorpId(corpId);
 				be.setReportDate(reportDate);
@@ -91,10 +104,11 @@ public class BalanceSheetFileProcessor extends FileProcessor {
 					if (value == null) {// ignore this value.
 						continue;
 					}
-					BalanceItemEntity ie = new BalanceItemEntity();
+					AbstractReportItemEntity ie = (AbstractReportItemEntity) this.itemEntityConfig.newEntity();
+
 					value = value.multiply(unit);
 					ie.setId(UUIDUtil.randomStringUUID());//
-					ie.setBalanceSheetId(be.getId());
+					ie.setReportId(be.getId());
 					ie.setKey(key);
 					ie.setValue(value);
 					es.save(ie);

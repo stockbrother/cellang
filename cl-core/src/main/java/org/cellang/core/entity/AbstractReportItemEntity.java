@@ -2,10 +2,9 @@ package org.cellang.core.entity;
 
 import java.math.BigDecimal;
 
-public class BalanceItemEntity extends EntityObject {
-	public static final String tableName = "balanceitem";
+public class AbstractReportItemEntity extends EntityObject {
 	
-	private String balanceSheetId;
+	private String reportId;
 	private String key;
 	private BigDecimal value;
 
@@ -25,12 +24,12 @@ public class BalanceItemEntity extends EntityObject {
 		this.value = value;
 	}
 
-	public String getBalanceSheetId() {
-		return balanceSheetId;
+	public String getReportId() {
+		return reportId;
 	}
 
-	public void setBalanceSheetId(String balanceSheetId) {
-		this.balanceSheetId = balanceSheetId;
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
 	}
 
 }

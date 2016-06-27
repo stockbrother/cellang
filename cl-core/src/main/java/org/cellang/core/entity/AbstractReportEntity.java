@@ -2,8 +2,7 @@ package org.cellang.core.entity;
 
 import java.util.Date;
 
-public class BalanceSheetEntity extends EntityObject {
-	public static final String tableName = "balancesheet";
+public abstract class AbstractReportEntity extends EntityObject {
 	private String corpId;
 	private Date reportDate;
 	

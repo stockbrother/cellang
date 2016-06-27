@@ -12,8 +12,8 @@ import java.util.Map;
 import org.cellang.commons.jdbc.ResultSetProcessor;
 import org.cellang.commons.lang.Tuple3;
 import org.cellang.commons.util.UUIDUtil;
-import org.cellang.core.entity.BalanceItemEntity;
-import org.cellang.core.entity.BalanceSheetEntity;
+import org.cellang.core.entity.BalanceSheetItemEntity;
+import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityService;
@@ -43,8 +43,9 @@ public class CorpMetricService {
 	}
 
 	public Double getBlanceSheetItem(String corpId, Date date, String key) {
-		String sql = "select bi.value from " + BalanceItemEntity.tableName + " bi," + BalanceSheetEntity.tableName
-				+ " bs where bi.balanceSheetId = bs.id and bs.corpId=? and bs.reportDate=? and bi.key = ?";
+		String sql = "select itm.value from " + BalanceSheetItemEntity.tableName + " itm,"
+				+ BalanceSheetReportEntity.tableName
+				+ " rpt where itm.reportId = rpt.id and rpt.corpId=? and rpt.reportDate=? and itm.key = ?";
 		return (Double) this.entityService.getPool().executeQuery(sql, new Object[] { corpId, date, key },
 				new ResultSetProcessor() {
 

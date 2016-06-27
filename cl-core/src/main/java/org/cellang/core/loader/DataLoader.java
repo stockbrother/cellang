@@ -1,4 +1,4 @@
-package org.cellang.core;
+package org.cellang.core.loader;
 
 import java.io.File;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class DataLoader {
 		this.es = es;
 		processMap.put("corplist", new CorpListFileProcessor(es));
 		processMap.put("zcfzb", new BalanceSheetFileProcessor(es));
-
+		processMap.put("lrb", new IncomeStatementFileProcessor(es));
 	}
 
 	public void loadDir(File dir) {

@@ -100,15 +100,16 @@ public class EntityConfig {
 		}
 	}
 
-	public Object extractFrom(ResultSet rs) throws SQLException {
-		Object entity;
+	public Object newEntity(){
 		try {
-			entity = this.constuctor.newInstance();
+			return this.constuctor.newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
-
+	}
+	public Object extractFrom(ResultSet rs) throws SQLException {
+		Object entity = this.newEntity();
 		for (Map.Entry<String, Method> en : this.setMethodMap.entrySet()) {
 			Object value = rs.getObject(en.getKey());
 			Class ptype = en.getValue().getParameterTypes()[0];
