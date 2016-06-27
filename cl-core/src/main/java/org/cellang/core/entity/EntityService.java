@@ -129,4 +129,8 @@ public class EntityService {
 		return this.pool.executeUpdate(sql, objects);
 	}
 
+	public EntityConfigFactory getEntityConfigFactory() {
+		return entityConfigFactory;
+	}
+
 }

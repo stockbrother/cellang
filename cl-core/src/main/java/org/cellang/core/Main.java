@@ -13,6 +13,7 @@ import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
 import org.cellang.core.entity.EntityService;
+import org.cellang.core.loader.DataLoader;
 import org.cellang.core.util.FileUtil;
 
 public class Main {

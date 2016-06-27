@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.cellang.core.BalanceSheetFileProcessor;
-import org.cellang.core.entity.BalanceSheetEntity;
+import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityService;
+import org.cellang.core.loader.BalanceSheetFileProcessor;
 import org.cellang.core.util.FileUtil;
 
 import junit.framework.TestCase;
@@ -24,7 +24,7 @@ public class BalanceSheetLoaderTest extends TestCase {
 		InputStreamReader rd = new InputStreamReader(is);
 		sl.load(rd);
 		String corpId = "601857";
-		BalanceSheetEntity se = es.getSingle(BalanceSheetEntity.class, "corpId", corpId);
+		BalanceSheetReportEntity se = es.getSingle(BalanceSheetReportEntity.class, "corpId", corpId);
 		assertNotNull(se);
 		assertEquals(corpId, se.getCorpId());
 
