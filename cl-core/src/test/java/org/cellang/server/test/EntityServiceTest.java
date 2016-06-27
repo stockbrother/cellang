@@ -3,6 +3,7 @@ package org.cellang.server.test;
 import java.io.File;
 
 import org.cellang.core.entity.AccountEntity;
+import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityService;
 import org.cellang.core.util.FileUtil;
 
@@ -15,7 +16,7 @@ public class EntityServiceTest extends TestCase {
 		File dbHome = FileUtil.createTempDir("cl-test-home");
 		dbHome = new File(dbHome, "db");
 		String dbName = "h2db";
-		EntityService es = EntityService.newInstance(dbHome, dbName);
+		EntityService es = EntityService.newInstance(dbHome, dbName, new EntityConfigFactory());
 		String email = "email1";
 		String nick = "nick1";
 		String password = "password1";
@@ -44,7 +45,7 @@ public class EntityServiceTest extends TestCase {
 
 		es.close();
 
-		EntityService es2 = EntityService.newInstance(dbHome, dbName);
+		EntityService es2 = EntityService.newInstance(dbHome, dbName, new EntityConfigFactory());
 		AccountEntity aeX = es2.getSingle(AccountEntity.class, "email", email);
 		assertNotNull(aeX);
 

@@ -21,6 +21,9 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 		typeMap.put(Long.class, "bigint");
 		typeMap.put(BigDecimal.class, "decimal");
 		typeMap.put(Integer.class, "int");
+		typeMap.put(Double.class, "double");
+		typeMap.put(Float.class, "real");
+		
 
 	}
 	private String tableName;

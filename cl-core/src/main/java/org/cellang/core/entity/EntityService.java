@@ -24,58 +24,25 @@ public class EntityService {
 
 	private EntityConfigFactory entityConfigFactory = new EntityConfigFactory();
 
-	private EntityService(ConnectionPoolWrapper rt) {
+	private EntityService(ConnectionPoolWrapper rt,EntityConfigFactory ecf) {
 		this.pool = rt;
-		this.entityConfigFactory.addEntity(new EntityConfig(AccountEntity.class, AccountEntity.tableName));
-		this.entityConfigFactory.addEntity(new EntityConfig(BalanceItemEntity.class, BalanceItemEntity.tableName));
-		this.entityConfigFactory.addEntity(new EntityConfig(BalanceSheetEntity.class, BalanceSheetEntity.tableName));
-		this.entityConfigFactory.addEntity(new EntityConfig(CorpInfoEntity.class, CorpInfoEntity.tableName));
-		this.entityConfigFactory.addEntity(new EntityConfig(DateInfoEntity.class, DateInfoEntity.tableName));
-		String sql = "select concat(t.code,to_char(t.date,'-yyyy-MM-dd')),t.code,t.date,t.fzhj,t.syzqyhj,cast(round(t.fzhj/t.syzqyhj,2) as decimal) from(" //
-				+ "select "//
-				+ " ci.code code"//
-				+ ",di.value date"//
-				+ ",("//
-				+ "  select bi.value from " + BalanceItemEntity.tableName + " bi" //
-				+ "  ," + BalanceSheetEntity.tableName + " bs" //
-				+ "  where bi.balanceSheetId = bs.id and bs.corpId=ci.code"//
-				+ "  and bi.key='资产总计' and bs.reportDate=di.value" //
-				+ ") zczj" //
-				+ ",("//
-				+ "  select bi.value from " + BalanceItemEntity.tableName + " bi" //
-				+ "  ," + BalanceSheetEntity.tableName + " bs" //
-				+ "  where bi.balanceSheetId = bs.id and bs.corpId=ci.code"//
-				+ "  and bi.key='所有者权益合计' and bs.reportDate=di.value" //
-				+ ") syzqyhj" //
-				+ ",("//
-				+ "  select bi.value from " + BalanceItemEntity.tableName + " bi" //
-				+ "  ," + BalanceSheetEntity.tableName + " bs" //
-				+ "  where bi.balanceSheetId = bs.id and bs.corpId=ci.code"//
-				+ "  and bi.key='负债合计' and bs.reportDate=di.value" //
-				+ ") fzhj" //
-				+ " from " + CorpInfoEntity.tableName + " ci" //
-				+ "," + DateInfoEntity.tableName + " di"//
-				+ ") t"//
-		;
-		sql = "create view " + FuzhaiQuanyiBiEntity.tableName + "(id,corpId,reportDate,fuzhai,quanyi,fzqyb) as " + sql;
-		EntityConfig ec = new EntityConfig(FuzhaiQuanyiBiEntity.class, FuzhaiQuanyiBiEntity.tableName);
-		ec.setCreateViewSql(sql);
-		this.entityConfigFactory.addEntity(ec);
+		this.entityConfigFactory = ecf;
+		
 
 	}
-
+	
 	public ConnectionPoolWrapper getPool() {
 		return pool;
 	}
 
-	public static EntityService newInstance(File dbHome, String dbName) {
+	public static EntityService newInstance(File dbHome, String dbName,EntityConfigFactory ecf) {
 		File dbFile = new File(dbHome, dbName + ".mv.db");
 		boolean dbExists = dbFile.exists();
 
 		String dbUrl = "jdbc:h2:" + dbHome.getAbsolutePath().replace('\\', '/') + "/" + dbName;
 		LOG.info("dbUrl:" + dbUrl);
 		ConnectionPoolWrapper pool = H2ConnectionPoolWrapper.newInstance(dbUrl, "sa", "sa");
-		EntityService rt = new EntityService(pool);
+		EntityService rt = new EntityService(pool,ecf);
 
 		if (dbExists) {
 			LOG.warn("db file exists:" + dbFile);//
@@ -117,6 +84,10 @@ public class EntityService {
 		return getList(cls, new String[] {}, new Object[] {});
 	}
 
+	public <T> List<T> getList(Class cls, String field, Object value) {
+		return this.getList(cls, new String[] { field }, new Object[] { value });
+	}
+
 	public <T> List<T> getList(Class cls, String[] fields, Object[] args) {
 		EntityConfig ec = this.entityConfigFactory.get(cls);
 
@@ -147,6 +118,15 @@ public class EntityService {
 		InsertRowOperation insertOp = new InsertRowOperation(this.pool, ec.getTableName());
 		ec.fillInsert(se, insertOp);
 		insertOp.execute();
+	}
+
+	public <T extends EntityObject> long delete(Class<T> cls, String[] strings, Object[] objects) {
+		String sql = "delete from " + this.entityConfigFactory.get(cls).getTableName() + " where 1=1 ";
+		for (int i = 0; i < strings.length; i++) {
+
+			sql += " and " + strings[i] + "=?";
+		}
+		return this.pool.executeUpdate(sql, objects);
 	}
 
 }

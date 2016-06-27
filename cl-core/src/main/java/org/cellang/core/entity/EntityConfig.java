@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.cellang.commons.jdbc.CreateTableOperation;
@@ -64,6 +66,10 @@ public class EntityConfig {
 			}
 		}
 		this.initGetSetMethods(cls.getSuperclass());//
+	}
+	
+	public List<Method> getGetMethodList(){
+		return new ArrayList<Method>(this.getMethodMap.values());
 	}
 
 	public Class<? extends EntityObject> getEntityClass() {

@@ -22,7 +22,7 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CellangServlet extends AjaxCometServlet implements CometListener,ChannelProvider {
+public class CellangServlet extends AjaxCometServlet implements CometListener, ChannelProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(CellangServlet.class);
 
 	MessageServer server;
@@ -32,22 +32,22 @@ public class CellangServlet extends AjaxCometServlet implements CometListener,Ch
 	Codec messageCodec;
 
 	private static final String CHANNEL0 = "CHANNEL0";
-	
+
 	public static final String PK_home = "home";
-	
-	private Map<String,Channel> channelMap  =new HashMap<String,Channel>();
+
+	private Map<String, Channel> channelMap = new HashMap<String, Channel>();
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		
+
 		String home = getInitParameter(PK_home, true);
 		File homeDir = new File(home);
-		
+
 		this.codecs = new JsonCodecs();
 		this.messageCodec = this.codecs.getCodec(MessageI.class);
-		
-		this.server = new DefaultCellangServer(homeDir,this);
+
+		this.server = new DefaultCellangServer(homeDir, this, null);
 		this.server.start();
 		this.manager.addListener(this);
 	}
@@ -78,14 +78,13 @@ public class CellangServlet extends AjaxCometServlet implements CometListener,Ch
 
 	}
 
-
 	@Override
 	public void onMessage(Comet ws, String ms) {
-		String channelId= (String) ws.getAttribute(CHANNEL0);
+		String channelId = (String) ws.getAttribute(CHANNEL0);
 		JSONArray jso = (JSONArray) JSONValue.parse(ms);
 		MessageI reqMsg = (MessageI) this.messageCodec.decode(jso);
 		reqMsg.setHeader(MessageI.HK_CHANNEL, channelId);//
-		this.server.process(reqMsg);		
+		this.server.process(reqMsg);
 	}
 
 	@Override

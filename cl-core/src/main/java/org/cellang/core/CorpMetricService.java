@@ -11,9 +11,11 @@ import java.util.Map;
 
 import org.cellang.commons.jdbc.ResultSetProcessor;
 import org.cellang.commons.lang.Tuple3;
+import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.entity.BalanceItemEntity;
 import org.cellang.core.entity.BalanceSheetEntity;
 import org.cellang.core.entity.CorpInfoEntity;
+import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityService;
 
 public class CorpMetricService {
@@ -58,21 +60,35 @@ public class CorpMetricService {
 
 	}
 
-	public List<Tuple3<String, Date, Double>> getMetricList(String key) {
-
-		List<Tuple3<String, Date, Double>> rt = new ArrayList<Tuple3<String, Date, Double>>();
+	public void updateMetric(String key) {
+		// delete by key.
+		this.entityService.delete(CorpMetricEntity.class, new String[] { "key" }, new Object[] { key });
 		MetricCalculator mc = this.metricDefineMap.get(key);
+
 		List<CorpInfoEntity> corpL = this.getCorpInfoList();
 		int year = 2015 - 1900;
 		for (int i = 0; i < 10; i++) {
 			Date date = new Date(year, 11, 31);
+			year--;
 			for (CorpInfoEntity c : corpL) {
 				String corpId = c.getCode();
-				Double value = this.getMetric(c.getCode(), date, key);
-				rt.add(new Tuple3<String, Date, Double>(corpId, date, value));
+				Double value = mc.calculate(this, c.getCode(), date);
+				if (value == null) {
+					continue;
+				}
+				CorpMetricEntity me = new CorpMetricEntity();
+				me.setId(UUIDUtil.randomStringUUID());//
+				me.setCorpId(corpId);
+				me.setReportDate(date);
+				me.setKey(key);
+				me.setValue(value);//
+				this.entityService.save(me);//
 			}
 		}
+	}
 
-		return rt;
+	public List<CorpMetricEntity> getMetricList(String key) {
+
+		return this.entityService.getList(CorpMetricEntity.class, "key", key);//
 	}
 }

@@ -13,7 +13,12 @@ public class FuzhaiQuanyiBiMetricCalculator extends MetricCalculator {
 		// youxifuzhai
 		Double fuzhai = ms.getBlanceSheetItem(corpId, date, "负债合计");
 		Double quanyi = ms.getBlanceSheetItem(corpId, date, "所有者权益合计");
-		return fuzhai.doubleValue() / quanyi.doubleValue();
+		if(quanyi == null){
+			return null;
+		}
+		double d1 = fuzhai == null?0:fuzhai.doubleValue();
+		double d2 = quanyi == null?0:quanyi.doubleValue();
+		return d1/d2;
 	}
 
 }

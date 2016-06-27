@@ -35,11 +35,11 @@ public abstract class ConnectionPoolWrapper {
 		return rt.longValue();
 	}
 
-	public Long executeUpdate(String sql, List<Object> pp) {
+	public long executeUpdate(String sql, List<Object> pp) {
 		return this.executeUpdate(sql, pp.toArray(new Object[pp.size()]));
 	}
 
-	public Long executeUpdate(String sql, Object[] pp) {
+	public long executeUpdate(String sql, Object[] pp) {
 		return (Long) execute(sql, new ArrayParameterProvider(pp), UPDATE);
 	}
 

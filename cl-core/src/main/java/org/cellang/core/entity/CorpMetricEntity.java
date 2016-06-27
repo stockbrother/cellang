@@ -9,6 +9,8 @@ public class CorpMetricEntity extends EntityObject {
 	private String corpId;
 
 	private Date reportDate;
+	
+	private String key;
 
 	private Double value;
 
@@ -34,5 +36,13 @@ public class CorpMetricEntity extends EntityObject {
 
 	public void setReportDate(Date reportDate) {
 		this.reportDate = reportDate;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 }

@@ -3,6 +3,7 @@ package org.cellang.server.test;
 import java.io.File;
 
 import org.cellang.commons.lang.NameSpace;
+import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
 import org.cellang.core.server.MessageServer;
@@ -23,7 +24,7 @@ public class SignupTest extends TestCase {
 		File home = FileUtil.createTempDir("cl-test-home");
 		QueueChannelProvider queuep = new QueueChannelProvider();
 		QueueChannel qc = queuep.createChannel();
-		MessageServer server = new DefaultCellangServer(home, queuep);
+		MessageServer server = new DefaultCellangServer(home, queuep, new EntityConfigFactory());
 		server.start();
 
 		try {
