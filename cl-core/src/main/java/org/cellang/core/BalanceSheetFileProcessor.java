@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.cellang.commons.util.UUIDUtil;
-import org.cellang.core.balancesheet.MapWrapper;
+import org.cellang.core.balancesheet.CsvHeaderRowMap;
+import org.cellang.core.balancesheet.CsvRow;
+import org.cellang.core.balancesheet.CsvRowMap;
 import org.cellang.core.entity.BalanceItemEntity;
 import org.cellang.core.entity.BalanceSheetEntity;
 import org.cellang.core.entity.EntityService;
@@ -20,8 +22,9 @@ import au.com.bytecode.opencsv.CSVReader;
 
 public class BalanceSheetFileProcessor extends FileProcessor {
 	private static final Logger LOG = LoggerFactory.getLogger(BalanceSheetFileProcessor.class);
-	
+
 	EntityService es;
+
 	public BalanceSheetFileProcessor(EntityService es) {
 		this.es = es;
 	}
@@ -37,16 +40,16 @@ public class BalanceSheetFileProcessor extends FileProcessor {
 		}
 		this.load(fr);
 	}
-	
 
 	public void load(Reader rd) {
 		CSVReader reader = new CSVReader(rd);
 		try {
-			MapWrapper headers = new MapWrapper();
-			MapWrapper body = new MapWrapper();
-			MapWrapper currentMap = null;
+			CsvHeaderRowMap headers = new CsvHeaderRowMap();
+			CsvRowMap body = new CsvRowMap();
+			CsvRowMap currentMap = null;
+			int lineNumber = 0;
 			while (true) {
-
+				lineNumber++;
 				String[] next = reader.readNext();
 				if (next == null) {
 					break;
@@ -60,29 +63,40 @@ public class BalanceSheetFileProcessor extends FileProcessor {
 				}
 				String key = next[0];
 				key = key.trim();
-				String value = next[1];
-				value = value.trim();
-				currentMap.put(key, value);
-			}
-			BigDecimal unit = headers.getAsBigDecimal("单位", true);
-			String corpId = headers.get("公司代码", true);
-			Date reportDate = headers.getAsDate("报告日期");
-			BalanceSheetEntity be = new BalanceSheetEntity();
-			be.setId(UUIDUtil.randomStringUUID());
-			be.setCorpId(corpId);
-			be.setQuanter(4);
-			be.setReportDate(reportDate);
-			es.save(be);
 
-			for (String key : body.map.keySet()) {
-				BalanceItemEntity ie = new BalanceItemEntity();
-				BigDecimal value = body.getAsBigDecimal(key, true);
-				value = value.multiply(unit);
-				ie.setId(UUIDUtil.randomStringUUID());//
-				ie.setBalanceSheetId(be.getId());
-				ie.setKey(key);
-				ie.setValue(value);
-				es.save(ie);
+				currentMap.put(key, new CsvRow(lineNumber, next));
+			}
+			//
+			Date[] reportDateArray = headers.getReportDateArray();
+			BigDecimal unit = headers.get("单位", true).getAsBigDecimal(1, true);
+			String corpId = headers.get("公司代码", true).getString(1, true);
+
+			for (int i = 0; i < reportDateArray.length; i++) {
+
+				Date reportDate = headers.get("报告日期", true).getAsDate(i + 1, headers.getDateFormat());
+				if (reportDate == null) {
+					break;
+				}
+				BalanceSheetEntity be = new BalanceSheetEntity();
+				be.setId(UUIDUtil.randomStringUUID());
+				be.setCorpId(corpId);
+				be.setQuanter(4);
+				be.setReportDate(reportDate);
+				es.save(be);
+
+				for (String key : body.map.keySet()) {
+					BigDecimal value = body.get(key, true).getAsBigDecimal(i + 1, false);
+					if (value == null) {// ignore this value.
+						continue;
+					}
+					BalanceItemEntity ie = new BalanceItemEntity();
+					value = value.multiply(unit);
+					ie.setId(UUIDUtil.randomStringUUID());//
+					ie.setBalanceSheetId(be.getId());
+					ie.setKey(key);
+					ie.setValue(value);
+					es.save(ie);
+				}
 			}
 
 		} catch (IOException e) {

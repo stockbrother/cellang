@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.StringWriter;
 
 import org.cellang.core.entity.EntityService;
-import org.cellang.core.reporter.FuzhailvReporter;
+import org.cellang.core.reporter.FuzhaiQuanyiBiReporter;
 import org.cellang.core.util.FileUtil;
 
 public class Main {
@@ -17,7 +17,7 @@ public class Main {
 		File dfile = new File("src" + File.separator + "main" + File.separator + "doc");
 		dl.loadDir(dfile);
 
-		FuzhailvReporter fr = new FuzhailvReporter(es);
+		FuzhaiQuanyiBiReporter fr = new FuzhaiQuanyiBiReporter(es);
 
 		StringWriter sw = new StringWriter();
 
