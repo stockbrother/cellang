@@ -64,6 +64,8 @@ public class NeteaseCollector {
 
 	private long minInterval = 15 * 1000;
 
+	private String firstFrom = "002194";
+
 	public NeteaseCollector(File dir) {
 		this.dir163 = dir;
 	}
@@ -117,8 +119,19 @@ public class NeteaseCollector {
 			proxy = new HttpHost("proxy.houston.hpecorp.net", 8080);
 			config = RequestConfig.custom().setProxy(proxy).build();
 
+			boolean running = false;
 			for (CorpInfoEntity oi : this.orgInfoList) {
-				this.collectFor(oi);
+				if (!running) {
+					if (this.firstFrom == null || oi.getCode().equals(this.firstFrom)) {
+						running = true;
+					} else {
+						LOG.warn("wait:" + this.firstFrom + ",skip:" + oi.getCode());//
+					}
+				}
+
+				if (running) {
+					this.collectFor(oi);
+				}
 			}
 
 		} finally {
@@ -206,8 +219,13 @@ public class NeteaseCollector {
 				FileOutputStream os = new FileOutputStream(workFile);
 				response.getEntity().writeTo(os);
 				os.close();
-				workFile.renameTo(outputFile);
-				System.out.println("got:" + outputFile.getAbsolutePath());//
+				boolean succ = workFile.renameTo(outputFile);
+				if (succ) {
+					LOG.info("got:" + outputFile.getAbsolutePath());//
+				} else {
+					LOG.error(
+							"cannot rename from:" + workFile.getAbsolutePath() + ",to:" + outputFile.getAbsolutePath());
+				}
 			}
 
 		} finally {
