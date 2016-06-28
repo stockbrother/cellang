@@ -1,7 +1,10 @@
 package org.cellang.core;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,29 +27,38 @@ public class Main {
 		converterMap.put(Date.class, new DateStringConverter("yyyy/MM/dd"));
 	}
 
-	public static void main(String[] args) {
-		File dbHome = FileUtil.createTempDir("main");
+	public static void main(String[] args) throws IOException {
+		File dataHome = FileUtil.newFile(new String[] { "D:", "data" });
+		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
+
 		EntityConfigFactory ecf = new EntityConfigFactory();
 		EntityService es = EntityService.newInstance(dbHome, "h2", ecf);
-
-		DataLoader dl = new DataLoader(es);
-		File dfile = new File("src" + File.separator + "main" + File.separator + "doc");
-		dl.loadDir(dfile);
+		if (!es.isDbExists()) {
+			System.out.println("db is empty, load data...");//
+			DataLoader dl = new DataLoader(es);
+			// File dfile = new File("src" + File.separator + "main" +
+			// File.separator + "doc");
+			File dfile = FileUtil.newFile(dataHome, new String[] { "163pp" });
+			// File dfile = new File("target"+File.separator+"163tmp");
+			File idxdir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
+			dl.loadDir(idxdir);
+			dl.loadDir(dfile);
+		}
 
 		CorpMetricService ms = new CorpMetricService(es);
-		String[] keys = new String[] { "负债权益比", "EPS" };
+		String[] keys = new String[] { "负债权益比" };// , "EPS" };
 		ms.updateAllMetric();
 
 		for (int i = 0; i < keys.length; i++) {
-
+			String key = keys[i];
 			List<CorpMetricEntity> metricL = ms.getMetricList(keys[i]);
-
-			StringWriter sw = new StringWriter();
-
-			EntityCsvWriter cw = new EntityCsvWriter(sw, ecf.get(CorpMetricEntity.class), converterMap);
+			File output = FileUtil.newFile(dataHome, new String[] { "" + key + ".csv" });
+			Writer fw = new OutputStreamWriter(new FileOutputStream(output));
+			EntityCsvWriter cw = new EntityCsvWriter(fw, ecf.get(CorpMetricEntity.class), converterMap);
 			cw.write(metricL);//
-			System.out.println(sw.toString());
+			cw.close();
+			System.out.println("write to file:" + output);
 		}
-
+		es.close();
 	}
 }

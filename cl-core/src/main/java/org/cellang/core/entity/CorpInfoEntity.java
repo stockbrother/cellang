@@ -1,10 +1,5 @@
 package org.cellang.core.entity;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.cellang.commons.jdbc.CreateTableOperation;
-
 public class CorpInfoEntity extends EntityObject {
 
 	public static String tableName = "corpinfo";

@@ -16,6 +16,25 @@ import java.io.UnsupportedEncodingException;
  * 
  */
 public class FileUtil {
+	public static File newFile(String[] path) {
+		return newFile(null, path);
+	}
+
+	public static File newFile(File pfile, String[] path) {
+		StringBuffer sb = new StringBuffer();
+
+		for (int i = 0; i < path.length; i++) {
+			sb.append(path[i]);
+			if (i < path.length - 1) {
+				sb.append(File.separator);
+			}
+		}
+		if (pfile == null) {
+			return new File(sb.toString());
+		} else {
+			return new File(pfile, sb.toString());
+		}
+	}
 
 	public static String readAsString(InputStream is, String encode) {
 		try {

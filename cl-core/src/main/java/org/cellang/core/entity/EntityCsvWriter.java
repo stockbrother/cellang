@@ -1,5 +1,6 @@
 package org.cellang.core.entity;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -42,6 +43,14 @@ public class EntityCsvWriter {
 				str[i] = converters[i] == null ? String.valueOf(value) : String.valueOf(converters[i].convert(value));
 			}
 			cw.writeNext(str);
+		}
+	}
+	
+	public void close(){
+		try {
+			this.cw.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

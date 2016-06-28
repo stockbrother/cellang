@@ -47,11 +47,17 @@ public class CsvRow {
 			}
 			return null;
 		}
-		return new BigDecimal(valueS);
+		try {
+
+			BigDecimal rt = new BigDecimal(valueS);
+			return rt;
+		} catch (NumberFormatException e) {
+			throw new RuntimeException("row:" + this.lineNumber + ",idx:" + idx + ",valueS:" + valueS, e);
+		}
 	}
 
 	public Date getAsDate(int idx, SimpleDateFormat df) {
-		String valueS = getString(idx,false);
+		String valueS = getString(idx, false);
 		if (valueS == null) {
 			return null;
 		}

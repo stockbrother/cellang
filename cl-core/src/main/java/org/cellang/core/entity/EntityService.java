@@ -18,11 +18,13 @@ public class EntityService {
 	private ConnectionPoolWrapper pool;
 
 	private EntityConfigFactory entityConfigFactory = new EntityConfigFactory();
+	
+	private boolean dbExists;
 
-	private EntityService(ConnectionPoolWrapper rt, EntityConfigFactory ecf) {
+	private EntityService(ConnectionPoolWrapper rt, EntityConfigFactory ecf,boolean dbExists) {
 		this.pool = rt;
 		this.entityConfigFactory = ecf;
-
+		this.dbExists = dbExists;
 	}
 
 	public ConnectionPoolWrapper getPool() {
@@ -36,15 +38,15 @@ public class EntityService {
 		String dbUrl = "jdbc:h2:" + dbHome.getAbsolutePath().replace('\\', '/') + "/" + dbName;
 		LOG.info("dbUrl:" + dbUrl);
 		ConnectionPoolWrapper pool = H2ConnectionPoolWrapper.newInstance(dbUrl, "sa", "sa");
-		EntityService rt = new EntityService(pool, ecf);
+		EntityService rt = new EntityService(pool, ecf,dbExists);
 
 		if (dbExists) {
-			LOG.warn("db file exists:" + dbFile);//
+			LOG.warn("skip init,since db file exists:" + dbFile);//
 		} else {
 			LOG.warn("initializing db,db file not exists: " + dbFile);//
 			// create tables
 			rt.entityConfigFactory.initTables(pool);
-
+			rt.entityConfigFactory.initIndices(pool);
 			int year = 2015 - 1900;
 			for (int i = 0; i < 10; i++) {
 				DateInfoEntity di = new DateInfoEntity();
@@ -114,6 +116,10 @@ public class EntityService {
 
 	public EntityConfigFactory getEntityConfigFactory() {
 		return entityConfigFactory;
+	}
+
+	public boolean isDbExists() {
+		return dbExists;
 	}
 
 }

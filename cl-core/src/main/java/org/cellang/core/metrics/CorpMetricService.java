@@ -13,9 +13,12 @@ import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CorpMetricService {
-
+	private static final Logger LOG = LoggerFactory.getLogger(CorpMetricService.class);
+	
 	private Map<String, MetricCalculator> metricDefineMap = new HashMap<String, MetricCalculator>();
 
 	private EntityService entityService;
@@ -73,6 +76,8 @@ public class CorpMetricService {
 
 	public void updateMetric(String key) {
 		// delete by key.
+		LOG.info("update metric:"+key+" ... start.");
+		
 		this.entityService.delete(CorpMetricEntity.class, new String[] { "key" }, new Object[] { key });
 		MetricCalculator mc = this.metricDefineMap.get(key);
 
@@ -96,6 +101,8 @@ public class CorpMetricService {
 				this.entityService.save(me);//
 			}
 		}
+		LOG.info("update metric:"+key+" ... done.");
+		
 	}
 
 	public List<CorpMetricEntity> getMetricList(String key) {
