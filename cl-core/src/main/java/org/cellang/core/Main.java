@@ -30,7 +30,12 @@ public class Main {
 		EntityService es = EntityService.newInstance(dbHome, "h2", ecf);
 
 		DataLoader dl = new DataLoader(es);
-		File dfile = new File("src" + File.separator + "main" + File.separator + "doc");
+		// File dfile = new File("src" + File.separator + "main" +
+		// File.separator + "doc");
+		File dfile = new File("target" + File.separator + "163pp");
+		// File dfile = new File("target"+File.separator+"163tmp");
+		File idxdir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
+		dl.loadDir(idxdir);
 		dl.loadDir(dfile);
 
 		CorpMetricService ms = new CorpMetricService(es);

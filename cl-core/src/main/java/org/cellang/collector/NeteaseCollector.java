@@ -44,7 +44,7 @@ import au.com.bytecode.opencsv.CSVReader;
  */
 public class NeteaseCollector {
 
-	private File neteaseFolder;
+	private File dir163;
 
 	private CloseableHttpClient httpclient;
 
@@ -58,21 +58,22 @@ public class NeteaseCollector {
 
 	private long lastAccessTimestamp;
 
-	public NeteaseCollector(File dataFolder) {
-		this.neteaseFolder = dataFolder;
+	private long minInterval = 15 * 1000;
+
+	public NeteaseCollector(File dir) {
+		this.dir163 = dir;
 	}
 
 	public static void main(String[] args) throws Exception {
-		new NeteaseCollector(new File("src" + File.separator + "main" + File.separator + "163")).start();
+		File output = new File("C:\\D\\data\\163");
+		
+		new NeteaseCollector(output).start();
 	}
 
-	public List<CorpInfoEntity> loadCorpInfoEntity() {
-		File corpListFile = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1"
-				+ File.separator + "index1.corplist.csv");
+	public void loadCorpInfoEntity(List<CorpInfoEntity> rt, File indexFile) {
 
-		List<CorpInfoEntity> rt = new ArrayList<CorpInfoEntity>();
 		try {
-			CSVReader reader = new CSVReader(new FileReader(corpListFile));
+			CSVReader reader = new CSVReader(new FileReader(indexFile));
 
 			String[] next = reader.readNext();
 
@@ -93,11 +94,18 @@ public class NeteaseCollector {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return rt;
 	}
 
 	public void start() throws Exception {
-		this.orgInfoList = this.loadCorpInfoEntity();
+		List<CorpInfoEntity> rt = new ArrayList<CorpInfoEntity>();
+		File indexDir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
+		File indexFile1 = new File(indexDir, "index1.corplist.csv");
+		File indexFile2 = new File(indexDir, "index2.corplist.csv");
+
+		this.loadCorpInfoEntity(rt, indexFile1);
+		this.loadCorpInfoEntity(rt, indexFile2);
+
+		this.orgInfoList = rt;
 		httpclient = HttpClients.custom().build();
 		try {
 			// http://quotes.money.163.com/service/zcfzb_600305.html
@@ -115,21 +123,29 @@ public class NeteaseCollector {
 	}
 
 	public void collectFor(CorpInfoEntity oi) throws Exception {
-		String type = "zcfzb";
-		File file = new File(this.neteaseFolder, type + oi.getCode() + ".csv");
-		if (file.exists()) {
-			System.out.println("file exist:" + file);
-		} else {
-			doCollectFor(oi, type, file);
+		String[] types = new String[] { "zcfzb", "lrb" };
+		for (String type : types) {
+			File typeDir = new File(this.dir163, type);
+
+			String fname = oi.getCode().substring(0, 4);//
+			File areaDir = new File(typeDir, fname);
+			if (!areaDir.exists()) {
+				areaDir.mkdirs();
+			}
+			File file = new File(areaDir, type + oi.getCode() + ".csv");
+			if (file.exists()) {
+				System.out.println("file exist:" + file);
+			} else {
+				waitAndDoCollectFor(oi, type, file);
+			}
 		}
 
 	}
 
-	public void doCollectFor(CorpInfoEntity oi, String type, File file) throws Exception {
-
+	private void waitAndDoCollectFor(CorpInfoEntity oi, String type, File outputFile) throws Exception {
 		while (true) {
 			long pass = System.currentTimeMillis() - this.lastAccessTimestamp;
-			if (pass < 30 * 1000) {
+			if (pass < minInterval) {
 				System.out.print(".");
 				Thread.sleep(1000);
 				continue;
@@ -138,6 +154,11 @@ public class NeteaseCollector {
 
 			break;
 		}
+		this.doCollectFor(oi, type, outputFile);
+	}
+
+	private void doCollectFor(CorpInfoEntity oi, String type, File outputFile) throws Exception {
+
 		HttpGet httpget = new HttpGet("/service/" + type + "_" + oi.getCode() + ".html?type=year");
 		httpget.setConfig(config);
 
@@ -154,9 +175,10 @@ public class NeteaseCollector {
 			}
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-				FileOutputStream os = new FileOutputStream(file);
+				FileOutputStream os = new FileOutputStream(outputFile);
 				response.getEntity().writeTo(os);
 				os.close();
+				System.out.println("got:" + outputFile.getAbsolutePath());//
 			}
 
 		} finally {
