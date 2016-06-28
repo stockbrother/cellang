@@ -14,6 +14,7 @@ import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
 import org.cellang.core.entity.EntityService;
 import org.cellang.core.loader.DataLoader;
+import org.cellang.core.metrics.CorpMetricService;
 import org.cellang.core.util.FileUtil;
 
 public class Main {
@@ -33,15 +34,19 @@ public class Main {
 		dl.loadDir(dfile);
 
 		CorpMetricService ms = new CorpMetricService(es);
-		String key = "负债权益比";
-		ms.updateMetric(key);
-		List<CorpMetricEntity> metricL = ms.getMetricList(key);
+		String[] keys = new String[] { "负债权益比", "EPS" };
+		ms.updateAllMetric();
 
-		StringWriter sw = new StringWriter();
+		for (int i = 0; i < keys.length; i++) {
 
-		EntityCsvWriter cw = new EntityCsvWriter(sw, ecf.get(CorpMetricEntity.class), converterMap);
-		cw.write(metricL);//
-		System.out.println(sw.toString());
+			List<CorpMetricEntity> metricL = ms.getMetricList(keys[i]);
+
+			StringWriter sw = new StringWriter();
+
+			EntityCsvWriter cw = new EntityCsvWriter(sw, ecf.get(CorpMetricEntity.class), converterMap);
+			cw.write(metricL);//
+			System.out.println(sw.toString());
+		}
 
 	}
 }

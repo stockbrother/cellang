@@ -1,31 +1,33 @@
-package org.cellang.core;
+package org.cellang.core.metrics;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.cellang.commons.jdbc.ResultSetProcessor;
-import org.cellang.commons.lang.Tuple3;
 import org.cellang.commons.util.UUIDUtil;
-import org.cellang.core.entity.BalanceSheetItemEntity;
-import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityService;
 
 public class CorpMetricService {
+
 	private Map<String, MetricCalculator> metricDefineMap = new HashMap<String, MetricCalculator>();
 
 	private EntityService entityService;
 
+	private ReportConfigFactory reportConfigFactory;
+
 	public CorpMetricService(EntityService es) {
 		this.entityService = es;
-		this.add(new FuzhaiQuanyiBiMetricCalculator());
+		this.reportConfigFactory = new ReportConfigFactory(es.getEntityConfigFactory());
+		this.add(new FuzhaiQuanyiBiMetricCalculator(this.reportConfigFactory));
+		this.add(new EarningPerShareMetricCalculator(this.reportConfigFactory));
+
 	}
 
 	public void add(MetricCalculator mc) {
@@ -42,9 +44,10 @@ public class CorpMetricService {
 		return rt;
 	}
 
-	public Double getBlanceSheetItem(String corpId, Date date, String key) {
-		String sql = "select itm.value from " + BalanceSheetItemEntity.tableName + " itm,"
-				+ BalanceSheetReportEntity.tableName
+	public Double getReportItem(ReportConfig rc, String corpId, Date date, String key) {
+
+		String sql = "select itm.value from " + rc.getItemEntityConfig().getTableName() + " itm,"
+				+ rc.getReportEntityConfig().getTableName()
 				+ " rpt where itm.reportId = rpt.id and rpt.corpId=? and rpt.reportDate=? and itm.key = ?";
 		return (Double) this.entityService.getPool().executeQuery(sql, new Object[] { corpId, date, key },
 				new ResultSetProcessor() {
@@ -58,6 +61,13 @@ public class CorpMetricService {
 						return null;
 					}
 				});
+
+	}
+
+	public void updateAllMetric() {
+		for (Map.Entry<String, MetricCalculator> en : this.metricDefineMap.entrySet()) {
+			this.updateMetric(en.getKey());
+		}
 
 	}
 
@@ -90,6 +100,7 @@ public class CorpMetricService {
 
 	public List<CorpMetricEntity> getMetricList(String key) {
 
-		return this.entityService.getList(CorpMetricEntity.class, "key", key);//
+		return this.entityService.query(CorpMetricEntity.class, "key", key)
+				.orderBy(new String[] { "corpId,reportDate desc" }).executeQuery();//
 	}
 }
