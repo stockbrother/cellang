@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.cellang.core.entity.CorpInfoEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -43,6 +46,7 @@ import au.com.bytecode.opencsv.CSVReader;
  *
  */
 public class NeteaseCollector {
+	private static final Logger LOG = LoggerFactory.getLogger(NeteaseCollector.class);
 
 	private File dir163;
 
@@ -66,7 +70,7 @@ public class NeteaseCollector {
 
 	public static void main(String[] args) throws Exception {
 		File output = new File("C:\\D\\data\\163");
-		
+
 		new NeteaseCollector(output).start();
 	}
 
@@ -143,18 +147,34 @@ public class NeteaseCollector {
 	}
 
 	private void waitAndDoCollectFor(CorpInfoEntity oi, String type, File outputFile) throws Exception {
-		while (true) {
-			long pass = System.currentTimeMillis() - this.lastAccessTimestamp;
-			if (pass < minInterval) {
-				System.out.print(".");
-				Thread.sleep(1000);
-				continue;
-			}
-			System.out.println("time done.");
+		int retry = 3;
+		while (retry > 0) {
 
-			break;
+			while (true) {
+				long pass = System.currentTimeMillis() - this.lastAccessTimestamp;
+				if (pass < minInterval) {
+					System.out.print(".");
+					Thread.sleep(1000);
+					continue;
+				}
+				System.out.println("time done.");
+
+				break;
+			}
+			boolean got = false;
+			try {
+				this.doCollectFor(oi, type, outputFile);
+				got = true;
+			} catch (SocketException e) {
+				LOG.warn("error when collect:" + outputFile.getAbsolutePath(), e);
+			}
+			if (got) {
+				retry = 0;
+			} else {
+				retry--;
+			}
 		}
-		this.doCollectFor(oi, type, outputFile);
+
 	}
 
 	private void doCollectFor(CorpInfoEntity oi, String type, File outputFile) throws Exception {
@@ -175,9 +195,18 @@ public class NeteaseCollector {
 			}
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-				FileOutputStream os = new FileOutputStream(outputFile);
+				File workFile = null;
+				int i = 0;
+				while (true) {
+					workFile = new File(outputFile.getAbsolutePath() + ".work" + (i++));
+					if (!workFile.exists()) {
+						break;
+					}
+				}
+				FileOutputStream os = new FileOutputStream(workFile);
 				response.getEntity().writeTo(os);
 				os.close();
+				workFile.renameTo(outputFile);
 				System.out.println("got:" + outputFile.getAbsolutePath());//
 			}
 
