@@ -4,12 +4,16 @@
 package org.cellang.core.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 /**
  * @author wu
@@ -116,6 +120,34 @@ public class FileUtil {
 			}
 		}
 		home.delete();
+	}
+	public static String read(File f, Charset cs) throws IOException{
+		Reader r = newReader(f,cs);
+		StringWriter sw =new StringWriter();
+		char[] cbuf = new char[1024];
+		while(true){
+			int len = r.read(cbuf, 0, cbuf.length);
+			if(len==-1){
+				break;
+			}
+			sw.write(cbuf, 0, len);//
+			
+		}
+		return sw.toString();
+	}
+	public static Reader newReader(File f, Charset cs) {
+		//
+		try {
+			return new InputStreamReader(new FileInputStream(f), cs);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static boolean exists(String string) {
+		//
+		File f = new File(string);
+		return f.exists();
 	}
 
 }
