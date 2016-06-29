@@ -8,8 +8,9 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 
 import org.cellang.core.util.FileUtil;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,15 +81,15 @@ public class SinaAllQuotesPreprocessor extends FilesPreprocessor {
 				continue;
 			}
 			Reader r = FileUtil.newReader(f, charSet);
-			//Object jso = JSONValue.parse(r);
-			JSONArray jsa = new JSONArray();
-			if (jso == null) {
-				LOG.warn("null,ignore:" + f.getAbsolutePath());
-				// ignore
-			} else {
-				LOG.warn("process:" + f.getAbsolutePath());
-				JSONArray jsa = (JSONArray) jso;
-				for (int i = 0; i < jsa.size(); i++) {
+			// Object jso = JSONValue.parse(r);
+			JSONTokener jt = new JSONTokener(r);
+			Object o = jt.nextValue();
+			if (JSONObject.NULL.equals(o)) {
+				LOG.warn("found 'null',ignore:" + f.getAbsolutePath());
+			} else if (o instanceof JSONArray) {
+				JSONArray jsa = (JSONArray) o;
+				LOG.warn("process:" + f.getAbsolutePath() + ",array length:" + jsa.length());
+				for (int i = 0; i < jsa.length(); i++) {
 					JSONObject jo = (JSONObject) jsa.get(i);
 					String[] line = new String[HEADERS.length];
 					for (int j = 0; j < HEADERS.length; j++) {
@@ -98,6 +99,8 @@ public class SinaAllQuotesPreprocessor extends FilesPreprocessor {
 					cw.writeNext(line);
 					total++;
 				}
+			} else {
+				LOG.error("unkown json object:" + o);
 			}
 
 		}

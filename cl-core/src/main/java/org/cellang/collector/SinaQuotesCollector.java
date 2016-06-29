@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.http.Header;
@@ -19,6 +21,8 @@ public class SinaQuotesCollector {
 	private static final Logger LOG = LoggerFactory.getLogger(SinaQuotesCollector.class);
 
 	private HttpClientFactory clients;
+	
+	private static SimpleDateFormat DF = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
 	private String host = "vip.stock.finance.sina.com.cn";
 
@@ -39,9 +43,11 @@ public class SinaQuotesCollector {
 	}
 
 	public static void main(String[] args) throws Exception {
-		File output = new File("C:\\D\\data\\sina");
-		
-		new SinaQuotesCollector(output).start();
+		File data = EnvUtil.getDataDir();
+		String name = DF.format(new Date());
+		File outputDir = new File(data, "sina\\all-quotes\\"+name);
+
+		new SinaQuotesCollector(outputDir).start();
 	}
 
 	public void start() {
@@ -122,7 +128,7 @@ public class SinaQuotesCollector {
 				.append("&symbol=")//
 				.append("&_s_r_a=page")//
 				.append("&page=").append(this.nextPage)//
-		;
+				;
 		this.nextPage++;
 		return sb.toString();
 	}

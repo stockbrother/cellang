@@ -16,6 +16,8 @@ public class HttpClientFactory {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HttpClientFactory.class);
 
+	private boolean proxyEnabled;
+
 	private String httpProxyHost = "proxy.houston.hpecorp.net";
 
 	private int httpProxyPort = 8080;
@@ -44,8 +46,14 @@ public class HttpClientFactory {
 		try {
 
 			HttpHost target = new HttpHost(host, 80, "http");
-			HttpHost proxy = new HttpHost(httpProxyHost, httpProxyPort);
-			RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
+			RequestConfig.Builder cb = RequestConfig.custom();
+			if (this.proxyEnabled) {
+
+				HttpHost proxy = new HttpHost(httpProxyHost, httpProxyPort);
+				cb.setProxy(proxy);
+			}
+
+			RequestConfig config = cb.build();
 			long lastResponseTs = 0;
 			while (uriIt.hasNext()) {
 
@@ -54,7 +62,7 @@ public class HttpClientFactory {
 				while (true) {
 					long pass = System.currentTimeMillis() - lastResponseTs;
 					long remain = pause - pass;
-					if (remain < 0) {
+					if (remain <= 0) {
 						break;
 					}
 					try {
@@ -68,7 +76,8 @@ public class HttpClientFactory {
 				HttpGet httpget = new HttpGet(uri);
 				httpget.setConfig(config);
 
-				LOG.info("executing request url: " + target + httpget.getRequestLine() + " via " + proxy);
+				LOG.info("executing request url: " + target + httpget.getRequestLine()
+						+ (this.proxyEnabled ? (" via proxy:" + this.httpProxyHost) : " via no proxy."));
 
 				CloseableHttpResponse response = httpclient.execute(target, httpget);
 				try {
