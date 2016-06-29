@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cellang.collector.EnvUtil;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
@@ -28,25 +29,33 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		File dataHome = FileUtil.newFile(new String[] { "D:", "data" });
+		File dataHome = EnvUtil.getDataDir();
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 
 		EntityConfigFactory ecf = new EntityConfigFactory();
 		EntityService es = EntityService.newInstance(dbHome, "h2", ecf);
-		if (!es.isDbExists()) {
+		if (es.isNew()) {
 			System.out.println("db is empty, load data...");//
 			DataLoader dl = new DataLoader(es);
 			// File dfile = new File("src" + File.separator + "main" +
 			// File.separator + "doc");
 			File dfile = FileUtil.newFile(dataHome, new String[] { "163pp" });
+			if (!dfile.exists()) {
+				dfile.mkdirs();
+			}
 			// File dfile = new File("target"+File.separator+"163tmp");
 			File idxdir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
+			File qfile = FileUtil.newFile(dataHome, new String[] { "sinapp", });
+			if (!qfile.exists()) {
+				qfile.mkdirs();
+			}
 			dl.loadDir(idxdir);
-			dl.loadDir(dfile);
+			//dl.loadDir(dfile);
+			dl.loadDir(qfile);
 		}
 
 		CorpMetricService ms = new CorpMetricService(es);
-		String[] keys = new String[] { "负债权益比" };// , "EPS" };
+		String[] keys = new String[] { "负债权益比","QUOTES" };// , "EPS" };
 		ms.updateAllMetric();
 
 		for (int i = 0; i < keys.length; i++) {

@@ -19,12 +19,12 @@ public class EntityService {
 
 	private EntityConfigFactory entityConfigFactory = new EntityConfigFactory();
 	
-	private boolean dbExists;
+	private boolean isNew;
 
-	private EntityService(ConnectionPoolWrapper rt, EntityConfigFactory ecf,boolean dbExists) {
+	private EntityService(ConnectionPoolWrapper rt, EntityConfigFactory ecf,boolean isNew) {
 		this.pool = rt;
 		this.entityConfigFactory = ecf;
-		this.dbExists = dbExists;
+		this.isNew = isNew;
 	}
 
 	public ConnectionPoolWrapper getPool() {
@@ -33,14 +33,14 @@ public class EntityService {
 
 	public static EntityService newInstance(File dbHome, String dbName, EntityConfigFactory ecf) {
 		File dbFile = new File(dbHome, dbName + ".mv.db");
-		boolean dbExists = dbFile.exists();
+		boolean isNew = !dbFile.exists();
 
 		String dbUrl = "jdbc:h2:" + dbHome.getAbsolutePath().replace('\\', '/') + "/" + dbName;
 		LOG.info("dbUrl:" + dbUrl);
 		ConnectionPoolWrapper pool = H2ConnectionPoolWrapper.newInstance(dbUrl, "sa", "sa");
-		EntityService rt = new EntityService(pool, ecf,dbExists);
+		EntityService rt = new EntityService(pool, ecf, isNew);
 
-		if (dbExists) {
+		if (!isNew) {
 			LOG.warn("skip init,since db file exists:" + dbFile);//
 		} else {
 			LOG.warn("initializing db,db file not exists: " + dbFile);//
@@ -118,8 +118,8 @@ public class EntityService {
 		return entityConfigFactory;
 	}
 
-	public boolean isDbExists() {
-		return dbExists;
+	public boolean isNew() {
+		return isNew;
 	}
 
 }

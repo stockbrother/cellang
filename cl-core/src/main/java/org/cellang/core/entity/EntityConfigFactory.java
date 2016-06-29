@@ -24,12 +24,16 @@ public class EntityConfigFactory {
 		this.addEntity(new EntityConfig(CorpInfoEntity.class, CorpInfoEntity.tableName));
 		this.addEntity(new EntityConfig(DateInfoEntity.class, DateInfoEntity.tableName));
 		this.addEntity(new EntityConfig(CorpMetricEntity.class, CorpMetricEntity.tableName));
+		this.addEntity(new EntityConfig(QuotesEntity.class, QuotesEntity.tableName));
+		
+		//indices
 		this.addIndex(BalanceSheetReportEntity.class, new String[] { "corpId","reportDate" });
 		this.addIndex(IncomeStatementReportEntity.class, new String[] { "corpId","reportDate" });
 		this.addIndex(BalanceSheetItemEntity.class, new String[] { "reportId","key" });
 		this.addIndex(IncomeStatementItemEntity.class, new String[] { "reportId","key" });
 		this.addIndex(CorpInfoEntity.class, new String[] { "code" });
 		this.addIndex(DateInfoEntity.class, new String[] { "value" });
+		this.addIndex(QuotesEntity.class, new String[]{"code"});
 		
 
 	}

@@ -30,7 +30,7 @@ public class CorpMetricService {
 		this.reportConfigFactory = new ReportConfigFactory(es.getEntityConfigFactory());
 		this.add(new FuzhaiQuanyiBiMetricCalculator(this.reportConfigFactory));
 		this.add(new EarningPerShareMetricCalculator(this.reportConfigFactory));
-
+		this.add(new QuotesMetricCalculator(this.reportConfigFactory));//
 	}
 
 	public void add(MetricCalculator mc) {
@@ -109,5 +109,9 @@ public class CorpMetricService {
 
 		return this.entityService.query(CorpMetricEntity.class, "key", key)
 				.orderBy(new String[] { "corpId,reportDate desc" }).executeQuery();//
+	}
+
+	public EntityService getEntityService() {
+		return entityService;
 	}
 }

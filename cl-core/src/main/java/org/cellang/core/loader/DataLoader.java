@@ -15,6 +15,7 @@ public class DataLoader {
 		processMap.put("corplist", new CorpListFileProcessor(es));
 		processMap.put("zcfzb", new BalanceSheetFileProcessor(es));
 		processMap.put("lrb", new IncomeStatementFileProcessor(es));
+		processMap.put("all-quotes", new AllQuotesFileProcessor(es));
 	}
 
 	public void loadDir(File dir) {
