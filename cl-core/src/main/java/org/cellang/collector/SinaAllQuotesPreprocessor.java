@@ -85,10 +85,10 @@ public class SinaAllQuotesPreprocessor extends FilesPreprocessor {
 			JSONTokener jt = new JSONTokener(r);
 			Object o = jt.nextValue();
 			if (JSONObject.NULL.equals(o)) {
-				LOG.warn("found 'null',ignore:" + f.getAbsolutePath());
+				LOG.info("found 'null',ignore:" + f.getAbsolutePath());
 			} else if (o instanceof JSONArray) {
 				JSONArray jsa = (JSONArray) o;
-				LOG.warn("process:" + f.getAbsolutePath() + ",array length:" + jsa.length());
+				LOG.info("process:" + f.getAbsolutePath() + ",array length:" + jsa.length());
 				for (int i = 0; i < jsa.length(); i++) {
 					JSONObject jo = (JSONObject) jsa.get(i);
 					String[] line = new String[HEADERS.length];
