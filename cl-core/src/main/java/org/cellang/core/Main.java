@@ -29,15 +29,26 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		clojure.main.main(args);		
+		clojure.main.main(args);
 	}
 
-	public static void mainx(String[] args) throws IOException {
-		File dataHome = EnvUtil.getDataDir();
+	private EntityService es;
+
+	private File dataHome;
+
+	private EntityConfigFactory ecf;
+	private CorpMetricService ms;
+	private boolean started;
+
+	public void start() throws IOException {
+		if (this.started) {
+			throw new RuntimeException("started already.");
+		}
+		dataHome = EnvUtil.getDataDir();
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 
-		EntityConfigFactory ecf = new EntityConfigFactory();
-		EntityService es = EntityService.newInstance(dbHome, "h2", ecf);
+		ecf = new EntityConfigFactory();
+		es = EntityService.newInstance(dbHome, "h2", ecf);
 		if (es.isNew()) {
 			System.out.println("db is empty, load data...");//
 			DataLoader dl = new DataLoader(es);
@@ -58,20 +69,41 @@ public class Main {
 			dl.loadDir(qfile);
 		}
 
-		CorpMetricService ms = new CorpMetricService(es);
-		String[] keys = new String[] { "负债权益比", "QUOTES" };// , "EPS" };
-		ms.updateAllMetric();
+		ms = new CorpMetricService(es);
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				Main.this.close();
+			}
+		});
+		this.started = true;
+	}
 
+	public void list() {
+		String[] keys = new String[] { "负债权益比", "QUOTES" };// , "EPS" };
 		for (int i = 0; i < keys.length; i++) {
-			String key = keys[i];
-			List<CorpMetricEntity> metricL = ms.getMetricList(keys[i]);
-			File output = FileUtil.newFile(dataHome, new String[] { "" + key + ".csv" });
-			Writer fw = new OutputStreamWriter(new FileOutputStream(output));
-			EntityCsvWriter cw = new EntityCsvWriter(fw, ecf.get(CorpMetricEntity.class), converterMap);
-			cw.write(metricL);//
-			cw.close();
-			System.out.println("write to file:" + output);
+			System.out.println(keys[i]);
 		}
+
+	}
+
+	public void update(String metric) throws IOException {
+		ms.updateMetric(metric);//
+
+	}
+
+	public void print(String metric) throws IOException {
+		List<CorpMetricEntity> metricL = ms.getMetricList(metric);
+		File output = FileUtil.newFile(dataHome, new String[] { "" + metric + ".csv" });
+		Writer fw = new OutputStreamWriter(new FileOutputStream(output));
+		EntityCsvWriter cw = new EntityCsvWriter(fw, ecf.get(CorpMetricEntity.class), converterMap);
+		cw.write(metricL);//
+		cw.close();
+		System.out.println("write to file:" + output);
+	}
+
+	public void close() {
 		es.close();
+		System.out.println("closed");
 	}
 }
