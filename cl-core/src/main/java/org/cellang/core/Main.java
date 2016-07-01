@@ -29,6 +29,10 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
+		clojure.main.main(args);		
+	}
+
+	public static void mainx(String[] args) throws IOException {
 		File dataHome = EnvUtil.getDataDir();
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 
@@ -50,12 +54,12 @@ public class Main {
 				qfile.mkdirs();
 			}
 			dl.loadDir(idxdir);
-			//dl.loadDir(dfile);
+			// dl.loadDir(dfile);
 			dl.loadDir(qfile);
 		}
 
 		CorpMetricService ms = new CorpMetricService(es);
-		String[] keys = new String[] { "负债权益比","QUOTES" };// , "EPS" };
+		String[] keys = new String[] { "负债权益比", "QUOTES" };// , "EPS" };
 		ms.updateAllMetric();
 
 		for (int i = 0; i < keys.length; i++) {

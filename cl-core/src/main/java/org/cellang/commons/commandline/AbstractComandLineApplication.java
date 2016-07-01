@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author wuzhen
  * 
  */
-public abstract class AbstractComandLineApplication<T extends CommandLineApplication> implements CommandLineApplication {
+public abstract class AbstractComandLineApplication implements CommandLineApplication {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractComandLineApplication.class);
 
@@ -55,11 +55,18 @@ public abstract class AbstractComandLineApplication<T extends CommandLineApplica
 
 	private boolean isRunning;
 
+	private Map<String, String> attributeMap = new HashMap<String, String>();
+
 	public AbstractComandLineApplication() {
 
 		this.reader = new StackConsoleReader();
 		this.writer = new StackConsoleWriter();
 		this.executor = Executors.newSingleThreadExecutor();//
+	}
+
+	@Override
+	public String getAttribute(String key) {
+		return this.attributeMap.get(key);
 	}
 
 	@Override
@@ -145,7 +152,7 @@ public abstract class AbstractComandLineApplication<T extends CommandLineApplica
 	}
 
 	public abstract void processLine(CommandAndLine cl);
-	
+
 	public CommandLine parseCommandLine(CommandType command, String[] args, boolean force) {
 
 		CommandLine rt = null;
