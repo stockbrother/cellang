@@ -42,4 +42,9 @@ public class ConsoleUnescapeInputStream extends InputStream {
 		return this.bbuf[offset++];
 	}
 
+	@Override
+	public int available() throws IOException {
+		return this.bbuf.length - offset;
+	}
+
 }
