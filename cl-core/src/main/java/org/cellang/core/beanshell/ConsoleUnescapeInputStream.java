@@ -29,6 +29,18 @@ public class ConsoleUnescapeInputStream extends InputStream {
 		this.charset = cs;
 	}
 
+	public synchronized void mark(int readlimit) {
+		throw new UnsupportedOperationException("");
+	}
+
+	@Override
+	public int read(byte b[], int off, int len) throws IOException {
+		int av = this.available();
+		int len2 = av == 0 ? 1 : av;
+		return super.read(b, off, len2);
+
+	}
+
 	@Override
 	public int read() throws IOException {
 		if (this.offset >= bbuf.length) {
