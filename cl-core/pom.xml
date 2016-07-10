@@ -114,6 +114,11 @@
 			<version>1.9.0-alpha8</version>
 		</dependency>
 		<dependency>
+			<groupId>org.clojure</groupId>
+			<artifactId>tools.nrepl</artifactId>
+			<version>0.2.11</version>
+		</dependency>
+		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20160212</version>
