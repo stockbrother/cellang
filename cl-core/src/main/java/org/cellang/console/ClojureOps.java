@@ -26,7 +26,7 @@ public class ClojureOps {
 	public static Var fnCmdlineMain = find("clojure.tools.nrepl.cmdline", "-main");
 	public static Var fnRead = find("clojure.core", "read");
 	public static Var fnPrStr = find("clojure.core", "pr-str");
-
+	
 	public static Keyword kwPort = Keyword.find(null, "port");
 
 }

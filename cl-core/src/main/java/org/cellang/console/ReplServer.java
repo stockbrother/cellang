@@ -2,9 +2,14 @@ package org.cellang.console;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import clojure.lang.Keyword;
 
 public class ReplServer {
+
+	private static final Logger LOG = LoggerFactory.getLogger(ReplServer.class);
 
 	public Map<Keyword, Object> server;
 
@@ -15,8 +20,9 @@ public class ReplServer {
 	}
 
 	public void start() {
-		server = (Map<Keyword, Object>) ClojureOps.fnStartServer.invoke(ClojureOps.kwPort, port);
 
+		server = (Map<Keyword, Object>) ClojureOps.fnStartServer.invoke(ClojureOps.kwPort, port);
+		LOG.info("started server");
 	}
 
 	public int getActualPort() {
@@ -26,5 +32,6 @@ public class ReplServer {
 
 	public void close() {
 		ClojureOps.fnStopServer.invoke(server);
+		LOG.info("stoped server");
 	}
 }

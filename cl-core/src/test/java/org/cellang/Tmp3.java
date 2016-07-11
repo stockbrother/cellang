@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 
 import javax.swing.JFrame;
 
-import org.cellang.core.beanshell.ConsoleUnescapeInputStream;
+import org.cellang.console.Utf8CodedInputStream;
 
 import bsh.util.JConsole;
 import clojure.lang.Keyword;
@@ -62,7 +62,7 @@ public class Tmp3 {
 		frame.setVisible(true);
 		Reader input = new InputStreamReader(console.getInputStream(), Charset.forName("iso-8859-1"));
 
-		System.setIn(new ConsoleUnescapeInputStream(input));
+		System.setIn(new Utf8CodedInputStream(input));
 	}
 
 	public static void main(String[] args) {
