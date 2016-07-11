@@ -18,10 +18,10 @@ public class EntityService {
 	private ConnectionPoolWrapper pool;
 
 	private EntityConfigFactory entityConfigFactory = new EntityConfigFactory();
-	
+
 	private boolean isNew;
 
-	private EntityService(ConnectionPoolWrapper rt, EntityConfigFactory ecf,boolean isNew) {
+	private EntityService(ConnectionPoolWrapper rt, EntityConfigFactory ecf, boolean isNew) {
 		this.pool = rt;
 		this.entityConfigFactory = ecf;
 		this.isNew = isNew;
@@ -90,6 +90,10 @@ public class EntityService {
 
 	public <T extends EntityObject> EntityQuery<T> query(Class<T> cls, String field, Object arg) {
 		return query(cls, new String[] { field }, new Object[] { arg });
+	}
+
+	public <T extends EntityObject> EntityQuery<T> query(Class<T> cls) {
+		return query(cls, new String[] {}, new Object[] {});
 	}
 
 	public <T extends EntityObject> EntityQuery<T> query(Class<T> cls, String[] fields, Object[] args) {

@@ -15,8 +15,10 @@ import org.cellang.collector.EnvUtil;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
+import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
+import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityService;
 import org.cellang.core.loader.DataLoader;
 import org.cellang.core.metrics.CorpMetricService;
@@ -45,6 +47,16 @@ public class OperationContext {
 	private boolean started;
 	private String[] matrics = new String[] { "负债权益比", "QUOTES" };
 	ViewManager viewManager;
+
+	private EntityConfig selectedEntityConfig;
+
+	public EntityConfig getSelectedEntityConfig() {
+		return selectedEntityConfig;
+	}
+
+	public void setSelectedEntityConfig(EntityConfig selectedEntityConfig) {
+		this.selectedEntityConfig = selectedEntityConfig;
+	}
 
 	public ViewManager getViewManager() {
 		return viewManager;
@@ -98,6 +110,16 @@ public class OperationContext {
 		for (Listener l : this.listenerList) {
 			l.onStarted(this);
 		}
+	}
+
+	public void liste() {
+		if (this.selectedEntityConfig == null) {
+			return;
+		}
+		List<? extends EntityObject> el = this.entityService.query(this.selectedEntityConfig.getEntityClass())
+				.executeQuery();
+		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig, el);
+		this.viewManager.addView(v);
 	}
 
 	public void list() {

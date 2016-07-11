@@ -6,16 +6,18 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.cellang.core.entity.EntityConfig;
 
 public class EntityConfigTableView extends JScrollPane implements View {
 
-	public static class Model extends AbstractTableModel {
+	public static class TableModel extends AbstractTableModel {
 		List<EntityConfig> list;
 
-		public Model(List<EntityConfig> list) {
+		public TableModel(List<EntityConfig> list) {
 			this.list = list;
 		}
 
@@ -57,16 +59,33 @@ public class EntityConfigTableView extends JScrollPane implements View {
 	protected String title;
 
 	protected JTable table;
+	List<EntityConfig> list;
+	OperationContext oc;
 
-	public EntityConfigTableView(List<EntityConfig> list) {
-
-		this.table = new JTable(new Model(list));
+	public EntityConfigTableView(OperationContext oc, List<EntityConfig> list) {
+		this.oc = oc;
+		this.list = list;
+		this.table = new JTable(new TableModel(list));
 		this.setViewportView(this.table);
 		this.title = "EntityConfig";
 		this.table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		this.table.setFillsViewportHeight(true);
+		this.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				EntityConfigTableView.this.onSelectEvent(e);
+			}
+		});
 		// Note, JTable must be added to a JScrollPane,otherwise the header not
 		// showing.
+	}
+
+	protected void onSelectEvent(ListSelectionEvent e) {
+		int idx = e.getFirstIndex();
+		EntityConfig ec = this.list.get(idx);
+		this.oc.setSelectedEntityConfig(ec);//
 	}
 
 	@Override

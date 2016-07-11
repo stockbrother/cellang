@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
 
 		views = oc.getViewManager();
 		this.add(views);
-		EntityConfigTableView table = new EntityConfigTableView(oc.getEntityConfigFactory().getEntityConfigList());
+		EntityConfigTableView table = new EntityConfigTableView(oc, oc.getEntityConfigFactory().getEntityConfigList());
 		views.addView(table);
 		//
 		console = new ConsolePanel(oc, port);

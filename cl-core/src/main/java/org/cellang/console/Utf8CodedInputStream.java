@@ -42,7 +42,7 @@ public class Utf8CodedInputStream extends InputStream {
 		if (this.offset >= bbuf.length) {
 			String line = reader.readLine();
 			line = line + newline;
-			String rtS = StringUtil.unescapeJavaString(line);			
+			String rtS = StringUtil.unescapeJavaString(line);
 			this.bbuf = rtS.getBytes(charset);
 			this.offset = 0;
 		}
