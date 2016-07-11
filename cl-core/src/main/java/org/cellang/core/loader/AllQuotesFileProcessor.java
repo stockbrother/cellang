@@ -1,9 +1,7 @@
 package org.cellang.core.loader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,16 +25,8 @@ public class AllQuotesFileProcessor extends FileProcessor {
 	}
 
 	@Override
-	public void process(File file) {
-		LOG.info("process file:" + file.getAbsolutePath());
-		FileReader fr;
-		try {
-			fr = new FileReader(file);
-
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-
+	public void process(Reader fr) {
+		
 		CSVReader reader = new CSVReader(fr);
 		Map<String, Integer> columnIndexMap = new HashMap<String, Integer>();
 		try {

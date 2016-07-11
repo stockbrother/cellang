@@ -22,7 +22,7 @@ public class BalanceSheetLoaderTest extends TestCase {
 		BalanceSheetFileProcessor sl = new BalanceSheetFileProcessor(es);
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("org/cellang/balancesheet/Book1.csv");
 		InputStreamReader rd = new InputStreamReader(is);
-		sl.load(rd);
+		sl.process(rd);
 		String corpId = "601857";
 		BalanceSheetReportEntity se = es.getSingle(BalanceSheetReportEntity.class, "corpId", corpId);
 		assertNotNull(se);

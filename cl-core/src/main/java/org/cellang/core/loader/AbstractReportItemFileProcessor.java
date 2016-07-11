@@ -39,19 +39,9 @@ public abstract class AbstractReportItemFileProcessor<T extends AbstractReportEn
 	}
 
 	@Override
-	public void process(File file) {
-		LOG.info("process file:" + file.getAbsolutePath());
-		FileReader fr;
-		try {
-			fr = new FileReader(file);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		this.load(fr);
-	}
-
-	public void load(Reader rd) {
-		CSVReader reader = new CSVReader(rd);
+	public void process(Reader fr) {
+		
+		CSVReader reader = new CSVReader(fr);
 		try {
 			CsvHeaderRowMap headers = new CsvHeaderRowMap();
 			CsvRowMap body = new CsvRowMap();

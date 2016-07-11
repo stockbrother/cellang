@@ -1,13 +1,14 @@
 package org.cellang.core.loader;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityService;
 import org.slf4j.Logger;
@@ -27,16 +28,8 @@ public class CorpListFileProcessor extends FileProcessor {
 	}
 
 	@Override
-	public void process(File file) {
-		LOG.info("process file:" + file.getAbsolutePath());
-		FileReader fr;
-		try {
-			fr = new FileReader(file);
-			
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-
+	public void process(Reader fr) {
+		
 		CSVReader reader = new CSVReader(fr);
 		try {
 
