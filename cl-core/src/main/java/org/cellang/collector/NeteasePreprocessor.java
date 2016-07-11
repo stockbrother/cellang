@@ -22,13 +22,6 @@ public class NeteasePreprocessor {
 		this.targetDir = targetDir;
 	}
 
-	public static void main(String[] args) {
-		File from = new File("D:\\data\\163");
-		File to = new File("target" + File.separator + "163pp");
-		new NeteasePreprocessor(from, to).process();
-
-	}
-
 	public void process() {
 		try {
 			this.process(this.sourceDir);

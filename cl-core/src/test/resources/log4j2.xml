@@ -7,8 +7,8 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Logger name="org.cellang" level="debug" />
-		<Logger name="org.cellang.console" level="trace" />
+		<Logger name="org.cellang" level="info" />
+		<Logger name="org.cellang.console" level="info" />
 		<Root level="info">
 			<AppenderRef ref="STDOUT" />
 		</Root>

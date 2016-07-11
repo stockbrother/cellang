@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.cellang.core.entity.EntityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataLoader {
+	private static final Logger LOG = LoggerFactory.getLogger(DataLoader.class);
+
 	private EntityService es;
 	private Map<String, FileProcessor> processMap = new HashMap<String, FileProcessor>();
 
@@ -30,7 +34,11 @@ public class DataLoader {
 
 			if (fnames[fnames.length - 1].equals("csv")) {
 				String ftype = fnames[fnames.length - 2];
-				processMap.get(ftype).process(f);//
+				FileProcessor fp = processMap.get(ftype);
+				if (fp == null) {
+					LOG.warn("no processor found for file:" + f.getAbsolutePath() + ",type:" + ftype);
+				}
+				fp.process(f);//
 			}
 
 		}

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.collector.EnvUtil;
+import org.cellang.collector.NeteasePreprocessor;
+import org.cellang.collector.SinaAllQuotesPreprocessor;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
@@ -23,11 +25,15 @@ import org.cellang.core.entity.EntityService;
 import org.cellang.core.loader.DataLoader;
 import org.cellang.core.metrics.CorpMetricService;
 import org.cellang.core.util.FileUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OperationContext {
 	public static interface Listener {
 		public void onStarted(OperationContext oc);
 	}
+
+	private static final Logger LOG = LoggerFactory.getLogger(OperationContext.class);
 
 	private List<Listener> listenerList = new ArrayList<Listener>();
 
@@ -47,6 +53,7 @@ public class OperationContext {
 	private boolean started;
 	private String[] matrics = new String[] { "负债权益比", "QUOTES" };
 	ViewManager viewManager;
+	DataLoader loader;
 
 	private EntityConfig selectedEntityConfig;
 
@@ -78,25 +85,11 @@ public class OperationContext {
 		dataHome = EnvUtil.getDataDir();
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntityService.newInstance(dbHome, "h2", entityConfigFactory);
-
+		loader = new DataLoader(entityService);
 		if (entityService.isNew()) {
-			System.out.println("db is empty, load data...");//
-			DataLoader dl = new DataLoader(entityService);
-			// File dfile = new File("src" + File.separator + "main" +
-			// File.separator + "doc");
-			File dfile = FileUtil.newFile(dataHome, new String[] { "163pp" });
-			if (!dfile.exists()) {
-				dfile.mkdirs();
-			}
-			// File dfile = new File("target"+File.separator+"163tmp");
+			LOG.info("db is empty, load data...");//
 			File idxdir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
-			File qfile = FileUtil.newFile(dataHome, new String[] { "sinapp", });
-			if (!qfile.exists()) {
-				qfile.mkdirs();
-			}
-			dl.loadDir(idxdir);
-			// dl.loadDir(dfile);
-			dl.loadDir(qfile);
+			loader.loadDir(idxdir);
 		}
 
 		ms = new CorpMetricService(entityService);
@@ -110,6 +103,32 @@ public class OperationContext {
 		for (Listener l : this.listenerList) {
 			l.onStarted(this);
 		}
+	}
+
+	public void wash(String source) {
+
+		File from = new File(this.dataHome, source);
+		if (!from.exists()) {
+			LOG.error("no data folder found:" + from);
+		}
+
+		File to = new File(this.dataHome, source + "pp");
+		if ("163".equals(source)) {
+			new NeteasePreprocessor(from, to).process();
+		} else if ("sina".equals(source)) {
+			new SinaAllQuotesPreprocessor(from, to).process();
+		} else {
+			LOG.error("no source found:" + source);
+		}
+	}
+
+	public void load(String folder) {
+		File qfile = FileUtil.newFile(dataHome, new String[] { folder });
+		if (!qfile.exists()) {
+			LOG.error("folder not exists:" + qfile.getAbsolutePath());//
+			return;
+		}
+		loader.loadDir(qfile);
 	}
 
 	public void liste() {
