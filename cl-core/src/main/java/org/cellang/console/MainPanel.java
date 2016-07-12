@@ -1,47 +1,80 @@
 package org.cellang.console;
 
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
+import org.cellang.collector.EnvUtil;
 import org.cellang.console.ConsolePanel.ConsoleListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainPanel extends JPanel {
+	private static final Logger LOG = LoggerFactory.getLogger(MainPanel.class);
 
 	private ConsolePanel console;
 
 	private OperationContext oc;
 
 	private ViewManager views;
-	int port = 7888;
 
-	public MainPanel() {
-		super(new GridLayout(2, 0));
-		oc = new OperationContext();
+	private JSplitPane splitPane;
+	private int port = 7888;
+	private ExecutorService executor;
+	JFrame frame;
+	Future<Object> consoleFuture;
+
+	public MainPanel(File dataDir) {
+		super(new GridLayout(1, 0));
+		oc = new OperationContext(dataDir);
+		this.executor = Executors.newCachedThreadPool();
 	}
 
 	public void start() {
+
 		try {
 			this.oc.start();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 
-		JFrame frame = new JFrame("Tables");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame = new JFrame("Tables");
+		frame.addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				MainPanel.this.onWindowClosing();
+			}
+		});
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(this);
+		this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		this.splitPane.setResizeWeight(0.8);
+		this.splitPane.setContinuousLayout(true);//
 
+		this.add(splitPane);
 		views = oc.getViewManager();
-		this.add(views);
+		this.splitPane.add(views);
 		EntityConfigTableView table = new EntityConfigTableView(oc, oc.getEntityConfigFactory().getEntityConfigList());
 		views.addView(table);
 		//
-		console = new ConsolePanel(oc, port);
-		this.add(console);
+		File consoleDataDir = new File(oc.getDataHome(), ".console");
+		console = new ConsolePanel(consoleDataDir, oc, port);
+		this.splitPane.add(console);
 		frame.pack();
+		frame.setLocationRelativeTo(null);//
 		console.addListener(new ConsoleListener() {
 
 			@Override
@@ -53,8 +86,29 @@ public class MainPanel extends JPanel {
 
 			}
 		});
-		console.start();
+		Callable<Object> r = new Callable<Object>() {
+			public Object call() {
+				console.runLoop();
+				return Boolean.TRUE;
+			}
+		};
 
+		consoleFuture = this.executor.submit(r);
+
+	}
+
+	protected void onWindowClosing() {
+
+		console.quit();
+		try {
+			consoleFuture.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+		oc.close();
+		frame.dispose();
+		LOG.info("exit,bye!");
+		System.exit(0);
 	}
 
 	public static void main(String[] args) {
@@ -62,10 +116,11 @@ public class MainPanel extends JPanel {
 		// creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainPanel mp = new MainPanel();
+				MainPanel mp = new MainPanel(EnvUtil.getDataDir());
 				mp.start();
 			}
 		});
+
 	}
 
 }

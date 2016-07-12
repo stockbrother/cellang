@@ -39,6 +39,8 @@ public class OperationContext {
 
 	private static Map<Class, Converter> converterMap = new HashMap<Class, Converter>();
 
+	private int queryLimit = 1000;
+
 	static {
 		converterMap.put(Date.class, new DateStringConverter("yyyy/MM/dd"));
 	}
@@ -69,7 +71,8 @@ public class OperationContext {
 		return viewManager;
 	}
 
-	public OperationContext() {
+	public OperationContext(File dataDir) {
+		this.dataHome = dataDir;
 		viewManager = new ViewManager(this);
 	}
 
@@ -82,7 +85,7 @@ public class OperationContext {
 			throw new RuntimeException("started already.");
 		}
 		entityConfigFactory = new EntityConfigFactory();
-		dataHome = EnvUtil.getDataDir();
+		
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntityService.newInstance(dbHome, "h2", entityConfigFactory);
 		loader = new DataLoader(entityService);
@@ -93,12 +96,7 @@ public class OperationContext {
 		}
 
 		ms = new CorpMetricService(entityService);
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				OperationContext.this.close();
-			}
-		});
+		
 		this.started = true;
 		for (Listener l : this.listenerList) {
 			l.onStarted(this);
@@ -136,17 +134,9 @@ public class OperationContext {
 			return;
 		}
 		List<? extends EntityObject> el = this.entityService.query(this.selectedEntityConfig.getEntityClass())
-				.executeQuery();
+				.limit(this.queryLimit).executeQuery();
 		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig, el);
 		this.viewManager.addView(v);
-	}
-
-	public void list() {
-
-		for (int i = 0; i < this.matrics.length; i++) {
-			System.out.println(this.matrics[i]);
-		}
-
 	}
 
 	public void update(int idx) throws IOException {
@@ -169,7 +159,7 @@ public class OperationContext {
 		EntityCsvWriter cw = new EntityCsvWriter(fw, entityConfigFactory.get(CorpMetricEntity.class), converterMap);
 		cw.write(metricL);//
 		cw.close();
-		System.out.println("write to file:" + output);
+		LOG.info("write to file:" + output);
 	}
 
 	public EntityConfigFactory getEntityConfigFactory() {
@@ -178,7 +168,11 @@ public class OperationContext {
 
 	public void close() {
 		entityService.close();
-		System.out.println("closed");
+		LOG.info("closed");
+	}
+
+	public File getDataHome() {
+		return this.dataHome;
 	}
 
 }

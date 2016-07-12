@@ -13,6 +13,8 @@ public class EntityQuery<T extends EntityObject> {
 	private Object[] queryArgs;
 	private String[] orderBy;
 	private EntityService es;
+	private Integer limit;
+	private Integer offset;
 
 	public EntityQuery(EntityService es, Class<T> cls, String[] qfields, Object[] args) {
 		this.es = es;
@@ -35,21 +37,29 @@ public class EntityQuery<T extends EntityObject> {
 				return rt;
 			}
 		};
-		String sql = "select * from " + this.entityConfig.getTableName() + " where 1=1";
+		StringBuffer sql = new StringBuffer().append("select * from ").append(this.entityConfig.getTableName())
+				.append(" where 1=1");
 		for (int i = 0; i < queryFields.length; i++) {
-			sql += " and " + queryFields[i] + "=?";
+			sql.append(" and " + queryFields[i] + "=?");
 		}
 		if (orderBy != null) {
-			sql += " order by";
+			sql.append(" order by");
 			for (int i = 0; i < this.orderBy.length; i++) {
-				sql += " " + this.orderBy[i];
+				sql.append(" ").append(this.orderBy[i]);
 				if (i < this.orderBy.length - 1) {
-					sql += ",";
+					sql.append(",");
 				}
 			}
 		}
+		if (this.limit != null) {
+			sql.append(" limit ").append(this.limit);
+		}
 
-		List<T> rt = (List<T>) es.getPool().executeQuery(sql, this.queryArgs, rsp);
+		if (this.offset != null) {
+			sql.append(" offset ").append(this.offset);
+		}
+
+		List<T> rt = (List<T>) es.getPool().executeQuery(sql.toString(), this.queryArgs, rsp);
 		return rt;
 	}
 
@@ -59,6 +69,16 @@ public class EntityQuery<T extends EntityObject> {
 
 	public void setOrderBy(String[] orderBy) {
 		this.orderBy = orderBy;
+	}
+
+	public EntityQuery<T> limit(int limit) {
+		this.limit = limit;
+		return this;
+	}
+
+	public EntityQuery<T> offset(int offset) {
+		this.offset = offset;
+		return this;
 	}
 
 	public EntityQuery<T> orderBy(String[] strings) {

@@ -2,9 +2,14 @@ package org.cellang.console;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import clojure.tools.nrepl.Connection;
 
 public class ReplClient {
+	private static final Logger LOG = LoggerFactory.getLogger(ReplClient.class);
+
 	Connection conn;
 	String bind = "localhost";
 	int port;
@@ -19,6 +24,7 @@ public class ReplClient {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		LOG.info("repl client connected.");
 	}
 
 	public ReplSession newSession() {
@@ -33,6 +39,7 @@ public class ReplClient {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		LOG.info("repl client closed.");
 	}
 
 }

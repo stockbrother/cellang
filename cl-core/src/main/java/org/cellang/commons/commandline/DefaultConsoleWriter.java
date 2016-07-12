@@ -12,6 +12,7 @@ import java.io.Writer;
  * 
  */
 public class DefaultConsoleWriter implements CommandLineWriter {
+	// TODO out configurable.
 	private Writer target = new OutputStreamWriter(System.out);
 
 	public static String LBK = "\r\n";

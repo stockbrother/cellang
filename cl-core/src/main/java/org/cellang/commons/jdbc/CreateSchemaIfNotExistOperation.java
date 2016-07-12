@@ -24,7 +24,7 @@ public class CreateSchemaIfNotExistOperation extends JdbcOperation<Void> {
 				while (rs.next()) {
 					String name = rs.getString(1);
 					schemaList.add(name);
-					System.out.println(rs.getString(1));
+					//System.out.println(rs.getString(1));
 				}
 				return null;
 			}

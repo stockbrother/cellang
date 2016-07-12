@@ -68,7 +68,7 @@ public class EntityConfigTableView extends JScrollPane implements View {
 		this.table = new JTable(new TableModel(list));
 		this.setViewportView(this.table);
 		this.title = "EntityConfig";
-		this.table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		this.table.setPreferredScrollableViewportSize(new Dimension(1000, 300));
 		this.table.setFillsViewportHeight(true);
 		this.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 

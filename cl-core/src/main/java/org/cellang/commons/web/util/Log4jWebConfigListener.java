@@ -31,7 +31,7 @@ public class Log4jWebConfigListener implements ServletContextListener {
 			if (file.exists()) {
 				sc.log("start configure log4j");
 				//DOMConfigurator.configure(log4jProp);
-				System.out.println("end of configure log4j");
+				sc.log("end of configure log4j");
 			} else {
 				throw new RuntimeException("file not found:" + log4jProp);
 			}

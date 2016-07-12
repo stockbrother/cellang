@@ -22,7 +22,7 @@ public class ReplServer {
 	public void start() {
 
 		server = (Map<Keyword, Object>) ClojureOps.fnStartServer.invoke(ClojureOps.kwPort, port);
-		LOG.info("started server");
+		LOG.info("repl server started.");
 	}
 
 	public int getActualPort() {
@@ -32,6 +32,6 @@ public class ReplServer {
 
 	public void close() {
 		ClojureOps.fnStopServer.invoke(server);
-		LOG.info("stoped server");
+		LOG.info("repl server stoped.");
 	}
 }

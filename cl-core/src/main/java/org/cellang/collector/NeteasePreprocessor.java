@@ -9,10 +9,14 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class NeteasePreprocessor {
+	private static final Logger LOG = LoggerFactory.getLogger(NeteasePreprocessor.class);
 
 	private File sourceDir;
 	private File targetDir;
@@ -55,7 +59,7 @@ public class NeteasePreprocessor {
 
 			return;
 		}
-		//isDirectory
+		// isDirectory
 		for (File f : file.listFiles()) {
 			this.process(f);
 		}
@@ -79,16 +83,16 @@ public class NeteasePreprocessor {
 
 		File typeDir = new File(this.targetDir.getAbsolutePath(), type);
 		File areaDir = new File(typeDir, code.substring(0, 4));
-		
+
 		File output = new File(areaDir, code + "." + type + ".csv");
 		if (output.exists()) {
-			System.out.println("file exists:" + output.getAbsolutePath());
+			LOG.info("file exists:" + output.getAbsolutePath());
 			return;
 		}
-		if(!areaDir.exists()){
+		if (!areaDir.exists()) {
 			areaDir.mkdirs();
 		}
-		System.out.println("output file" + output.getAbsolutePath());
+		LOG.info("output file" + output.getAbsolutePath());
 		Charset cs = Charset.forName("GBK");
 		Reader fr = new InputStreamReader(new FileInputStream(file), cs);
 
@@ -98,7 +102,7 @@ public class NeteasePreprocessor {
 				CSVWriter.NO_QUOTE_CHARACTER);
 		w.writeNext(new String[] { "Header", "" });
 		w.writeNext(new String[] { "日期格式", "yyyy-MM-dd" });
-		w.writeNext(new String[] { "公司代码", code });		
+		w.writeNext(new String[] { "公司代码", code });
 		w.writeNext(new String[] { "单位", "10000" });
 		w.writeNext(new String[] { "备注", type });
 		String[] reportDate = r.readNext();

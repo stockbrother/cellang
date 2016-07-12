@@ -1,7 +1,7 @@
 package org.cellang.console;
 
 import java.awt.Color;
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PushbackReader;
 import java.io.Reader;
@@ -14,6 +14,9 @@ import clojure.tools.nrepl.Connection.Response;
 
 public class ConsolePanel extends BshConsole {
 
+	public static final String QUIT = "quit";
+	public static final String EXIT = "exit";
+
 	public static interface ConsoleListener {
 		public void sessionCreated(ReplSession session);
 	}
@@ -24,7 +27,8 @@ public class ConsolePanel extends BshConsole {
 	OperationContext oc;
 	public List<ConsoleListener> listenerList = new ArrayList<ConsoleListener>();
 
-	public ConsolePanel(OperationContext oc,int port) {
+	public ConsolePanel(File dataDir, OperationContext oc, int port) {
+		super(dataDir);
 		this.oc = oc;
 		this.server = new ReplServer(port);
 	}
@@ -33,26 +37,21 @@ public class ConsolePanel extends BshConsole {
 		this.listenerList.add(listener);
 	}
 
-	public void start() {
-		Runnable r = new Runnable() {
-			public void run() {
-				ConsolePanel.this.doRun();
-			}
-		};
-		new Thread(r).start();
-	}
-
 	private void onSession(ReplSession session) {
 
 		super.requestFocus();
-		text.requestFocus();		
+		text.requestFocus();
 		RT.var("user", "oc", oc);
 		for (ConsoleListener l : this.listenerList) {
 			l.sessionCreated(session);//
 		}
 	}
 
-	private void doRun() {
+	public void quit() {
+		this.inputLine(QUIT);//
+	}
+
+	public void runLoop() {
 		// repl start...
 		server.start();
 		try {
@@ -73,10 +72,14 @@ public class ConsolePanel extends BshConsole {
 				while (true) {
 					this.print(this.ns + "- ");//
 					String code = read();
+					if (QUIT.equals(code) || EXIT.equals(code)) {
+						break;
+					}
 					Response res = session.sendCode(code);
 					this.println(res);//
 				}
 
+				// this.close();
 			} finally {
 				client.close();
 			}

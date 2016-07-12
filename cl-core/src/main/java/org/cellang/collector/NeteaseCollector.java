@@ -151,7 +151,7 @@ public class NeteaseCollector {
 			}
 			File file = new File(areaDir, type + oi.getCode() + ".csv");
 			if (file.exists()) {
-				System.out.println("file exist:" + file);
+				LOG.info("file exist:" + file);
 			} else {
 				waitAndDoCollectFor(oi, type, file);
 			}
@@ -166,11 +166,11 @@ public class NeteaseCollector {
 			while (true) {
 				long pass = System.currentTimeMillis() - this.lastAccessTimestamp;
 				if (pass < minInterval) {
-					System.out.print(".");
+					LOG.info(".");
 					Thread.sleep(1000);
 					continue;
 				}
-				System.out.println("time done.");
+				LOG.info("time done.");
 
 				break;
 			}
@@ -195,16 +195,16 @@ public class NeteaseCollector {
 		HttpGet httpget = new HttpGet("/service/" + type + "_" + oi.getCode() + ".html?type=year");
 		httpget.setConfig(config);
 
-		System.out.println("Executing request " + httpget.getRequestLine() + " to " + target + " via " + proxy);
+		LOG.info("Executing request " + httpget.getRequestLine() + " to " + target + " via " + proxy);
 
 		CloseableHttpResponse response = httpclient.execute(target, httpget);
 		this.lastAccessTimestamp = System.currentTimeMillis();
 		try {
 
-			System.out.println("----------------------------------------");
-			System.out.println(response.getStatusLine());
+			LOG.info("----------------------------------------");
+			LOG.info("statusLine", response.getStatusLine());
 			for (Header header : response.getAllHeaders()) {
-				System.out.println(header.getName() + "=" + header.getValue());
+				LOG.info(header.getName() + "=" + header.getValue());
 			}
 
 			if (response.getStatusLine().getStatusCode() == 200) {
