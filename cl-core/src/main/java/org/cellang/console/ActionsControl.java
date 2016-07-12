@@ -10,10 +10,9 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 
 	ViewsPane views;
 	ActionsPane actions;
-	EventBus ebus;
 
-	public ActionsControl(EventBus ebus, ViewsPane views, ActionsPane actions) {
-		this.ebus = ebus;
+	public ActionsControl(ViewsPane views, ActionsPane actions) {
+
 		this.views = views;
 		this.actions = actions;
 		this.views.addViewsListener(this);
@@ -44,25 +43,43 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 
 	@Override
 	public void viewSelected(View v) {
+		actions.clear();
 
-		DataPageQuerable dpq = v.getDelegate(DataPageQuerable.class);
-		if (dpq != null) {
-			actions.addAction("prePage", new ActionHandler() {
+		if (v != null) {
 
-				@Override
-				public void performAction() {
-					dpq.prePage();
-				}
-			});
+			// if the view support query
+			DataPageQuerable dpq = v.getDelegate(DataPageQuerable.class);
+			if (dpq != null) {
+				actions.addAction("prePage", new ActionHandler() {
 
-			actions.addAction("nextPage", new ActionHandler() {
+					@Override
+					public void performAction() {
+						dpq.prePage();
+					}
+				});
 
-				@Override
-				public void performAction() {
-					dpq.nextPage();
-				}
-			});
+				actions.addAction("nextPage", new ActionHandler() {
+
+					@Override
+					public void performAction() {
+						dpq.nextPage();
+					}
+				});
+			}
+			// if the view is entity
+			DrillDowable dd = v.getDelegate(DrillDowable.class);
+			if (dd != null) {
+				actions.addAction("drillDown", new ActionHandler() {
+
+					@Override
+					public void performAction() {
+						dd.drillDown();
+					}
+				});
+			}
 		}
+		//actions.updateUI();
+
 	}
 
 }

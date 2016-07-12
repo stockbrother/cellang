@@ -49,6 +49,9 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 			if (this.list == null) {
 				return null;
 			}
+			if (rowIndex >= this.list.size()) {
+				return null;
+			}
 			EntityObject ec = this.list.get(rowIndex);
 			Method getM = this.getMethodList.get(columnIndex);
 			Object rt;
@@ -122,20 +125,30 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 
 	@Override
 	public void prePage() {
+		if (this.pageNumber == 0) {
+			return;
+		}
 		this.pageNumber--;
 		this.query();
 	}
 
 	private void query() {
-		List<? extends EntityObject> el = this.entityService.query(cfg.getEntityClass()).limit(this.pageSize)
-				.executeQuery();
+		int offset = this.pageNumber * this.pageSize;
+		List<? extends EntityObject> el = this.entityService.query(cfg.getEntityClass()).offset(offset)
+				.limit(this.pageSize).executeQuery();
 		model.list = el;
+
+		this.updateUI();
 	}
 
 	@Override
 	public void nextPage() {
+		if (model.list != null && model.list.size() < this.pageSize) {
+			return;
+		}
 		this.pageNumber++;
 		this.query();
+
 	}
 
 }

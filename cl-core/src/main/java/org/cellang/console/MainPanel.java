@@ -60,11 +60,11 @@ public class MainPanel extends JPanel {
 		this.splitPaneTop = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		{
 
-			this.splitPaneTop.setResizeWeight(0.8);
+			this.splitPaneTop.setResizeWeight(0.8D);
 			this.splitPaneTop.setContinuousLayout(true);//
 			{
 				this.splitPaneSub = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-				this.splitPaneSub.setResizeWeight(0.8);//
+				this.splitPaneSub.setResizeWeight(0.6D);//
 				this.splitPaneTop.setContinuousLayout(true);//
 				{
 					views = new ViewsPane();
@@ -93,6 +93,8 @@ public class MainPanel extends JPanel {
 
 		this.add(splitPaneTop);
 
+		// add control code for integrate the views.
+		ActionsControl ac = new ActionsControl(this.views, this.actions);
 	}
 
 	/**
@@ -106,6 +108,7 @@ public class MainPanel extends JPanel {
 			throw new RuntimeException(e);
 		}
 
+		// open default views for home page.
 		oc.home();
 
 		console.addListener(new ConsoleListener() {

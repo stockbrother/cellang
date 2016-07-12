@@ -71,7 +71,7 @@ public class OperationContext {
 		return views;
 	}
 
-	public OperationContext(File dataDir,ViewsPane views) {
+	public OperationContext(File dataDir, ViewsPane views) {
 		this.dataHome = dataDir;
 		this.views = views;
 	}
@@ -139,14 +139,15 @@ public class OperationContext {
 		loader.loadDir(qfile);
 	}
 
-	public void clear(){
+	public void clear() {
 		views.clear();
 	}
+
 	public void home() {
-		
+
 		EntityConfigTableView table = new EntityConfigTableView(this,
 				this.getEntityConfigFactory().getEntityConfigList());
-		views.addView(table);
+		views.addView(table, true);
 	}
 
 	/**
@@ -157,9 +158,10 @@ public class OperationContext {
 		if (this.selectedEntityConfig == null) {
 			return;
 		}
-		
-		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig,this.entityService, this.queryLimit);
-		this.views.addView(v);
+
+		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig, this.entityService,
+				this.queryLimit);
+		this.views.addView(v, true);
 	}
 
 	/**

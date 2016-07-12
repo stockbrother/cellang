@@ -12,7 +12,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.cellang.core.entity.EntityConfig;
 
-public class EntityConfigTableView extends JScrollPane implements View {
+public class EntityConfigTableView extends JScrollPane implements View, DrillDowable {
 
 	public static class TableModel extends AbstractTableModel {
 		List<EntityConfig> list;
@@ -99,8 +99,16 @@ public class EntityConfigTableView extends JScrollPane implements View {
 	}
 
 	@Override
-	public <T> T getDelegate(Class<T> cls) {	
+	public <T> T getDelegate(Class<T> cls) {
+		if (DrillDowable.class.equals(cls)) {
+			return (T) this;
+		}
 		return null;
+	}
+
+	@Override
+	public void drillDown() {
+		this.oc.list();
 	}
 
 }
