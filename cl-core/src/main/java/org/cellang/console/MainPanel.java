@@ -31,16 +31,68 @@ public class MainPanel extends JPanel {
 
 	private ViewsPane views;
 
-	private JSplitPane splitPane;
+	private JSplitPane splitPaneTop;
+	private JSplitPane splitPaneSub;
 	private int port = 7888;
 	private ExecutorService executor;
 	JFrame frame;
 	Future<Object> consoleFuture;
+	private ActionsPane actions;
 
 	public MainPanel(File dataDir) {
 		super(new GridLayout(1, 0));
-		oc = new OperationContext(dataDir);
 		this.executor = Executors.newCachedThreadPool();
+		this.setOpaque(true); // content panes must be opaque
+		frame = new JFrame("Tables");
+		{
+
+			frame.setContentPane(this);
+			frame.addWindowListener(new WindowAdapter() {
+
+				@Override
+				public void windowClosing(WindowEvent e) {
+					MainPanel.this.console.quit();
+				}
+			});
+			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		}
+		this.splitPaneTop = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		{
+
+			this.splitPaneTop.setResizeWeight(0.8);
+			this.splitPaneTop.setContinuousLayout(true);//
+			{
+				this.splitPaneSub = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+				this.splitPaneSub.setResizeWeight(0.8);//
+				this.splitPaneTop.setContinuousLayout(true);//
+				{
+					views = new ViewsPane();
+				}
+				this.splitPaneSub.add(views);
+				{
+					actions = new ActionsPane();
+				}
+				this.splitPaneSub.add(actions);
+			}
+			this.splitPaneTop.add(this.splitPaneSub);
+
+			oc = new OperationContext(dataDir, views);
+
+			//
+			File consoleDataDir = new File(oc.getDataHome(), ".console");
+			if (!consoleDataDir.exists()) {
+				LOG.info("mkdirs:" + consoleDataDir.getAbsolutePath());//
+				consoleDataDir.mkdirs();
+			}
+
+			this.console = new ConsolePanel(consoleDataDir, oc, port);
+
+			this.splitPaneTop.add(console);
+		}
+
+		this.add(splitPaneTop);
+
 	}
 
 	/**
@@ -54,36 +106,8 @@ public class MainPanel extends JPanel {
 			throw new RuntimeException(e);
 		}
 
-		frame = new JFrame("Tables");
-		frame.addWindowListener(new WindowAdapter() {
+		oc.home();
 
-			@Override
-			public void windowClosing(WindowEvent e) {
-				MainPanel.this.console.quit();
-			}
-		});
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setOpaque(true); // content panes must be opaque
-		frame.setContentPane(this);
-		this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		this.splitPane.setResizeWeight(0.8);
-		this.splitPane.setContinuousLayout(true);//
-
-		this.add(splitPane);
-		views = oc.getViewManager();
-		this.splitPane.add(views);
-		EntityConfigTableView table = new EntityConfigTableView(oc, oc.getEntityConfigFactory().getEntityConfigList());
-		views.addView(table);
-		//
-		File consoleDataDir = new File(oc.getDataHome(), ".console");
-		if (!consoleDataDir.exists()) {
-			LOG.info("mkdirs:" + consoleDataDir.getAbsolutePath());//
-			consoleDataDir.mkdirs();
-		}
-		console = new ConsolePanel(consoleDataDir, oc, port);
-		this.splitPane.add(console);
-		frame.pack();
-		frame.setLocationRelativeTo(null);//
 		console.addListener(new ConsoleListener() {
 
 			@Override
@@ -101,7 +125,8 @@ public class MainPanel extends JPanel {
 				return Boolean.TRUE;
 			}
 		};
-
+		frame.pack();
+		frame.setLocationRelativeTo(null);//
 		consoleFuture = this.executor.submit(r);
 
 		return this.executor.submit(new Callable<Object>() {

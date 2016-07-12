@@ -134,14 +134,11 @@ public class BshConsole extends JScrollPane implements PropertyChangeListener {
 	void enter() {
 		String s = getCmd();
 
-		if (s.length() == 0) // special hack for empty return!
-			s = ";\n";
-		else {
-			history.addElement(s);
-			s = s + "\n";
-		}
-
+		
+		history.addElement(s);
+		s = s + "\n";		
 		append("\n");
+		
 		history.histLine = 0;
 		acceptLine(s);
 		text.repaint();

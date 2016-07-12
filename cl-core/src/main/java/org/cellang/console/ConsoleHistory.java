@@ -9,14 +9,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ConsoleHistory extends Vector<String> {
+public class ConsoleHistory {
 	int histLine = 0;
 	BshConsole console;
 	private int maxHistory = 1000;
 	File dataDir;
 	File historyFile;
+	List<String> lineList = new ArrayList<String>();
 
 	public ConsoleHistory(File dataDir, BshConsole console) {
 		this.dataDir = dataDir;
@@ -45,6 +47,27 @@ public class ConsoleHistory extends Vector<String> {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	public String getLast() {
+
+		String rt = null;
+		if (this.size() > 0) {
+			rt = this.elementAt(this.size() - 1);
+		}
+		return rt;
+	}
+
+	public void addElement(String line) {
+		String last = this.getLast();
+		if (line.equals(last)) {
+			return;
+		}
+		this.lineList.add(line);
+	}
+
+	public int size() {
+		return this.lineList.size();
 	}
 
 	public void save() {
@@ -84,13 +107,16 @@ public class ConsoleHistory extends Vector<String> {
 		showHistoryLine();
 	}
 
+	public String elementAt(int idx) {
+		return this.lineList.get(idx);
+	}
+
 	private void showHistoryLine() {
 		String showline;
 		if (histLine == 0) {
-
 			showline = console.startedLine;
 		} else {
-			showline = (String) elementAt(size() - histLine);
+			showline = elementAt(size() - histLine);
 		}
 
 		console.replaceRange(showline, console.cmdStart, console.textLength());

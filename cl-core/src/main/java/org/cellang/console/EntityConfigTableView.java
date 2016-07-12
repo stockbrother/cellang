@@ -98,4 +98,9 @@ public class EntityConfigTableView extends JScrollPane implements View {
 		return title;
 	}
 
+	@Override
+	public <T> T getDelegate(Class<T> cls) {	
+		return null;
+	}
+
 }

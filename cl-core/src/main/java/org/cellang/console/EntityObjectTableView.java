@@ -12,27 +12,31 @@ import javax.swing.table.AbstractTableModel;
 
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
+import org.cellang.core.entity.EntityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EntityObjectTableView extends JScrollPane implements View {
+public class EntityObjectTableView extends JScrollPane implements View, EntityObjectSource, DataPageQuerable {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableView.class);
 
 	public static class Model extends AbstractTableModel {
+		int pageSize;
 		List<? extends EntityObject> list;
 		EntityConfig cfg;
 		List<Method> getMethodList;
 
-		public Model(EntityConfig cfg, List<? extends EntityObject> list) {
+		public Model(EntityConfig cfg, int pageSize) {
 			this.cfg = cfg;
-			this.list = list;
+			this.pageSize = pageSize;
 			this.getMethodList = this.cfg.getGetMethodList();
 		}
 
 		@Override
 		public int getRowCount() {
-			return this.list.size();
+
+			return this.pageSize;
+
 		}
 
 		@Override
@@ -42,7 +46,9 @@ public class EntityObjectTableView extends JScrollPane implements View {
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-
+			if (this.list == null) {
+				return null;
+			}
 			EntityObject ec = this.list.get(rowIndex);
 			Method getM = this.getMethodList.get(columnIndex);
 			Object rt;
@@ -63,15 +69,29 @@ public class EntityObjectTableView extends JScrollPane implements View {
 
 	protected JTable table;
 
-	public EntityObjectTableView(EntityConfig cfg, List<? extends EntityObject> list) {
+	protected EntityConfig cfg;
 
-		this.table = new JTable(new Model(cfg, list));
+	protected int pageSize;
+
+	protected int pageNumber = -1;
+
+	protected EntityService entityService;
+	Model model;
+
+	public EntityObjectTableView(EntityConfig cfg, EntityService es, int pageSize) {
+		this.cfg = cfg;
+		this.entityService = es;
+		this.pageSize = pageSize;
+		model = new Model(cfg, pageSize);
+
+		this.table = new JTable(model);
 		this.setViewportView(this.table);
 		this.title = "EntityObject";
 		this.table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		this.table.setFillsViewportHeight(true);
 		// Note, JTable must be added to a JScrollPane,otherwise the header not
 		// showing.
+		this.nextPage();
 	}
 
 	@Override
@@ -82,6 +102,40 @@ public class EntityObjectTableView extends JScrollPane implements View {
 	@Override
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public <T> T getDelegate(Class<T> cls) {
+		if (cls.equals(EntityObjectSource.class)) {
+			return (T) this;
+		} else if (cls.equals(DataPageQuerable.class)) {
+			return (T) this;
+		}
+
+		return null;
+	}
+
+	@Override
+	public void addEntityObjectSourceListener(EntityObjectSourceListener esl) {
+
+	}
+
+	@Override
+	public void prePage() {
+		this.pageNumber--;
+		this.query();
+	}
+
+	private void query() {
+		List<? extends EntityObject> el = this.entityService.query(cfg.getEntityClass()).limit(this.pageSize)
+				.executeQuery();
+		model.list = el;
+	}
+
+	@Override
+	public void nextPage() {
+		this.pageNumber++;
+		this.query();
 	}
 
 }

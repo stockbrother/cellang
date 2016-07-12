@@ -71,9 +71,9 @@ public class OperationContext {
 		return views;
 	}
 
-	public OperationContext(File dataDir) {
+	public OperationContext(File dataDir,ViewsPane views) {
 		this.dataHome = dataDir;
-		views = new ViewsPane(this);
+		this.views = views;
 	}
 
 	public void addListener(Listener l) {
@@ -139,6 +139,16 @@ public class OperationContext {
 		loader.loadDir(qfile);
 	}
 
+	public void clear(){
+		views.clear();
+	}
+	public void home() {
+		
+		EntityConfigTableView table = new EntityConfigTableView(this,
+				this.getEntityConfigFactory().getEntityConfigList());
+		views.addView(table);
+	}
+
 	/**
 	 * Query entity data from DB by limit and offset. Open a view for the
 	 * result.
@@ -147,9 +157,8 @@ public class OperationContext {
 		if (this.selectedEntityConfig == null) {
 			return;
 		}
-		List<? extends EntityObject> el = this.entityService.query(this.selectedEntityConfig.getEntityClass())
-				.limit(this.queryLimit).executeQuery();
-		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig, el);
+		
+		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig,this.entityService, this.queryLimit);
 		this.views.addView(v);
 	}
 
