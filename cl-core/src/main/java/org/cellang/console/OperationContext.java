@@ -54,7 +54,7 @@ public class OperationContext {
 	private CorpMetricService ms;
 	private boolean started;
 	private String[] matrics = new String[] { "负债权益比", "QUOTES" };
-	ViewManager viewManager;
+	ViewsPane views;
 	DataLoader loader;
 
 	private EntityConfig selectedEntityConfig;
@@ -67,13 +67,13 @@ public class OperationContext {
 		this.selectedEntityConfig = selectedEntityConfig;
 	}
 
-	public ViewManager getViewManager() {
-		return viewManager;
+	public ViewsPane getViewManager() {
+		return views;
 	}
 
 	public OperationContext(File dataDir) {
 		this.dataHome = dataDir;
-		viewManager = new ViewManager(this);
+		views = new ViewsPane(this);
 	}
 
 	public void addListener(Listener l) {
@@ -85,7 +85,7 @@ public class OperationContext {
 			throw new RuntimeException("started already.");
 		}
 		entityConfigFactory = new EntityConfigFactory();
-		
+
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntityService.newInstance(dbHome, "h2", entityConfigFactory);
 		loader = new DataLoader(entityService);
@@ -96,13 +96,18 @@ public class OperationContext {
 		}
 
 		ms = new CorpMetricService(entityService);
-		
+
 		this.started = true;
 		for (Listener l : this.listenerList) {
 			l.onStarted(this);
 		}
 	}
 
+	/**
+	 * Wash data from external to internal format.
+	 * 
+	 * @param source
+	 */
 	public void wash(String source) {
 
 		File from = new File(this.dataHome, source);
@@ -120,6 +125,11 @@ public class OperationContext {
 		}
 	}
 
+	/**
+	 * Load data into DB from folder.
+	 * 
+	 * @param folder
+	 */
 	public void load(String folder) {
 		File qfile = FileUtil.newFile(dataHome, new String[] { folder });
 		if (!qfile.exists()) {
@@ -129,14 +139,25 @@ public class OperationContext {
 		loader.loadDir(qfile);
 	}
 
-	public void liste() {
+	/**
+	 * Query entity data from DB by limit and offset. Open a view for the
+	 * result.
+	 */
+	public void list() {
 		if (this.selectedEntityConfig == null) {
 			return;
 		}
 		List<? extends EntityObject> el = this.entityService.query(this.selectedEntityConfig.getEntityClass())
 				.limit(this.queryLimit).executeQuery();
 		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig, el);
-		this.viewManager.addView(v);
+		this.views.addView(v);
+	}
+
+	/**
+	 * Close the current view.
+	 */
+	public void closeView() {
+		this.views.closeCurrentView();
 	}
 
 	public void update(int idx) throws IOException {

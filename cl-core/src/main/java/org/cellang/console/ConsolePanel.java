@@ -31,6 +31,7 @@ public class ConsolePanel extends BshConsole {
 		super(dataDir);
 		this.oc = oc;
 		this.server = new ReplServer(port);
+
 	}
 
 	public void addListener(ConsoleListener listener) {
@@ -52,6 +53,7 @@ public class ConsolePanel extends BshConsole {
 	}
 
 	public void runLoop() {
+		this.history.load();
 		// repl start...
 		server.start();
 		try {
@@ -86,6 +88,7 @@ public class ConsolePanel extends BshConsole {
 		} finally {
 			server.close();
 		}
+		this.history.save();		
 	}
 
 	private String read() {

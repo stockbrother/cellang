@@ -10,6 +10,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,7 +29,7 @@ public class MainPanel extends JPanel {
 
 	private OperationContext oc;
 
-	private ViewManager views;
+	private ViewsPane views;
 
 	private JSplitPane splitPane;
 	private int port = 7888;
@@ -41,7 +43,10 @@ public class MainPanel extends JPanel {
 		this.executor = Executors.newCachedThreadPool();
 	}
 
-	public void start() {
+	/**
+	 * Start the program.
+	 */
+	public Future<Object> start() {
 
 		try {
 			this.oc.start();
@@ -54,7 +59,7 @@ public class MainPanel extends JPanel {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				MainPanel.this.onWindowClosing();
+				MainPanel.this.console.quit();
 			}
 		});
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -71,6 +76,10 @@ public class MainPanel extends JPanel {
 		views.addView(table);
 		//
 		File consoleDataDir = new File(oc.getDataHome(), ".console");
+		if (!consoleDataDir.exists()) {
+			LOG.info("mkdirs:" + consoleDataDir.getAbsolutePath());//
+			consoleDataDir.mkdirs();
+		}
 		console = new ConsolePanel(consoleDataDir, oc, port);
 		this.splitPane.add(console);
 		frame.pack();
@@ -95,32 +104,57 @@ public class MainPanel extends JPanel {
 
 		consoleFuture = this.executor.submit(r);
 
-	}
+		return this.executor.submit(new Callable<Object>() {
 
-	protected void onWindowClosing() {
-
-		console.quit();
-		try {
-			consoleFuture.get();
-		} catch (InterruptedException | ExecutionException e) {
-			throw new RuntimeException(e);
-		}
-		oc.close();
-		frame.dispose();
-		LOG.info("exit,bye!");
-		System.exit(0);
-	}
-
-	public static void main(String[] args) {
-		// Schedule a job for the event-dispatching thread:
-		// creating and showing this application's GUI.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				MainPanel mp = new MainPanel(EnvUtil.getDataDir());
-				mp.start();
+			@Override
+			public Object call() throws Exception {
+				try {
+					consoleFuture.get();
+				} catch (InterruptedException | ExecutionException e) {
+					throw new RuntimeException(e);
+				}
+				oc.close();
+				frame.dispose();
+				LOG.info("exit,bye!");
+				System.exit(0);
+				return null;
 			}
 		});
 
+	}
+
+	/**
+	 * The entry point of main.
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// Schedule a job for the event-dispatching thread:
+		// creating and showing this application's GUI.
+
+		AtomicReference<Future<Object>> future = new AtomicReference<Future<Object>>();
+		Semaphore sem = new Semaphore(0);
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				MainPanel mp = new MainPanel(EnvUtil.getDataDir());
+				Future<Object> f = mp.start();
+				future.set(f);
+				sem.release();
+			}
+		});
+
+		try {
+			sem.acquire();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		try {
+			future.get().get();
+		} catch (InterruptedException | ExecutionException e) {
+			LOG.error("", e);
+		}
+		System.exit(0);//
 	}
 
 }

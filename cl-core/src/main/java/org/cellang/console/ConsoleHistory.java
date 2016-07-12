@@ -19,6 +19,7 @@ public class ConsoleHistory extends Vector<String> {
 	File historyFile;
 
 	public ConsoleHistory(File dataDir, BshConsole console) {
+		this.dataDir = dataDir;
 		this.console = console;
 		historyFile = new File(this.dataDir, "history");
 	}

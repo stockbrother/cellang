@@ -91,12 +91,7 @@ public class BshConsole extends JScrollPane implements PropertyChangeListener {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		this.history.load();
 
-	}
-
-	public void close() {
-		this.history.save();
 	}
 
 	public InputStream getInputStream() {
