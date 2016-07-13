@@ -1,6 +1,8 @@
-package org.cellang.console;
+package org.cellang.console.control;
 
-import org.cellang.console.ViewsPane.ViewsListener;
+import org.cellang.console.view.View;
+import org.cellang.console.view.ViewsPane;
+import org.cellang.console.view.ViewsPane.ViewsListener;
 import org.cellang.core.entity.EntityObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

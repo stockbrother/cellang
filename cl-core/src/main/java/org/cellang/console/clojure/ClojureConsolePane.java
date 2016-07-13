@@ -1,4 +1,4 @@
-package org.cellang.console;
+package org.cellang.console.clojure;
 
 import java.awt.Color;
 import java.io.File;
@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.cellang.console.ops.OperationContext;
+
 import clojure.lang.RT;
 import clojure.tools.nrepl.Connection.Response;
 
-public class ConsolePanel extends BshConsole {
+public class ClojureConsolePane extends ConsolePane {
 
 	public static final String QUIT = "quit";
 	public static final String EXIT = "exit";
@@ -27,7 +29,7 @@ public class ConsolePanel extends BshConsole {
 	OperationContext oc;
 	public List<ConsoleListener> listenerList = new ArrayList<ConsoleListener>();
 
-	public ConsolePanel(File dataDir, OperationContext oc, int port) {
+	public ClojureConsolePane(File dataDir, OperationContext oc, int port) {
 		super(dataDir);
 		this.oc = oc;
 		this.server = new ReplServer(port);
@@ -77,6 +79,7 @@ public class ConsolePanel extends BshConsole {
 					if (QUIT.equals(code) || EXIT.equals(code)) {
 						break;
 					}
+					code = this.translate(code);
 					Response res = session.sendCode(code);
 					this.println(res);//
 				}
@@ -88,14 +91,18 @@ public class ConsolePanel extends BshConsole {
 		} finally {
 			server.close();
 		}
-		this.history.save();		
+		this.history.save();
+	}
+
+	public String translate(String code) {
+		return code;
 	}
 
 	private String read() {
 		// read object
-		Object rt = ClojureOps.fnRead.invoke(this.reader);
+		Object rt = ClojureBridge.fnRead.invoke(this.reader);
 		// object print to string.
-		return (String) ClojureOps.fnPrStr.invoke(rt);
+		return (String) ClojureBridge.fnPrStr.invoke(rt);
 	}
 
 	private void println(Response res) {

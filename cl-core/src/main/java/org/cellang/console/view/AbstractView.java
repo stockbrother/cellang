@@ -4,8 +4,6 @@ import java.awt.Component;
 
 import javax.swing.JScrollPane;
 
-import org.cellang.console.View;
-
 public class AbstractView extends JScrollPane implements View {
 
 	protected String title;

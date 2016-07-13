@@ -1,11 +1,12 @@
 package org.cellang.console.chart;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class SimpleChartModel extends ChartModel {
-	private List<Double> valueList;
+	private List<BigDecimal> valueList;
 
-	SimpleChartModel(List<Double> valueList) {
+	SimpleChartModel(List<BigDecimal> valueList) {
 		this.valueList = valueList;
 	}
 
@@ -21,7 +22,7 @@ public class SimpleChartModel extends ChartModel {
 	}
 
 	@Override
-	public Double getYValue(int idx) {
+	public BigDecimal getYValue(int idx) {
 		return this.valueList.get(idx);
 	}
 

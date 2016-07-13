@@ -1,8 +1,11 @@
 package org.cellang.console.ops;
 
-import org.cellang.console.OperationContext;
-import org.cellang.console.ViewsPane;
+import java.lang.reflect.Method;
+import java.util.List;
+
 import org.cellang.console.view.ChartView;
+import org.cellang.console.view.ViewsPane;
+import org.cellang.core.entity.EntityConfig;
 
 public class ChartOp {
 
@@ -18,7 +21,12 @@ public class ChartOp {
 
 	public void execute() {
 		ViewsPane views = oc.getViewManager();
-		ChartView view = new ChartView("ChartView");
+		EntityConfig ec = oc.getSelectedEntityConfig();
+		List<Method> methodList = ec.getGetMethodList();
+		Method xM = methodList.get(this.xCol);
+		Method yM = methodList.get(this.yCol);
+		ChartView view = new ChartView("ChartView", ec, xM, yM, 100, this.oc.getEntityService());
+
 		views.addView(view, true);
 	}
 }

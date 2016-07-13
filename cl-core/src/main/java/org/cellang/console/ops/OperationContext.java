@@ -1,4 +1,4 @@
-package org.cellang.console;
+package org.cellang.console.ops;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,9 +13,9 @@ import java.util.Map;
 
 import org.cellang.collector.NeteasePreprocessor;
 import org.cellang.collector.SinaAllQuotesPreprocessor;
-import org.cellang.console.ops.ChartOp;
 import org.cellang.console.view.EntityConfigTableView;
 import org.cellang.console.view.EntityObjectTableView;
+import org.cellang.console.view.ViewsPane;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
@@ -212,6 +212,10 @@ public class OperationContext {
 
 	public File getDataHome() {
 		return this.dataHome;
+	}
+
+	public EntityService getEntityService() {
+		return entityService;
 	}
 
 }

@@ -10,9 +10,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.cellang.console.DrillDowable;
-import org.cellang.console.OperationContext;
-import org.cellang.console.View;
+import org.cellang.console.control.DrillDowable;
+import org.cellang.console.ops.OperationContext;
 import org.cellang.core.entity.EntityConfig;
 
 public class EntityConfigTableView extends JScrollPane implements View, DrillDowable {

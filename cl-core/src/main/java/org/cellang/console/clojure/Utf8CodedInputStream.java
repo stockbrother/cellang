@@ -1,4 +1,4 @@
-package org.cellang.console;
+package org.cellang.console.clojure;
 
 import java.io.BufferedReader;
 import java.io.IOException;

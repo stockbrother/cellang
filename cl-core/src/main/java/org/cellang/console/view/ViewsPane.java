@@ -1,4 +1,4 @@
-package org.cellang.console;
+package org.cellang.console.view;
 
 import java.awt.Component;
 import java.util.ArrayList;

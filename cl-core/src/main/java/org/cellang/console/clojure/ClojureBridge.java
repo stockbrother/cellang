@@ -1,11 +1,11 @@
-package org.cellang.console;
+package org.cellang.console.clojure;
 
 import clojure.lang.Keyword;
 import clojure.lang.RT;
 import clojure.lang.Symbol;
 import clojure.lang.Var;
 
-public class ClojureOps {
+public class ClojureBridge {
 	static {
 		try {
 			RT.var("clojure.core", "require").invoke(Symbol.intern("clojure.tools.nrepl"));

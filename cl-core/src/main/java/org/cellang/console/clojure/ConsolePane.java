@@ -1,4 +1,4 @@
-package org.cellang.console;
+package org.cellang.console.clojure;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -9,7 +9,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
@@ -28,19 +27,9 @@ import javax.swing.text.StyleConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A JFC/Swing based console for the BeanShell desktop. This is a descendant of
- * the old AWTConsole.
- * 
- * Improvements by: Mark Donszelmann <Mark.Donszelmann@cern.ch> including Cut &
- * Paste
- * 
- * Improvements by: Daniel Leuck including Color and Image support, key press
- * bug workaround
- */
-public class BshConsole extends JScrollPane implements PropertyChangeListener {
+public class ConsolePane extends JScrollPane implements PropertyChangeListener {
 
-	private static Logger LOG = LoggerFactory.getLogger(BshConsole.class);
+	private static Logger LOG = LoggerFactory.getLogger(ConsolePane.class);
 
 	private static String ZEROS = "000";
 
@@ -61,7 +50,7 @@ public class BshConsole extends JScrollPane implements PropertyChangeListener {
 	boolean gotUp = true;
 	File dataDir;
 
-	public BshConsole(File dataDir) {
+	public ConsolePane(File dataDir) {
 		this.dataDir = dataDir;
 		this.history = new ConsoleHistory(dataDir, this);
 

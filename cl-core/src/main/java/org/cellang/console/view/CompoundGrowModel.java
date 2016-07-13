@@ -1,16 +1,18 @@
 package org.cellang.console.view;
 
+import java.math.BigDecimal;
+
 import org.cellang.console.chart.ChartModel;
 
 public class CompoundGrowModel extends ChartModel {
 
-	private double init;
+	private BigDecimal init;
 
-	private double growRatio;
+	private BigDecimal growRatio;
 
 	private int years;
 
-	public CompoundGrowModel(double init, double growRatio, int years) {
+	public CompoundGrowModel(BigDecimal init, BigDecimal growRatio, int years) {
 		this.init = init;
 		this.growRatio = growRatio;
 		this.years = years;
@@ -27,9 +29,9 @@ public class CompoundGrowModel extends ChartModel {
 	}
 
 	@Override
-	public Double getYValue(int idx) {
-		double rt = Math.pow(1 + growRatio, idx);
-		rt = rt * this.init;
+	public BigDecimal getYValue(int idx) {
+		BigDecimal rt = new BigDecimal(Math.pow(1 + growRatio.doubleValue(), idx));
+		rt = rt.multiply(this.init);//
 		return rt;
 	}
 

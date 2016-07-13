@@ -18,14 +18,20 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import org.cellang.collector.EnvUtil;
-import org.cellang.console.ConsolePanel.ConsoleListener;
+import org.cellang.console.clojure.ClojureConsolePane;
+import org.cellang.console.clojure.ReplSession;
+import org.cellang.console.clojure.ClojureConsolePane.ConsoleListener;
+import org.cellang.console.control.ActionsControl;
+import org.cellang.console.control.ActionsPane;
+import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.ViewsPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MainPanel extends JPanel {
 	private static final Logger LOG = LoggerFactory.getLogger(MainPanel.class);
 
-	private ConsolePanel console;
+	private ClojureConsolePane console;
 
 	private OperationContext oc;
 
@@ -86,7 +92,7 @@ public class MainPanel extends JPanel {
 				consoleDataDir.mkdirs();
 			}
 
-			this.console = new ConsolePanel(consoleDataDir, oc, port);
+			this.console = new ClojureConsolePane(consoleDataDir, oc, port);
 
 			this.splitPaneTop.add(console);
 		}

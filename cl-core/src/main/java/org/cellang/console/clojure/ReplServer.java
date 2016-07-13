@@ -1,4 +1,4 @@
-package org.cellang.console;
+package org.cellang.console.clojure;
 
 import java.util.Map;
 
@@ -21,17 +21,17 @@ public class ReplServer {
 
 	public void start() {
 
-		server = (Map<Keyword, Object>) ClojureOps.fnStartServer.invoke(ClojureOps.kwPort, port);
+		server = (Map<Keyword, Object>) ClojureBridge.fnStartServer.invoke(ClojureBridge.kwPort, port);
 		LOG.info("repl server started.");
 	}
 
 	public int getActualPort() {
-		int port2 = (Integer) server.get(ClojureOps.kwPort);
+		int port2 = (Integer) server.get(ClojureBridge.kwPort);
 		return port2;
 	}
 
 	public void close() {
-		ClojureOps.fnStopServer.invoke(server);
+		ClojureBridge.fnStopServer.invoke(server);
 		LOG.info("repl server stoped.");
 	}
 }
