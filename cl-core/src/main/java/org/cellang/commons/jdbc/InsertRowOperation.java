@@ -1,5 +1,6 @@
 package org.cellang.commons.jdbc;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class InsertRowOperation extends JdbcOperation<Void> {
 
 	private List<Object> valueList = new ArrayList<Object>();
 
-	public InsertRowOperation(ConnectionPoolWrapper cpw, String table) {
+	public InsertRowOperation(JdbcDataAccessTemplate cpw, String table) {
 		super(cpw);
 		this.tableName = table;
 	}
@@ -22,7 +23,7 @@ public class InsertRowOperation extends JdbcOperation<Void> {
 	}
 
 	@Override
-	public Void execute() {
+	public Void execute(Connection c) {
 		//TODO static sql.
 		StringBuffer sql = new StringBuffer().append("insert into ").append(this.tableName).append(" (");
 		for (int i = 0; i < valueList.size(); i++) {
@@ -41,7 +42,7 @@ public class InsertRowOperation extends JdbcOperation<Void> {
 		}
 		sql.append(")");
 
-		this.poolWrapper.executeUpdate(sql.toString(), valueList);
+		this.template.executeUpdate(c, sql.toString(), valueList);
 		return null;
 	}
 

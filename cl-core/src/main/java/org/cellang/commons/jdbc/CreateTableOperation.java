@@ -1,6 +1,7 @@
 package org.cellang.commons.jdbc;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,13 +31,13 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 	private List<Tuple2<String, Class>> columnList = new ArrayList<Tuple2<String, Class>>();
 	private List<String> primaryKeyList = new ArrayList<String>();
 
-	public CreateTableOperation(ConnectionPoolWrapper cpw, String table) {
+	public CreateTableOperation(JdbcDataAccessTemplate cpw, String table) {
 		super(cpw);
 		this.tableName = table;
 	}
 
 	@Override
-	public Void execute() {
+	public Void execute(Connection c) {
 		StringBuffer sql = new StringBuffer().append("create table ").append(this.tableName).append("(");
 		for (int i = 0; i < columnList.size(); i++) {
 			Tuple2<String, Class> column = columnList.get(i);
@@ -64,7 +65,7 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 			sql.append(")");
 		}
 		sql.append(")");
-		this.poolWrapper.executeUpdate(sql.toString());
+		this.template.executeUpdate(c, sql.toString());
 
 		return null;
 	}

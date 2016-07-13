@@ -1,6 +1,6 @@
 package org.cellang.core.server;
 
-import org.cellang.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
 import org.cellang.core.entity.EntityService;
 import org.h2.jdbcx.JdbcConnectionPool;
 

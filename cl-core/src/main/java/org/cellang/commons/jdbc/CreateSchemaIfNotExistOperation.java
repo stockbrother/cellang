@@ -1,5 +1,6 @@
 package org.cellang.commons.jdbc;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,14 +11,14 @@ public class CreateSchemaIfNotExistOperation extends JdbcOperation<Void> {
 	private String schema = "cpeatt";
 
 	
-	public CreateSchemaIfNotExistOperation(ConnectionPoolWrapper cpw) {
+	public CreateSchemaIfNotExistOperation(JdbcDataAccessTemplate cpw) {
 		super(cpw);
 	}
 
 	@Override
-	public Void execute() {
+	public Void execute(Connection con) {
 		final List<String> schemaList = new ArrayList<String>();
-		this.poolWrapper.executeQuery("show schemas", new ResultSetProcessor() {
+		this.template.executeQuery(con,"show schemas", new ResultSetProcessor() {
 
 			@Override
 			public Object process(ResultSet rs) throws SQLException {
@@ -34,7 +35,7 @@ public class CreateSchemaIfNotExistOperation extends JdbcOperation<Void> {
 			return null;//
 		}
 
-		this.poolWrapper.executeUpdate("create schema "+schema);
+		this.template.executeUpdate(con,"create schema "+schema);
 
 		return null;
 	}

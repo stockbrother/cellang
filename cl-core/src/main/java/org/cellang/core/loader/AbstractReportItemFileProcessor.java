@@ -1,8 +1,5 @@
 package org.cellang.core.loader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -18,6 +15,19 @@ import org.slf4j.LoggerFactory;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+/**
+ * <code>
+ * 
+ * 
+ * 
+ * </code>
+ * Process csv file,load data into db.
+ * 
+ * @author wu
+ *
+ * @param <T>
+ * @param <I>
+ */
 public abstract class AbstractReportItemFileProcessor<T extends AbstractReportEntity, I extends AbstractReportItemEntity>
 		extends FileProcessor {
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractReportItemFileProcessor.class);
@@ -40,7 +50,7 @@ public abstract class AbstractReportItemFileProcessor<T extends AbstractReportEn
 
 	@Override
 	public void process(Reader fr) {
-		
+
 		CSVReader reader = new CSVReader(fr);
 		try {
 			CsvHeaderRowMap headers = new CsvHeaderRowMap();

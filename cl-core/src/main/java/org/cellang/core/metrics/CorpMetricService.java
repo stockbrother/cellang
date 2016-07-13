@@ -1,6 +1,7 @@
 package org.cellang.core.metrics;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.entity.CorpInfoEntity;
@@ -18,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 public class CorpMetricService {
 	private static final Logger LOG = LoggerFactory.getLogger(CorpMetricService.class);
-	
+
 	private Map<String, MetricCalculator> metricDefineMap = new HashMap<String, MetricCalculator>();
 
 	private EntityService entityService;
@@ -52,8 +54,12 @@ public class CorpMetricService {
 		String sql = "select itm.value from " + rc.getItemEntityConfig().getTableName() + " itm,"
 				+ rc.getReportEntityConfig().getTableName()
 				+ " rpt where itm.reportId = rpt.id and rpt.corpId=? and rpt.reportDate=? and itm.key = ?";
-		return (Double) this.entityService.getPool().executeQuery(sql, new Object[] { corpId, date, key },
-				new ResultSetProcessor() {
+		JdbcOperation<Double> op = new JdbcOperation<Double>(this.entityService.getDataAccessTemplate()) {
+
+			@Override
+			public Double execute(Connection con) {
+				return (Double) this.template.executeQuery(con, sql, new Object[] { corpId, date, key },
+						new ResultSetProcessor() {
 
 					@Override
 					public Object process(ResultSet rs) throws SQLException {
@@ -64,6 +70,10 @@ public class CorpMetricService {
 						return null;
 					}
 				});
+			}
+		};
+
+		return op.execute();
 
 	}
 
@@ -76,8 +86,8 @@ public class CorpMetricService {
 
 	public void updateMetric(String key) {
 		// delete by key.
-		LOG.info("update metric:"+key+" ... start.");
-		
+		LOG.info("update metric:" + key + " ... start.");
+
 		this.entityService.delete(CorpMetricEntity.class, new String[] { "key" }, new Object[] { key });
 		MetricCalculator mc = this.metricDefineMap.get(key);
 
@@ -101,8 +111,8 @@ public class CorpMetricService {
 				this.entityService.save(me);//
 			}
 		}
-		LOG.info("update metric:"+key+" ... done.");
-		
+		LOG.info("update metric:" + key + " ... done.");
+
 	}
 
 	public List<CorpMetricEntity> getMetricList(String key) {

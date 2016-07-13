@@ -1,10 +1,12 @@
 package org.cellang.core.entity;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
 
 public class EntityQuery<T extends EntityObject> {
@@ -59,7 +61,15 @@ public class EntityQuery<T extends EntityObject> {
 			sql.append(" offset ").append(this.offset);
 		}
 
-		List<T> rt = (List<T>) es.getPool().executeQuery(sql.toString(), this.queryArgs, rsp);
+		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>(es.getDataAccessTemplate()){
+
+			@Override
+			public List<T> execute(Connection con) {
+				
+				return (List<T>) es.getDataAccessTemplate().executeQuery(con,sql.toString(), EntityQuery.this.queryArgs, rsp);
+			}};
+		
+		List<T> rt = op.execute();
 		return rt;
 	}
 

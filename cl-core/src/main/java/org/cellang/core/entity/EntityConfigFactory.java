@@ -1,12 +1,14 @@
 package org.cellang.core.entity;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.commons.jdbc.ConnectionPoolWrapper;
 import org.cellang.commons.jdbc.CreateTableOperation;
+import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
+import org.cellang.commons.jdbc.JdbcOperation;
 
 public class EntityConfigFactory {
 
@@ -68,40 +70,56 @@ public class EntityConfigFactory {
 		return this.entityConfigMap.get(entityClass);
 	}
 
-	public void initTables(ConnectionPoolWrapper pool) {
-		for (EntityConfig ec : this.entityConfigList) {
-			String viewSql = ec.getCreateViewSql();
-			if (viewSql == null) {
+	public void initTables(JdbcDataAccessTemplate pool) {
+		JdbcOperation<Void> op = new JdbcOperation<Void>(pool) {
+			@Override
+			public Void execute(Connection con) {
+				for (EntityConfig ec : EntityConfigFactory.this.entityConfigList) {
+					String viewSql = ec.getCreateViewSql();
+					if (viewSql == null) {
 
-				CreateTableOperation cto = new CreateTableOperation(pool, ec.getTableName());
+						CreateTableOperation cto = new CreateTableOperation(pool, ec.getTableName());
 
-				ec.fillCreate(cto);
-				cto.execute();
-			} else {
-				pool.executeUpdate(viewSql);
+						ec.fillCreate(cto);
+						cto.execute(con);
+					} else {
+						pool.executeUpdate(con, viewSql);
+					}
+
+				}
+
+				return null;
 			}
-
-		}
-
+		};
+		op.execute();
 	}
 
-	public void initIndices(ConnectionPoolWrapper pool) {
-		for (List<IndexConfig> icL : this.indexConfigListMap.values()) {
-			for (IndexConfig ic : icL) {
-				String tableName = this.get(ic.getEntityCls()).getTableName();
-				String sql = "create index " + ic.getIndexName() + " on " + tableName + "(";
-				String[] fs = ic.getFieldArray();
-				for (int i = 0; i < fs.length; i++) {
-					String f = fs[i];
-					sql += f;
-					if (i < fs.length - 1) {
-						sql += ",";
+	public void initIndices(JdbcDataAccessTemplate pool) {
+		JdbcOperation<Void> op = new JdbcOperation<Void>(pool) {
+
+			@Override
+			public Void execute(Connection con) {
+				for (List<IndexConfig> icL : EntityConfigFactory.this.indexConfigListMap.values()) {
+					for (IndexConfig ic : icL) {
+						String tableName = EntityConfigFactory.this.get(ic.getEntityCls()).getTableName();
+						String sql = "create index " + ic.getIndexName() + " on " + tableName + "(";
+						String[] fs = ic.getFieldArray();
+						for (int i = 0; i < fs.length; i++) {
+							String f = fs[i];
+							sql += f;
+							if (i < fs.length - 1) {
+								sql += ",";
+							}
+						}
+						sql += ")";
+						pool.executeUpdate(con, sql);
 					}
 				}
-				sql += ")";
-				pool.executeUpdate(sql);
+				return null;
 			}
-		}
+
+		};
+
 	}
 
 }

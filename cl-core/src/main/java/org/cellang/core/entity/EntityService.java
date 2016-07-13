@@ -1,11 +1,15 @@
 package org.cellang.core.entity;
 
 import java.io.File;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.cellang.commons.jdbc.ConnectionPoolWrapper;
+import org.cellang.commons.jdbc.ConnectionProvider;
 import org.cellang.commons.jdbc.InsertRowOperation;
+import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
+import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.slf4j.Logger;
@@ -15,20 +19,23 @@ public class EntityService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EntityService.class);
 
-	private ConnectionPoolWrapper pool;
-
 	private EntityConfigFactory entityConfigFactory = new EntityConfigFactory();
 
 	private boolean isNew;
 
-	private EntityService(ConnectionPoolWrapper rt, EntityConfigFactory ecf, boolean isNew) {
+	private JdbcDataAccessTemplate dataAccessTemplate;
+
+	private ConnectionProvider pool;
+
+	private EntityService(ConnectionProvider rt, EntityConfigFactory ecf, boolean isNew) {
 		this.pool = rt;
 		this.entityConfigFactory = ecf;
 		this.isNew = isNew;
+		this.dataAccessTemplate = new JdbcDataAccessTemplate(rt);
 	}
 
-	public ConnectionPoolWrapper getPool() {
-		return pool;
+	public JdbcDataAccessTemplate getDataAccessTemplate() {
+		return dataAccessTemplate;
 	}
 
 	public static EntityService newInstance(File dbHome, String dbName, EntityConfigFactory ecf) {
@@ -37,7 +44,8 @@ public class EntityService {
 
 		String dbUrl = "jdbc:h2:" + dbHome.getAbsolutePath().replace('\\', '/') + "/" + dbName;
 		LOG.info("dbUrl:" + dbUrl);
-		ConnectionPoolWrapper pool = H2ConnectionPoolWrapper.newInstance(dbUrl, "sa", "sa");
+		ConnectionProvider pool = H2ConnectionPoolWrapper.newInstance(dbUrl, "sa", "sa");
+		JdbcDataAccessTemplate template = new JdbcDataAccessTemplate(pool);
 		EntityService rt = new EntityService(pool, ecf, isNew);
 
 		if (!isNew) {
@@ -45,8 +53,8 @@ public class EntityService {
 		} else {
 			LOG.warn("initializing db,db file not exists: " + dbFile);//
 			// create tables
-			rt.entityConfigFactory.initTables(pool);
-			rt.entityConfigFactory.initIndices(pool);
+			rt.entityConfigFactory.initTables(template);
+			rt.entityConfigFactory.initIndices(template);
 			int year = 2015 - 1900;
 			for (int i = 0; i < 10; i++) {
 				DateInfoEntity di = new DateInfoEntity();
@@ -59,7 +67,7 @@ public class EntityService {
 	}
 
 	public void close() {
-		this.pool.close();
+		// this.pool.close();
 	}
 
 	public <T> T getSingle(Class cls, String field, Object arg) {
@@ -101,12 +109,32 @@ public class EntityService {
 		return eq;
 	}
 
+	public void saveAll(List<EntityObject> seList) {
+		JdbcOperation<Void> op = new JdbcOperation<Void>(this.dataAccessTemplate) {
+
+			@Override
+			public Void execute(Connection con) {
+				for (EntityObject eo : seList) {
+
+					Class cls = eo.getClass();
+					EntityConfig ec = EntityService.this.entityConfigFactory.get(cls);
+					InsertRowOperation insertOp = new InsertRowOperation(this.template, ec.getTableName());
+					ec.fillInsert(eo, insertOp);
+					insertOp.execute(con);
+				}
+
+				return null;
+			}
+		};
+
+		op.execute();
+
+	}
+
 	public void save(EntityObject se) {
-		Class cls = se.getClass();
-		EntityConfig ec = this.entityConfigFactory.get(cls);
-		InsertRowOperation insertOp = new InsertRowOperation(this.pool, ec.getTableName());
-		ec.fillInsert(se, insertOp);
-		insertOp.execute();
+		List<EntityObject> ol = new ArrayList<EntityObject>();
+		ol.add(se);
+		saveAll(ol);
 	}
 
 	public <T extends EntityObject> long delete(Class<T> cls, String[] strings, Object[] objects) {
@@ -115,7 +143,15 @@ public class EntityService {
 
 			sql += " and " + strings[i] + "=?";
 		}
-		return this.pool.executeUpdate(sql, objects);
+		String sqlF = sql;
+		JdbcOperation<Long> op = new JdbcOperation<Long>(this.dataAccessTemplate) {
+
+			@Override
+			public Long execute(Connection con) {
+				return this.template.executeUpdate(con, sqlF, objects);
+			}
+		};
+		return op.execute();
 	}
 
 	public EntityConfigFactory getEntityConfigFactory() {
@@ -124,6 +160,29 @@ public class EntityService {
 
 	public boolean isNew() {
 		return isNew;
+	}
+
+	/**
+	 * Remove all data from db.
+	 */
+	public void clear() {
+		new JdbcOperation<Long>(this.dataAccessTemplate) {
+
+			@Override
+			public Long execute(Connection con) {
+				long rt = 0;
+				for (EntityConfig ec : EntityService.this.entityConfigFactory.getEntityConfigList()) {
+					String sql = "delete from " + ec.getTableName();
+
+					long rtI = this.template.executeUpdate(con, sql);
+					LOG.info("deleted all(" + rtI + ") record from table:" + ec.getTableName() + "");
+					rt += rtI;
+				}
+				LOG.info("done of clear.");				
+				return rt;
+			}
+		}.execute();
+
 	}
 
 }

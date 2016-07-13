@@ -141,6 +141,7 @@ public class OperationContext {
 
 	public void clear() {
 		views.clear();
+		this.entityService.clear();
 	}
 
 	public void home() {

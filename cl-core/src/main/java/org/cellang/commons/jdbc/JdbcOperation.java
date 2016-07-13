@@ -1,11 +1,23 @@
 package org.cellang.commons.jdbc;
 
-public abstract class JdbcOperation<T> {
-	protected ConnectionPoolWrapper poolWrapper;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-	public JdbcOperation(ConnectionPoolWrapper cpw) {
-		this.poolWrapper = cpw;
+public abstract class JdbcOperation<T> {
+	protected JdbcDataAccessTemplate template;
+
+	public JdbcOperation(JdbcDataAccessTemplate cpw) {
+		this.template = cpw;
 	}
 
-	public abstract T execute();
+	public T execute() {
+
+		try {
+			return this.template.execute(this);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public abstract T execute(Connection con);
 }

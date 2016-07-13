@@ -41,6 +41,7 @@ import au.com.bytecode.opencsv.CSVReader;
 		Connection=Keep-Alive
 		Age=0
 </code>
+ * This code collect data from http site and save to the target folder.
  * 
  * @author wuzhen
  *

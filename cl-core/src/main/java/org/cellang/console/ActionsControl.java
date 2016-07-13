@@ -44,7 +44,9 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 	@Override
 	public void viewSelected(View v) {
 		actions.clear();
+		if (v == null) {
 
+		}
 		if (v != null) {
 
 			// if the view support query
@@ -78,7 +80,7 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 				});
 			}
 		}
-		//actions.updateUI();
+		actions.updateUI();
 
 	}
 
