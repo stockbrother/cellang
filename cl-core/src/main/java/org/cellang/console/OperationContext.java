@@ -11,16 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.collector.EnvUtil;
 import org.cellang.collector.NeteasePreprocessor;
 import org.cellang.collector.SinaAllQuotesPreprocessor;
+import org.cellang.console.ops.ChartOp;
+import org.cellang.console.view.EntityConfigTableView;
+import org.cellang.console.view.EntityObjectTableView;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
-import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityService;
 import org.cellang.core.loader.DataLoader;
 import org.cellang.core.metrics.CorpMetricService;
@@ -123,6 +124,11 @@ public class OperationContext {
 		} else {
 			LOG.error("no source found:" + source);
 		}
+	}
+	
+	public void chart(int xColNumber,int yColNumber ){
+		ChartOp op = new ChartOp(this,xColNumber,yColNumber);
+		op.execute();
 	}
 
 	/**
