@@ -85,7 +85,9 @@ public class EntityConfigTableView extends JScrollPane implements View, DrillDow
 	}
 
 	protected void onSelectEvent(ListSelectionEvent e) {
-		int idx = e.getFirstIndex();
+		int idx0 = e.getFirstIndex();
+		int idx1 = e.getLastIndex();
+		int idx = this.table.getSelectedRow();
 		EntityConfig ec = this.list.get(idx);
 		this.oc.setSelectedEntityConfig(ec);//
 	}

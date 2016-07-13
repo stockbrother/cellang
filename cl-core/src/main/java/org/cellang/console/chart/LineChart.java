@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,8 @@ import org.slf4j.LoggerFactory;
 public class LineChart extends JPanel {
 	private static final Logger LOG = LoggerFactory.getLogger(LineChart.class);
 	private int padding = 25;
-	private int labelPadding = 50;
+	private int leftLabelPadding = 150;
+	private int bottomLabelPadding = 50;
 	private Color lineColor = new Color(44, 102, 230, 180);
 	private Color pointColor = new Color(100, 100, 100, 180);
 	private Color gridColor = new Color(200, 200, 200, 200);
@@ -28,6 +30,7 @@ public class LineChart extends JPanel {
 	private int pointWidth = 4;
 	private int numberYDivisions = 10;
 	private ChartModel model;
+	private DecimalFormat format = new DecimalFormat("#,##0.00");
 
 	public LineChart(ChartModel model) {
 		this.model = model;
@@ -45,13 +48,13 @@ public class LineChart extends JPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		int size = model.getCount();
 
-		double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (size - 1);
-		double yScale = ((double) getHeight() - 2 * padding - labelPadding)
+		double xScale = ((double) getWidth() - (2 * padding) - leftLabelPadding) / (size - 1);
+		double yScale = ((double) getHeight() - 2 * padding - bottomLabelPadding)
 				/ (model.getMax().doubleValue() - model.getMin().doubleValue());
 
 		List<Point> graphPoints = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			int x1 = (int) (i * xScale + padding + labelPadding);
+			int x1 = (int) (i * xScale + padding + leftLabelPadding);
 			BigDecimal yValue = model.getYValue(i);
 			if (yValue == null) {
 				continue;
@@ -64,25 +67,25 @@ public class LineChart extends JPanel {
 
 		// draw white background
 		g2.setColor(Color.WHITE);
-		g2.fillRect(padding + labelPadding, padding, getWidth() - (2 * padding) - labelPadding,
-				getHeight() - 2 * padding - labelPadding);
+		g2.fillRect(padding + leftLabelPadding, padding, getWidth() - (2 * padding) - leftLabelPadding,
+				getHeight() - 2 * padding - bottomLabelPadding);
 		g2.setColor(Color.BLACK);
 
 		// create hatch marks and grid lines for y axis.
 		for (int i = 0; i < numberYDivisions + 1; i++) {
-			int x0 = padding + labelPadding;
-			int x1 = pointWidth + padding + labelPadding;
+			int x0 = padding + leftLabelPadding;
+			int x1 = pointWidth + padding + leftLabelPadding;
 			int y0 = getHeight()
-					- ((i * (getHeight() - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);
+					- ((i * (getHeight() - padding * 2 - bottomLabelPadding)) / numberYDivisions + padding + bottomLabelPadding);
 			int y1 = y0;
 			if (size > 0) {
 				g2.setColor(gridColor);
-				g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
+				g2.drawLine(padding + leftLabelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
 				g2.setColor(Color.BLACK);
 				double iD = (double) i;
-				double yLabelValue = min + range * (iD / numberYDivisions);
+				BigDecimal yLabelValue = new BigDecimal(min + range * (iD / numberYDivisions));
 
-				String yLabel = String.valueOf(((int) (yLabelValue * 100)) / 100);
+				String yLabel = format.format(yLabelValue);
 
 				FontMetrics metrics = g2.getFontMetrics();
 				int labelWidth = metrics.stringWidth(yLabel);
@@ -94,13 +97,13 @@ public class LineChart extends JPanel {
 		// and for x axis
 		for (int i = 0; i < size; i++) {
 			if (size > 1) {
-				int x0 = i * (getWidth() - padding * 2 - labelPadding) / (size - 1) + padding + labelPadding;
+				int x0 = i * (getWidth() - padding * 2 - leftLabelPadding) / (size - 1) + padding + leftLabelPadding;
 				int x1 = x0;
-				int y0 = getHeight() - padding - labelPadding;
+				int y0 = getHeight() - padding - bottomLabelPadding;
 				int y1 = y0 - pointWidth;
 				if ((i % ((int) ((size / 20.0)) + 1)) == 0) {
 					g2.setColor(gridColor);
-					g2.drawLine(x0, getHeight() - padding - labelPadding - 1 - pointWidth, x1, padding);
+					g2.drawLine(x0, getHeight() - padding - bottomLabelPadding - 1 - pointWidth, x1, padding);
 					g2.setColor(Color.BLACK);
 					String xLabel = model.getXValue(i);//
 					if (xLabel == null) {
@@ -116,9 +119,9 @@ public class LineChart extends JPanel {
 		}
 
 		// create x and y axes
-		g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
-		g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding,
-				getHeight() - padding - labelPadding);
+		g2.drawLine(padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, padding + leftLabelPadding, padding);
+		g2.drawLine(padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, getWidth() - padding,
+				getHeight() - padding - bottomLabelPadding);
 
 		Stroke oldStroke = g2.getStroke();
 		g2.setColor(lineColor);
