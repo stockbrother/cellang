@@ -12,8 +12,8 @@ public class InsertRowOperation extends JdbcOperation<Void> {
 
 	private List<Object> valueList = new ArrayList<Object>();
 
-	public InsertRowOperation(JdbcDataAccessTemplate cpw, String table) {
-		super(cpw);
+	public InsertRowOperation(String table) {
+		super();
 		this.tableName = table;
 	}
 

@@ -6,8 +6,8 @@ public abstract class SqlOperation<T> extends JdbcOperation<T> {
 
 	protected int parameterSize;
 
-	public SqlOperation(JdbcDataAccessTemplate cpw, String sql, int size) {
-		super(cpw);
+	public SqlOperation(String sql, int size) {
+		super();
 		this.sql = sql;
 		this.parameterSize = size;
 	}

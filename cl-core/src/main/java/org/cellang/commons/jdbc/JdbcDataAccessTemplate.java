@@ -30,10 +30,7 @@ public class JdbcDataAccessTemplate {
 
 	};
 
-	private ConnectionProvider connectionProvider;
-
-	public JdbcDataAccessTemplate(ConnectionProvider connectionProvider) {
-		this.connectionProvider = connectionProvider;
+	public JdbcDataAccessTemplate() {
 	}
 
 	public long executeUpdate(Connection con, String sql) {
@@ -50,7 +47,7 @@ public class JdbcDataAccessTemplate {
 	}
 
 	public Object execute(Connection con, String sql, ParameterProvider pp, PreparedStatementExecutor pse) {
-		JdbcOperation<Object> op = new JdbcOperation<Object>(this) {
+		JdbcOperation<Object> op = new JdbcOperation<Object>() {
 
 			@Override
 			public Object execute(Connection con) {

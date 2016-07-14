@@ -11,8 +11,8 @@ public class CreateSchemaIfNotExistOperation extends JdbcOperation<Void> {
 	private String schema = "cpeatt";
 
 	
-	public CreateSchemaIfNotExistOperation(JdbcDataAccessTemplate cpw) {
-		super(cpw);
+	public CreateSchemaIfNotExistOperation() {
+		super();
 	}
 
 	@Override

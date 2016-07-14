@@ -1,19 +1,14 @@
 package org.cellang.core.entity;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.cellang.commons.jdbc.ConnectionProvider;
 import org.cellang.commons.jdbc.InsertRowOperation;
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
 import org.cellang.commons.jdbc.JdbcOperation;
-import org.cellang.commons.util.UUIDUtil;
-import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +78,7 @@ public class EntitySessionImpl implements EntitySession {
 			EntityObject eo = eoIt.next();
 			Class cls = eo.getClass();
 			EntityConfig ec = EntitySessionImpl.this.ecf.get(cls);
-			InsertRowOperation insertOp = new InsertRowOperation(this.template, ec.getTableName());
+			InsertRowOperation insertOp = new InsertRowOperation(ec.getTableName());
 			ec.fillInsert(eo, insertOp);
 			insertOp.execute(con);
 		}
@@ -103,7 +98,7 @@ public class EntitySessionImpl implements EntitySession {
 			sql += " and " + strings[i] + "=?";
 		}
 		String sqlF = sql;
-		JdbcOperation<Long> op = new JdbcOperation<Long>(this.template) {
+		JdbcOperation<Long> op = new JdbcOperation<Long>() {
 
 			@Override
 			public Long execute(Connection con) {
@@ -121,7 +116,7 @@ public class EntitySessionImpl implements EntitySession {
 	 * Remove all data from db.
 	 */
 	public void clear() {
-		new JdbcOperation<Long>(this.template) {
+		new JdbcOperation<Long>() {
 
 			@Override
 			public Long execute(Connection con) {
@@ -138,11 +133,6 @@ public class EntitySessionImpl implements EntitySession {
 			}
 		}.execute(this.con);
 
-	}
-
-	@Override
-	public JdbcDataAccessTemplate getDataAccessTemplate() {
-		return this.template;
 	}
 
 	@Override

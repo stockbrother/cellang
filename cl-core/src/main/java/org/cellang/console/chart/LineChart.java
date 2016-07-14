@@ -30,10 +30,34 @@ public class LineChart extends JPanel {
 	private int pointWidth = 4;
 	private int numberYDivisions = 10;
 	private ChartModel model;
+	private int xLabelRotate = 45;
+
 	private DecimalFormat format = new DecimalFormat("#,##0.00");
 
 	public LineChart(ChartModel model) {
 		this.model = model;
+	}
+
+	protected void drawString(Graphics2D g2, String string, int x, int y, Color color) {
+		drawRotate(g2, string, x, y, 0, color);
+	}
+
+	protected void drawLine(Graphics2D g2, int x1, int y1, int x2, int y2, Color color) {
+		g2.setColor(color);
+		drawLine(g2, x1, y1, x2, y2);
+	}
+
+	protected void drawLine(Graphics2D g2, int x1, int y1, int x2, int y2) {
+		g2.drawLine(x1, y1, x2, y2);
+	}
+
+	public void drawRotate(Graphics2D g2, String text, double x, double y, int angle, Color color) {
+		g2.setColor(color);
+		g2.translate((float) x, (float) y);
+		g2.rotate(Math.toRadians(angle));
+		g2.drawString(text, 0, 0);
+		g2.rotate(-Math.toRadians(angle));
+		g2.translate(-(float) x, -(float) y);
 	}
 
 	@Override
@@ -42,7 +66,8 @@ public class LineChart extends JPanel {
 		double max = model.getMax().doubleValue();
 		double min = model.getMin().doubleValue();
 		double range = max - min;
-		LOG.info("paintComponent");
+
+		LOG.debug("paintComponent");
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -71,17 +96,16 @@ public class LineChart extends JPanel {
 				getHeight() - 2 * padding - bottomLabelPadding);
 		g2.setColor(Color.BLACK);
 
-		// create hatch marks and grid lines for y axis.
+		// draw y axis and grid lines.
 		for (int i = 0; i < numberYDivisions + 1; i++) {
 			int x0 = padding + leftLabelPadding;
 			int x1 = pointWidth + padding + leftLabelPadding;
-			int y0 = getHeight()
-					- ((i * (getHeight() - padding * 2 - bottomLabelPadding)) / numberYDivisions + padding + bottomLabelPadding);
+			int y0 = getHeight() - ((i * (getHeight() - padding * 2 - bottomLabelPadding)) / numberYDivisions + padding
+					+ bottomLabelPadding);
 			int y1 = y0;
 			if (size > 0) {
-				g2.setColor(gridColor);
-				g2.drawLine(padding + leftLabelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
-				g2.setColor(Color.BLACK);
+				drawLine(g2, padding + leftLabelPadding + 1 + pointWidth, y0, getWidth() - padding, y1, gridColor);
+
 				double iD = (double) i;
 				BigDecimal yLabelValue = new BigDecimal(min + range * (iD / numberYDivisions));
 
@@ -89,12 +113,13 @@ public class LineChart extends JPanel {
 
 				FontMetrics metrics = g2.getFontMetrics();
 				int labelWidth = metrics.stringWidth(yLabel);
-				g2.drawString(yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3);
+				// label Y label
+				drawString(g2, yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3, Color.BLACK);
 			}
-			g2.drawLine(x0, y0, x1, y1);
+			drawLine(g2, x0, y0, x1, y1);
 		}
 
-		// and for x axis
+		// draw x axis label and grid lines.
 		for (int i = 0; i < size; i++) {
 			if (size > 1) {
 				int x0 = i * (getWidth() - padding * 2 - leftLabelPadding) / (size - 1) + padding + leftLabelPadding;
@@ -102,9 +127,11 @@ public class LineChart extends JPanel {
 				int y0 = getHeight() - padding - bottomLabelPadding;
 				int y1 = y0 - pointWidth;
 				if ((i % ((int) ((size / 20.0)) + 1)) == 0) {
-					g2.setColor(gridColor);
-					g2.drawLine(x0, getHeight() - padding - bottomLabelPadding - 1 - pointWidth, x1, padding);
-					g2.setColor(Color.BLACK);
+					// skip some values.
+
+					drawLine(g2, x0, getHeight() - padding - bottomLabelPadding - 1 - pointWidth, x1, padding,
+							gridColor);
+
 					String xLabel = model.getXValue(i);//
 					if (xLabel == null) {
 						xLabel = i + "";
@@ -112,17 +139,20 @@ public class LineChart extends JPanel {
 					FontMetrics metrics = g2.getFontMetrics();
 					int labelWidth = metrics.stringWidth(xLabel);
 					// X labels
-					g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
+					drawRotate(g2, xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3, xLabelRotate,
+							Color.BLACK);
 				}
-				g2.drawLine(x0, y0, x1, y1);
+				drawLine(g2, x0, y0, x1, y1);
 			}
 		}
 
-		// create x and y axes
-		g2.drawLine(padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, padding + leftLabelPadding, padding);
-		g2.drawLine(padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, getWidth() - padding,
+		// draw x and y axe line
+		drawLine(g2, padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, padding + leftLabelPadding,
+				padding);
+		drawLine(g2, padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, getWidth() - padding,
 				getHeight() - padding - bottomLabelPadding);
 
+		// draw line segment
 		Stroke oldStroke = g2.getStroke();
 		g2.setColor(lineColor);
 		g2.setStroke(GRAPH_STROKE);
@@ -131,10 +161,11 @@ public class LineChart extends JPanel {
 			int y1 = graphPoints.get(i).y;
 			int x2 = graphPoints.get(i + 1).x;
 			int y2 = graphPoints.get(i + 1).y;
-			g2.drawLine(x1, y1, x2, y2);
+			drawLine(g2, x1, y1, x2, y2);
 		}
 
 		g2.setStroke(oldStroke);
+		// draw join point
 		g2.setColor(pointColor);
 		for (int i = 0; i < graphPoints.size(); i++) {
 			int x = graphPoints.get(i).x - pointWidth / 2;

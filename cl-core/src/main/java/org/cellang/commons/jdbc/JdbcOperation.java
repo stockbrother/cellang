@@ -5,8 +5,8 @@ import java.sql.Connection;
 public abstract class JdbcOperation<T> {
 	protected JdbcDataAccessTemplate template;
 
-	public JdbcOperation(JdbcDataAccessTemplate cpw) {
-		this.template = cpw;
+	public JdbcOperation() {
+		this.template = new JdbcDataAccessTemplate();
 	}
 
 	public abstract T execute(Connection con);

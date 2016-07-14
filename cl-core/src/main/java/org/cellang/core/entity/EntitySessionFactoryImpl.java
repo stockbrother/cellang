@@ -7,7 +7,6 @@ import java.util.Date;
 
 import org.cellang.commons.jdbc.ConnectionProvider;
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
-import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 
 	public EntitySessionFactoryImpl(ConnectionProvider pool, EntityConfigFactory ecf, boolean isNew) {
 		this.pool = pool;
-		this.dataAccessTemplate = new JdbcDataAccessTemplate(pool);
+		this.dataAccessTemplate = new JdbcDataAccessTemplate();
 		this.isNew = isNew;
 
 	}
@@ -37,7 +36,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 		String dbUrl = "jdbc:h2:" + dbHome.getAbsolutePath().replace('\\', '/') + "/" + dbName;
 		LOG.info("dbUrl:" + dbUrl);
 		ConnectionProvider pool = H2ConnectionPoolWrapper.newInstance(dbUrl, "sa", "sa");
-		JdbcDataAccessTemplate template = new JdbcDataAccessTemplate(pool);
+		JdbcDataAccessTemplate template = new JdbcDataAccessTemplate();
 		EntitySessionFactoryImpl rt = new EntitySessionFactoryImpl(pool, ecf, isNew);
 
 		if (!isNew) {

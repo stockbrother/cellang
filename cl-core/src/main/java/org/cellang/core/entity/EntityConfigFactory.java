@@ -71,14 +71,14 @@ public class EntityConfigFactory {
 	}
 
 	public void initTables(EntitySession es, JdbcDataAccessTemplate pool) {
-		JdbcOperation<Void> op = new JdbcOperation<Void>(pool) {
+		JdbcOperation<Void> op = new JdbcOperation<Void>() {
 			@Override
 			public Void execute(Connection con) {
 				for (EntityConfig ec : EntityConfigFactory.this.entityConfigList) {
 					String viewSql = ec.getCreateViewSql();
 					if (viewSql == null) {
 
-						CreateTableOperation cto = new CreateTableOperation(pool, ec.getTableName());
+						CreateTableOperation cto = new CreateTableOperation(ec.getTableName());
 
 						ec.fillCreate(cto);
 						cto.execute(con);
@@ -95,7 +95,7 @@ public class EntityConfigFactory {
 	}
 
 	public void initIndices(EntitySession es, JdbcDataAccessTemplate template) {
-		JdbcOperation<Void> op = new JdbcOperation<Void>(template) {
+		JdbcOperation<Void> op = new JdbcOperation<Void>() {
 
 			@Override
 			public Void execute(Connection con) {

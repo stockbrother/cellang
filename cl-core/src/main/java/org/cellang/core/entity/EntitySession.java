@@ -8,8 +8,6 @@ import org.cellang.commons.jdbc.JdbcOperation;
 
 public interface EntitySession {
 
-	public JdbcDataAccessTemplate getDataAccessTemplate() ;
-
 	public void close(boolean commit) ;
 
 	public <T> T getSingle(Class cls, String field, Object arg) ;

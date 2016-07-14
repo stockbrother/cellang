@@ -31,8 +31,8 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 	private List<Tuple2<String, Class>> columnList = new ArrayList<Tuple2<String, Class>>();
 	private List<String> primaryKeyList = new ArrayList<String>();
 
-	public CreateTableOperation(JdbcDataAccessTemplate cpw, String table) {
-		super(cpw);
+	public CreateTableOperation(String table) {
+		super();
 		this.tableName = table;
 	}
 

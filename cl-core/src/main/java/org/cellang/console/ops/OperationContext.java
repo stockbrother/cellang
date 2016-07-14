@@ -109,7 +109,11 @@ public class OperationContext {
 	 * @param source
 	 */
 	public void wash(String source) {
-		new WashOp().set(this.dataHome,source).execute(this);
+		new WashOp().set(this.dataHome, source).execute(this);
+	}
+
+	public void chart(String corpId, String itemKey) {
+		
 	}
 
 	public void chart(int xColNumber, int yColNumber) {
@@ -129,10 +133,10 @@ public class OperationContext {
 		}
 		loader.loadDir(qfile);
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		this.clear();
-		this.load("163pp");		
+		this.load("163pp");
 	}
 
 	public void clear() {

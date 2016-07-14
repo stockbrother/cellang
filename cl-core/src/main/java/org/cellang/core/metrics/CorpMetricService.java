@@ -55,7 +55,7 @@ public class CorpMetricService {
 		String sql = "select itm.value from " + rc.getItemEntityConfig().getTableName() + " itm,"
 				+ rc.getReportEntityConfig().getTableName()
 				+ " rpt where itm.reportId = rpt.id and rpt.corpId=? and rpt.reportDate=? and itm.key = ?";
-		JdbcOperation<Double> op = new JdbcOperation<Double>(this.entityService.getDataAccessTemplate()) {
+		JdbcOperation<Double> op = new JdbcOperation<Double>() {
 
 			@Override
 			public Double execute(Connection con) {

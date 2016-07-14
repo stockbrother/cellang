@@ -69,12 +69,12 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 			sql.append(" offset ").append(this.offset);
 		}
 
-		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>(es.getDataAccessTemplate()) {
+		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>() {
 
 			@Override
 			public List<T> execute(Connection con) {
 
-				return (List<T>) es.getDataAccessTemplate().executeQuery(con, sql.toString(),
+				return (List<T>) template.executeQuery(con, sql.toString(),
 						EntityQuery.this.queryArgs, rsp);
 			}
 		};
