@@ -113,7 +113,7 @@ public class OperationContext {
 	}
 
 	public void chart(String corpId, String itemKey) {
-		
+		new ChartOp2(this).set(corpId, itemKey).execute(this);
 	}
 
 	public void chart(int xColNumber, int yColNumber) {

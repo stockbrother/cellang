@@ -20,10 +20,10 @@ public class JdbcDataAccessTemplate {
 		}
 	};
 
-	private static PreparedStatementExecutor UPDATE = new PreparedStatementExecutor() {
+	private static PreparedStatementExecutor<Long> UPDATE = new PreparedStatementExecutor<Long>() {
 
 		@Override
-		public Object execute(PreparedStatement ps) throws SQLException {
+		public Long execute(PreparedStatement ps) throws SQLException {
 			int rt = ps.executeUpdate();
 			return Long.valueOf(rt);//
 		}
@@ -46,11 +46,11 @@ public class JdbcDataAccessTemplate {
 		return (Long) execute(con, sql, new ArrayParameterProvider(pp), UPDATE);
 	}
 
-	public Object execute(Connection con, String sql, ParameterProvider pp, PreparedStatementExecutor pse) {
-		JdbcOperation<Object> op = new JdbcOperation<Object>() {
+	public <T> T execute(Connection con, String sql, ParameterProvider pp, PreparedStatementExecutor<T> pse) {
+		JdbcOperation<T> op = new JdbcOperation<T>() {
 
 			@Override
-			public Object execute(Connection con) {
+			public T execute(Connection con) {
 				try {
 
 					PreparedStatement ps = con.prepareStatement(sql);
@@ -75,13 +75,13 @@ public class JdbcDataAccessTemplate {
 
 	}
 
-	public Object executeQuery(Connection con, String sql, ResultSetProcessor rsp) {
-		return execute(con, sql, EMPTY, new ResultSetProcessorPreparedStatementExecutor(rsp));
+	public <T> T executeQuery(Connection con, String sql, ResultSetProcessor<T> rsp) {
+		return execute(con, sql, EMPTY, new ResultSetProcessorPreparedStatementExecutor<T>(rsp));
 	}
 
-	public Object executeQuery(Connection con, String sql, Object[] objects, ResultSetProcessor rsp) {
+	public <T> T executeQuery(Connection con, String sql, Object[] objects, ResultSetProcessor<T> rsp) {
 		return execute(con, sql, new ArrayParameterProvider(objects),
-				new ResultSetProcessorPreparedStatementExecutor(rsp));
+				new ResultSetProcessorPreparedStatementExecutor<T>(rsp));
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.cellang.commons.jdbc.ConnectionProvider;
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
+import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.slf4j.Logger;
@@ -120,6 +121,19 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 	@Override
 	public boolean isNew() {
 		return isNew;
+	}
+
+	@Override
+	public <T> T execute(JdbcOperation<T> op) {
+		EntityOp<T> eop = new EntityOp<T>() {
+
+			@Override
+			public T execute(EntitySession es) {
+
+				return es.execute(op);
+			}
+		};
+		return this.execute(eop);
 	}
 
 }

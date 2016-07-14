@@ -3,7 +3,6 @@ package org.cellang.core.entity;
 import java.util.Iterator;
 import java.util.List;
 
-import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
 import org.cellang.commons.jdbc.JdbcOperation;
 
 public interface EntitySession {
