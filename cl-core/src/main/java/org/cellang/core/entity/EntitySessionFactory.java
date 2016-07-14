@@ -1,6 +1,7 @@
 package org.cellang.core.entity;
 
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
+import org.cellang.commons.jdbc.JdbcOperation;
 
 public interface EntitySessionFactory {
 
@@ -20,6 +21,8 @@ public interface EntitySessionFactory {
 	 * @return
 	 */
 	public <T> T execute(EntityOp<T> op);
+	
+	public <T> T execute(JdbcOperation<T> op);
 
 	/**
 	 * 
