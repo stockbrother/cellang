@@ -36,37 +36,6 @@ public class JdbcDataAccessTemplate {
 		this.connectionProvider = connectionProvider;
 	}
 
-	public <T> T execute(JdbcOperation<T> op) throws SQLException {
-
-		Connection c = this.connectionProvider.openConnection();
-		if (c.getAutoCommit()) {
-			throw new RuntimeException("auto commit not allowed.");
-		}
-		try {
-			T rt = null;
-			try {
-				rt = op.execute(c);//
-			} catch (Throwable t) {
-
-				c.rollback();
-				if (t instanceof SQLException) {
-					throw (SQLException) t;
-				} else if (t instanceof RuntimeException) {
-					throw (RuntimeException) t;
-				} else if (t instanceof Error) {
-					throw (Error) t;
-				} else {
-					throw new RuntimeException(t);
-				}
-			}
-			c.commit();
-
-			return rt;
-		} finally {
-			c.close();
-		}
-	}
-
 	public long executeUpdate(Connection con, String sql) {
 		Long rt = (Long) execute(con, sql, EMPTY, UPDATE);
 		return rt.longValue();

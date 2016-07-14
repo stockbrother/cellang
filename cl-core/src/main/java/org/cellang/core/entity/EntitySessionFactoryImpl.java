@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.cellang.commons.jdbc.ConnectionProvider;
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
+import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 					es.save(di);
 				}
 			} finally {
-				es.close();
+				es.close(true);
 			}
 		}
 		return rt;
@@ -81,6 +82,9 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 	public EntitySession openSession() {
 		try {
 			Connection c = this.pool.openConnection();
+			if (c.getAutoCommit()) {
+				throw new RuntimeException("auto commit not allowed.");
+			}
 			EntitySessionImpl rt = new EntitySessionImpl(c, this.entityConfigFactory, this);
 			return rt;
 		} catch (SQLException e) {
@@ -93,9 +97,24 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 	public <T> T execute(EntityOp<T> op) {
 		EntitySession es = this.openSession();
 		try {
-			return op.execute(es);
+			T rt = null;
+			try {
+				rt = op.execute(es);//
+			} catch (Throwable t) {
+
+				es.rollback();
+				if (t instanceof RuntimeException) {
+					throw (RuntimeException) t;
+				} else if (t instanceof Error) {
+					throw (Error) t;
+				} else {
+					throw new RuntimeException(t);
+				}
+			}
+
+			return rt;
 		} finally {
-			es.close();
+			es.close(true);
 		}
 	}
 

@@ -109,25 +109,11 @@ public class OperationContext {
 	 * @param source
 	 */
 	public void wash(String source) {
-
-		File from = new File(this.dataHome, source);
-		if (!from.exists()) {
-			LOG.error("no data folder found:" + from);
-		}
-
-		File to = new File(this.dataHome, source + "pp");
-		if ("163".equals(source)) {
-			new NeteasePreprocessor(from, to).process();
-		} else if ("sina".equals(source)) {
-			new SinaAllQuotesPreprocessor(from, to).process();
-		} else {
-			LOG.error("no source found:" + source);
-		}
+		new WashOp().set(this.dataHome,source).execute(this);
 	}
 
 	public void chart(int xColNumber, int yColNumber) {
-		ChartOp op = new ChartOp(this, xColNumber, yColNumber);
-		op.execute();
+		new ChartOp(this, xColNumber, yColNumber).execute(this);
 	}
 
 	/**
@@ -142,6 +128,11 @@ public class OperationContext {
 			return;
 		}
 		loader.loadDir(qfile);
+	}
+	
+	public void reset(){
+		this.clear();
+		this.load("163pp");		
 	}
 
 	public void clear() {
@@ -201,8 +192,8 @@ public class OperationContext {
 	}
 
 	public void print(String metric) throws IOException {
-		
-		List<CorpMetricEntity> metricL = null;//ms.getMetricList(metric);
+
+		List<CorpMetricEntity> metricL = null;// ms.getMetricList(metric);
 		File output = FileUtil.newFile(dataHome, new String[] { "" + metric + ".csv" });
 		Writer fw = new OutputStreamWriter(new FileOutputStream(output));
 		EntityCsvWriter cw = new EntityCsvWriter(fw, entityConfigFactory.get(CorpMetricEntity.class), converterMap);

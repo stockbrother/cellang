@@ -74,7 +74,7 @@ public class EntitySessionImpl implements EntitySession {
 	}
 
 	public void saveAll(List<EntityObject> seList) {
-		saveAll((Iterator<EntityObject>) seList);
+		saveAll(seList.iterator());
 	}
 
 	public void saveAll(Iterator<EntityObject> eoIt) {
@@ -146,8 +146,12 @@ public class EntitySessionImpl implements EntitySession {
 	}
 
 	@Override
-	public void close() {
+	public void close(boolean commit) {
+
 		try {
+			if (commit) {
+				this.commit();
+			}
 			this.con.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -161,9 +165,22 @@ public class EntitySessionImpl implements EntitySession {
 
 	@Override
 	public <T> T execute(JdbcOperation<T> op) {
-		
+		return op.execute(this.con);
+	}
+
+	@Override
+	public void rollback() {
 		try {
-			return this.template.execute(op);
+			this.con.rollback();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void commit() {
+		try {
+			this.con.commit();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

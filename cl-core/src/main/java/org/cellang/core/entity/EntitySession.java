@@ -10,7 +10,7 @@ public interface EntitySession {
 
 	public JdbcDataAccessTemplate getDataAccessTemplate() ;
 
-	public void close() ;
+	public void close(boolean commit) ;
 
 	public <T> T getSingle(Class cls, String field, Object arg) ;
 
@@ -46,5 +46,9 @@ public interface EntitySession {
 	public void clear() ;
 
 	public <T> T execute(JdbcOperation<T> op);
+
+	public void rollback();
+	
+	public void commit();
 	
 }

@@ -21,40 +21,43 @@ public class EntityServiceTest extends TestCase {
 		EntitySessionFactory esf = EntitySessionFactoryImpl.newInstance(dbHome, dbName, new EntityConfigFactory());
 		GetSingleEntityOp<AccountEntity> getOp = new GetSingleEntityOp<>();
 
-		EntitySession es = esf.openSession();
-
 		String email = "email1";
-		String nick = "nick1";
-		String password = "password1";
-		AccountEntity ae = new AccountEntity();
-		ae.setId(email);//
-		ae.setEmail(email);
-		ae.setNick(nick);
-		ae.setPassword(password);
-
-		es.save(ae);
-		Exception exp = null;
+		EntitySession es = esf.openSession();
 		try {
+
+			String nick = "nick1";
+			String password = "password1";
+			AccountEntity ae = new AccountEntity();
+			ae.setId(email);//
+			ae.setEmail(email);
+			ae.setNick(nick);
+			ae.setPassword(password);
+
 			es.save(ae);
-		} catch (Exception e) {
-			exp = e;
+			Exception exp = null;
+			try {
+				es.save(ae);
+			} catch (Exception e) {
+				exp = e;
+			}
+
+			assertNotNull("duplicated exception not raised.", exp);
+
+			AccountEntity ae2 = es.getSingle(AccountEntity.class, "email", email);
+			assertNotNull("cannot get the saved entity", ae2);
+			assertEquals(email, ae2.getId());
+			assertEquals(email, ae2.getEmail());
+			assertEquals(nick, ae2.getNick());
+			assertEquals(password, ae2.getPassword());
+			es.commit();
+		} finally {
+			es.close(false);
 		}
-
-		assertNotNull("duplicated exception not raised.", exp);
-
-		AccountEntity ae2 = es.getSingle(AccountEntity.class, "email", email);
-		assertNotNull(ae2);
-		assertEquals(email, ae2.getId());
-		assertEquals(email, ae2.getEmail());
-		assertEquals(nick, ae2.getNick());
-		assertEquals(password, ae2.getPassword());
-
-		es.close();
 
 		EntitySessionFactory es2 = EntitySessionFactoryImpl.newInstance(dbHome, dbName, new EntityConfigFactory());
 
 		AccountEntity aeX = getOp.set(AccountEntity.class, "email", email).execute(es2);
-		assertNotNull(aeX);
+		assertNotNull("not found entity saved from another session", aeX);
 
 	}
 }
