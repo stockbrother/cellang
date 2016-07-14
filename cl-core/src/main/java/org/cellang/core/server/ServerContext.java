@@ -1,20 +1,20 @@
 package org.cellang.core.server;
 
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntitySession;
 import org.h2.jdbcx.JdbcConnectionPool;
 
 public class ServerContext {
 
-	private EntityService entityService;
+	private EntitySession entityService;
 	
 	private String dbUrl;
 
-	public ServerContext(EntityService es) {
+	public ServerContext(EntitySession es) {
 		this.entityService = es;
 	}
 
-	public EntityService getEntityService() {
+	public EntitySession getEntityService() {
 
 		return this.entityService;
 	}

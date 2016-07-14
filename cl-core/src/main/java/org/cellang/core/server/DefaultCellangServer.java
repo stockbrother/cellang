@@ -12,7 +12,8 @@ import org.cellang.commons.dispatch.Dispatcher;
 import org.cellang.commons.lang.Handler;
 import org.cellang.commons.lang.NameSpace;
 import org.cellang.core.entity.EntityConfigFactory;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntitySessionFactory;
+import org.cellang.core.entity.EntitySessionFactoryImpl;
 import org.cellang.core.lang.ErrorInfo;
 import org.cellang.core.lang.MessageI;
 import org.cellang.core.lang.MessageSupport;
@@ -54,8 +55,10 @@ public class DefaultCellangServer implements MessageServer {
 		LOG.info("start... with home:" + this.home.getAbsolutePath());
 		File dbHome = new File(home.getAbsolutePath() + File.separator + "db");
 		String dbName = "h2db";
-		EntityService es = EntityService.newInstance(dbHome, dbName,ecf);
-		this.serverContext = new ServerContext(es);
+		EntitySessionFactory ef = EntitySessionFactoryImpl.newInstance(dbHome, dbName,ecf);
+		
+		//TODO
+		this.serverContext = new ServerContext(null);
 
 		// TODO handler should be state-less and dispatcher should be removed.
 		// each message should be self process-able when the context is ready.

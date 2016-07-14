@@ -34,7 +34,8 @@ public class H2ConnectionPoolWrapper implements ConnectionProvider {
 		LOG.info("connection pool created");
 		return new H2ConnectionPoolWrapper(pool);
 	}
-
+	
+	@Override
 	public void dispose() {
 		this.pool.dispose();
 		LOG.info("connection pool closed");//

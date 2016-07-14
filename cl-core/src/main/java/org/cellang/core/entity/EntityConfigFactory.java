@@ -70,7 +70,7 @@ public class EntityConfigFactory {
 		return this.entityConfigMap.get(entityClass);
 	}
 
-	public void initTables(JdbcDataAccessTemplate pool) {
+	public void initTables(EntitySession es, JdbcDataAccessTemplate pool) {
 		JdbcOperation<Void> op = new JdbcOperation<Void>(pool) {
 			@Override
 			public Void execute(Connection con) {
@@ -91,11 +91,11 @@ public class EntityConfigFactory {
 				return null;
 			}
 		};
-		op.execute();
+		es.execute(op);
 	}
 
-	public void initIndices(JdbcDataAccessTemplate pool) {
-		JdbcOperation<Void> op = new JdbcOperation<Void>(pool) {
+	public void initIndices(EntitySession es, JdbcDataAccessTemplate template) {
+		JdbcOperation<Void> op = new JdbcOperation<Void>(template) {
 
 			@Override
 			public Void execute(Connection con) {
@@ -112,14 +112,15 @@ public class EntityConfigFactory {
 							}
 						}
 						sql += ")";
-						pool.executeUpdate(con, sql);
+						this.template.executeUpdate(con, sql);
 					}
-				}
+				}				
 				return null;
 			}
 
 		};
 
+		es.execute(op);
 	}
 
 }

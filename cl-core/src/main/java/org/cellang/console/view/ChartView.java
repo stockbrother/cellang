@@ -7,12 +7,13 @@ import org.cellang.console.chart.LineChart;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntityQuery;
+import org.cellang.core.entity.EntitySessionFactory;
 
 public class ChartView extends AbstractView implements DataPageQuerable {
 	LineChart chart;
 
-	protected EntityService entityService;
+	protected EntitySessionFactory entityService;
 	protected int pageSize;
 
 	protected int pageNumber = -1;
@@ -20,7 +21,7 @@ public class ChartView extends AbstractView implements DataPageQuerable {
 	EntityConfig cfg;
 
 	public ChartView(String title, EntityConfig cfg, Method xGetMethod, Method yGetMethod, int pageSize,
-			EntityService es) {
+			EntitySessionFactory es) {
 		super(title);
 		this.cfg = cfg;
 		this.entityService = es;
@@ -42,8 +43,8 @@ public class ChartView extends AbstractView implements DataPageQuerable {
 
 	private void query() {
 		int offset = this.pageNumber * this.pageSize;
-		List<? extends EntityObject> el = this.entityService.query(cfg.getEntityClass()).offset(offset)
-				.limit(this.pageSize).executeQuery();
+		List<? extends EntityObject> el = new EntityQuery<>(cfg).offset(offset).limit(this.pageSize).execute(this.entityService);
+		
 		model.setEntityObjectList(el);
 
 		this.updateUI();

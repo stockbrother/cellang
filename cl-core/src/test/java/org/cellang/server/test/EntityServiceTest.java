@@ -4,10 +4,12 @@ import java.io.File;
 
 import org.cellang.core.entity.AccountEntity;
 import org.cellang.core.entity.EntityConfigFactory;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntitySession;
+import org.cellang.core.entity.EntitySessionFactory;
+import org.cellang.core.entity.EntitySessionFactoryImpl;
+import org.cellang.core.entity.GetSingleEntityOp;
 import org.cellang.core.util.FileUtil;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class EntityServiceTest extends TestCase {
@@ -16,7 +18,11 @@ public class EntityServiceTest extends TestCase {
 		File dbHome = FileUtil.createTempDir("cl-test-home");
 		dbHome = new File(dbHome, "db");
 		String dbName = "h2db";
-		EntityService es = EntityService.newInstance(dbHome, dbName, new EntityConfigFactory());
+		EntitySessionFactory esf = EntitySessionFactoryImpl.newInstance(dbHome, dbName, new EntityConfigFactory());
+		GetSingleEntityOp<AccountEntity> getOp = new GetSingleEntityOp<>();
+
+		EntitySession es = esf.openSession();
+
 		String email = "email1";
 		String nick = "nick1";
 		String password = "password1";
@@ -45,8 +51,9 @@ public class EntityServiceTest extends TestCase {
 
 		es.close();
 
-		EntityService es2 = EntityService.newInstance(dbHome, dbName, new EntityConfigFactory());
-		AccountEntity aeX = es2.getSingle(AccountEntity.class, "email", email);
+		EntitySessionFactory es2 = EntitySessionFactoryImpl.newInstance(dbHome, dbName, new EntityConfigFactory());
+
+		AccountEntity aeX = getOp.set(AccountEntity.class, "email", email).execute(es2);
 		assertNotNull(aeX);
 
 	}

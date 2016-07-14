@@ -105,7 +105,7 @@ public class JdbcDataAccessTemplate {
 			}
 		};
 
-		return op.execute();
+		return op.execute(con);
 
 	}
 

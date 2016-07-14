@@ -3,7 +3,7 @@ package org.cellang.core.server.handler;
 import org.cellang.commons.ObjectUtil;
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
 import org.cellang.core.entity.AccountEntity;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntitySession;
 import org.cellang.core.server.AbstracHandler;
 import org.cellang.core.server.MessageContext;
 import org.cellang.core.server.ServerContext;

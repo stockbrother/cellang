@@ -14,7 +14,8 @@ import org.cellang.commons.jdbc.ResultSetProcessor;
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.CorpMetricEntity;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntitySession;
+import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +24,13 @@ public class CorpMetricService {
 
 	private Map<String, MetricCalculator> metricDefineMap = new HashMap<String, MetricCalculator>();
 
-	private EntityService entityService;
+	private EntitySession entityService;
 
 	private ReportConfigFactory reportConfigFactory;
 
-	public CorpMetricService(EntityService es) {
-		this.entityService = es;
-		this.reportConfigFactory = new ReportConfigFactory(es.getEntityConfigFactory());
+	public CorpMetricService(EntitySession ef) {
+		this.entityService = ef;
+		this.reportConfigFactory = new ReportConfigFactory(ef.getEntityConfigFactory());
 		this.add(new FuzhaiQuanyiBiMetricCalculator(this.reportConfigFactory));
 		this.add(new EarningPerShareMetricCalculator(this.reportConfigFactory));
 		this.add(new QuotesMetricCalculator(this.reportConfigFactory));//
@@ -73,7 +74,7 @@ public class CorpMetricService {
 			}
 		};
 
-		return op.execute();
+		return this.entityService.execute(op);
 
 	}
 
@@ -118,10 +119,10 @@ public class CorpMetricService {
 	public List<CorpMetricEntity> getMetricList(String key) {
 
 		return this.entityService.query(CorpMetricEntity.class, "key", key)
-				.orderBy(new String[] { "corpId,reportDate desc" }).executeQuery();//
+				.orderBy(new String[] { "corpId,reportDate desc" }).execute(this.entityService);//
 	}
 
-	public EntityService getEntityService() {
+	public EntitySession getEntityService() {
 		return entityService;
 	}
 }

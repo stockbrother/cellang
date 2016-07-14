@@ -9,23 +9,31 @@ import java.util.List;
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
 
-public class EntityQuery<T extends EntityObject> {
+public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 	private EntityConfig entityConfig;
 	private String[] queryFields;
 	private Object[] queryArgs;
 	private String[] orderBy;
-	private EntityService es;
 	private Integer limit;
 	private Integer offset;
 
-	public EntityQuery(EntityService es, Class<T> cls, String[] qfields, Object[] args) {
-		this.es = es;
-		this.entityConfig = es.getEntityConfigFactory().get(cls);//
+	public EntityQuery(EntityConfigFactory ecf, Class<T> cls, String[] qfields, Object[] args) {
+		this(ecf.get(cls), qfields, args);
+	}
+
+	public EntityQuery(EntityConfig ec) {
+		this(ec, new String[] {}, new Object[] {});
+	}
+
+	public EntityQuery(EntityConfig ec, String[] qfields, Object[] args) {
+
+		this.entityConfig = ec;//
 		this.queryFields = qfields;
 		this.queryArgs = args;
 	}
 
-	public List<T> executeQuery() {
+	@Override
+	public List<T> execute(EntitySession es) {
 		ResultSetProcessor rsp = new ResultSetProcessor() {
 
 			@Override
@@ -61,15 +69,17 @@ public class EntityQuery<T extends EntityObject> {
 			sql.append(" offset ").append(this.offset);
 		}
 
-		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>(es.getDataAccessTemplate()){
+		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>(es.getDataAccessTemplate()) {
 
 			@Override
 			public List<T> execute(Connection con) {
-				
-				return (List<T>) es.getDataAccessTemplate().executeQuery(con,sql.toString(), EntityQuery.this.queryArgs, rsp);
-			}};
-		
-		List<T> rt = op.execute();
+
+				return (List<T>) es.getDataAccessTemplate().executeQuery(con, sql.toString(),
+						EntityQuery.this.queryArgs, rsp);
+			}
+		};
+
+		List<T> rt = es.execute(op);
 		return rt;
 	}
 

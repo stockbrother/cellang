@@ -4,25 +4,29 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntitySession;
+import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DataLoader {
 	private static final Logger LOG = LoggerFactory.getLogger(DataLoader.class);
 
-	private EntityService es;
+	private EntitySessionFactory esf;
 	private Map<String, FileProcessor> processMap = new HashMap<String, FileProcessor>();
 
-	public DataLoader(EntityService es) {
-		this.es = es;
-		processMap.put("corplist", new CorpListFileProcessor(es));
-		processMap.put("zcfzb", new BalanceSheetFileProcessor(es));
-		processMap.put("lrb", new IncomeStatementFileProcessor(es));
-		processMap.put("all-quotes", new AllQuotesFileProcessor(es));
+	public DataLoader(EntitySessionFactory esf) {
+		this.esf = esf;		
+		processMap.put("corplist", new CorpListFileProcessor(esf));
+		processMap.put("zcfzb", new BalanceSheetFileProcessor(esf));
+		processMap.put("lrb", new IncomeStatementFileProcessor(esf));
+		processMap.put("all-quotes", new AllQuotesFileProcessor(esf));
 	}
-
 	public void loadDir(File dir) {
+		EntitySession es = esf.openSession();
+		
+	}
+	public void doLoadDir(File dir,EntitySession es) {
 
 		for (File f : dir.listFiles()) {
 			if (f.isDirectory()) {

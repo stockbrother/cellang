@@ -12,7 +12,8 @@ import org.cellang.console.control.EntityObjectSource;
 import org.cellang.console.control.EntityObjectSourceListener;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntityQuery;
+import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +31,10 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 
 	protected int pageNumber = -1;
 
-	protected EntityService entityService;
+	protected EntitySessionFactory entityService;
 	EntityQueryTableModel model;
 
-	public EntityObjectTableView(EntityConfig cfg, EntityService es, int pageSize) {
+	public EntityObjectTableView(EntityConfig cfg, EntitySessionFactory es, int pageSize) {
 		this.cfg = cfg;
 		this.entityService = es;
 		this.pageSize = pageSize;
@@ -86,8 +87,8 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 
 	private void query() {
 		int offset = this.pageNumber * this.pageSize;
-		List<? extends EntityObject> el = this.entityService.query(cfg.getEntityClass()).offset(offset)
-				.limit(this.pageSize).executeQuery();
+		List<? extends EntityObject> el = new EntityQuery<>(cfg).offset(offset).limit(this.pageSize)
+				.execute(this.entityService);
 		model.list = el;
 
 		this.updateUI();

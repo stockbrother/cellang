@@ -9,7 +9,9 @@ import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.entity.AbstractReportEntity;
 import org.cellang.core.entity.AbstractReportItemEntity;
 import org.cellang.core.entity.EntityConfig;
-import org.cellang.core.entity.EntityService;
+import org.cellang.core.entity.EntityOp;
+import org.cellang.core.entity.EntitySession;
+import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +22,7 @@ import au.com.bytecode.opencsv.CSVReader;
  * 
  * 
  * 
- * </code>
- * Process csv file,load data into db.
+ * </code> Process csv file,load data into db.
  * 
  * @author wu
  *
@@ -32,14 +33,14 @@ public abstract class AbstractReportItemFileProcessor<T extends AbstractReportEn
 		extends FileProcessor {
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractReportItemFileProcessor.class);
 
-	EntityService es;
+	EntitySessionFactory es;
 	Class<T> reportEntityCls;
 	Class<I> itemEntityCls;
 	EntityConfig reportEntityConfig;
 
 	EntityConfig itemEntityConfig;
 
-	public AbstractReportItemFileProcessor(EntityService es, Class<T> entityCls, Class<I> cls2) {
+	public AbstractReportItemFileProcessor(EntitySessionFactory es, Class<T> entityCls, Class<I> cls2) {
 		this.es = es;
 		this.reportEntityCls = entityCls;
 		this.itemEntityCls = cls2;
@@ -50,6 +51,18 @@ public abstract class AbstractReportItemFileProcessor<T extends AbstractReportEn
 
 	@Override
 	public void process(Reader fr) {
+		EntityOp<Void> op = new EntityOp<Void>() {
+
+			@Override
+			public Void execute(EntitySession es) {
+				doProcess(es, fr);
+				return null;
+			}
+		};
+		this.es.execute(op);
+	}
+
+	public void doProcess(EntitySession es, Reader fr) {
 
 		CSVReader reader = new CSVReader(fr);
 		try {
