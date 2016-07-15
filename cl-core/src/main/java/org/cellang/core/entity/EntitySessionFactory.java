@@ -1,3 +1,4 @@
+
 package org.cellang.core.entity;
 
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
