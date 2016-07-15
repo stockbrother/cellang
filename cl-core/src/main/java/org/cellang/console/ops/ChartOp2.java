@@ -6,6 +6,7 @@ import java.util.Date;
 import org.cellang.console.view.AbstractChartDataProvider;
 import org.cellang.console.view.ChartView;
 import org.cellang.console.view.DateChartView;
+import org.cellang.console.view.ReportDate;
 import org.cellang.console.view.ReportItemChartDataProvider;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.core.entity.BalanceSheetItemEntity;
@@ -20,6 +21,7 @@ public class ChartOp2 extends ConsoleOp<Void> {
 	String[] corpIdArray;
 	String itemKey;
 	int pageSize;
+
 	public ChartOp2(OperationContext oc) {
 		this.oc = oc;
 	}
@@ -43,9 +45,9 @@ public class ChartOp2 extends ConsoleOp<Void> {
 		} else {
 			throw new RuntimeException("not supported:" + ec.getEntityClass());
 		}
-		AbstractChartDataProvider<Long> dp = new ReportItemChartDataProvider(this.pageSize, oc.getEntityService(), this.corpIdArray,
-				this.itemKey, ec, ecItem, new Date(2016 - 1900, 12, 31).getTime());
-		
+		AbstractChartDataProvider<ReportDate> dp = new ReportItemChartDataProvider(this.pageSize, oc.getEntityService(),
+				this.corpIdArray, this.itemKey, ec, ecItem, ReportDate.valueOf(2016));
+
 		DateChartView view = new DateChartView("ChartView", dp);
 
 		views.addView(view, true);// TODO Auto-generated method stub

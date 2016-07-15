@@ -21,25 +21,21 @@ import org.slf4j.LoggerFactory;
 public class LineChart<T> extends JPanel {
 	private static final Logger LOG = LoggerFactory.getLogger(LineChart.class);
 	private int padding = 25;
-	
+
 	private int leftLabelPadding = 150;
-	
+
 	private int bottomLabelPadding = 50;
-	
-	private Color lineColor = new Color(44, 102, 230, 180);
-	
-	private Color pointColor = new Color(100, 100, 100, 180);
-	
+
 	private Color gridColor = new Color(200, 200, 200, 200);
-	
-	private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
-	
+	private ColorGenerator cg = new ColorGenerator();
+	private static final Stroke GRAPH_STROKE = new BasicStroke(1f);
+
 	private int pointWidth = 4;
-	
+
 	private int numberYDivisions = 10;
-	
+
 	private ChartModel<T> model;
-	
+
 	private int xLabelRotate = 45;
 
 	private DecimalFormat format = new DecimalFormat("#,##0.00");
@@ -70,7 +66,8 @@ public class LineChart<T> extends JPanel {
 		g2.translate(-(float) x, -(float) y);
 	}
 
-	protected void paintSerial(Graphics2D g2, String sname, int size, double yrange, double ymax) {
+	protected void paintSerial(ColorGenerator cg, Graphics2D g2, String sname, int size, double yrange, double ymax) {
+		Color color = cg.next();
 
 		double xScale = ((double) getWidth() - (2 * padding) - leftLabelPadding) / (size - 1);
 		double yScale = ((double) getHeight() - 2 * padding - bottomLabelPadding) / yrange;
@@ -91,8 +88,8 @@ public class LineChart<T> extends JPanel {
 
 		// draw line segment
 		Stroke oldStroke = g2.getStroke();
-		g2.setColor(lineColor);
-		g2.setStroke(GRAPH_STROKE);
+		g2.setColor(color);
+		//g2.setStroke(GRAPH_STROKE);
 		for (int i = 0; i < graphPoints.size() - 1; i++) {
 			int x1 = graphPoints.get(i).x;
 			int y1 = graphPoints.get(i).y;
@@ -101,9 +98,9 @@ public class LineChart<T> extends JPanel {
 			drawLine(g2, x1, y1, x2, y2);
 		}
 
-		g2.setStroke(oldStroke);
+		//g2.setStroke(oldStroke);
 		// draw join point
-		g2.setColor(pointColor);
+		g2.setColor(color);
 		for (int i = 0; i < graphPoints.size(); i++) {
 			int x = graphPoints.get(i).x - pointWidth / 2;
 			int y = graphPoints.get(i).y - pointWidth / 2;
@@ -125,7 +122,7 @@ public class LineChart<T> extends JPanel {
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		int size = model.getXCount();
+		int size = model.getWindowSize();
 
 		// draw white background
 		g2.setColor(Color.WHITE);
@@ -190,8 +187,9 @@ public class LineChart<T> extends JPanel {
 				getHeight() - padding - bottomLabelPadding);
 		// draw serials
 		List<String> snameL = model.getSerialNameList();
+		cg.reset();
 		for (String sname : snameL) {
-			this.paintSerial(g2, sname, size, range, max);
+			this.paintSerial(cg, g2, sname, size, range, max);
 		}
 	}
 

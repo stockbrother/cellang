@@ -6,15 +6,19 @@ import java.util.List;
 import org.cellang.commons.cache.Cache;
 
 public abstract class ChartSerial<T> {
-	protected Cache<BigDecimal[]> actualMinMax;
 
 	protected BigDecimal preferedMin = BigDecimal.ZERO;
 
 	protected BigDecimal preferedMax = BigDecimal.ONE;
-
-	protected long lastModified = -1;
-
-	public abstract int getXCount();
+	
+	public ChartSerial() {
+		
+	}
+		
+	
+	public abstract int getWindowSize();
+	
+	public abstract void moveWindowTo(T startXValue);
 
 	public abstract List<String> getSerialNameList();
 
@@ -22,23 +26,6 @@ public abstract class ChartSerial<T> {
 
 	public abstract BigDecimal getYValue(String name, T xValue);
 
-	public ChartSerial() {
-		this.actualMinMax = new Cache<BigDecimal[]>(new Cache.Provider<BigDecimal[]>() {
-
-			@Override
-			public BigDecimal[] get() {
-
-				return doGetActualMinMax();
-			}
-
-			@Override
-			public long getModified() {
-				return lastModified;
-			}
-		});
-	}
-	public abstract void clearPoints();
-	
 	public BigDecimal getPreferedMin() {
 		return preferedMin;
 	}
@@ -47,16 +34,12 @@ public abstract class ChartSerial<T> {
 		return preferedMin;
 	}
 
-	public long getLastModified() {
-		return lastModified;
-	}
-
 	public void setPreferedMin(BigDecimal preferedMin) {
 		this.preferedMin = preferedMin;
 	}
 
 	public BigDecimal getDisplayMin() {
-		BigDecimal actual = this.actualMinMax.get()[0];
+		BigDecimal actual = this.doGetActualMinMax()[0];
 		if (actual == null || actual.compareTo(this.preferedMin) > 0) {
 			actual = this.preferedMin;
 		}
@@ -64,7 +47,7 @@ public abstract class ChartSerial<T> {
 	}
 
 	public BigDecimal getDisplayMax() {
-		BigDecimal actual = this.actualMinMax.get()[1];
+		BigDecimal actual = this.doGetActualMinMax()[1];
 		if (actual == null || actual.compareTo(this.preferedMax) < 0) {
 			actual = this.preferedMin;
 		}
@@ -75,7 +58,7 @@ public abstract class ChartSerial<T> {
 		BigDecimal min = null;
 		BigDecimal max = null;
 
-		int count = this.getXCount();
+		int count = this.getWindowSize();
 		List<String> snameL = this.getSerialNameList();
 		for (int i = 0; i < count; i++) {
 			T xValue = this.getXValue(i);
@@ -98,10 +81,6 @@ public abstract class ChartSerial<T> {
 			}
 		}
 		return new BigDecimal[] { min, max };
-	}
-
-	public void modified() {
-		this.lastModified = System.currentTimeMillis();
 	}
 
 }

@@ -6,30 +6,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ObjectArrayListResultSetProcessor;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
 
-public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long> {
+public class ReportItemChartDataProvider extends AbstractChartDataProvider<ReportDate> {
 	EntitySessionFactory esf;
 	EntityConfig reportCfg;
 	EntityConfig itemCfg;
-	long startDate;
+	ReportDate startDate;
 	String itemKey;
 	String[] corpIdArray;
 
 	public ReportItemChartDataProvider(int pageSize, EntitySessionFactory esf, String[] corpIdArray, String itemKey,
-			EntityConfig reportCfg, EntityConfig itemCfg, long startDate) {
+			EntityConfig reportCfg, EntityConfig itemCfg, ReportDate startDate) {
 		super(new ReportItemChartModel(), pageSize);
 		this.corpIdArray = corpIdArray;
 		this.itemKey = itemKey;
 		for (String corpId : corpIdArray) {
-			ReportItemChartSerial ser = new ReportItemChartSerial(corpId, pageSize);
+			ReportItemChartSerial ser = new ReportItemChartSerial(corpId, ReportDate.valueOf(0), this.pageSize);
 			ser.setPreferedMin(BigDecimal.ZERO);//
 			this.model.addSerail(ser);//
 		}
@@ -43,13 +41,9 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long>
 	protected void query() {
 		int offset = this.pageNumber * this.pageSize;
 
-		Calendar dateLarge = Calendar.getInstance();
-		dateLarge.setTimeInMillis(this.startDate);
-		dateLarge.add(Calendar.YEAR, -offset);//
+		ReportDate dateLarge = this.startDate.add(-offset);//
 
-		Calendar dateSmall = Calendar.getInstance();
-		dateSmall.setTimeInMillis(dateLarge.getTimeInMillis());
-		dateSmall.add(Calendar.YEAR, -this.pageSize);
+		ReportDate dateSmall = dateLarge.add(-this.pageSize);
 
 		StringBuffer sql = new StringBuffer().append("select rpt.corpId, rpt.reportDate, itm.value from ")
 				.append(itemCfg.getTableName()).append(" itm,").append(reportCfg.getTableName()).append(" rpt")//
@@ -70,6 +64,7 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long>
 		List<Object> args = new ArrayList<>();
 
 		args.addAll(Arrays.asList(this.corpIdArray));
+		// TODO Use reportDate type
 		args.add(new Date(dateLarge.getTimeInMillis()));
 		args.add(new Date(dateSmall.getTimeInMillis()));
 		args.add(itemKey);
@@ -84,14 +79,18 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long>
 		};
 
 		List<Object[]> list = this.esf.execute(op);
-		this.model.clearPoints();
+
+		this.model.moveWindowTo(dateLarge);//
+		Calendar c = Calendar.getInstance();
+
 		for (Object[] row : list) {
 			int col = 0;
 			String corpId = (String) row[col++];
-			ReportItemChartSerial ser = (ReportItemChartSerial) this.model.getSerial(corpId);			
+			ReportItemChartSerial ser = (ReportItemChartSerial) this.model.getSerial(corpId);
 			Date reportDate = (Date) row[col++];
 			BigDecimal value = (BigDecimal) row[col++];
-			ser.addPoint(reportDate.getTime(), value);
+			c.setTime(reportDate);
+			ser.addPoint(ReportDate.valueOf(c.get(Calendar.YEAR)), value);
 
 		}
 

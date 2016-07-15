@@ -10,28 +10,31 @@ public class CompoundGrowModel extends ChartSingleSerial<Integer> {
 
 	private BigDecimal growRatio;
 
-	private int years;
+	private int size;
+	
+	private int offset = 0;
 
 	public CompoundGrowModel(BigDecimal init, BigDecimal growRatio, int years) {
 		super("default");
 		this.init = init;
 		this.growRatio = growRatio;
-		this.years = years;
+		this.size = years;
 	}
 
 	@Override
-	public int getXCount() {
-		return this.years;
+	public int getWindowSize() {
+		return this.size;
 	}
 
 	@Override
-	public Integer getXValue(int idx) {
-		return idx;
+	public Integer getXValue(int idx) {		
+		return this.offset + idx;
 	}
 
 	@Override
 	public BigDecimal getYValue(Integer idx) {
-		if (idx < 0 || idx > this.years) {
+		
+		if (idx < 0 || idx > this.size) {
 			return null;
 		}
 		BigDecimal rt = new BigDecimal(Math.pow(1 + growRatio.doubleValue(), idx));
@@ -41,8 +44,9 @@ public class CompoundGrowModel extends ChartSingleSerial<Integer> {
 	
 
 	@Override
-	public void clearPoints() {
+	public void moveWindowTo(Integer offset) {
 		//not support
+		this.offset = offset;
 	}
 
 }

@@ -2,11 +2,11 @@ package org.cellang.console.chart;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class ChartSingleSerial<T> extends ChartSerial<T> {
 	protected String name;
-
 	public ChartSingleSerial(String name) {
 		this.name = name;
 	}

@@ -16,40 +16,20 @@ public class ChartModel<T> extends ChartSerial<T> {
 
 	private Map<String, ChartSingleSerial<T>> serialMap = new HashMap<>();
 
-	private Cache<List<T>> xList;
-
-	private Comparator<T> xValueSorter;
-
-	public Comparator<T> getxValueSorter() {
-		return xValueSorter;
-	}
-
-	public void setXValueSorter(Comparator<T> xValueSorter) {
-		this.xValueSorter = xValueSorter;
-	}
-
 	public ChartModel() {
-
-		this.xList = new Cache<List<T>>(new Cache.Provider<List<T>>() {
-
-			@Override
-			public List<T> get() {
-
-				return doGetXlist();
-			}
-
-			@Override
-			public long getModified() {
-				return doGetModified();
-			}
-		});
+		
 	}
 
 	public ChartModel(ChartSingleSerial<T> css) {
 		this();
 		this.addSerail(css);
 	}
-
+	public List<ChartSingleSerial<T>> getSerialList(){
+		List<ChartSingleSerial<T>> rt = new ArrayList<>();
+		rt.addAll(this.serialMap.values());
+		return rt;
+	}
+	
 	public ChartSingleSerial<T> getSerial(String sname) {
 		return serialMap.get(sname);
 	}
@@ -57,50 +37,13 @@ public class ChartModel<T> extends ChartSerial<T> {
 	public void addSerail(ChartSingleSerial<T> css) {
 		String key = css.getName();
 		ChartSingleSerial<T> old = this.serialMap.put(key, css);
-		this.modified();
-	}
-
-	protected long doGetModified() {
-		long modified = -1;
-		for (ChartSingleSerial<T> cs : serialMap.values()) {
-			if (modified < cs.lastModified) {
-				modified = cs.lastModified;
-			}
-		}
-		return modified;
-	}
-
-	protected List<T> doGetXlist() {
-
-		Set<T> set = new HashSet<>();
-
-		for (ChartSingleSerial<T> css : serialMap.values()) {
-			int countI = css.getXCount();
-			for (int i = 0; i < countI; i++) {
-				set.add(css.getXValue(i));
-			}
-		}
 		
-		@SuppressWarnings("unchecked")
-		T[] xA = (T[])new Object[set.size()];
-		xA = set.toArray(xA);
-		if (this.xValueSorter == null) {
-			Arrays.sort(xA);//
-		} else {
-			
-			Arrays.sort(xA, this.xValueSorter);
-		}
-		
-		List<T> rt = new ArrayList<T>();		
-		for (Object x : xA) {
-			rt.add((T) x);
-		}
-		return rt;
 	}
 
 	@Override
-	public int getXCount() {
-		return this.xList.get().size();
+	public int getWindowSize() {
+		
+		return this.serialMap.values().iterator().next().getWindowSize();
 	}
 
 	@Override
@@ -116,18 +59,19 @@ public class ChartModel<T> extends ChartSerial<T> {
 
 	@Override
 	public T getXValue(int idx) {
-		return this.xList.get().get(idx);//
+		return this.serialMap.values().iterator().next().getXValue(idx);
 	}
 
 	@Override
 	public BigDecimal getYValue(String name, T xValue) {
 		return this.getSerial(name).getYValue(xValue);
 	}
+	
 	@Override
-	public void clearPoints() {
+	public void moveWindowTo(T startXValue) {
 		for(ChartSerial<T> cs:this.serialMap.values()){
-			cs.clearPoints();
-		}
+			cs.moveWindowTo(startXValue);//
+		}		
 	}
 
 }

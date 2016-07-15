@@ -34,8 +34,7 @@ public class EntityChartModel extends ChartSingleSerial<String> {
 	}
 
 	public void setEntityObjectList(List<? extends EntityObject> list) {
-		this.list = list;
-		super.modified();
+		this.list = list;		
 		this.xValueIndexMap.clear();
 	}
 
@@ -44,7 +43,7 @@ public class EntityChartModel extends ChartSingleSerial<String> {
 	}
 
 	@Override
-	public int getXCount() {
+	public int getWindowSize() {
 		return this.pageSize;
 	}
 
@@ -99,8 +98,8 @@ public class EntityChartModel extends ChartSingleSerial<String> {
 	
 
 	@Override
-	public void clearPoints() {
-		this.list = null;
+	public void moveWindowTo(String start) {
+		//TODO
 	}
 
 }
