@@ -5,33 +5,31 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ObjectArrayListResultSetProcessor;
-import org.cellang.console.chart.ChartModel;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
 
-public class ReportItemChartDataProvider extends AbstractChartDataProvider {
+public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long> {
 	EntitySessionFactory esf;
 	EntityConfig reportCfg;
 	EntityConfig itemCfg;
-	private static final long ONEDAY = 3600 * 1000 * 24;
-
-	ReportItemChartModel model;
+	ReportItemChartSerial serial;
 	long startDate;
 	String itemKey;
 	String corpId;
 
 	public ReportItemChartDataProvider(int pageSize, EntitySessionFactory esf, String corpId, String itemKey,
 			EntityConfig reportCfg, EntityConfig itemCfg, long startDate) {
-		super(pageSize);
+		super(new ReportItemChartModel(), pageSize);
 		this.corpId = corpId;
 		this.itemKey = itemKey;
-		this.model = new ReportItemChartModel(pageSize);
+		this.serial = new ReportItemChartSerial(pageSize);
+		this.serial.setPreferedMin(BigDecimal.ZERO);//
+		this.model.addSerail(this.serial);//
+
 		this.startDate = startDate;
 		this.esf = esf;
 		this.reportCfg = reportCfg;
@@ -56,7 +54,8 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider {
 				.append(" and rpt.reportDate <= ?")//
 				.append(" and rpt.reportDate >= ?")//
 				.append(" and itm.key = ?")//
-				;
+				.append(" order by rpt.reportDate desc")//
+		;
 		Object[] args = new Object[] { this.corpId, new Date(dateLarge.getTimeInMillis()),
 				new Date(dateSmall.getTimeInMillis()), itemKey };
 		JdbcOperation<List<Object[]>> op = new JdbcOperation<List<Object[]>>() {
@@ -80,18 +79,13 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider {
 			valueL.add(value);
 		}
 
-		this.model.setSerial(dateL, valueL);
+		this.serial.setSerial(dateL, valueL);
 		this.view.updateUI();
 	}
 
 	@Override
 	public void nextPage() {
 		super.nextPage();
-	}
-
-	@Override
-	public ChartModel getModel() {
-		return this.model;
 	}
 
 }

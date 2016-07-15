@@ -2,9 +2,9 @@ package org.cellang.console.view;
 
 import java.math.BigDecimal;
 
-import org.cellang.console.chart.ChartModel;
+import org.cellang.console.chart.ChartSingleSerial;
 
-public class CompoundGrowModel extends ChartModel {
+public class CompoundGrowModel extends ChartSingleSerial<Integer> {
 
 	private BigDecimal init;
 
@@ -13,23 +13,27 @@ public class CompoundGrowModel extends ChartModel {
 	private int years;
 
 	public CompoundGrowModel(BigDecimal init, BigDecimal growRatio, int years) {
+		super("default");
 		this.init = init;
 		this.growRatio = growRatio;
 		this.years = years;
 	}
 
 	@Override
-	public int getCount() {
+	public int getXCount() {
 		return this.years;
 	}
 
 	@Override
-	public String getXValue(int idx) {
-		return String.valueOf(idx);
+	public Integer getXValue(int idx) {
+		return idx;
 	}
 
 	@Override
-	public BigDecimal getYValue(int idx) {
+	public BigDecimal getYValue(Integer idx) {
+		if (idx < 0 || idx > this.years) {
+			return null;
+		}
 		BigDecimal rt = new BigDecimal(Math.pow(1 + growRatio.doubleValue(), idx));
 		rt = rt.multiply(this.init);//
 		return rt;

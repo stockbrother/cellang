@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LineChart extends JPanel {
+public class LineChart<T> extends JPanel {
 	private static final Logger LOG = LoggerFactory.getLogger(LineChart.class);
 	private int padding = 25;
 	private int leftLabelPadding = 150;
@@ -29,12 +29,12 @@ public class LineChart extends JPanel {
 	private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
 	private int pointWidth = 4;
 	private int numberYDivisions = 10;
-	private ChartModel model;
+	private ChartModel<T> model;
 	private int xLabelRotate = 45;
 
 	private DecimalFormat format = new DecimalFormat("#,##0.00");
 
-	public LineChart(ChartModel model) {
+	public LineChart(ChartModel<T> model) {
 		this.model = model;
 	}
 
@@ -60,35 +60,62 @@ public class LineChart extends JPanel {
 		g2.translate(-(float) x, -(float) y);
 	}
 
+	protected void paintSerial(Graphics2D g2, String sname, int size, double yrange, double ymax) {
+
+		double xScale = ((double) getWidth() - (2 * padding) - leftLabelPadding) / (size - 1);
+		double yScale = ((double) getHeight() - 2 * padding - bottomLabelPadding) / yrange;
+
+		List<Point> graphPoints = new ArrayList<>();
+		for (int i = 0; i < size; i++) {
+			int x1 = (int) (i * xScale + padding + leftLabelPadding);
+			T xValue = this.model.getXValue(i);
+			BigDecimal yValue = this.model.getYValue(sname, xValue);
+			if (yValue == null) {
+				continue;
+			}
+
+			int y1 = (int) ((ymax - yValue.doubleValue()) * yScale + padding);
+
+			graphPoints.add(new Point(x1, y1));
+		}
+
+		// draw line segment
+		Stroke oldStroke = g2.getStroke();
+		g2.setColor(lineColor);
+		g2.setStroke(GRAPH_STROKE);
+		for (int i = 0; i < graphPoints.size() - 1; i++) {
+			int x1 = graphPoints.get(i).x;
+			int y1 = graphPoints.get(i).y;
+			int x2 = graphPoints.get(i + 1).x;
+			int y2 = graphPoints.get(i + 1).y;
+			drawLine(g2, x1, y1, x2, y2);
+		}
+
+		g2.setStroke(oldStroke);
+		// draw join point
+		g2.setColor(pointColor);
+		for (int i = 0; i < graphPoints.size(); i++) {
+			int x = graphPoints.get(i).x - pointWidth / 2;
+			int y = graphPoints.get(i).y - pointWidth / 2;
+			int ovalW = pointWidth;
+			int ovalH = pointWidth;
+			g2.fillOval(x, y, ovalW, ovalH);
+		}
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		double max = model.getMax().doubleValue();
-		double min = model.getMin().doubleValue();
+
+		double max = model.getDisplayMax().doubleValue();
+		double min = model.getDisplayMin().doubleValue();
 		double range = max - min;
 
 		LOG.debug("paintComponent");
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		int size = model.getCount();
-
-		double xScale = ((double) getWidth() - (2 * padding) - leftLabelPadding) / (size - 1);
-		double yScale = ((double) getHeight() - 2 * padding - bottomLabelPadding)
-				/ (model.getMax().doubleValue() - model.getMin().doubleValue());
-
-		List<Point> graphPoints = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
-			int x1 = (int) (i * xScale + padding + leftLabelPadding);
-			BigDecimal yValue = model.getYValue(i);
-			if (yValue == null) {
-				continue;
-			}
-
-			int y1 = (int) ((model.getMax().doubleValue() - yValue.doubleValue()) * yScale + padding);
-
-			graphPoints.add(new Point(x1, y1));
-		}
+		int size = model.getXCount();
 
 		// draw white background
 		g2.setColor(Color.WHITE);
@@ -131,8 +158,8 @@ public class LineChart extends JPanel {
 
 					drawLine(g2, x0, getHeight() - padding - bottomLabelPadding - 1 - pointWidth, x1, padding,
 							gridColor);
-
-					String xLabel = model.getXValue(i);//
+					T xValue = model.getXValue(i);
+					String xLabel = model.getXDisplayValue(xValue);//
 					if (xLabel == null) {
 						xLabel = i + "";
 					}
@@ -151,28 +178,10 @@ public class LineChart extends JPanel {
 				padding);
 		drawLine(g2, padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, getWidth() - padding,
 				getHeight() - padding - bottomLabelPadding);
-
-		// draw line segment
-		Stroke oldStroke = g2.getStroke();
-		g2.setColor(lineColor);
-		g2.setStroke(GRAPH_STROKE);
-		for (int i = 0; i < graphPoints.size() - 1; i++) {
-			int x1 = graphPoints.get(i).x;
-			int y1 = graphPoints.get(i).y;
-			int x2 = graphPoints.get(i + 1).x;
-			int y2 = graphPoints.get(i + 1).y;
-			drawLine(g2, x1, y1, x2, y2);
-		}
-
-		g2.setStroke(oldStroke);
-		// draw join point
-		g2.setColor(pointColor);
-		for (int i = 0; i < graphPoints.size(); i++) {
-			int x = graphPoints.get(i).x - pointWidth / 2;
-			int y = graphPoints.get(i).y - pointWidth / 2;
-			int ovalW = pointWidth;
-			int ovalH = pointWidth;
-			g2.fillOval(x, y, ovalW, ovalH);
+		// draw serials
+		List<String> snameL = model.getSerialNameList();
+		for (String sname : snameL) {
+			this.paintSerial(g2, sname, size, range, max);
 		}
 	}
 

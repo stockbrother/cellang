@@ -1,63 +1,125 @@
 package org.cellang.console.chart;
 
 import java.math.BigDecimal;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public abstract class ChartModel {
-	protected AtomicReference<BigDecimal> min;
+import org.cellang.commons.cache.Cache;
+import org.cellang.commons.cache.Provider;
 
-	protected AtomicReference<BigDecimal> max;
+public class ChartModel<T> extends ChartSerial<T> {
 
-	public abstract int getCount();
+	private Map<String, ChartSingleSerial<T>> serialMap = new HashMap<>();
 
-	public abstract String getXValue(int idx);
+	private Cache<List<T>> xList;
 
-	public abstract BigDecimal getYValue(int idx);
+	private Comparator<T> xValueSorter;
 
-	public BigDecimal getMin() {
-
-		if (this.min == null) {
-			this.calculateMinMax();
-		}
-		return this.min.get();
+	public Comparator<T> getxValueSorter() {
+		return xValueSorter;
 	}
 
-	public BigDecimal getMax() {
-
-		if (this.max == null) {
-			this.calculateMinMax();
-		}
-		return this.max.get();
+	public void setxValueSorter(Comparator<T> xValueSorter) {
+		this.xValueSorter = xValueSorter;
 	}
 
-	protected void calculateMinMax() {
-		BigDecimal min = null;
-		BigDecimal max = null;
+	public ChartModel() {
 
-		int count = this.getCount();
-		for (int i = 0; i < count; i++) {
-			BigDecimal score = this.getYValue(i);
+		this.xList = new Cache<List<T>>(new Provider<List<T>>() {
 
-			if (score == null) {
-				continue;
-			}
-			if (min == null) {
-				min = score;
-			}
-			if (max == null) {
-				max = score;
+			@Override
+			public List<T> get() {
+
+				return doGetXlist();
 			}
 
-			min = min.min(score);
-			max = max.max(score);
-		}
-		this.min = new AtomicReference<BigDecimal>(min);
-		this.max = new AtomicReference<BigDecimal>(max);
+			@Override
+			public long getModified() {
+				return doGetModified();
+			}
+		});
 	}
 
-	public void invalidCache() {
-		max = null;
-		min = null;
+	public ChartModel(ChartSingleSerial<T> css) {
+		this();
+		this.addSerail(css);
+	}
+
+	public ChartSingleSerial<T> getSerial(String sname) {
+		return serialMap.get(sname);
+	}
+
+	public void addSerail(ChartSingleSerial<T> css) {
+		String key = css.getName();
+		ChartSingleSerial<T> old = this.serialMap.put(key, css);
+		this.modified();
+	}
+
+	protected long doGetModified() {
+		long modified = -1;
+		for (ChartSingleSerial<T> cs : serialMap.values()) {
+			if (modified < cs.lastModified) {
+				modified = cs.lastModified;
+			}
+		}
+		return modified;
+	}
+
+	protected List<T> doGetXlist() {
+
+		Set<T> set = new HashSet<>();
+
+		for (ChartSingleSerial<T> css : serialMap.values()) {
+			int countI = css.getXCount();
+			for (int i = 0; i < countI; i++) {
+				set.add(css.getXValue(i));
+			}
+		}
+		Object[] xA = new Object[set.size()];
+		xA = set.toArray(xA);
+		if (this.xValueSorter == null) {
+			Arrays.sort(xA);//
+		} else {
+			//Arrays.sort(xA, this.xValueSorter);
+		}
+
+		List<T> rt = new ArrayList<T>();
+		for (Object x : xA) {
+			rt.add((T) x);
+		}
+		return rt;
+	}
+
+	@Override
+	public int getXCount() {
+		return this.xList.get().size();
+	}
+
+	@Override
+	public List<String> getSerialNameList() {
+		List<String> rt = new ArrayList<>();
+		rt.addAll(this.serialMap.keySet());
+		return rt;
+	}
+
+	public String getXDisplayValue(T xValue) {
+		return String.valueOf(xValue);//
+	}
+
+	@Override
+	public T getXValue(int idx) {
+		return this.xList.get().get(idx);//
+	}
+
+	@Override
+	public BigDecimal getYValue(String name, T xValue) {
+		return this.getSerial(name).getYValue(xValue);
 	}
 
 }

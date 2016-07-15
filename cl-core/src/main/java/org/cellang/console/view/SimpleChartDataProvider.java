@@ -9,15 +9,14 @@ import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
 import org.cellang.core.entity.EntitySessionFactory;
 
-public class SimpleChartDataProvider extends AbstractChartDataProvider {
+public class SimpleChartDataProvider extends AbstractChartDataProvider<String> {
 	EntitySessionFactory esf;
 	EntityConfig ec;
 	EntityChartModel model;
-	
 
 	public SimpleChartDataProvider(int pageSize, EntitySessionFactory esf, EntityConfig ec, Method xGetMethod,
 			Method yGetMethod) {
-		super(pageSize);
+		super(new ChartModel<String>(), pageSize);
 
 		this.model = new EntityChartModel(ec, xGetMethod, yGetMethod, pageSize);
 
@@ -41,11 +40,6 @@ public class SimpleChartDataProvider extends AbstractChartDataProvider {
 			return;
 		}
 		super.nextPage();
-	}
-
-	@Override
-	public ChartModel getModel() {
-		return this.model;
 	}
 
 }
