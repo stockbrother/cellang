@@ -1,9 +1,7 @@
 package org.cellang.commons.cache.test;
 
 import org.cellang.commons.cache.Cache;
-import org.cellang.commons.cache.Provider;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class CacheTest extends TestCase {
@@ -12,7 +10,7 @@ public class CacheTest extends TestCase {
 	Object obj;
 
 	public void test() {
-		Provider<Object> objProvider = new Provider<Object>() {
+		Cache.Provider<Object> objProvider = new Cache.Provider<Object>() {
 
 			@Override
 			public Object get() {

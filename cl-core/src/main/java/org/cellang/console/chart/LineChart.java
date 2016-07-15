@@ -21,15 +21,25 @@ import org.slf4j.LoggerFactory;
 public class LineChart<T> extends JPanel {
 	private static final Logger LOG = LoggerFactory.getLogger(LineChart.class);
 	private int padding = 25;
+	
 	private int leftLabelPadding = 150;
+	
 	private int bottomLabelPadding = 50;
+	
 	private Color lineColor = new Color(44, 102, 230, 180);
+	
 	private Color pointColor = new Color(100, 100, 100, 180);
+	
 	private Color gridColor = new Color(200, 200, 200, 200);
+	
 	private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
+	
 	private int pointWidth = 4;
+	
 	private int numberYDivisions = 10;
+	
 	private ChartModel<T> model;
+	
 	private int xLabelRotate = 45;
 
 	private DecimalFormat format = new DecimalFormat("#,##0.00");

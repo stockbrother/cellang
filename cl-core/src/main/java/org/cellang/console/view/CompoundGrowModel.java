@@ -38,5 +38,11 @@ public class CompoundGrowModel extends ChartSingleSerial<Integer> {
 		rt = rt.multiply(this.init);//
 		return rt;
 	}
+	
+
+	@Override
+	public void clearPoints() {
+		//not support
+	}
 
 }

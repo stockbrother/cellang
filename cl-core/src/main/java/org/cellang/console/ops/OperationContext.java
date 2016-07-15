@@ -112,8 +112,8 @@ public class OperationContext {
 		new WashOp().set(this.dataHome, source).execute(this);
 	}
 
-	public void chart(String corpId, String itemKey) {
-		new ChartOp2(this).set(corpId, itemKey).execute(this);
+	public void chart(String[] corpIdArray, String itemKey, int pageSize) {
+		new ChartOp2(this).set(corpIdArray, itemKey, pageSize).execute(this);
 	}
 
 	public void chart(int xColNumber, int yColNumber) {

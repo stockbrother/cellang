@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.cellang.console.view.AbstractChartDataProvider;
 import org.cellang.console.view.ChartView;
+import org.cellang.console.view.DateChartView;
 import org.cellang.console.view.ReportItemChartDataProvider;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.core.entity.BalanceSheetItemEntity;
@@ -16,16 +17,17 @@ import org.cellang.core.entity.IncomeStatementReportEntity;
 public class ChartOp2 extends ConsoleOp<Void> {
 
 	private OperationContext oc;
-	String corpId;
+	String[] corpIdArray;
 	String itemKey;
-
+	int pageSize;
 	public ChartOp2(OperationContext oc) {
 		this.oc = oc;
 	}
 
-	public ChartOp2 set(String corpId, String itemKey) {
-		this.corpId = corpId;
+	public ChartOp2 set(String[] corpIdArray, String itemKey, int pageSize) {
+		this.corpIdArray = corpIdArray;
 		this.itemKey = itemKey;
+		this.pageSize = pageSize;
 		return this;
 	}
 
@@ -41,9 +43,10 @@ public class ChartOp2 extends ConsoleOp<Void> {
 		} else {
 			throw new RuntimeException("not supported:" + ec.getEntityClass());
 		}
-		AbstractChartDataProvider dp = new ReportItemChartDataProvider(10, oc.getEntityService(), this.corpId,
+		AbstractChartDataProvider<Long> dp = new ReportItemChartDataProvider(this.pageSize, oc.getEntityService(), this.corpIdArray,
 				this.itemKey, ec, ecItem, new Date(2016 - 1900, 12, 31).getTime());
-		ChartView view = new ChartView("ChartView", dp);
+		
+		DateChartView view = new DateChartView("ChartView", dp);
 
 		views.addView(view, true);// TODO Auto-generated method stub
 		return null;

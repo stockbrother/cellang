@@ -29,4 +29,9 @@ public class SimpleChartModel extends ChartSingleSerial<Integer> {
 		return idx;
 	}
 
+
+	@Override
+	public void clearPoints() {
+		this.valueList.clear();
+	}
 }

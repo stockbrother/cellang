@@ -3,9 +3,12 @@ package org.cellang.console.view;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ObjectArrayListResultSetProcessor;
@@ -16,19 +19,20 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long>
 	EntitySessionFactory esf;
 	EntityConfig reportCfg;
 	EntityConfig itemCfg;
-	ReportItemChartSerial serial;
 	long startDate;
 	String itemKey;
-	String corpId;
+	String[] corpIdArray;
 
-	public ReportItemChartDataProvider(int pageSize, EntitySessionFactory esf, String corpId, String itemKey,
+	public ReportItemChartDataProvider(int pageSize, EntitySessionFactory esf, String[] corpIdArray, String itemKey,
 			EntityConfig reportCfg, EntityConfig itemCfg, long startDate) {
 		super(new ReportItemChartModel(), pageSize);
-		this.corpId = corpId;
+		this.corpIdArray = corpIdArray;
 		this.itemKey = itemKey;
-		this.serial = new ReportItemChartSerial(pageSize);
-		this.serial.setPreferedMin(BigDecimal.ZERO);//
-		this.model.addSerail(this.serial);//
+		for (String corpId : corpIdArray) {
+			ReportItemChartSerial ser = new ReportItemChartSerial(corpId, pageSize);
+			ser.setPreferedMin(BigDecimal.ZERO);//
+			this.model.addSerail(ser);//
+		}
 
 		this.startDate = startDate;
 		this.esf = esf;
@@ -47,17 +51,28 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long>
 		dateSmall.setTimeInMillis(dateLarge.getTimeInMillis());
 		dateSmall.add(Calendar.YEAR, -this.pageSize);
 
-		StringBuffer sql = new StringBuffer().append("select rpt.reportDate, itm.value from ")
+		StringBuffer sql = new StringBuffer().append("select rpt.corpId, rpt.reportDate, itm.value from ")
 				.append(itemCfg.getTableName()).append(" itm,").append(reportCfg.getTableName()).append(" rpt")//
 				.append(" where rpt.id = itm.reportId")//
-				.append(" and rpt.corpId = ?")//
+				.append(" and rpt.corpId in(");//
+		for (int i = 0; i < this.corpIdArray.length; i++) {
+			sql.append("?");
+			if (i < this.corpIdArray.length - 1) {
+				sql.append(",");
+			}
+		}
+		sql.append(")")//
 				.append(" and rpt.reportDate <= ?")//
 				.append(" and rpt.reportDate >= ?")//
 				.append(" and itm.key = ?")//
 				.append(" order by rpt.reportDate desc")//
-		;
-		Object[] args = new Object[] { this.corpId, new Date(dateLarge.getTimeInMillis()),
-				new Date(dateSmall.getTimeInMillis()), itemKey };
+				;
+		List<Object> args = new ArrayList<>();
+
+		args.addAll(Arrays.asList(this.corpIdArray));
+		args.add(new Date(dateLarge.getTimeInMillis()));
+		args.add(new Date(dateSmall.getTimeInMillis()));
+		args.add(itemKey);
 		JdbcOperation<List<Object[]>> op = new JdbcOperation<List<Object[]>>() {
 
 			@Override
@@ -69,17 +84,17 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Long>
 		};
 
 		List<Object[]> list = this.esf.execute(op);
-		List<Long> dateL = new ArrayList<Long>(list.size());
-		List<BigDecimal> valueL = new ArrayList<BigDecimal>(list.size());
-
+		this.model.clearPoints();
 		for (Object[] row : list) {
-			Date reportDate = (Date) row[0];
-			BigDecimal value = (BigDecimal) row[1];
-			dateL.add(reportDate.getTime());
-			valueL.add(value);
+			int col = 0;
+			String corpId = (String) row[col++];
+			ReportItemChartSerial ser = (ReportItemChartSerial) this.model.getSerial(corpId);			
+			Date reportDate = (Date) row[col++];
+			BigDecimal value = (BigDecimal) row[col++];
+			ser.addPoint(reportDate.getTime(), value);
+
 		}
 
-		this.serial.setSerial(dateL, valueL);
 		this.view.updateUI();
 	}
 

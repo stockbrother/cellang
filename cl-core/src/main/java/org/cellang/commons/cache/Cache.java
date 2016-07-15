@@ -1,6 +1,11 @@
 package org.cellang.commons.cache;
 
-public class Cache<T> implements Provider<T> {
+public class Cache<T> {
+	public static interface Provider<T> {
+		public T get();
+
+		public long getModified();
+	}
 
 	T object;
 
@@ -12,7 +17,6 @@ public class Cache<T> implements Provider<T> {
 		this.source = source;
 	}
 
-	@Override
 	public T get() {
 
 		if (-1 == this.modified || this.modified < source.getModified()) {
@@ -21,11 +25,6 @@ public class Cache<T> implements Provider<T> {
 		}
 
 		return this.object;
-	}
-
-	@Override
-	public long getModified() {
-		return this.source.getModified();
 	}
 
 }

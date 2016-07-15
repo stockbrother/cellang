@@ -4,18 +4,18 @@ import org.cellang.console.chart.ChartModel;
 import org.cellang.console.chart.LineChart;
 import org.cellang.console.control.DataPageQuerable;
 
-public class ChartView extends AbstractView {
-	LineChart chart;
-	ChartModel model;
-	AbstractChartDataProvider data;
+public class ChartView<T> extends AbstractView {
+	LineChart<T> chart;
+	ChartModel<T> model;
+	AbstractChartDataProvider<T> data;
 
-	public ChartView(String title, AbstractChartDataProvider cd) {
+	public ChartView(String title, AbstractChartDataProvider<T> cd) {
 		super(title);
 		cd.setView(this);//
 		model = cd.getModel();
 		this.data = cd;
 
-		this.chart = new LineChart(model);
+		this.chart = new LineChart<T>(model);
 		this.setViewportView(this.chart);
 		this.data.nextPage();
 	}

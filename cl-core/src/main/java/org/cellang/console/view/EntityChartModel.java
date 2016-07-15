@@ -96,5 +96,11 @@ public class EntityChartModel extends ChartSingleSerial<String> {
 			return null;
 		}
 	}
+	
+
+	@Override
+	public void clearPoints() {
+		this.list = null;
+	}
 
 }

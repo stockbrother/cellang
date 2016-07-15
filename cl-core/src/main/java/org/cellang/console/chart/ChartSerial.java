@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.cellang.commons.cache.Cache;
-import org.cellang.commons.cache.Provider;
 
 public abstract class ChartSerial<T> {
 	protected Cache<BigDecimal[]> actualMinMax;
@@ -24,7 +23,7 @@ public abstract class ChartSerial<T> {
 	public abstract BigDecimal getYValue(String name, T xValue);
 
 	public ChartSerial() {
-		this.actualMinMax = new Cache<BigDecimal[]>(new Provider<BigDecimal[]>() {
+		this.actualMinMax = new Cache<BigDecimal[]>(new Cache.Provider<BigDecimal[]>() {
 
 			@Override
 			public BigDecimal[] get() {
@@ -38,7 +37,8 @@ public abstract class ChartSerial<T> {
 			}
 		});
 	}
-
+	public abstract void clearPoints();
+	
 	public BigDecimal getPreferedMin() {
 		return preferedMin;
 	}

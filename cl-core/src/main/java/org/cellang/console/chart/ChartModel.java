@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.cellang.commons.cache.Cache;
-import org.cellang.commons.cache.Provider;
 
 public class ChartModel<T> extends ChartSerial<T> {
 
@@ -25,13 +24,13 @@ public class ChartModel<T> extends ChartSerial<T> {
 		return xValueSorter;
 	}
 
-	public void setxValueSorter(Comparator<T> xValueSorter) {
+	public void setXValueSorter(Comparator<T> xValueSorter) {
 		this.xValueSorter = xValueSorter;
 	}
 
 	public ChartModel() {
 
-		this.xList = new Cache<List<T>>(new Provider<List<T>>() {
+		this.xList = new Cache<List<T>>(new Cache.Provider<List<T>>() {
 
 			@Override
 			public List<T> get() {
@@ -81,15 +80,18 @@ public class ChartModel<T> extends ChartSerial<T> {
 				set.add(css.getXValue(i));
 			}
 		}
-		Object[] xA = new Object[set.size()];
+		
+		@SuppressWarnings("unchecked")
+		T[] xA = (T[])new Object[set.size()];
 		xA = set.toArray(xA);
 		if (this.xValueSorter == null) {
 			Arrays.sort(xA);//
 		} else {
-			//Arrays.sort(xA, this.xValueSorter);
+			
+			Arrays.sort(xA, this.xValueSorter);
 		}
-
-		List<T> rt = new ArrayList<T>();
+		
+		List<T> rt = new ArrayList<T>();		
 		for (Object x : xA) {
 			rt.add((T) x);
 		}
@@ -120,6 +122,12 @@ public class ChartModel<T> extends ChartSerial<T> {
 	@Override
 	public BigDecimal getYValue(String name, T xValue) {
 		return this.getSerial(name).getYValue(xValue);
+	}
+	@Override
+	public void clearPoints() {
+		for(ChartSerial<T> cs:this.serialMap.values()){
+			cs.clearPoints();
+		}
 	}
 
 }

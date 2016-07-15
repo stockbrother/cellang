@@ -1,6 +1,7 @@
 package org.cellang.console.view;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,23 +14,20 @@ public class ReportItemChartSerial extends ChartSingleSerial<Long> {
 	private static final Logger LOG = LoggerFactory.getLogger(ReportItemChartSerial.class);
 
 	int pageSize;
-	List<Long> dateL;
-	List<BigDecimal> valueL;
-	Map<Long, BigDecimal> valueMap;
+	List<Long> dateL = new ArrayList<Long>();
+	List<BigDecimal> valueL = new ArrayList<>();
+	Map<Long, BigDecimal> valueMap = new HashMap<>();
 
-	public ReportItemChartSerial(int pageSize) {
-		super("default");
+	public ReportItemChartSerial(String name, int pageSize) {
+		super(name);
 		this.pageSize = pageSize;
 	}
 
-	public void setSerial(List<Long> dateL, List<BigDecimal> valueL) {
-		this.dateL = dateL;
-		this.valueL = valueL;
-		this.valueMap = new HashMap<>();
-		for (int i = 0; i < dateL.size(); i++) {
-			Long key = dateL.get(i);
-			this.valueMap.put(key, valueL.get(i));
-		}
+	public void addPoint(Long xValue, BigDecimal yValue) {
+		this.dateL.add(xValue);
+		this.valueL.add(yValue);
+		this.valueMap.put(xValue, yValue);
+
 		super.modified();
 	}
 
@@ -63,4 +61,11 @@ public class ReportItemChartSerial extends ChartSingleSerial<Long> {
 
 	}
 
+	@Override
+	public void clearPoints() {
+		this.dateL.clear();
+		this.valueL.clear();
+		this.valueMap.clear();
+		super.modified();
+	}
 }
