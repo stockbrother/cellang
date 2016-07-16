@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleChartModel extends ChartSingleSerial<Integer> {
+public class SimpleChartModel extends ChartSerial<Integer> {
 	private Integer offset = 0;
 	private int windowSize = 10;
 	private List<BigDecimal> valueList = new ArrayList<BigDecimal>();

@@ -2,55 +2,49 @@ package org.cellang.console.chart;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.cellang.commons.cache.Cache;
+public class ChartModel<T> extends ChartWindow<T> {
 
-public class ChartModel<T> extends ChartSerial<T> {
+	private List<ChartSerial<T>> serialList = new ArrayList<>();
 
-	private Map<String, ChartSingleSerial<T>> serialMap = new HashMap<>();
+	private Map<String, ChartSerial<T>> serialMap = new HashMap<>();
 
 	public ChartModel() {
-		
+
 	}
 
-	public ChartModel(ChartSingleSerial<T> css) {
+	public ChartModel(ChartSerial<T> css) {
 		this();
 		this.addSerail(css);
 	}
-	public List<ChartSingleSerial<T>> getSerialList(){
-		List<ChartSingleSerial<T>> rt = new ArrayList<>();
-		rt.addAll(this.serialMap.values());
-		return rt;
-	}
-	
-	public ChartSingleSerial<T> getSerial(String sname) {
+
+	public ChartSerial<T> getSerial(String sname) {
 		return serialMap.get(sname);
 	}
 
-	public void addSerail(ChartSingleSerial<T> css) {
+	public void addSerail(ChartSerial<T> css) {
 		String key = css.getName();
-		ChartSingleSerial<T> old = this.serialMap.put(key, css);
-		
+		if (this.serialMap.containsKey(key)) {
+			throw new RuntimeException("duplicated:" + key);
+		}
+		this.serialList.add(css);
+		ChartSerial<T> old = this.serialMap.put(key, css);
 	}
 
 	@Override
 	public int getWindowSize() {
-		
+
 		return this.serialMap.values().iterator().next().getWindowSize();
 	}
 
-	@Override
-	public List<String> getSerialNameList() {
-		List<String> rt = new ArrayList<>();
-		rt.addAll(this.serialMap.keySet());
+	public List<ChartSerial<T>> getSerialList() {
+		List<ChartSerial<T>> rt = new ArrayList<>();
+		rt.addAll(this.serialList);
 		return rt;
+
 	}
 
 	public String getXDisplayValue(T xValue) {
@@ -62,16 +56,33 @@ public class ChartModel<T> extends ChartSerial<T> {
 		return this.serialMap.values().iterator().next().getXValue(idx);
 	}
 
-	@Override
 	public BigDecimal getYValue(String name, T xValue) {
 		return this.getSerial(name).getYValue(xValue);
 	}
-	
+
 	@Override
 	public void moveWindowTo(T startXValue) {
-		for(ChartSerial<T> cs:this.serialMap.values()){
+		for (ChartWindow<T> cs : this.serialMap.values()) {
 			cs.moveWindowTo(startXValue);//
-		}		
+		}
+	}
+
+	@Override
+	protected BigDecimal[] doGetActualMinMax() {
+		BigDecimal min = null;
+		BigDecimal max = null;
+
+		for (int j = 0; j < this.serialList.size(); j++) {
+			BigDecimal[] mm = this.serialList.get(j).doGetActualMinMax();
+			if (min == null || min.compareTo(mm[0]) > 0) {
+				min = mm[0];
+			}
+			if (max == null || max.compareTo(mm[1]) < 0) {
+				max = mm[1];
+			}
+		}
+
+		return new BigDecimal[] { min, max };
 	}
 
 }

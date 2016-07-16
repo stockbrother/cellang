@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.console.chart.ChartSingleSerial;
+import org.cellang.console.chart.ChartSerial;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EntityChartModel extends ChartSingleSerial<String> {
+public class EntityChartModel extends ChartSerial<String> {
 	private static final Logger LOG = LoggerFactory.getLogger(EntityChartModel.class);
 
 	int pageSize;

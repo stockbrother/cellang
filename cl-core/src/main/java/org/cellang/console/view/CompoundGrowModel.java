@@ -2,9 +2,9 @@ package org.cellang.console.view;
 
 import java.math.BigDecimal;
 
-import org.cellang.console.chart.ChartSingleSerial;
+import org.cellang.console.chart.ChartSerial;
 
-public class CompoundGrowModel extends ChartSingleSerial<Integer> {
+public class CompoundGrowModel extends ChartSerial<Integer> {
 
 	private BigDecimal init;
 

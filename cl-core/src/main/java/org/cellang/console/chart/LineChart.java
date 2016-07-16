@@ -20,9 +20,9 @@ import org.slf4j.LoggerFactory;
 
 public class LineChart<T> extends JPanel {
 	private static final Logger LOG = LoggerFactory.getLogger(LineChart.class);
-	private int padding = 25;
 
-	private int leftLabelPadding = 150;
+	private int paddingLabel = 3;
+	private int padding = 25;
 
 	private int bottomLabelPadding = 50;
 
@@ -36,7 +36,7 @@ public class LineChart<T> extends JPanel {
 
 	private ChartModel<T> model;
 
-	private int xLabelRotate = 45;
+	private int xLabelRotateAngle = 45;
 
 	private DecimalFormat format = new DecimalFormat("#,##0.00");
 
@@ -44,44 +44,23 @@ public class LineChart<T> extends JPanel {
 		this.model = model;
 	}
 
-	protected void drawString(Graphics2D g2, String string, int x, int y, Color color) {
-		drawRotate(g2, string, x, y, 0, color);
-	}
-
-	protected void drawLine(Graphics2D g2, int x1, int y1, int x2, int y2, Color color) {
-		g2.setColor(color);
-		drawLine(g2, x1, y1, x2, y2);
-	}
-
-	protected void drawLine(Graphics2D g2, int x1, int y1, int x2, int y2) {
-		g2.drawLine(x1, y1, x2, y2);
-	}
-
-	public void drawRotate(Graphics2D g2, String text, double x, double y, int angle, Color color) {
-		g2.setColor(color);
-		g2.translate((float) x, (float) y);
-		g2.rotate(Math.toRadians(angle));
-		g2.drawString(text, 0, 0);
-		g2.rotate(-Math.toRadians(angle));
-		g2.translate(-(float) x, -(float) y);
-	}
-
-	protected void paintSerial(ColorGenerator cg, Graphics2D g2, String sname, int size, double yrange, double ymax) {
+	protected void paintSerial(ColorGenerator cg, Grahpics2DWrapper g2, int centerWidth, int centerHeight,
+			ChartSerial<T> ser, int size, double yrange, double ymax) {
 		Color color = cg.next();
 
-		double xScale = ((double) getWidth() - (2 * padding) - leftLabelPadding) / (size - 1);
-		double yScale = ((double) getHeight() - 2 * padding - bottomLabelPadding) / yrange;
+		double xScale = (double) centerWidth / (size - 1);
+		double yScale = (double) centerHeight / yrange;
 
 		List<Point> graphPoints = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			int x1 = (int) (i * xScale + padding + leftLabelPadding);
+			int x1 = (int) (i * xScale);
 			T xValue = this.model.getXValue(i);
-			BigDecimal yValue = this.model.getYValue(sname, xValue);
+			BigDecimal yValue = this.model.getYValue(ser.getName(), xValue);
 			if (yValue == null) {
 				continue;
 			}
 
-			int y1 = (int) ((ymax - yValue.doubleValue()) * yScale + padding);
+			int y1 = (int) ((ymax - yValue.doubleValue()) * yScale);
 
 			graphPoints.add(new Point(x1, y1));
 		}
@@ -89,16 +68,16 @@ public class LineChart<T> extends JPanel {
 		// draw line segment
 		Stroke oldStroke = g2.getStroke();
 		g2.setColor(color);
-		//g2.setStroke(GRAPH_STROKE);
+		// g2.setStroke(GRAPH_STROKE);
 		for (int i = 0; i < graphPoints.size() - 1; i++) {
 			int x1 = graphPoints.get(i).x;
 			int y1 = graphPoints.get(i).y;
 			int x2 = graphPoints.get(i + 1).x;
 			int y2 = graphPoints.get(i + 1).y;
-			drawLine(g2, x1, y1, x2, y2);
+			g2.drawLine(x1, y1, x2, y2);
 		}
 
-		//g2.setStroke(oldStroke);
+		// g2.setStroke(oldStroke);
 		// draw join point
 		g2.setColor(color);
 		for (int i = 0; i < graphPoints.size(); i++) {
@@ -108,89 +87,138 @@ public class LineChart<T> extends JPanel {
 			int ovalH = pointWidth;
 			g2.fillOval(x, y, ovalW, ovalH);
 		}
+		// draw Serial Name
+		if (graphPoints.size() > 0) {
+
+			Point last = graphPoints.get(graphPoints.size() - 1);
+			int x = centerWidth;
+			int y = last.y;
+			g2.drawString(ser.getName(), x, y, color);
+
+		}
+	}
+
+	protected int getRightLabelWidth() {
+		return 150;
+	}
+
+	protected int getLeftLabelPadding() {
+		return 150;
+	}
+
+	protected int getPaddingTop() {
+		return this.padding;
+	}
+
+	protected int getPaddingBottom() {
+		return this.padding + this.bottomLabelPadding;
+	}
+
+	protected int getPaddingRight() {
+		return this.padding + this.getRightLabelWidth();
+	}
+
+	protected int getPaddingLeft() {
+		return this.padding + this.getLeftLabelPadding();
+	}
+
+	private void drawXAxis(Grahpics2DWrapper g2, int centerWidth, int centerHeight, int size) {
+		double xScale = (double)centerWidth / (size - 1);
+
+		for (int i = 0; i < size; i++) {
+			int xI = (int) (xScale * i);
+			int y0 = centerHeight + paddingLabel;// TODO
+
+			int y1 = centerHeight - pointWidth;
+			int y2 = 0;
+			if (i > 0) {
+
+				// short black
+				g2.drawLine(xI, y0, xI, y1, Color.BLACK);
+				// long grid
+				g2.drawLine(xI, y1, xI, y2, gridColor);
+			}
+			T xValue = this.model.getXValue(i);
+			String xLabel = this.model.getXDisplayValue(xValue);
+
+			FontMetrics metrics = g2.get().getFontMetrics();
+			int labelWidth = metrics.stringWidth(xLabel);
+			// label X label
+			g2.drawString(xLabel, xI, y0 + (metrics.getHeight() / 2) - 3, Color.BLACK, this.xLabelRotateAngle);
+
+		}
+
+		g2.drawLine(0, centerHeight, centerWidth, centerHeight, Color.black);
+	}
+
+	private void drawYAxis(Grahpics2DWrapper g2, int centerWidth, int centerHeight, double min, double max) {
+		double range = max - min;
+		// draw y axis and grid lines.
+		for (int i = 0; i < numberYDivisions + 1; i++) {
+			int x0 = 0;
+			int yI = (int) (centerHeight * (1f - (float) i / numberYDivisions));
+
+			int x1 = pointWidth;
+			int x2 = centerWidth;
+
+			// short black
+			g2.drawLine(x0, yI, x1, yI, Color.BLACK);
+			// long grid
+			g2.drawLine(x1, yI, x2, yI, gridColor);
+
+			double iD = (double) i;
+			BigDecimal yLabelValue = new BigDecimal(min + range * (iD / numberYDivisions));
+
+			String yLabel = format.format(yLabelValue);
+
+			FontMetrics metrics = g2.get().getFontMetrics();
+			int labelWidth = metrics.stringWidth(yLabel);
+			// label Y label
+			g2.drawString(yLabel, x0 - labelWidth - 5, yI + (metrics.getHeight() / 2) - 3, Color.BLACK);
+
+		}
+
+		// Y axis
+		g2.drawLine(0, centerHeight, 0, 0, Color.BLACK);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		double max = model.getDisplayMax().doubleValue();
-		double min = model.getDisplayMin().doubleValue();
+		double max = model.getDisplayYMax().doubleValue();
+		double min = model.getDisplayYMin().doubleValue();
 		double range = max - min;
 
 		LOG.debug("paintComponent");
 
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		int paddingTop = this.getPaddingTop();
+		int paddingLeft = this.getPaddingLeft();
+
+		Grahpics2DWrapper g2 = new Grahpics2DWrapper().set((Graphics2D) g);
+
+		g2.get().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		g2.translate(paddingLeft, paddingTop);
+
 		int size = model.getWindowSize();
 
+		int centerWidth = getWidth() - this.getPaddingLeft() - this.getPaddingRight();
+		int centerHeight = getHeight() - this.getPaddingTop() - this.getPaddingBottom();
 		// draw white background
-		g2.setColor(Color.WHITE);
-		g2.fillRect(padding + leftLabelPadding, padding, getWidth() - (2 * padding) - leftLabelPadding,
-				getHeight() - 2 * padding - bottomLabelPadding);
-		g2.setColor(Color.BLACK);
+		g2.get().setColor(Color.WHITE);
+		g2.fillRect(0, 0, centerWidth, centerHeight);
+		this.drawYAxis(g2, centerWidth, centerHeight, min, max);
+		// X axis
+		this.drawXAxis(g2, centerWidth, centerHeight, size);
 
-		// draw y axis and grid lines.
-		for (int i = 0; i < numberYDivisions + 1; i++) {
-			int x0 = padding + leftLabelPadding;
-			int x1 = pointWidth + padding + leftLabelPadding;
-			int y0 = getHeight() - ((i * (getHeight() - padding * 2 - bottomLabelPadding)) / numberYDivisions + padding
-					+ bottomLabelPadding);
-			int y1 = y0;
-			if (size > 0) {
-				drawLine(g2, padding + leftLabelPadding + 1 + pointWidth, y0, getWidth() - padding, y1, gridColor);
-
-				double iD = (double) i;
-				BigDecimal yLabelValue = new BigDecimal(min + range * (iD / numberYDivisions));
-
-				String yLabel = format.format(yLabelValue);
-
-				FontMetrics metrics = g2.getFontMetrics();
-				int labelWidth = metrics.stringWidth(yLabel);
-				// label Y label
-				drawString(g2, yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3, Color.BLACK);
-			}
-			drawLine(g2, x0, y0, x1, y1);
-		}
-
-		// draw x axis label and grid lines.
-		for (int i = 0; i < size; i++) {
-			if (size > 1) {
-				int x0 = i * (getWidth() - padding * 2 - leftLabelPadding) / (size - 1) + padding + leftLabelPadding;
-				int x1 = x0;
-				int y0 = getHeight() - padding - bottomLabelPadding;
-				int y1 = y0 - pointWidth;
-				if ((i % ((int) ((size / 20.0)) + 1)) == 0) {
-					// skip some values.
-
-					drawLine(g2, x0, getHeight() - padding - bottomLabelPadding - 1 - pointWidth, x1, padding,
-							gridColor);
-					T xValue = model.getXValue(i);
-					String xLabel = model.getXDisplayValue(xValue);//
-					if (xLabel == null) {
-						xLabel = i + "";
-					}
-					FontMetrics metrics = g2.getFontMetrics();
-					int labelWidth = metrics.stringWidth(xLabel);
-					// X labels
-					drawRotate(g2, xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3, xLabelRotate,
-							Color.BLACK);
-				}
-				drawLine(g2, x0, y0, x1, y1);
-			}
-		}
-
-		// draw x and y axe line
-		drawLine(g2, padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, padding + leftLabelPadding,
-				padding);
-		drawLine(g2, padding + leftLabelPadding, getHeight() - padding - bottomLabelPadding, getWidth() - padding,
-				getHeight() - padding - bottomLabelPadding);
 		// draw serials
-		List<String> snameL = model.getSerialNameList();
+		List<ChartSerial<T>> snameL = model.getSerialList();
 		cg.reset();
-		for (String sname : snameL) {
-			this.paintSerial(cg, g2, sname, size, range, max);
+		for (ChartSerial<T> ser : snameL) {
+			this.paintSerial(cg, g2, centerWidth, centerHeight, ser, size, range, max);
 		}
+		g2.translate(-paddingLeft, -paddingTop);
 	}
 
 }

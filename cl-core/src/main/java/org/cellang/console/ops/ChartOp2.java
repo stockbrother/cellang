@@ -1,10 +1,7 @@
 
 package org.cellang.console.ops;
 
-import java.util.Date;
-
 import org.cellang.console.view.AbstractChartDataProvider;
-import org.cellang.console.view.ChartView;
 import org.cellang.console.view.DateChartView;
 import org.cellang.console.view.ReportDate;
 import org.cellang.console.view.ReportItemChartDataProvider;
@@ -14,8 +11,11 @@ import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.IncomeStatementItemEntity;
 import org.cellang.core.entity.IncomeStatementReportEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ChartOp2 extends ConsoleOp<Void> {
+	private static final Logger LOG = LoggerFactory.getLogger(ChartOp2.class);
 
 	private OperationContext oc;
 	String[] corpIdArray;
