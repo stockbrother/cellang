@@ -1,8 +1,10 @@
 package org.cellang.console.control;
 
 import java.awt.Dimension;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,7 +16,7 @@ public class ActionsPane extends JScrollPane {
 	public ActionsPane() {
 		this.panel = new JPanel();
 		this.panel.setPreferredSize(new Dimension(500, 300));
-		this.setViewportView(this.panel);		
+		this.setViewportView(this.panel);
 	}
 
 	public void addAction(String name, ActionHandler ah) {
@@ -30,6 +32,12 @@ public class ActionsPane extends JScrollPane {
 		}
 		this.panel.add(bu);
 		this.updateUI();
+	}
+
+	public void addText(Map<String, Object> des) {
+		TextArea ta = new TextArea();
+		ta.setText(des.toString());
+		this.panel.add(ta);
 	}
 
 	public void clear() {

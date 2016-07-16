@@ -3,6 +3,7 @@ package org.cellang.console.view;
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.chart.LineChart;
 import org.cellang.console.control.DataPageQuerable;
+import org.cellang.console.control.Descriable;
 
 public class ChartView<T> extends AbstractView {
 	LineChart<T> chart;
@@ -24,7 +25,10 @@ public class ChartView<T> extends AbstractView {
 	public <T> T getDelegate(Class<T> cls) {
 		if (cls.equals(DataPageQuerable.class)) {
 			return (T) this.data;
+		} else if (cls.equals(Descriable.class)) {
+			return (T) this.data;
 		}
 		return null;
 	}
+
 }

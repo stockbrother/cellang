@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ObjectArrayListResultSetProcessor;
@@ -100,6 +101,14 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Repor
 	@Override
 	public void nextPage() {
 		super.nextPage();
+	}
+
+	@Override
+	public void getDescription(Map<String, Object> desMap) {
+		super.getDescription(desMap);
+		desMap.put("ItemKey", this.itemKey);
+		desMap.put("CorpIdArray", this.corpIdArray);
+
 	}
 
 }

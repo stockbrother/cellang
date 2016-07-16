@@ -1,14 +1,17 @@
 package org.cellang.console.view;
 
+import java.util.Map;
+
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.control.DataPageQuerable;
+import org.cellang.console.control.Descriable;
 
-public abstract class AbstractChartDataProvider<T> implements DataPageQuerable {
+public abstract class AbstractChartDataProvider<T> implements DataPageQuerable , Descriable {
 
 	protected int pageSize;
 
 	protected int pageNumber = -1;
-	ChartView view;
+	ChartView<T> view;
 	ChartModel<T> model;
 
 	public AbstractChartDataProvider(ChartModel<T> model, int pageSize) {
@@ -16,7 +19,7 @@ public abstract class AbstractChartDataProvider<T> implements DataPageQuerable {
 		this.model = model;
 	}
 
-	public void setView(ChartView view) {
+	public void setView(ChartView<T> view) {
 		this.view = view;
 	}
 
@@ -39,5 +42,10 @@ public abstract class AbstractChartDataProvider<T> implements DataPageQuerable {
 	public void nextPage() {
 		this.pageNumber++;
 		this.query();
+	}
+	
+	@Override
+	public void getDescription(Map<String, Object> desMap) {
+		desMap.put("PageSize", this.pageSize);
 	}
 }

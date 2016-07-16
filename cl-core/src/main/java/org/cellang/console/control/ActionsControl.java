@@ -1,5 +1,8 @@
 package org.cellang.console.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.cellang.console.view.View;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.console.view.ViewsPane.ViewsListener;
@@ -80,6 +83,14 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 						dd.drillDown();
 					}
 				});
+			}
+			// if the view contains description
+			Descriable des = v.getDelegate(Descriable.class);
+			if (des != null) {
+				Map<String,Object>desMap = new HashMap<>();
+				des.getDescription(desMap);
+				actions.addText(desMap);
+				
 			}
 		}
 		actions.updateUI();

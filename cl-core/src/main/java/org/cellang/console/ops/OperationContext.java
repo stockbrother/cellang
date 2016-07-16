@@ -10,9 +10,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import org.cellang.collector.NeteasePreprocessor;
-import org.cellang.collector.SinaAllQuotesPreprocessor;
 import org.cellang.console.view.EntityConfigTableView;
 import org.cellang.console.view.EntityObjectTableView;
 import org.cellang.console.view.ViewsPane;
@@ -57,9 +60,17 @@ public class OperationContext {
 	private boolean started;
 	private String[] matrics = new String[] { "负债权益比", "QUOTES" };
 	ViewsPane views;
-	DataLoader loader;
+	OpExecutor opExecutor = new OpExecutor();
 
 	private EntityConfig selectedEntityConfig;
+
+	public OperationContext() {
+
+	}
+
+	public <T> Future<T> execute(ConsoleOp<T> op) {
+		return this.opExecutor.execute(op, this);
+	}
 
 	public EntityConfig getSelectedEntityConfig() {
 		return selectedEntityConfig;
@@ -90,12 +101,6 @@ public class OperationContext {
 
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
-		loader = new DataLoader(entityService);
-		if (entityService.isNew()) {
-			LOG.info("db is empty, load data...");//
-			File idxdir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
-			loader.loadDir(idxdir);
-		}
 
 		this.started = true;
 		for (Listener l : this.listenerList) {
@@ -109,15 +114,15 @@ public class OperationContext {
 	 * @param source
 	 */
 	public void wash(String source) {
-		new WashOp().set(this.dataHome, source).execute(this);
+		this.execute(new WashOp(source));
 	}
 
 	public void chart(String[] corpIdArray, String itemKey, int pageSize) {
-		new ChartOp2(this).set(corpIdArray, itemKey, pageSize).execute(this);
+		this.execute(new ChartOp2(this).set(corpIdArray, itemKey, pageSize));
 	}
 
 	public void chart(int xColNumber, int yColNumber) {
-		new ChartOp(this, xColNumber, yColNumber).execute(this);
+		this.execute(new ChartOp(this, xColNumber, yColNumber));
 	}
 
 	/**
@@ -126,30 +131,15 @@ public class OperationContext {
 	 * @param folder
 	 */
 	public void load(String folder) {
-		File qfile = FileUtil.newFile(dataHome, new String[] { folder });
-		if (!qfile.exists()) {
-			LOG.error("folder not exists:" + qfile.getAbsolutePath());//
-			return;
-		}
-		loader.loadDir(qfile);
+		this.execute(new LoadOp(folder));
 	}
 
 	public void reset() {
-		this.clear();
-		this.load("163pp");
+		this.execute(new ResetOp());
 	}
 
 	public void clear() {
-		views.clear();
-		EntityOp<Void> op = new EntityOp<Void>() {
-
-			@Override
-			public Void execute(EntitySession es) {
-				es.clear();
-				return null;
-			}
-		};
-		this.entityService.execute(op);
+		this.execute(new ClearOp());
 	}
 
 	public void home() {
