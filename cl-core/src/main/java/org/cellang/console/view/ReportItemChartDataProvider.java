@@ -39,6 +39,7 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Repor
 		this.itemCfg = itemCfg;
 	}
 
+	@Override
 	protected void query() {
 		int offset = this.pageNumber * this.pageSize;
 
@@ -72,7 +73,7 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Repor
 		JdbcOperation<List<Object[]>> op = new JdbcOperation<List<Object[]>>() {
 
 			@Override
-			public List<Object[]> execute(Connection con) {
+			public List<Object[]> doExecute(Connection con) {
 
 				return this.template.executeQuery(con, sql.toString(), args, new ObjectArrayListResultSetProcessor());
 

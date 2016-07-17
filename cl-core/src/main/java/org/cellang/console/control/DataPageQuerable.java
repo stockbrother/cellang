@@ -6,4 +6,6 @@ public interface DataPageQuerable {
 
 	public void nextPage();
 	
+	public void refresh();
+	
 }

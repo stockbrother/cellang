@@ -58,12 +58,12 @@ public class CorpMetricService {
 		JdbcOperation<Double> op = new JdbcOperation<Double>() {
 
 			@Override
-			public Double execute(Connection con) {
-				return (Double) this.template.executeQuery(con, sql, new Object[] { corpId, date, key },
-						new ResultSetProcessor() {
+			public Double doExecute(Connection con) {
+				return this.template.executeQuery(con, sql, new Object[] { corpId, date, key },
+						new ResultSetProcessor<Double>() {
 
 					@Override
-					public Object process(ResultSet rs) throws SQLException {
+					public Double process(ResultSet rs) throws SQLException {
 						if (rs.next()) {
 							BigDecimal v = rs.getBigDecimal("value");
 							return v.doubleValue();

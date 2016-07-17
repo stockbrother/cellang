@@ -80,7 +80,7 @@ public class EntitySessionImpl implements EntitySession {
 			EntityConfig ec = EntitySessionImpl.this.ecf.get(cls);
 			InsertRowOperation insertOp = new InsertRowOperation(ec.getTableName());
 			ec.fillInsert(eo, insertOp);
-			insertOp.execute(con);
+			insertOp.doExecute(con);
 		}
 
 	}
@@ -101,10 +101,11 @@ public class EntitySessionImpl implements EntitySession {
 		JdbcOperation<Long> op = new JdbcOperation<Long>() {
 
 			@Override
-			public Long execute(Connection con) {
+			public Long doExecute(Connection con) {
 				return this.template.executeUpdate(con, sqlF, objects);
 			}
 		};
+		
 		return op.execute(con);
 	}
 
@@ -119,7 +120,7 @@ public class EntitySessionImpl implements EntitySession {
 		new JdbcOperation<Long>() {
 
 			@Override
-			public Long execute(Connection con) {
+			public Long doExecute(Connection con) {
 				long rt = 0;
 				for (EntityConfig ec : EntitySessionImpl.this.ecf.getEntityConfigList()) {
 					String sql = "delete from " + ec.getTableName();
@@ -131,7 +132,7 @@ public class EntitySessionImpl implements EntitySession {
 				LOG.info("done of clear.");
 				return rt;
 			}
-		}.execute(this.con);
+		}.doExecute(this.con);
 
 	}
 

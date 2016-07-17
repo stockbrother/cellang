@@ -37,7 +37,7 @@ public class CreateTableOperation extends JdbcOperation<Void> {
 	}
 
 	@Override
-	public Void execute(Connection c) {
+	public Void doExecute(Connection c) {
 		StringBuffer sql = new StringBuffer().append("create table ").append(this.tableName).append("(");
 		for (int i = 0; i < columnList.size(); i++) {
 			Tuple2<String, Class> column = columnList.get(i);

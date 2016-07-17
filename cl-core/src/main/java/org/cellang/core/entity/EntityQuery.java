@@ -4,15 +4,30 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
 
 public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
+	private static class WhereField {
+		public WhereField(String field, String oper, Object value) {
+			this.field = field;
+			this.operator = oper;
+			this.value = value;
+		}
+
+		private String field;
+		private Object value;
+		private String operator;
+	}
+
 	private EntityConfig entityConfig;
-	private String[] queryFields;
-	private Object[] queryArgs;
+
+	private List<WhereField> whereFields = new ArrayList<>();
+
 	private String[] orderBy;
 	private Integer limit;
 	private Integer offset;
@@ -28,16 +43,18 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 	public EntityQuery(EntityConfig ec, String[] qfields, Object[] args) {
 
 		this.entityConfig = ec;//
-		this.queryFields = qfields;
-		this.queryArgs = args;
+		for (int i = 0; i < qfields.length; i++) {
+			this.whereFields.add(new WhereField(qfields[i], "=", args[i]));
+		}
+
 	}
 
 	@Override
 	public List<T> execute(EntitySession es) {
-		ResultSetProcessor rsp = new ResultSetProcessor() {
+		ResultSetProcessor<List<T>> rsp = new ResultSetProcessor<List<T>>() {
 
 			@Override
-			public Object process(ResultSet rs) throws SQLException {
+			public List<T> process(ResultSet rs) throws SQLException {
 
 				List<T> rt = new ArrayList<T>();
 				while (rs.next()) {
@@ -49,9 +66,15 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		};
 		StringBuffer sql = new StringBuffer().append("select * from ").append(this.entityConfig.getTableName())
 				.append(" where 1=1");
-		for (int i = 0; i < queryFields.length; i++) {
-			sql.append(" and " + queryFields[i] + "=?");
+		// equal query fields
+		List<Object> args = new ArrayList<Object>();
+
+		for (int i = 0; i < this.whereFields.size(); i++) {
+			WhereField wf = this.whereFields.get(i);
+			sql.append(" and " + wf.field + " " + wf.operator + " ?");
+			args.add(wf.value);
 		}
+
 		if (orderBy != null) {
 			sql.append(" order by");
 			for (int i = 0; i < this.orderBy.length; i++) {
@@ -72,10 +95,9 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>() {
 
 			@Override
-			public List<T> execute(Connection con) {
+			public List<T> doExecute(Connection con) {
 
-				return (List<T>) template.executeQuery(con, sql.toString(),
-						EntityQuery.this.queryArgs, rsp);
+				return (List<T>) template.executeQuery(con, sql.toString(), args, rsp);
 			}
 		};
 
@@ -104,6 +126,13 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 	public EntityQuery<T> orderBy(String[] strings) {
 		//
 		this.setOrderBy(strings);//
+		return this;
+	}
+
+	public EntityQuery<T> like(Map<String, String> likeMap) {
+		for (Map.Entry<String, String> en : likeMap.entrySet()) {
+			this.whereFields.add(new WhereField(en.getKey(), "like", en.getValue()));
+		}
 		return this;
 	}
 

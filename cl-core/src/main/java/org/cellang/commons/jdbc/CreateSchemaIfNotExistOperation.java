@@ -16,7 +16,7 @@ public class CreateSchemaIfNotExistOperation extends JdbcOperation<Void> {
 	}
 
 	@Override
-	public Void execute(Connection con) {
+	public Void doExecute(Connection con) {
 		final List<String> schemaList = new ArrayList<String>();
 		this.template.executeQuery(con,"show schemas", new ResultSetProcessor() {
 

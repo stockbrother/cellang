@@ -9,5 +9,9 @@ public abstract class JdbcOperation<T> {
 		this.template = new JdbcDataAccessTemplate();
 	}
 
-	public abstract T execute(Connection con);
+	public T execute(Connection con) {
+		return this.doExecute(con);
+	}
+
+	protected abstract T doExecute(Connection con);
 }

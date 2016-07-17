@@ -5,7 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class JdbcDataAccessTemplate {
+	private static final Logger LOG = LoggerFactory.getLogger(JdbcDataAccessTemplate.class);
 
 	private static ParameterProvider EMPTY = new ParameterProvider() {
 
@@ -47,42 +51,35 @@ public class JdbcDataAccessTemplate {
 	}
 
 	public <T> T execute(Connection con, String sql, ParameterProvider pp, PreparedStatementExecutor<T> pse) {
-		JdbcOperation<T> op = new JdbcOperation<T>() {
 
-			@Override
-			public T execute(Connection con) {
-				try {
+		try {
 
-					PreparedStatement ps = con.prepareStatement(sql);
-					int size = pp.size();
-					for (int i = 0; i < size; i++) {
-						Object obj = pp.get(i);
-						ps.setObject(i + 1, obj);
-					}
-					try {
-						return pse.execute(ps);//
-					} finally {
-						ps.close();
-					}
-
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
-				}
+			PreparedStatement ps = con.prepareStatement(sql);
+			int size = pp.size();
+			for (int i = 0; i < size; i++) {
+				Object obj = pp.get(i);
+				ps.setObject(i + 1, obj);
 			}
-		};
+			try {
+				return pse.execute(ps);//
+			} finally {
+				ps.close();
+			}
 
-		return op.execute(con);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 
 	}
 
 	public <T> T executeQuery(Connection con, String sql, ResultSetProcessor<T> rsp) {
 		return execute(con, sql, EMPTY, new ResultSetProcessorPreparedStatementExecutor<T>(rsp));
 	}
-	
+
 	public <T> T executeQuery(Connection con, String sql, List<Object> objects, ResultSetProcessor<T> rsp) {
 		return this.executeQuery(con, sql, objects.toArray(), rsp);
 	}
-	
+
 	public <T> T executeQuery(Connection con, String sql, Object[] objects, ResultSetProcessor<T> rsp) {
 		return execute(con, sql, new ArrayParameterProvider(objects),
 				new ResultSetProcessorPreparedStatementExecutor<T>(rsp));

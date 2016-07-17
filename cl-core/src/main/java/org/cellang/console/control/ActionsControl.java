@@ -64,6 +64,13 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 						dpq.prePage();
 					}
 				});
+				actions.addAction("refresh", new ActionHandler() {
+
+					@Override
+					public void performAction() {
+						dpq.refresh();
+					}
+				});
 
 				actions.addAction("nextPage", new ActionHandler() {
 
@@ -73,7 +80,7 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 					}
 				});
 			}
-			// if the view is entity
+			// if the view is entity config list
 			DrillDowable dd = v.getDelegate(DrillDowable.class);
 			if (dd != null) {
 				actions.addAction("drillDown", new ActionHandler() {
@@ -87,10 +94,16 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 			// if the view contains description
 			Descriable des = v.getDelegate(Descriable.class);
 			if (des != null) {
-				Map<String,Object>desMap = new HashMap<>();
+				Map<String, Object> desMap = new HashMap<>();
 				des.getDescription(desMap);
 				actions.addText(desMap);
-				
+
+			}
+			// if the view support fitler
+			Filterable fil = v.getDelegate(Filterable.class);
+			if (fil != null) {
+
+				actions.addFilter(new FilterPane(fil));
 			}
 		}
 		actions.updateUI();

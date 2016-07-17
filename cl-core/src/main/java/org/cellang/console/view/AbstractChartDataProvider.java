@@ -6,7 +6,7 @@ import org.cellang.console.chart.ChartModel;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
 
-public abstract class AbstractChartDataProvider<T> implements DataPageQuerable , Descriable {
+public abstract class AbstractChartDataProvider<T> implements DataPageQuerable, Descriable {
 
 	protected int pageSize;
 
@@ -43,9 +43,15 @@ public abstract class AbstractChartDataProvider<T> implements DataPageQuerable ,
 		this.pageNumber++;
 		this.query();
 	}
-	
+
 	@Override
 	public void getDescription(Map<String, Object> desMap) {
 		desMap.put("PageSize", this.pageSize);
 	}
+
+	@Override
+	public void refresh() {
+		this.query();
+	}
+
 }

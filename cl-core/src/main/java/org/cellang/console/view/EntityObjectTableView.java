@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.EntityObjectSource;
 import org.cellang.console.control.EntityObjectSourceListener;
+import org.cellang.console.control.Filterable;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
@@ -17,7 +18,13 @@ import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EntityObjectTableView extends JScrollPane implements View, EntityObjectSource, DataPageQuerable {
+/**
+ * View for displaying entity list result.
+ * 
+ * @author wu
+ *
+ */
+public class EntityObjectTableView extends JScrollPane implements View, EntityObjectSource {
 
 	static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableView.class);
 
@@ -27,18 +34,20 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 
 	protected EntityConfig cfg;
 
-	protected int pageSize;
-
-	protected int pageNumber = -1;
-
 	protected EntitySessionFactory entityService;
 	EntityQueryTableModel model;
 
 	public EntityObjectTableView(EntityConfig cfg, EntitySessionFactory es, int pageSize) {
 		this.cfg = cfg;
 		this.entityService = es;
-		this.pageSize = pageSize;
-		model = new EntityQueryTableModel(cfg, pageSize);
+
+		model = new EntityQueryTableModel(this.entityService, cfg, pageSize, new Runnable() {
+
+			@Override
+			public void run() {
+				modelDataUpdated();
+			}
+		});
 
 		this.table = new JTable(model);
 		this.setViewportView(this.table);
@@ -47,7 +56,11 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 		this.table.setFillsViewportHeight(true);
 		// Note, JTable must be added to a JScrollPane,otherwise the header not
 		// showing.
-		this.nextPage();
+		this.model.nextPage();
+	}
+
+	private void modelDataUpdated() {
+		this.updateUI();
 	}
 
 	@Override
@@ -65,7 +78,9 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 		if (cls.equals(EntityObjectSource.class)) {
 			return (T) this;
 		} else if (cls.equals(DataPageQuerable.class)) {
-			return (T) this;
+			return (T) this.model;
+		} else if (cls.equals(Filterable.class)) {
+			return (T) this.model;
 		}
 
 		return null;
@@ -73,34 +88,6 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 
 	@Override
 	public void addEntityObjectSourceListener(EntityObjectSourceListener esl) {
-
-	}
-
-	@Override
-	public void prePage() {
-		if (this.pageNumber == 0) {
-			return;
-		}
-		this.pageNumber--;
-		this.query();
-	}
-
-	private void query() {
-		int offset = this.pageNumber * this.pageSize;
-		List<? extends EntityObject> el = new EntityQuery<>(cfg).offset(offset).limit(this.pageSize)
-				.execute(this.entityService);
-		model.list = el;
-
-		this.updateUI();
-	}
-
-	@Override
-	public void nextPage() {
-		if (model.list != null && model.list.size() < this.pageSize) {
-			return;
-		}
-		this.pageNumber++;
-		this.query();
 
 	}
 
