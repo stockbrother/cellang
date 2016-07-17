@@ -23,6 +23,7 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 
 	private static abstract class Column {
 		EntityQueryTableModel model;
+		String name;
 
 		Column(EntityQueryTableModel model) {
 			this.model = model;
@@ -31,12 +32,19 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 		public abstract Object getValue(int rowIndex);
 
 		public abstract String getFilterableColumn();
+
+		public String getDisplayName() {
+
+			return name;
+
+		}
 	}
 
 	private static class LineNumberColumn extends Column {
 
 		LineNumberColumn(EntityQueryTableModel model) {
 			super(model);
+			this.name = "LN.";
 		}
 
 		@Override
@@ -57,6 +65,7 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 		public GetterMethodColumn(Method m, EntityQueryTableModel model) {
 			super(model);
 			this.method = m;
+			name = BeanUtil.getPropertyNameFromGetMethod(method);
 		}
 
 		@Override
@@ -79,9 +88,7 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 		public String getFilterableColumn() {
 			Class cls = method.getReturnType();
 			if (String.class.equals(cls)) {
-				// TODo other type of field.
-				String rt = BeanUtil.getPropertyNameFromGetMethod(method);
-				return rt;
+				return this.name;
 			}
 			return null;
 		}
@@ -99,11 +106,9 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 	List<Column> columnList = new ArrayList<>();
 	private Map<String, String> likeMap = new HashMap<String, String>();
 	EntitySessionFactory entityService;
-	Runnable dataUpdateListener;
+	
 
-	public EntityQueryTableModel(EntitySessionFactory entityService, EntityConfig cfg, int pageSize,
-			Runnable dataUpdateListener) {
-		this.dataUpdateListener = dataUpdateListener;
+	public EntityQueryTableModel(EntitySessionFactory entityService, EntityConfig cfg, int pageSize) {
 		this.cfg = cfg;
 		this.entityService = entityService;
 		this.pageSize = pageSize;
@@ -181,7 +186,7 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 				.limit(this.pageSize).execute(this.entityService);
 
 		this.list = el;
-		this.dataUpdateListener.run();
+		this.fireTableDataChanged();
 	}
 
 	@Override
@@ -197,5 +202,12 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 	@Override
 	public void refresh() {
 		this.query();
+	}
+
+	@Override
+	public String getColumnName(int column) {
+		String cname = this.columnList.get(column).getDisplayName();
+		String aname = super.getColumnName(column);
+		return aname + "(" + cname + ")";
 	}
 }

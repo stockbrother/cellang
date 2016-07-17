@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.EntityObjectSource;
@@ -36,22 +38,32 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 
 	protected EntitySessionFactory entityService;
 	EntityQueryTableModel model;
+	TableColumnAdjuster tableColumnAdjuster;
 
 	public EntityObjectTableView(EntityConfig cfg, EntitySessionFactory es, int pageSize) {
 		this.cfg = cfg;
 		this.entityService = es;
 
-		model = new EntityQueryTableModel(this.entityService, cfg, pageSize, new Runnable() {
+		model = new EntityQueryTableModel(this.entityService, cfg, pageSize);
+
+		// TODO remove this and adjustColumns when double click the header of
+		// table.
+		model.addTableModelListener(new TableModelListener() {
 
 			@Override
-			public void run() {
-				modelDataUpdated();
+			public void tableChanged(TableModelEvent e) {
+				tableColumnAdjuster.adjustColumns();
 			}
 		});
 
 		this.table = new JTable(model);
+		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tableColumnAdjuster = new TableColumnAdjuster(this.table, 5);
+		tableColumnAdjuster.setOnlyAdjustLarger(true);//
+		// tableColumnAdjuster.setDynamicAdjustment(true);//
+		tableColumnAdjuster.adjustColumns();
 		this.setViewportView(this.table);
-		this.title = "EntityObject";
+		this.title = "Entities-" + cfg.getTableName();
 		this.table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		this.table.setFillsViewportHeight(true);
 		// Note, JTable must be added to a JScrollPane,otherwise the header not

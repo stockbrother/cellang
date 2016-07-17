@@ -17,7 +17,7 @@ public class ActionsPane extends JScrollPane {
 	private Component tailGlue;
 	public ActionsPane() {
 		this.panel = new Box(BoxLayout.Y_AXIS);		
-		this.panel.setPreferredSize(new Dimension(300, 300));
+		this.panel.setPreferredSize(new Dimension(200, 300));
 		this.setViewportView(this.panel);
 		this.tailGlue = Box.createVerticalGlue();
 		this.clear();

@@ -63,13 +63,18 @@ public class EntityConfigTableView extends JScrollPane implements View, DrillDow
 	protected JTable table;
 	List<EntityConfig> list;
 	OperationContext oc;
+	TableColumnAdjuster tableColumnAdjuster;
 
 	public EntityConfigTableView(OperationContext oc, List<EntityConfig> list) {
 		this.oc = oc;
 		this.list = list;
 		this.table = new JTable(new TableModel(list));
+		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tableColumnAdjuster = new TableColumnAdjuster(this.table, 5);
+		// tableColumnAdjuster.setDynamicAdjustment(true);//
+		tableColumnAdjuster.adjustColumns();
 		this.setViewportView(this.table);
-		this.title = "EntityConfig";
+		this.title = "Factory-Entities";
 		this.table.setPreferredScrollableViewportSize(new Dimension(1000, 300));
 		this.table.setFillsViewportHeight(true);
 		this.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
