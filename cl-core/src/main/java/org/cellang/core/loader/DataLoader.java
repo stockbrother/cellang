@@ -24,12 +24,12 @@ public class DataLoader {
 		processMap.put("all-quotes", new AllQuotesFileProcessor(esf));
 	}
 
-	public void loadDir(File dir) {
+	public void load(File dirOrFile) {
 		EntityOp<Void> op = new EntityOp<Void>() {
 
 			@Override
 			public Void execute(EntitySession es) {
-				doLoadDir(dir, es);
+				doLoadDirOrFile(dirOrFile, es);
 				return null;
 			}
 
@@ -37,13 +37,9 @@ public class DataLoader {
 		esf.execute(op);
 	}
 
-	private void doLoadDir(File dir, EntitySession es) {
-
-		for (File f : dir.listFiles()) {
-			if (f.isDirectory()) {
-				this.doLoadDir(f, es);
-				continue;
-			}
+	private void doLoadDirOrFile(File dir, EntitySession es) {
+		if (dir.isFile()) {
+			File f = dir;
 			String fname = f.getName();
 			String[] fnames = fname.split("\\.");
 
@@ -54,6 +50,15 @@ public class DataLoader {
 					LOG.warn("no processor found for file:" + f.getAbsolutePath() + ",type:" + ftype);
 				}
 				fp.process(f);//
+			}
+			return;
+		}
+		// is directory
+
+		for (File f : dir.listFiles()) {
+			if (f.isDirectory()) {
+				this.doLoadDirOrFile(f, es);
+				continue;
 			}
 
 		}

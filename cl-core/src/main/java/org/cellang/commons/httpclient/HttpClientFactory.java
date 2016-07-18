@@ -28,7 +28,7 @@ public class HttpClientFactory {
 		return pause;
 	}
 
-	public void setPause(long pause) {
+	public void setPauseInterval(long pause) {
 		this.pause = pause;
 	}
 

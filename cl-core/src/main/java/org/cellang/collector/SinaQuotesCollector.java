@@ -21,7 +21,7 @@ public class SinaQuotesCollector {
 	private static final Logger LOG = LoggerFactory.getLogger(SinaQuotesCollector.class);
 
 	private HttpClientFactory clients;
-	
+
 	private static SimpleDateFormat DF = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
 	private String host = "vip.stock.finance.sina.com.cn";
@@ -34,26 +34,58 @@ public class SinaQuotesCollector {
 
 	private boolean stop = false;
 
+	private File outputParentDir;
+
 	private File output;
 
-	public SinaQuotesCollector(File output) {
+	public SinaQuotesCollector() {
 		this.clients = new HttpClientFactory();
-		this.clients.setPause(10 * 1000);//
-		this.output = output;
+		this.clients.setPauseInterval(5 * 1000);//
+
+	}
+
+	public SinaQuotesCollector pauseInterval(long pause) {
+		this.clients.setPauseInterval(pause);//
+		return this;
+	}
+
+	public SinaQuotesCollector outputParentDir(File output) {
+		this.outputParentDir = output;
+		return this;
 	}
 
 	public static void main(String[] args) throws Exception {
 		File data = EnvUtil.getDataDir();
-		String name = DF.format(new Date());
-		File outputDir = new File(data, "sina\\all-quotes\\"+name);
 
-		new SinaQuotesCollector(outputDir).start();
+		File outputParentDir = new File(data, "sina\\all-quotes");
+
+		new SinaQuotesCollector().outputParentDir(outputParentDir).start();
 	}
 
-	public void start() {
-		if (!this.output.exists()) {
-			this.output.mkdirs();
+	public File start() {
+		if (!this.outputParentDir.exists()) {
+			throw new RuntimeException("not found folder:" + this.outputParentDir.getAbsolutePath());
 		}
+
+		File output = null;
+		while (true) {
+			String name = DF.format(new Date());
+			output = new File(this.outputParentDir, name);
+			if (output.exists()) {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+				}
+				continue;
+			}
+			break;
+
+		}
+		output.mkdirs();
+		this.output = output;
+
+		LOG.info("download all-quotes from sina to folder:" + this.output.getAbsolutePath());
+
 		HttpResponseCallback hep = new HttpResponseCallback() {
 
 			@Override
@@ -76,6 +108,8 @@ public class SinaQuotesCollector {
 		};
 
 		this.clients.get(host, uriIt, hep);
+
+		return this.output;
 
 	}
 

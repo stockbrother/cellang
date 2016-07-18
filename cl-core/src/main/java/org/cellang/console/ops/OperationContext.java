@@ -35,9 +35,8 @@ public class OperationContext {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OperationContext.class);
 
-
 	private static Map<Class, Converter> converterMap = new HashMap<Class, Converter>();
-	
+
 	static {
 		converterMap.put(Date.class, new DateStringConverter("yyyy/MM/dd"));
 	}
@@ -57,22 +56,12 @@ public class OperationContext {
 	ViewsPane views;
 	OpExecutor opExecutor = new OpExecutor();
 
-	private EntityConfig selectedEntityConfig;
-
 	public OperationContext() {
 
 	}
 
 	public <T> Future<T> execute(ConsoleOp<T> op) {
 		return this.opExecutor.execute(op, this);
-	}
-
-	public EntityConfig getSelectedEntityConfig() {
-		return selectedEntityConfig;
-	}
-
-	public void setSelectedEntityConfig(EntityConfig selectedEntityConfig) {
-		this.selectedEntityConfig = selectedEntityConfig;
 	}
 
 	public ViewsPane getViewManager() {
@@ -82,6 +71,11 @@ public class OperationContext {
 	public OperationContext(File dataDir, ViewsPane views) {
 		this.dataHome = dataDir;
 		this.views = views;
+		entityConfigFactory = new EntityConfigFactory();
+
+		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
+		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
+		this.entityConfigManager = new EntityConfigManager(this.entityService);
 	}
 
 	public void addListener(Listener l) {
@@ -92,11 +86,7 @@ public class OperationContext {
 		if (this.started) {
 			throw new RuntimeException("started already.");
 		}
-		entityConfigFactory = new EntityConfigFactory();
 
-		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
-		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
-		this.entityConfigManager = new EntityConfigManager(this.entityService);
 		this.started = true;
 		for (Listener l : this.listenerList) {
 			l.onStarted(this);
@@ -149,12 +139,12 @@ public class OperationContext {
 	 * result.
 	 */
 	public void list() {
-		if (this.selectedEntityConfig == null) {
+		if (this.entityConfigManager.getSelectedEntityConfig() == null) {
 			LOG.error("no entity config selected.");
 			return;
 		}
-		View v = entityConfigManager.newEntityListView(this.selectedEntityConfig);
-		
+		View v = entityConfigManager.newEntityListView();
+
 		this.views.addView(v, true);
 	}
 
@@ -206,6 +196,10 @@ public class OperationContext {
 
 	public EntitySessionFactory getEntityService() {
 		return entityService;
+	}
+
+	public EntityConfigManager getEntityConfigManager() {
+		return entityConfigManager;
 	}
 
 }

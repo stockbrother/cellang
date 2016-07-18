@@ -13,6 +13,14 @@ import java.util.Map;
 import org.cellang.commons.jdbc.CreateTableOperation;
 import org.cellang.commons.jdbc.InsertRowOperation;
 
+/**
+ * A container that manage information about entity type.Which includes the
+ * class of the entity bean, the table the property method etc.
+ * 
+ * @see EntityConfigFactory
+ * @author wu
+ *
+ */
 public class EntityConfig {
 
 	private Class<? extends EntityObject> entityClass;
@@ -67,8 +75,8 @@ public class EntityConfig {
 		}
 		this.initGetSetMethods(cls.getSuperclass());//
 	}
-	
-	public List<Method> getGetMethodList(){
+
+	public List<Method> getGetMethodList() {
 		return new ArrayList<Method>(this.getMethodMap.values());
 	}
 
@@ -100,7 +108,7 @@ public class EntityConfig {
 		}
 	}
 
-	public Object newEntity(){
+	public Object newEntity() {
 		try {
 			return this.constuctor.newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -108,6 +116,7 @@ public class EntityConfig {
 			throw new RuntimeException(e);
 		}
 	}
+
 	public Object extractFrom(ResultSet rs) throws SQLException {
 		Object entity = this.newEntity();
 		for (Map.Entry<String, Method> en : this.setMethodMap.entrySet()) {

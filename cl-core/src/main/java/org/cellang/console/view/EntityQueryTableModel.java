@@ -3,6 +3,8 @@ package org.cellang.console.view;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,8 @@ import javax.swing.table.AbstractTableModel;
 
 import org.cellang.commons.util.BeanUtil;
 import org.cellang.console.control.DataPageQuerable;
+import org.cellang.console.control.EntityObjectSelectionListener;
+import org.cellang.console.control.EntityObjectSelector;
 import org.cellang.console.control.Filterable;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
@@ -104,19 +108,25 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 	private List<? extends EntityObject> list;
 	EntityConfig cfg;
 	List<Column> columnList = new ArrayList<>();
+
 	private Map<String, String> likeMap = new HashMap<String, String>();
 	EntitySessionFactory entityService;
-	
 
-	public EntityQueryTableModel(EntitySessionFactory entityService, EntityConfig cfg, int pageSize) {
+	public EntityQueryTableModel(EntitySessionFactory entityService, EntityConfig cfg, int pageSize,
+			Comparator<Method> columnSorter) {
 		this.cfg = cfg;
 		this.entityService = entityService;
 		this.pageSize = pageSize;
-		this.columnList.add(new LineNumberColumn(this));
-		for (Method m : this.cfg.getGetMethodList()) {
+		Method[] getters = this.cfg.getGetMethodList().toArray(new Method[0]);
+		Arrays.sort(getters, columnSorter);
+
+		for (Method m : getters) {
 			Column col = new GetterMethodColumn(m, this);
 			this.columnList.add(col);
 		}
+
+		this.columnList.add(0, new LineNumberColumn(this));
+
 	}
 
 	@Override
@@ -210,4 +220,13 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 		String aname = super.getColumnName(column);
 		return aname + "(" + cname + ")";
 	}
+
+	public EntityObject getEntityObject(int idx) {
+		//
+		if (idx >= this.list.size()) {
+			return null;
+		}
+		return this.list.get(idx);//
+	}
+
 }

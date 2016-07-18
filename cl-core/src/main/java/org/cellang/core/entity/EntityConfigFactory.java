@@ -1,14 +1,9 @@
 package org.cellang.core.entity;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.cellang.commons.jdbc.CreateTableOperation;
-import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
-import org.cellang.commons.jdbc.JdbcOperation;
 
 public class EntityConfigFactory {
 
@@ -27,6 +22,8 @@ public class EntityConfigFactory {
 		this.addEntity(new EntityConfig(DateInfoEntity.class, DateInfoEntity.tableName));
 		this.addEntity(new EntityConfig(CorpMetricEntity.class, CorpMetricEntity.tableName));
 		this.addEntity(new EntityConfig(QuotesEntity.class, QuotesEntity.tableName));
+		this.addEntity(new EntityConfig(InterestedCorpEntity.class, InterestedCorpEntity.tableName));
+		this.addEntity(new EntityConfig(PropertyEntity.class, PropertyEntity.tableName));
 
 		// indices
 		this.addIndex(BalanceSheetReportEntity.class, new String[] { "corpId", "reportDate" });
@@ -36,7 +33,13 @@ public class EntityConfigFactory {
 		this.addIndex(CorpInfoEntity.class, new String[] { "code" });
 		this.addIndex(DateInfoEntity.class, new String[] { "value" });
 		this.addIndex(QuotesEntity.class, new String[] { "code" });
+		this.addIndex(InterestedCorpEntity.class, new String[] { "corpId" });
+		this.addIndex(PropertyEntity.class, new String[] { "category" });
 
+	}
+
+	public EntityConfig getEntityConfig(Class entitCls) {
+		return entityConfigMap.get(entitCls);
 	}
 
 	public List<EntityConfig> getEntityConfigList() {
@@ -61,6 +64,15 @@ public class EntityConfigFactory {
 		icL.add(ic);
 	}
 
+	public List<IndexConfig> getIndexConfigList(Class entityCls) {
+		List<IndexConfig> rt = new ArrayList<IndexConfig>();
+		List<IndexConfig> icL = this.indexConfigListMap.get(entityCls);
+		if (icL != null) {
+			rt.addAll(icL);
+		}
+		return rt;
+	}
+
 	public void addEntity(EntityConfig ec) {
 		this.entityConfigList.add(ec);
 		this.entityConfigMap.put(ec.getEntityClass(), ec);
@@ -68,59 +80,6 @@ public class EntityConfigFactory {
 
 	public EntityConfig get(Class entityClass) {
 		return this.entityConfigMap.get(entityClass);
-	}
-
-	public void initTables(EntitySession es, JdbcDataAccessTemplate pool) {
-		JdbcOperation<Void> op = new JdbcOperation<Void>() {
-			@Override
-			public Void doExecute(Connection con) {
-				for (EntityConfig ec : EntityConfigFactory.this.entityConfigList) {
-					String viewSql = ec.getCreateViewSql();
-					if (viewSql == null) {
-
-						CreateTableOperation cto = new CreateTableOperation(ec.getTableName());
-
-						ec.fillCreate(cto);
-						cto.doExecute(con);
-					} else {
-						pool.executeUpdate(con, viewSql);
-					}
-
-				}
-
-				return null;
-			}
-		};
-		es.execute(op);
-	}
-
-	public void initIndices(EntitySession es, JdbcDataAccessTemplate template) {
-		JdbcOperation<Void> op = new JdbcOperation<Void>() {
-
-			@Override
-			public Void doExecute(Connection con) {
-				for (List<IndexConfig> icL : EntityConfigFactory.this.indexConfigListMap.values()) {
-					for (IndexConfig ic : icL) {
-						String tableName = EntityConfigFactory.this.get(ic.getEntityCls()).getTableName();
-						String sql = "create index " + ic.getIndexName() + " on " + tableName + "(";
-						String[] fs = ic.getFieldArray();
-						for (int i = 0; i < fs.length; i++) {
-							String f = fs[i];
-							sql += f;
-							if (i < fs.length - 1) {
-								sql += ",";
-							}
-						}
-						sql += ")";
-						this.template.executeUpdate(con, sql);
-					}
-				}				
-				return null;
-			}
-
-		};
-
-		es.execute(op);
 	}
 
 }

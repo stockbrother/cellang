@@ -2,17 +2,23 @@ package org.cellang.console.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.cellang.console.control.DataPageQuerable;
-import org.cellang.console.control.EntityObjectSource;
-import org.cellang.console.control.EntityObjectSourceListener;
+import org.cellang.console.control.EntityConfigControl;
+import org.cellang.console.control.EntityObjectSelectionListener;
+import org.cellang.console.control.EntityObjectSelector;
 import org.cellang.console.control.Filterable;
 import org.cellang.core.entity.EntityConfig;
+import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class EntityObjectTableView extends JScrollPane implements View, EntityObjectSource {
+public class EntityObjectTableView extends JScrollPane implements View, EntityObjectSelector {
 
 	static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableView.class);
 
@@ -36,12 +42,13 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 	protected EntitySessionFactory entityService;
 	EntityQueryTableModel model;
 	TableColumnAdjuster tableColumnAdjuster;
+	List<EntityObjectSelectionListener> listenerList = new ArrayList<>();
 
-	public EntityObjectTableView(EntityConfig cfg, EntitySessionFactory es, int pageSize) {
+	public EntityObjectTableView(EntityConfig cfg, EntityConfigControl ecc, EntitySessionFactory es, int pageSize) {
 		this.cfg = cfg;
 		this.entityService = es;
 
-		model = new EntityQueryTableModel(this.entityService, cfg, pageSize);
+		model = new EntityQueryTableModel(this.entityService, cfg, pageSize, ecc.getColumnSorter());
 
 		// TODO remove this and adjustColumns when double click the header of
 		// table.
@@ -63,9 +70,36 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 		this.title = "Entities-" + cfg.getTableName();
 		this.table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		this.table.setFillsViewportHeight(true);
+		this.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				EntityObjectTableView.this.onSelectEvent(e);
+			}
+		});
 		// Note, JTable must be added to a JScrollPane,otherwise the header not
 		// showing.
 		this.model.nextPage();
+	}
+
+	@Override
+	public void addEntityObjectSelectionListener(EntityObjectSelectionListener esl) {
+		listenerList.add(esl);
+	}
+
+	protected void onSelectEvent(ListSelectionEvent e) {
+		if (e.getValueIsAdjusting()) {
+			// ignore if not finalized selected.
+			return;
+		}
+		// int idx0 = e.getFirstIndex();
+		// int idx1 = e.getLastIndex();
+		int idx = this.table.getSelectedRow();
+		EntityObject eo = this.model.getEntityObject(idx);
+		for (EntityObjectSelectionListener l : this.listenerList) {
+			l.onEntitySelected(eo);//
+		}
 	}
 
 	@Override
@@ -80,7 +114,7 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 
 	@Override
 	public <T> T getDelegate(Class<T> cls) {
-		if (cls.equals(EntityObjectSource.class)) {
+		if (cls.equals(EntityObjectSelector.class)) {
 			return (T) this;
 		} else if (cls.equals(DataPageQuerable.class)) {
 			return (T) this.model;
@@ -89,11 +123,6 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 		}
 
 		return null;
-	}
-
-	@Override
-	public void addEntityObjectSourceListener(EntityObjectSourceListener esl) {
-
 	}
 
 }

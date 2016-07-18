@@ -1,5 +1,11 @@
 package org.cellang.core.entity;
 
+/**
+ * The base class of entity instance.
+ * 
+ * @author wu
+ *
+ */
 public class EntityObject {
 
 	protected String id;

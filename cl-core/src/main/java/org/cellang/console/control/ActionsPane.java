@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +16,20 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 public class ActionsPane extends JScrollPane {
+	private static class ActionUI {
+		public ActionUI(Action a, JButton bu) {
+			this.action = a;
+			this.button = bu;
+		}
+
+		private Action action;
+		private JButton button;
+	}
+
 	Box panel;
 	private Component tailGlue;
+
+	private Map<String, ActionUI> uiMap = new HashMap<>();
 
 	public ActionsPane() {
 		this.panel = new Box(BoxLayout.Y_AXIS);
@@ -64,8 +78,14 @@ public class ActionsPane extends JScrollPane {
 	}
 
 	public void addActions(HasActions has) {
-		List<Action> aL = has.getActions();
+		List<Action> aL = has.getActions(new ArrayList<>());
 		for (Action a : aL) {
+			ActionUI aui = this.uiMap.get(a.getId());
+
+			if (aui != null) {
+				// avoid duplicated.
+				continue;
+			}
 			JButton bu = new JButton(a.getName());
 			{
 				bu.addActionListener(new ActionListener() {
@@ -77,9 +97,11 @@ public class ActionsPane extends JScrollPane {
 				});
 			}
 
+			aui = new ActionUI(a, bu);
 			this.addToBox(bu);
+			uiMap.put(a.getId(), aui);
 
-			this.updateUI();
 		}
+		this.updateUI();
 	}
 }

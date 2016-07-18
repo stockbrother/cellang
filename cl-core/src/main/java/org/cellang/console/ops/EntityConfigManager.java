@@ -1,25 +1,79 @@
 package org.cellang.console.ops;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.cellang.console.control.CorpInfoEntityConfigControl;
+import org.cellang.console.control.EntityConfigControl;
+import org.cellang.console.control.EntityConfigSelectionListener;
+import org.cellang.console.control.EntityConfigSelector;
+import org.cellang.console.control.QuotesEntityConfigControl;
 import org.cellang.console.view.EntityObjectTableView;
 import org.cellang.console.view.View;
+import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
+import org.cellang.core.entity.QuotesEntity;
 
-public class EntityConfigManager {
+public class EntityConfigManager implements EntityConfigSelector {
 
 	private int queryLimit = 1000;
 
 	private EntitySessionFactory entityService;
 
+	private EntityConfig selectedEntityConfig;
+
+	private List<EntityConfigSelectionListener> selectionListenerList = new ArrayList<>();
+
+	private Map<String, EntityConfigControl> controlMap = new HashMap<>();
+
+	private EntityConfigControl defaultControl = new EntityConfigControl() {
+	};
+
 	public EntityConfigManager(EntitySessionFactory es) {
 		this.entityService = es;
+		controlMap.put(QuotesEntity.tableName, new QuotesEntityConfigControl(this.entityService));
+		controlMap.put(CorpInfoEntity.tableName, new CorpInfoEntityConfigControl(this.entityService));
+		
+	}
+
+	public View newEntityListView() {
+		return this.newEntityListView(this.selectedEntityConfig);
 	}
 
 	public View newEntityListView(EntityConfig ec) {
-		
-		EntityObjectTableView rt = new EntityObjectTableView(ec, this.entityService, this.queryLimit);
+		EntityConfigControl ecc = this.getEntityConfigControl(ec);
+		EntityObjectTableView rt = new EntityObjectTableView(ec, ecc, this.entityService, this.queryLimit);
 
 		return rt;
+	}
+
+	public EntityConfig getSelectedEntityConfig() {
+		return selectedEntityConfig;
+	}
+
+	public void setSelectedEntityConfig(EntityConfig selectedEntityConfig) {
+		this.selectedEntityConfig = selectedEntityConfig;
+		for (EntityConfigSelectionListener sl : this.selectionListenerList) {
+			sl.onEntityConfigSelected(this.selectedEntityConfig);//
+		}
+	}
+
+	public EntityConfigControl getEntityConfigControl(Class<?> entityClass) {
+		EntityConfig ec = this.entityService.getEntityConfigFactory().get(entityClass);
+		return this.getEntityConfigControl(ec);
+	}
+
+	public EntityConfigControl getEntityConfigControl(EntityConfig ec) {
+		EntityConfigControl rt = this.controlMap.get(ec.getTableName());
+		return rt == null ? this.defaultControl : rt;
+	}
+
+	@Override
+	public void addEntityConfigSelectionListener(EntityConfigSelectionListener esl) {
+		this.selectionListenerList.add(esl);
 	}
 
 }

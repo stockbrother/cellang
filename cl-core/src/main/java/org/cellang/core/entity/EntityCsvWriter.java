@@ -9,6 +9,12 @@ import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
+/**
+ * Write a list of entity to csv formated file.
+ * 
+ * @author wu
+ *
+ */
 public class EntityCsvWriter {
 	private CSVWriter cw;
 	EntityConfig ec;
@@ -45,8 +51,8 @@ public class EntityCsvWriter {
 			cw.writeNext(str);
 		}
 	}
-	
-	public void close(){
+
+	public void close() {
 		try {
 			this.cw.close();
 		} catch (IOException e) {

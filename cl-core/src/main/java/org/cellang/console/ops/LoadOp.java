@@ -25,7 +25,7 @@ public class LoadOp extends ConsoleOp<Void> {
 			LOG.error("folder not exists:" + qfile.getAbsolutePath());//
 			return null;
 		}
-		loader.loadDir(qfile);
+		loader.load(qfile);
 		LOG.info("done of load,folder:" + folderName);
 		return null;
 	}

@@ -3,32 +3,40 @@ package org.cellang.console.control;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cellang.console.ops.EntityConfigManager;
 import org.cellang.console.view.View;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.console.view.ViewsPane.ViewsListener;
+import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ActionsControl implements ViewsListener, EntityObjectSourceListener {
+public class ActionsControl implements ViewsListener, EntityObjectSelectionListener, EntityConfigSelectionListener {
 	private static final Logger LOG = LoggerFactory.getLogger(ActionsControl.class);
 
 	ViewsPane views;
 	ActionsPane actions;
+	EntityConfigManager entityConfigManager;
 
-	public ActionsControl(ViewsPane views, ActionsPane actions) {
-
+	public ActionsControl(EntityConfigManager ecm, ViewsPane views, ActionsPane actions) {
+		this.entityConfigManager = ecm;
 		this.views = views;
 		this.actions = actions;
 		this.views.addViewsListener(this);
+		this.entityConfigManager.addEntityConfigSelectionListener(this);//
 
 	}
 
 	@Override
 	public void viewAdded(View v) {
-		EntityObjectSource eos = v.getDelegate(EntityObjectSource.class);
+		EntityObjectSelector eos = v.getDelegate(EntityObjectSelector.class);
 		if (eos != null) {
-			eos.addEntityObjectSourceListener(this);
+			eos.addEntityObjectSelectionListener(this);
+		}
+		EntityConfigSelector ecs = v.getDelegate(EntityConfigSelector.class);
+		if (ecs != null) {
+			ecs.addEntityConfigSelectionListener(this);
 		}
 
 		return;
@@ -44,6 +52,17 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("entitySelected:" + eo);
 		}
+		if (eo == null) {
+			return;
+		}
+		Class<?> ecls = eo.getClass();
+		EntityConfigControl<?> ecc = this.entityConfigManager.getEntityConfigControl(ecls);
+		EntityObjectSelectionListener sl = ecc.getDelegate(EntityObjectSelectionListener.class);
+		if (sl == null) {
+			return;
+		}
+		sl.onEntitySelected(eo);//
+
 	}
 
 	@Override
@@ -105,15 +124,28 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 
 				actions.addFilter(new FilterPane(fil));
 			}
-			
+
 			// if the view is entity list
 			HasActions has = v.getDelegate(HasActions.class);
-			if(has != null){				
+			if (has != null) {
 				actions.addActions(has);
 			}
 		}
 		actions.updateUI();
 
+	}
+
+	@Override
+	public void onEntityConfigSelected(EntityConfig selected) {
+		EntityConfigControl<?> ecc = this.entityConfigManager.getEntityConfigControl(selected);
+		if (ecc == null) {
+			return;
+		}
+		HasActions has = ecc.getDelegate(HasActions.class);
+
+		if (has != null) {
+			actions.addActions(has);
+		}
 	}
 
 }

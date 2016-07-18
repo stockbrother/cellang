@@ -72,8 +72,20 @@ public class JdbcDataAccessTemplate {
 
 	}
 
+	public List<Object[]> executeQuery(Connection con, String sql) {
+		return this.executeQuery(con, sql, new ObjectArrayListResultSetProcessor());
+	}
+
+	public List<Object[]> executeQuery(Connection con, String sql, Object arg) {
+		return this.executeQuery(con, sql, new Object[] { arg });
+	}
+
+	public List<Object[]> executeQuery(Connection con, String sql, Object[] pp) {
+		return executeQuery(con, sql, pp, new ObjectArrayListResultSetProcessor());
+	}
+
 	public <T> T executeQuery(Connection con, String sql, ResultSetProcessor<T> rsp) {
-		return execute(con, sql, EMPTY, new ResultSetProcessorPreparedStatementExecutor<T>(rsp));
+		return executeQuery(con, sql, new Object[] {}, rsp);
 	}
 
 	public <T> T executeQuery(Connection con, String sql, List<Object> objects, ResultSetProcessor<T> rsp) {

@@ -23,7 +23,9 @@ public class H2ConnectionPoolWrapper implements ConnectionProvider {
 		Connection c = this.pool.getConnection();
 		if (c.getAutoCommit()) {
 			c.setAutoCommit(false);//
-			LOG.debug("autocommit disabled for connection:" + c);
+			if (LOG.isTraceEnabled()) {
+				LOG.trace("autocommit disabled for connection:" + c);
+			}
 		}
 		LOG.debug("connection opened.");
 		return c;
@@ -34,7 +36,7 @@ public class H2ConnectionPoolWrapper implements ConnectionProvider {
 		LOG.info("connection pool created");
 		return new H2ConnectionPoolWrapper(pool);
 	}
-	
+
 	@Override
 	public void dispose() {
 		this.pool.dispose();
@@ -44,6 +46,8 @@ public class H2ConnectionPoolWrapper implements ConnectionProvider {
 	@Override
 	public void closeConnection(Connection con) throws SQLException {
 		con.close();
+		LOG.debug("connection closed.");
+
 	}
 
 }

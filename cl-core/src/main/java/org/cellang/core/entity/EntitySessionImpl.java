@@ -105,7 +105,7 @@ public class EntitySessionImpl implements EntitySession {
 				return this.template.executeUpdate(con, sqlF, objects);
 			}
 		};
-		
+
 		return op.execute(con);
 	}
 
@@ -175,6 +175,16 @@ public class EntitySessionImpl implements EntitySession {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public Connection getConnection() {
+		return this.con;
+	}
+
+	@Override
+	public JdbcDataAccessTemplate getDataAccessTemplate() {
+		return this.template;
 	}
 
 }

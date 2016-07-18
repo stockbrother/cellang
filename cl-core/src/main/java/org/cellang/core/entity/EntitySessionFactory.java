@@ -30,9 +30,10 @@ public interface EntitySessionFactory {
 	 * @return
 	 */
 	public EntityConfigFactory getEntityConfigFactory();
+	
+	public DataVersion getDataVersion();
 
 	public void close();
 
-	public boolean isNew();
 
 }

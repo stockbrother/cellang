@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.cellang.console.control.DrillDowable;
+import org.cellang.console.ops.EntityConfigManager;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.core.entity.EntityConfig;
 
@@ -59,7 +60,7 @@ public class EntityConfigTableView extends JScrollPane implements View, DrillDow
 	}
 
 	protected String title;
-
+	EntityConfigManager entityConfigManager;
 	protected JTable table;
 	List<EntityConfig> list;
 	OperationContext oc;
@@ -67,6 +68,7 @@ public class EntityConfigTableView extends JScrollPane implements View, DrillDow
 
 	public EntityConfigTableView(OperationContext oc, List<EntityConfig> list) {
 		this.oc = oc;
+		this.entityConfigManager = oc.getEntityConfigManager();
 		this.list = list;
 		this.table = new JTable(new TableModel(list));
 		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -90,11 +92,11 @@ public class EntityConfigTableView extends JScrollPane implements View, DrillDow
 	}
 
 	protected void onSelectEvent(ListSelectionEvent e) {
-		int idx0 = e.getFirstIndex();
-		int idx1 = e.getLastIndex();
+		// int idx0 = e.getFirstIndex();
+		// int idx1 = e.getLastIndex();
 		int idx = this.table.getSelectedRow();
 		EntityConfig ec = this.list.get(idx);
-		this.oc.setSelectedEntityConfig(ec);//
+		this.entityConfigManager.setSelectedEntityConfig(ec);//
 	}
 
 	@Override

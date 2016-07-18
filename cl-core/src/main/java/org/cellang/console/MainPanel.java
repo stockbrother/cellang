@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
 		this.add(splitPaneTop);
 
 		// add control code for integrate the views.
-		ActionsControl ac = new ActionsControl(this.views, this.actions);
+		ActionsControl ac = new ActionsControl(oc.getEntityConfigManager(),this.views, this.actions);
 	}
 
 	/**

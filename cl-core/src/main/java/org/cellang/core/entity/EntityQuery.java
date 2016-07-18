@@ -4,13 +4,19 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
 
+/**
+ * Utility, for ease of query operation.
+ * 
+ * @author wu
+ *
+ * @param <T>
+ */
 public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 	private static class WhereField {
 		public WhereField(String field, String oper, Object value) {
