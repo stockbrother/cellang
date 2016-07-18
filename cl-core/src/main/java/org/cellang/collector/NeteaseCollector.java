@@ -40,8 +40,7 @@ import au.com.bytecode.opencsv.CSVReader;
 		Proxy-Connection=Keep-Alive
 		Connection=Keep-Alive
 		Age=0
-</code>
- * This code collect data from http site and save to the target folder.
+</code> This code collect data from http site and save to the target folder.
  * 
  * @author wuzhen
  *
@@ -49,6 +48,9 @@ import au.com.bytecode.opencsv.CSVReader;
 public class NeteaseCollector {
 	private static final Logger LOG = LoggerFactory.getLogger(NeteaseCollector.class);
 
+	public static String TYPE_zcfzb = "zcfzb";
+	public static String TYPE_lrb = "lrb";
+	public static String TYPE_xjllb = "xjllb";
 	private File dir163;
 
 	private CloseableHttpClient httpclient;
@@ -67,14 +69,17 @@ public class NeteaseCollector {
 
 	private String firstFrom = "002194";
 
+	private String[] types;
+
 	public NeteaseCollector(File dir) {
 		this.dir163 = dir;
 	}
 
-	public static void main(String[] args) throws Exception {
-		File output = new File("C:\\D\\data\\163");
+	public NeteaseCollector types(String... types) {
 
-		new NeteaseCollector(output).start();
+		this.types = types;
+
+		return this;
 	}
 
 	public void loadCorpInfoEntity(List<CorpInfoEntity> rt, File indexFile) {
@@ -104,6 +109,10 @@ public class NeteaseCollector {
 	}
 
 	public void start() throws Exception {
+		if (this.types == null || types.length == 0) {
+			throw new RuntimeException("no types specified.");
+		}
+
 		List<CorpInfoEntity> rt = new ArrayList<CorpInfoEntity>();
 		File indexDir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
 		File indexFile1 = new File(indexDir, "index1.corplist.csv");
@@ -141,7 +150,7 @@ public class NeteaseCollector {
 	}
 
 	public void collectFor(CorpInfoEntity oi) throws Exception {
-		String[] types = new String[] { "zcfzb", "lrb" };
+
 		for (String type : types) {
 			File typeDir = new File(this.dir163, type);
 

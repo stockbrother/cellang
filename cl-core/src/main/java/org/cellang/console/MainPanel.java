@@ -28,6 +28,12 @@ import org.cellang.console.view.ViewsPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * TODO Subclass the GUI part.
+ * 
+ * @author wuzhen
+ *
+ */
 public class MainPanel extends JPanel {
 	private static final Logger LOG = LoggerFactory.getLogger(MainPanel.class);
 
