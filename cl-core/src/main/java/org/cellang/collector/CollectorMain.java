@@ -12,7 +12,7 @@ public class CollectorMain {
 
 		String piS = System.getProperty("cellang.collector.pause-interval");
 		long pi = 10 * 1000;
-		if (piS == null) {
+		if (piS != null) {
 			pi = Long.parseLong(piS);
 		}
 		new NeteaseCollector(output).pauseInterval(pi).types(types).start();
