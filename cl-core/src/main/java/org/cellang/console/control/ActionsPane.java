@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.Box;
@@ -15,8 +16,9 @@ import javax.swing.JScrollPane;
 public class ActionsPane extends JScrollPane {
 	Box panel;
 	private Component tailGlue;
+
 	public ActionsPane() {
-		this.panel = new Box(BoxLayout.Y_AXIS);		
+		this.panel = new Box(BoxLayout.Y_AXIS);
 		this.panel.setPreferredSize(new Dimension(200, 300));
 		this.setViewportView(this.panel);
 		this.tailGlue = Box.createVerticalGlue();
@@ -34,10 +36,9 @@ public class ActionsPane extends JScrollPane {
 				}
 			});
 		}
-		
+
 		this.addToBox(bu);
-		
-		
+
 		this.updateUI();
 	}
 
@@ -46,19 +47,39 @@ public class ActionsPane extends JScrollPane {
 		ta.setText(des.toString());
 		this.addToBox(ta);
 	}
-	
-	public void addToBox(Component comp){		
+
+	public void addToBox(Component comp) {
 		this.panel.remove(this.tailGlue);
 		this.panel.add(comp);
 		this.panel.add(this.tailGlue);//
 	}
-	
-	public void addFilter(FilterPane fp){
+
+	public void addFilter(FilterPane fp) {
 		this.addToBox(fp);
 	}
 
 	public void clear() {
 		this.panel.removeAll();
 		this.panel.add(this.tailGlue);
+	}
+
+	public void addActions(HasActions has) {
+		List<Action> aL = has.getActions();
+		for (Action a : aL) {
+			JButton bu = new JButton(a.getName());
+			{
+				bu.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						a.perform();
+					}
+				});
+			}
+
+			this.addToBox(bu);
+
+			this.updateUI();
+		}
 	}
 }

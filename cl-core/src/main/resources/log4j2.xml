@@ -5,9 +5,11 @@
 			<PatternLayout
 				pattern="[%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] [%-5p] [%t] %C{10} (%F:%L) - %m%n" />
 		</Console>
-		<RollingFile name="FILE" fileName="${cellang.data.dir}/log/cellang.log">
+		<RollingFile name="FILE"
+			fileName="${sys:cellang.data.dir}/log/cellang.log" filePattern="yyyyMMddHHmmssSSS">
 			<PatternLayout
 				pattern="[%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] [%-5p] [%t] %C{10} (%F:%L) - %m%n" />
+			<CronTriggeringPolicy />
 		</RollingFile>
 	</Appenders>
 	<Loggers>

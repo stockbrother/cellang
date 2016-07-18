@@ -1,4 +1,7 @@
 TODO:
+-High:
+Add list view for EP.
+
 -Done:
 Add feature,filter data table by column search box.
 
@@ -17,6 +20,7 @@ from the actions pane, when select each corp in the entity list
 view.
 
 RUN:
-mvn exec:java -Dexec.mainClass="org.cellang.core.Main"
-
+$ mvn package -DskipTests
+$ mvn exec:java -Dexec.mainClass=org.cellang.collector.CollectorMain -Dcellang.data.dir=/c/d/data
+$ mvn exec:java -Dexec.mainClass=org.MainPanel -Dcellang.data.dir=/c/d/data
  

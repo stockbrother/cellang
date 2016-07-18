@@ -67,7 +67,7 @@ public class NeteaseCollector {
 
 	private long minInterval = 15 * 1000;
 
-	private String firstFrom = "002194";
+	private String firstFrom;
 
 	private String[] types;
 
@@ -114,7 +114,7 @@ public class NeteaseCollector {
 		}
 
 		List<CorpInfoEntity> rt = new ArrayList<CorpInfoEntity>();
-		File indexDir = new File("src" + File.separator + "main" + File.separator + "doc" + File.separator + "1");
+		File indexDir = EnvUtil.getDir1();
 		File indexFile1 = new File(indexDir, "index1.corplist.csv");
 		File indexFile2 = new File(indexDir, "index2.corplist.csv");
 
@@ -125,8 +125,8 @@ public class NeteaseCollector {
 		httpclient = HttpClients.custom().build();
 		try {
 			// http://quotes.money.163.com/service/zcfzb_600305.html
-			target = new HttpHost("quotes.money.163.com", 80, "http");
-			proxy = new HttpHost("proxy.houston.hpecorp.net", 8080);
+			target = new HttpHost(EnvUtil.getHttpHost163(), 80, "http");
+			proxy = new HttpHost(EnvUtil.getProxyHome(), EnvUtil.getProxyPort());
 			config = RequestConfig.custom().setProxy(proxy).build();
 
 			boolean running = false;
@@ -212,11 +212,17 @@ public class NeteaseCollector {
 		try {
 
 			LOG.info("----------------------------------------");
-			LOG.info("statusLine", response.getStatusLine());
-			for (Header header : response.getAllHeaders()) {
-				LOG.info(header.getName() + "=" + header.getValue());
-			}
+			if (LOG.isTraceEnabled()) {
+				StringBuffer sb = new StringBuffer();
 
+				sb.append("statusLine:").append(response.getStatusLine());
+
+				for (Header header : response.getAllHeaders()) {
+					sb.append("," + header.getName() + ":" + header.getValue());
+				}
+				LOG.trace(sb.toString());//
+
+			}
 			if (response.getStatusLine().getStatusCode() == 200) {
 				File workFile = null;
 				int i = 0;

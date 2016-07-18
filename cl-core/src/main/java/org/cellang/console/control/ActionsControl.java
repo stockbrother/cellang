@@ -105,6 +105,12 @@ public class ActionsControl implements ViewsListener, EntityObjectSourceListener
 
 				actions.addFilter(new FilterPane(fil));
 			}
+			
+			// if the view is entity list
+			HasActions has = v.getDelegate(HasActions.class);
+			if(has != null){				
+				actions.addActions(has);
+			}
 		}
 		actions.updateUI();
 

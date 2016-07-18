@@ -2,7 +2,6 @@ package org.cellang.console.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,8 +13,6 @@ import org.cellang.console.control.EntityObjectSource;
 import org.cellang.console.control.EntityObjectSourceListener;
 import org.cellang.console.control.Filterable;
 import org.cellang.core.entity.EntityConfig;
-import org.cellang.core.entity.EntityObject;
-import org.cellang.core.entity.EntityQuery;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,10 +66,6 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 		// Note, JTable must be added to a JScrollPane,otherwise the header not
 		// showing.
 		this.model.nextPage();
-	}
-
-	private void modelDataUpdated() {
-		this.updateUI();
 	}
 
 	@Override

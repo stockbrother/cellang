@@ -10,14 +10,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.cellang.console.view.EntityConfigTableView;
 import org.cellang.console.view.EntityObjectTableView;
+import org.cellang.console.view.View;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
@@ -25,11 +22,8 @@ import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
-import org.cellang.core.entity.EntityOp;
-import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.EntitySessionFactoryImpl;
-import org.cellang.core.loader.DataLoader;
 import org.cellang.core.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +35,16 @@ public class OperationContext {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OperationContext.class);
 
-	private List<Listener> listenerList = new ArrayList<Listener>();
 
 	private static Map<Class, Converter> converterMap = new HashMap<Class, Converter>();
-
-	private int queryLimit = 1000;
-
+	
 	static {
 		converterMap.put(Date.class, new DateStringConverter("yyyy/MM/dd"));
 	}
+
+	private List<Listener> listenerList = new ArrayList<Listener>();
+
+	private EntityConfigManager entityConfigManager;
 
 	private EntitySessionFactory entityService;
 
@@ -101,7 +96,7 @@ public class OperationContext {
 
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
-
+		this.entityConfigManager = new EntityConfigManager(this.entityService);
 		this.started = true;
 		for (Listener l : this.listenerList) {
 			l.onStarted(this);
@@ -155,11 +150,11 @@ public class OperationContext {
 	 */
 	public void list() {
 		if (this.selectedEntityConfig == null) {
+			LOG.error("no entity config selected.");
 			return;
 		}
-
-		EntityObjectTableView v = new EntityObjectTableView(this.selectedEntityConfig, this.entityService,
-				this.queryLimit);
+		View v = entityConfigManager.newEntityListView(this.selectedEntityConfig);
+		
 		this.views.addView(v, true);
 	}
 

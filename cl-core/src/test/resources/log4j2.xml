@@ -5,17 +5,13 @@
 			<PatternLayout
 				pattern="[%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] [%-5p] [%t] %C{10} (%F:%L) - %m%n" />
 		</Console>
-		<RollingFile2 name="FILE">
-			<PatternLayout
-				pattern="[%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] [%-5p] [%t] %C{10} (%F:%L) - %m%n" />
-		</RollingFile2>
+		
 	</Appenders>
 	<Loggers>
 		<Logger name="org.cellang" level="debug" />
-		<Logger name="org.cellang.console" level="trace" />
+		<Logger name="org.cellang.console" level="debug" />
 		<Root level="info">
-			<AppenderRef ref="STDOUT" />
-			<AppenderRef ref="FILE" />
+			<AppenderRef ref="STDOUT" />			
 		</Root>
 	</Loggers>
 </Configuration>
