@@ -172,15 +172,15 @@ public class NeteaseCollector {
 	private void waitAndDoCollectFor(CorpInfoEntity oi, String type, File outputFile) throws Exception {
 		int retry = 3;
 		while (retry > 0) {
-
+			LOG.info("wait..." + this.minInterval + "(ms) before next http accesss.");
 			while (true) {
 				long pass = System.currentTimeMillis() - this.lastAccessTimestamp;
 				if (pass < minInterval) {
-					LOG.info(".");
+					LOG.trace(".");
 					Thread.sleep(1000);
 					continue;
 				}
-				LOG.info("time done.");
+				LOG.info("it's ready for next http access.");
 
 				break;
 			}

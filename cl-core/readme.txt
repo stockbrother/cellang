@@ -1,5 +1,5 @@
 TODO:
--High:
+-Done:
 Add feature,filter data table by column search box.
 
 -High:
@@ -8,7 +8,7 @@ Add chart for metric calculated by function.
 -Low
 Add split layout for views manager.
 
--Midd:
+-Done:
 Add note and book-mark for chart
 
 -Midd:
