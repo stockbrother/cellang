@@ -65,7 +65,7 @@ public class NeteaseCollector {
 
 	private long lastAccessTimestamp;
 
-	private long minInterval = 15 * 1000;
+	private long pauseInterval = 15 * 1000;
 
 	private String firstFrom;
 
@@ -172,10 +172,10 @@ public class NeteaseCollector {
 	private void waitAndDoCollectFor(CorpInfoEntity oi, String type, File outputFile) throws Exception {
 		int retry = 3;
 		while (retry > 0) {
-			LOG.info("wait..." + this.minInterval + "(ms) before next http accesss.");
+			LOG.info("wait..." + this.pauseInterval + "(ms) before next http accesss.");
 			while (true) {
 				long pass = System.currentTimeMillis() - this.lastAccessTimestamp;
-				if (pass < minInterval) {
+				if (pass < pauseInterval) {
 					LOG.trace(".");
 					Thread.sleep(1000);
 					continue;
@@ -247,5 +247,10 @@ public class NeteaseCollector {
 		} finally {
 			response.close();
 		}
+	}
+
+	public NeteaseCollector pauseInterval(long pauseInterval) {
+		this.pauseInterval = pauseInterval;
+		return this;
 	}
 }
