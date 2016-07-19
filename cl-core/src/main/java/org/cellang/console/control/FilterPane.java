@@ -18,7 +18,7 @@ public class FilterPane extends Box {
 	public FilterPane(Filterable fil) {
 		super(BoxLayout.Y_AXIS);
 		this.filterable = fil;
-		String[] cols = fil.getColumn();
+		String[] cols = fil.getFilterableColumnList();
 
 		for (String key : cols) {
 			Box line = new Box(BoxLayout.X_AXIS);

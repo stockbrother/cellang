@@ -13,6 +13,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.cellang.commons.util.UUIDUtil;
+import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.EntityObjectSelectionListener;
@@ -54,7 +55,7 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 		this.entityConfigControl = ecc;
 		this.entityService = es;
 
-		model = new EntityQueryTableModel(this.entityService, cfg, pageSize, ecc.getColumnSorter());
+		model = new EntityQueryTableModel(this.entityService, cfg, ecc, pageSize, ecc.getColumnSorter());
 
 		// TODO remove this and adjustColumns when double click the header of
 		// table.
@@ -128,6 +129,8 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 			return (T) this.model;
 		} else if (cls.equals(HasActions.class)) {
 			return (T) this.entityConfigControl.getDelegate(HasActions.class);
+		} else if (cls.equals(ColumnAppendable.class)) {
+			return (T) this.model;
 		}
 
 		return null;

@@ -1,13 +1,6 @@
 package org.cellang.console.control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.swing.JButton;
 
 import org.cellang.console.ops.EntityConfigManager;
 import org.cellang.console.view.View;
@@ -24,9 +17,9 @@ public class ActionsControl implements ViewsListener, EntityObjectSelectionListe
 	ViewsPane views;
 
 	ViewActionPane actionManagerPane;
-	
+
 	EntityConfigManager entityConfigManager;
-	
+
 	public ActionsControl(EntityConfigManager ecm, ViewsPane views, ViewActionPane actions) {
 		this.entityConfigManager = ecm;
 		this.views = views;
@@ -46,9 +39,22 @@ public class ActionsControl implements ViewsListener, EntityObjectSelectionListe
 		if (ecs != null) {
 			ecs.addEntityConfigSelectionListener(this);
 		}
-		
+
 		ActionsPane actionPane = new ActionsPane(v);
 		actionManagerPane.addActionPane(actionPane);
+
+		ColumnAppendable ce = v.getDelegate(ColumnAppendable.class);
+		if (ce != null) {
+			List<String> nameL = ce.getExtenableColumnList();
+			actionPane.addDropDownList(nameL, new ValueChangeListener<String>() {
+
+				@Override
+				public void valueChanged(String value) {
+					ce.appendColumn(value);//
+				}
+			});
+		}
+
 		return;
 	}
 

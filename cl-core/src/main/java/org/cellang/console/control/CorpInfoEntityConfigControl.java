@@ -3,6 +3,7 @@ package org.cellang.console.control;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cellang.console.ext.CorpEPExtendingProperty;
 import org.cellang.console.view.View;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityObject;
@@ -35,6 +36,8 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 				CorpInfoEntityConfigControl.this.addToInterested();
 			}
 		});
+		this.addExtendingProperty(new CorpEPExtendingProperty(), true);
+
 	}
 
 	@Override
@@ -43,6 +46,8 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 			return (T) this;
 		} else if (EntityObjectSelectionListener.class.equals(cls)) {
 			return (T) this;
+		} else if (EntitySessionFactory.class.equals(cls)) {
+			return (T) this.entitySessions;
 		}
 		return null;
 	}

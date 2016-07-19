@@ -2,7 +2,7 @@ package org.cellang.console.control;
 
 public interface Filterable {
 	
-	public String[] getColumn();
+	public String[] getFilterableColumnList();
 
 	public void setLike(String column, String value);
 

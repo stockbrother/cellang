@@ -12,9 +12,9 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import org.cellang.commons.util.BeanUtil;
+import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.DataPageQuerable;
-import org.cellang.console.control.EntityObjectSelectionListener;
-import org.cellang.console.control.EntityObjectSelector;
+import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.Filterable;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
@@ -23,9 +23,10 @@ import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EntityQueryTableModel extends AbstractTableModel implements Filterable, DataPageQuerable {
+public class EntityQueryTableModel extends AbstractTableModel
+		implements Filterable, DataPageQuerable, ColumnAppendable {
 
-	private static abstract class Column {
+	public static abstract class Column {
 		EntityQueryTableModel model;
 		String name;
 
@@ -35,6 +36,8 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 
 		public abstract Object getValue(int rowIndex);
 
+		// if the column is filterable, action ui will add conditional input
+		// argument for filtering of the data table based on this column.
 		public abstract String getFilterableColumn();
 
 		public String getDisplayName() {
@@ -58,6 +61,31 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 
 		@Override
 		public String getFilterableColumn() {
+			return null;
+		}
+
+	}
+
+	private static class ExtendingColumn extends Column {
+		ExtendingProperty calculator;
+
+		ExtendingColumn(EntityQueryTableModel model, ExtendingProperty calculator) {
+			super(model);
+			this.calculator = calculator;
+		}
+
+		@Override
+		public Object getValue(int rowIndex) {
+			if (model.list == null || rowIndex > model.list.size() - 1) {
+				return null;
+			}
+			EntityObject ec = model.list.get(rowIndex);
+			return this.calculator.getValue(ec);
+		}
+
+		@Override
+		public String getFilterableColumn() {
+			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -111,9 +139,11 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 
 	private Map<String, String> likeMap = new HashMap<String, String>();
 	EntitySessionFactory entityService;
+	EntityConfigControl<?> ecc;
 
-	public EntityQueryTableModel(EntitySessionFactory entityService, EntityConfig cfg, int pageSize,
-			Comparator<Method> columnSorter) {
+	public EntityQueryTableModel(EntitySessionFactory entityService, EntityConfig cfg, EntityConfigControl<?> ecc,
+			int pageSize, Comparator<Method> columnSorter) {
+		this.ecc = ecc;
 		this.cfg = cfg;
 		this.entityService = entityService;
 		this.pageSize = pageSize;
@@ -154,7 +184,7 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 	}
 
 	@Override
-	public String[] getColumn() {
+	public String[] getFilterableColumnList() {
 		List<String> rt = new ArrayList<String>();
 		for (Column col : this.columnList) {
 			String fname = col.getFilterableColumn();
@@ -223,10 +253,29 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 
 	public EntityObject getEntityObject(int idx) {
 		//
-		if (idx<0 || idx >= this.list.size()) {
+		if (idx < 0 || idx >= this.list.size()) {
 			return null;
 		}
 		return this.list.get(idx);//
+	}
+
+	@Override
+	public List<String> getExtenableColumnList() {
+
+		List<ExtendingProperty> epL = this.ecc.getExtendingPropertyList();
+		List<String> rt = new ArrayList<>();
+		for(ExtendingProperty ep:epL){
+			rt.add(ep.getName());
+		}
+		return rt;
+	}
+
+	@Override
+	public void appendColumn(String columnName) {
+		ExtendingProperty cal = this.ecc.getExtendingProperty(columnName);
+		ExtendingColumn ec=  new ExtendingColumn(this,cal);
+		this.columnList.add(ec);
+		fireTableStructureChanged();
 	}
 
 }

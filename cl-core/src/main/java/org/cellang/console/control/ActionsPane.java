@@ -5,14 +5,18 @@ import java.awt.Dimension;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.cellang.console.view.View;
@@ -33,10 +37,11 @@ public class ActionsPane extends JScrollPane {
 
 	private Map<String, ActionUI> uiMap = new HashMap<>();
 	private View view;
-	
-	public String getViewId(){
+
+	public String getViewId() {
 		return this.view.getId();
 	}
+
 	public ActionsPane(View view) {
 		this.view = view;
 		this.panel = new Box(BoxLayout.Y_AXIS);
@@ -103,7 +108,6 @@ public class ActionsPane extends JScrollPane {
 		if (has != null) {
 			this.addActions(has);
 		}
-
 
 	}
 
@@ -173,7 +177,21 @@ public class ActionsPane extends JScrollPane {
 		this.updateUI();
 	}
 
-	public void viewSelected(View v) {
+	public void addDropDownList(List<String> nameL, ValueChangeListener<String> vcl) {
+		Vector<String> vec = new Vector<String>(nameL);
+		vec.insertElementAt(null, 0);//
+		JComboBox<String> com = new JComboBox<>(vec);
+		com.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					Object item = event.getItem();
+					String name = (String) item;
+					vcl.valueChanged(name);//
+				}
+			}
+		});
+		this.addToBox(com);
 
 	}
+
 }
