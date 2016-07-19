@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import org.cellang.commons.util.UUIDUtil;
 import org.cellang.console.control.DrillDowable;
 import org.cellang.console.ops.EntityConfigManager;
 import org.cellang.console.ops.OperationContext;
@@ -65,8 +66,9 @@ public class EntityConfigTableView extends JScrollPane implements View, DrillDow
 	List<EntityConfig> list;
 	OperationContext oc;
 	TableColumnAdjuster tableColumnAdjuster;
-
+	String id;
 	public EntityConfigTableView(OperationContext oc, List<EntityConfig> list) {
+		this.id = UUIDUtil.randomStringUUID();
 		this.oc = oc;
 		this.entityConfigManager = oc.getEntityConfigManager();
 		this.list = list;
@@ -120,6 +122,11 @@ public class EntityConfigTableView extends JScrollPane implements View, DrillDow
 	@Override
 	public void drillDown() {
 		this.oc.list();
+	}
+
+	@Override
+	public String getId() {
+		return id;
 	}
 
 }

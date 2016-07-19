@@ -2,6 +2,8 @@ package org.cellang.console.control;
 
 import java.util.List;
 
+import org.cellang.console.view.View;
+
 /**
  * 
  * @author wu
@@ -14,6 +16,6 @@ public interface HasActions {
 	 * @param al
 	 * @return
 	 */
-	public List<Action> getActions(List<Action> al);
+	public List<Action> getActions(View view, List<Action> al);
 
 }

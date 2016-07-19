@@ -12,11 +12,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import org.cellang.commons.util.UUIDUtil;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.EntityObjectSelectionListener;
 import org.cellang.console.control.EntityObjectSelector;
 import org.cellang.console.control.Filterable;
+import org.cellang.console.control.HasActions;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntitySessionFactory;
@@ -43,9 +45,13 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 	EntityQueryTableModel model;
 	TableColumnAdjuster tableColumnAdjuster;
 	List<EntityObjectSelectionListener> listenerList = new ArrayList<>();
+	EntityConfigControl entityConfigControl;
+	String id;
 
 	public EntityObjectTableView(EntityConfig cfg, EntityConfigControl ecc, EntitySessionFactory es, int pageSize) {
+		this.id = UUIDUtil.randomStringUUID();
 		this.cfg = cfg;
+		this.entityConfigControl = ecc;
 		this.entityService = es;
 
 		model = new EntityQueryTableModel(this.entityService, cfg, pageSize, ecc.getColumnSorter());
@@ -120,9 +126,17 @@ public class EntityObjectTableView extends JScrollPane implements View, EntityOb
 			return (T) this.model;
 		} else if (cls.equals(Filterable.class)) {
 			return (T) this.model;
+		} else if (cls.equals(HasActions.class)) {
+			return (T) this.entityConfigControl.getDelegate(HasActions.class);
 		}
 
 		return null;
+	}
+
+	@Override
+	public String getId() {
+
+		return id;
 	}
 
 }

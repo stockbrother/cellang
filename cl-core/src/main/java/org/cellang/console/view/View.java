@@ -8,4 +8,6 @@ public interface View extends HasDelagates {
 
 	public Component getComponent();
 
+	public String getId();	
+
 }

@@ -10,6 +10,13 @@ public class NewDBUpgrader extends DBUpgrader {
 		super(DataVersion.V_UNKNOW, DataVersion.V_0_0_3);
 	}
 
+	public static void createTableAndIndex(EntitySessionFactory esf, EntitySession es,
+			Class<InterestedCorpEntity> class1) {
+		EntityConfig ec = esf.getEntityConfigFactory().getEntityConfig(InterestedCorpEntity.class);
+		List<IndexConfig> icL = esf.getEntityConfigFactory().getIndexConfigList(ec.getEntityClass());
+		createTableAndIndex(ec, icL, es);
+	}
+
 	public static void createTableAndIndex(EntityConfig ec, List<IndexConfig> icL, EntitySession es) {
 		String viewSql = ec.getCreateViewSql();
 		// entity is table
@@ -60,4 +67,5 @@ public class NewDBUpgrader extends DBUpgrader {
 		pe.setValue(value);
 		es.save(pe);//
 	}
+
 }

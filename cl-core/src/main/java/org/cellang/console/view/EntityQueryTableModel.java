@@ -223,7 +223,7 @@ public class EntityQueryTableModel extends AbstractTableModel implements Filtera
 
 	public EntityObject getEntityObject(int idx) {
 		//
-		if (idx >= this.list.size()) {
+		if (idx<0 || idx >= this.list.size()) {
 			return null;
 		}
 		return this.list.get(idx);//

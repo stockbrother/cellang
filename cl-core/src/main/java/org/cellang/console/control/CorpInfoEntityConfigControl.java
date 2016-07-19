@@ -3,6 +3,7 @@ package org.cellang.console.control;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cellang.console.view.View;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityOp;
@@ -40,12 +41,14 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	public <T> T getDelegate(Class<T> cls) {
 		if (HasActions.class.equals(cls)) {
 			return (T) this;
+		} else if (EntityObjectSelectionListener.class.equals(cls)) {
+			return (T) this;
 		}
 		return null;
 	}
 
 	@Override
-	public List<Action> getActions(List<Action> al) {
+	public List<Action> getActions(View view, List<Action> al) {
 		al.addAll(this.actions);
 		return al;
 	}
@@ -64,6 +67,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 			@Override
 			public Void execute(EntitySession es) {
 				InterestedCorpEntity ic = new InterestedCorpEntity();
+				ic.setId(selected.getId());//
 				ic.setCorpId(selected.getId());//
 				es.save(ic);
 				return null;

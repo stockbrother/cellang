@@ -13,13 +13,14 @@ import org.cellang.collector.SinaAllQuotesPreprocessor;
 import org.cellang.collector.SinaQuotesCollector;
 import org.cellang.commons.jdbc.DeleteOperation;
 import org.cellang.commons.util.BeanUtil;
+import org.cellang.console.view.View;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.QuotesEntity;
 import org.cellang.core.loader.DataLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity> implements HasActions {
+public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity>implements HasActions {
 	private static class Sorter implements Comparator<Method> {
 		Map<String, String> sorted = new HashMap<>();
 
@@ -74,7 +75,7 @@ public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity>
 	}
 
 	@Override
-	public List<Action> getActions(List<Action> al) {
+	public List<Action> getActions(View v, List<Action> al) {
 		al.addAll(this.actions);
 		return al;
 	}

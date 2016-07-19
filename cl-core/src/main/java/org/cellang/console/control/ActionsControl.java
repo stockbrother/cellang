@@ -1,7 +1,13 @@
 package org.cellang.console.control;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.swing.JButton;
 
 import org.cellang.console.ops.EntityConfigManager;
 import org.cellang.console.view.View;
@@ -16,13 +22,15 @@ public class ActionsControl implements ViewsListener, EntityObjectSelectionListe
 	private static final Logger LOG = LoggerFactory.getLogger(ActionsControl.class);
 
 	ViewsPane views;
-	ActionsPane actions;
-	EntityConfigManager entityConfigManager;
 
-	public ActionsControl(EntityConfigManager ecm, ViewsPane views, ActionsPane actions) {
+	ViewActionPane actionManagerPane;
+	
+	EntityConfigManager entityConfigManager;
+	
+	public ActionsControl(EntityConfigManager ecm, ViewsPane views, ViewActionPane actions) {
 		this.entityConfigManager = ecm;
 		this.views = views;
-		this.actions = actions;
+		this.actionManagerPane = actions;
 		this.views.addViewsListener(this);
 		this.entityConfigManager.addEntityConfigSelectionListener(this);//
 
@@ -38,7 +46,9 @@ public class ActionsControl implements ViewsListener, EntityObjectSelectionListe
 		if (ecs != null) {
 			ecs.addEntityConfigSelectionListener(this);
 		}
-
+		
+		ActionsPane actionPane = new ActionsPane(v);
+		actionManagerPane.addActionPane(actionPane);
 		return;
 	}
 
@@ -67,72 +77,7 @@ public class ActionsControl implements ViewsListener, EntityObjectSelectionListe
 
 	@Override
 	public void viewSelected(View v) {
-		actions.clear();
-		if (v == null) {
-
-		}
-		if (v != null) {
-
-			// if the view support query
-			DataPageQuerable dpq = v.getDelegate(DataPageQuerable.class);
-			if (dpq != null) {
-				actions.addAction("prePage", new ActionHandler() {
-
-					@Override
-					public void performAction() {
-						dpq.prePage();
-					}
-				});
-				actions.addAction("refresh", new ActionHandler() {
-
-					@Override
-					public void performAction() {
-						dpq.refresh();
-					}
-				});
-
-				actions.addAction("nextPage", new ActionHandler() {
-
-					@Override
-					public void performAction() {
-						dpq.nextPage();
-					}
-				});
-			}
-			// if the view is entity config list
-			DrillDowable dd = v.getDelegate(DrillDowable.class);
-			if (dd != null) {
-				actions.addAction("drillDown", new ActionHandler() {
-
-					@Override
-					public void performAction() {
-						dd.drillDown();
-					}
-				});
-			}
-			// if the view contains description
-			Descriable des = v.getDelegate(Descriable.class);
-			if (des != null) {
-				Map<String, Object> desMap = new HashMap<>();
-				des.getDescription(desMap);
-				actions.addText(desMap);
-
-			}
-			// if the view support fitler
-			Filterable fil = v.getDelegate(Filterable.class);
-			if (fil != null) {
-
-				actions.addFilter(new FilterPane(fil));
-			}
-
-			// if the view is entity list
-			HasActions has = v.getDelegate(HasActions.class);
-			if (has != null) {
-				actions.addActions(has);
-			}
-		}
-		actions.updateUI();
-
+		actionManagerPane.viewSelected(v);
 	}
 
 	@Override
@@ -143,9 +88,6 @@ public class ActionsControl implements ViewsListener, EntityObjectSelectionListe
 		}
 		HasActions has = ecc.getDelegate(HasActions.class);
 
-		if (has != null) {
-			actions.addActions(has);
-		}
 	}
 
 }

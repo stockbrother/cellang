@@ -19,10 +19,11 @@ import javax.swing.JSplitPane;
 
 import org.cellang.collector.EnvUtil;
 import org.cellang.console.clojure.ClojureConsolePane;
-import org.cellang.console.clojure.ReplSession;
 import org.cellang.console.clojure.ClojureConsolePane.ConsoleListener;
+import org.cellang.console.clojure.ReplSession;
 import org.cellang.console.control.ActionsControl;
 import org.cellang.console.control.ActionsPane;
+import org.cellang.console.control.ViewActionPane;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.ViewsPane;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class MainPanel extends JPanel {
 	private ExecutorService executor;
 	JFrame frame;
 	Future<Object> consoleFuture;
-	private ActionsPane actions;
+	private ViewActionPane actionManagerPane;
 
 	public MainPanel(File dataDir) {
 		super(new GridLayout(1, 0));
@@ -83,9 +84,9 @@ public class MainPanel extends JPanel {
 				}
 				this.splitPaneSub.add(views);
 				{
-					actions = new ActionsPane();
+					actionManagerPane = new ViewActionPane();
 				}
-				this.splitPaneSub.add(actions);
+				this.splitPaneSub.add(actionManagerPane);
 			}
 			this.splitPaneTop.add(this.splitPaneSub);
 
@@ -106,7 +107,7 @@ public class MainPanel extends JPanel {
 		this.add(splitPaneTop);
 
 		// add control code for integrate the views.
-		ActionsControl ac = new ActionsControl(oc.getEntityConfigManager(),this.views, this.actions);
+		ActionsControl ac = new ActionsControl(oc.getEntityConfigManager(),this.views, this.actionManagerPane);
 	}
 
 	/**

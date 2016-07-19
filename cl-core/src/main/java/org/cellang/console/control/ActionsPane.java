@@ -15,6 +15,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import org.cellang.console.view.View;
+
 public class ActionsPane extends JScrollPane {
 	private static class ActionUI {
 		public ActionUI(Action a, JButton bu) {
@@ -30,13 +32,79 @@ public class ActionsPane extends JScrollPane {
 	private Component tailGlue;
 
 	private Map<String, ActionUI> uiMap = new HashMap<>();
-
-	public ActionsPane() {
+	private View view;
+	
+	public String getViewId(){
+		return this.view.getId();
+	}
+	public ActionsPane(View view) {
+		this.view = view;
 		this.panel = new Box(BoxLayout.Y_AXIS);
 		this.panel.setPreferredSize(new Dimension(200, 300));
 		this.setViewportView(this.panel);
+
 		this.tailGlue = Box.createVerticalGlue();
 		this.clear();
+		// if the view support query
+		DataPageQuerable dpq = view.getDelegate(DataPageQuerable.class);
+		if (dpq != null) {
+			this.addAction("prePage", new ActionHandler() {
+
+				@Override
+				public void performAction() {
+					dpq.prePage();
+				}
+			});
+			this.addAction("refresh", new ActionHandler() {
+
+				@Override
+				public void performAction() {
+					dpq.refresh();
+				}
+			});
+
+			this.addAction("nextPage", new ActionHandler() {
+
+				@Override
+				public void performAction() {
+					dpq.nextPage();
+				}
+			});
+		}
+		// if the view is entity config list
+		DrillDowable dd = view.getDelegate(DrillDowable.class);
+		if (dd != null) {
+			this.addAction("drillDown", new ActionHandler() {
+
+				@Override
+				public void performAction() {
+					dd.drillDown();
+				}
+			});
+		}
+		// if the view contains description
+		Descriable des = view.getDelegate(Descriable.class);
+		if (des != null) {
+			Map<String, Object> desMap = new HashMap<>();
+			des.getDescription(desMap);
+			this.addText(desMap);// TODO
+
+		}
+		// if the view support fitler
+		Filterable fil = view.getDelegate(Filterable.class);
+		if (fil != null) {
+
+			this.addFilter(new FilterPane(fil));
+		}
+
+		//
+		HasActions has = view.getDelegate(HasActions.class);
+
+		if (has != null) {
+			this.addActions(has);
+		}
+
+
 	}
 
 	public void addAction(String name, ActionHandler ah) {
@@ -78,7 +146,7 @@ public class ActionsPane extends JScrollPane {
 	}
 
 	public void addActions(HasActions has) {
-		List<Action> aL = has.getActions(new ArrayList<>());
+		List<Action> aL = has.getActions(view, new ArrayList<>());
 		for (Action a : aL) {
 			ActionUI aui = this.uiMap.get(a.getId());
 
@@ -103,5 +171,9 @@ public class ActionsPane extends JScrollPane {
 
 		}
 		this.updateUI();
+	}
+
+	public void viewSelected(View v) {
+
 	}
 }

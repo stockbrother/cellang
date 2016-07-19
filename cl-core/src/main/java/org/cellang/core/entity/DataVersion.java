@@ -6,7 +6,7 @@ import java.util.Map;
 public class DataVersion {
 
 	private static Map<Integer, Map<Integer, Map<Integer, DataVersion>>> versionMap = new HashMap<>();
-
+	
 	// unknown means not resolved yet.
 	public static final DataVersion V_UNKNOW = DataVersion.addVersion(0, 0, 0);
 	// v0.0.1,
@@ -20,7 +20,9 @@ public class DataVersion {
 
 	public static final DataVersion V_0_0_4 = DataVersion.addVersion(0, 0, 4);
 
-	public static final DataVersion V_latest = V_0_0_4;
+	public static final DataVersion V_0_0_5 = DataVersion.addVersion(0, 0, 5);
+	
+	public static final DataVersion V_latest = V_0_0_5;
 	private int[] verionNumbers;
 
 	static {

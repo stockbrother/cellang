@@ -4,12 +4,16 @@ import java.awt.Component;
 
 import javax.swing.JScrollPane;
 
+import org.cellang.commons.util.UUIDUtil;
+
 public class AbstractView extends JScrollPane implements View {
 
 	protected String title;
+	protected String id;
 
 	public AbstractView(String title) {
 		this.title = title;
+		this.id = UUIDUtil.randomStringUUID();
 	}
 
 	@Override
@@ -25,6 +29,11 @@ public class AbstractView extends JScrollPane implements View {
 	@Override
 	public <T> T getDelegate(Class<T> cls) {
 		return null;
+	}
+
+	@Override
+	public String getId() {
+		return this.id;
 	}
 
 }
