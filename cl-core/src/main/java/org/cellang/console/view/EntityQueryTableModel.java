@@ -30,8 +30,9 @@ public class EntityQueryTableModel extends AbstractTableModel
 		EntityQueryTableModel model;
 		String name;
 
-		Column(EntityQueryTableModel model) {
+		Column(EntityQueryTableModel model, String name) {
 			this.model = model;
+			this.name = name;
 		}
 
 		public abstract Object getValue(int rowIndex);
@@ -50,8 +51,7 @@ public class EntityQueryTableModel extends AbstractTableModel
 	private static class LineNumberColumn extends Column {
 
 		LineNumberColumn(EntityQueryTableModel model) {
-			super(model);
-			this.name = "LN.";
+			super(model, "LN.");
 		}
 
 		@Override
@@ -70,7 +70,7 @@ public class EntityQueryTableModel extends AbstractTableModel
 		ExtendingProperty calculator;
 
 		ExtendingColumn(EntityQueryTableModel model, ExtendingProperty calculator) {
-			super(model);
+			super(model, calculator.getName());
 			this.calculator = calculator;
 		}
 
@@ -95,9 +95,9 @@ public class EntityQueryTableModel extends AbstractTableModel
 		Method method;
 
 		public GetterMethodColumn(Method m, EntityQueryTableModel model) {
-			super(model);
+			super(model, null);
+			name = BeanUtil.getPropertyNameFromGetMethod(m);
 			this.method = m;
-			name = BeanUtil.getPropertyNameFromGetMethod(method);
 		}
 
 		@Override
@@ -264,7 +264,7 @@ public class EntityQueryTableModel extends AbstractTableModel
 
 		List<ExtendingProperty> epL = this.ecc.getExtendingPropertyList();
 		List<String> rt = new ArrayList<>();
-		for(ExtendingProperty ep:epL){
+		for (ExtendingProperty ep : epL) {
 			rt.add(ep.getName());
 		}
 		return rt;
@@ -273,7 +273,7 @@ public class EntityQueryTableModel extends AbstractTableModel
 	@Override
 	public void appendColumn(String columnName) {
 		ExtendingProperty cal = this.ecc.getExtendingProperty(columnName);
-		ExtendingColumn ec=  new ExtendingColumn(this,cal);
+		ExtendingColumn ec = new ExtendingColumn(this, cal);
 		this.columnList.add(ec);
 		fireTableStructureChanged();
 	}

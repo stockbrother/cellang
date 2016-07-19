@@ -123,7 +123,7 @@ public class CorpEPExtendingProperty implements ExtendingProperty {
 	@Override
 	public String getName() {
 
-		return "ep";
+		return "P/E";
 	}
 
 	@Override
