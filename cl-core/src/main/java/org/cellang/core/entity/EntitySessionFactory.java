@@ -32,7 +32,7 @@ public interface EntitySessionFactory {
 	public EntityConfigFactory getEntityConfigFactory();
 	
 	public DataVersion getDataVersion();
-
+	
 	public void close();
 
 

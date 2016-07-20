@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.console.view.ExtendingProperty;
+import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.console.view.HasDelagates;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
@@ -32,7 +32,7 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 	};
 	Comparator<Method> comparator = DEF;
 
-	Map<String, ExtendingProperty> extendingPropertyMap = new HashMap<>();
+	Map<String, ExtendingPropertyDefine> extendingPropertyMap = new HashMap<>();
 	
 	E selected;
 	@Override
@@ -41,8 +41,8 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 		return null;
 	}
 
-	protected void addExtendingProperty(ExtendingProperty ep, boolean install) {
-		this.extendingPropertyMap.put(ep.getName(), ep);
+	protected void addExtendingProperty(ExtendingPropertyDefine ep, boolean install) {
+		this.extendingPropertyMap.put(ep.getKey(), ep);
 		if (install) {
 			boolean succ = ep.install(this);
 			if (!succ) {
@@ -55,11 +55,11 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 		return this.comparator;
 	}
 
-	public List<ExtendingProperty> getExtendingPropertyList() {
+	public List<ExtendingPropertyDefine> getExtendingPropertyList() {
 		return new ArrayList<>(this.extendingPropertyMap.values());
 	}
 
-	public ExtendingProperty getExtendingProperty(String key) {
+	public ExtendingPropertyDefine getExtendingProperty(String key) {
 		//
 		return this.extendingPropertyMap.get(key);
 	}

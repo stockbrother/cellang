@@ -15,7 +15,7 @@ import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.control.HasActions;
-import org.cellang.console.view.ExtendingProperty;
+import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
@@ -66,10 +66,10 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	}
 
 	private static class ExtendingColumn extends Column {
-		ExtendingProperty calculator;
+		ExtendingPropertyDefine calculator;
 
-		ExtendingColumn(EntityObjectTableDataProvider model, ExtendingProperty calculator) {
-			super(model, calculator.getName());
+		ExtendingColumn(EntityObjectTableDataProvider model, ExtendingPropertyDefine calculator) {
+			super(model, calculator.getKey());
 			this.calculator = calculator;
 		}
 
@@ -272,9 +272,9 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		if (this.ecc == null) {
 			return rt;
 		}
-		List<ExtendingProperty> epL = this.ecc.getExtendingPropertyList();
-		for (ExtendingProperty ep : epL) {
-			rt.add(ep.getName());
+		List<ExtendingPropertyDefine> epL = this.ecc.getExtendingPropertyList();
+		for (ExtendingPropertyDefine ep : epL) {
+			rt.add(ep.getKey());
 		}
 		return rt;
 	}
@@ -284,9 +284,13 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		if (this.ecc == null) {
 			throw new RuntimeException("not supported.");
 		}
-		ExtendingProperty cal = this.ecc.getExtendingProperty(columnName);
+		ExtendingPropertyDefine cal = this.ecc.getExtendingProperty(columnName);
 		ExtendingColumn ec = new ExtendingColumn(this, cal);
 		this.columnList.add(ec);
+		
+		ExtendingPropertyUpdater epu = new ExtendingPropertyUpdater(cal,this.entityService);
+		epu.execute();
+		
 		fireColumnChanged();
 	}
 

@@ -11,8 +11,8 @@ public class NewDBUpgrader extends DBUpgrader {
 	}
 
 	public static void createTableAndIndex(EntitySessionFactory esf, EntitySession es,
-			Class<InterestedCorpEntity> class1) {
-		EntityConfig ec = esf.getEntityConfigFactory().getEntityConfig(InterestedCorpEntity.class);
+			Class<? extends EntityObject> class1) {
+		EntityConfig ec = esf.getEntityConfigFactory().getEntityConfig(class1);
 		List<IndexConfig> icL = esf.getEntityConfigFactory().getIndexConfigList(ec.getEntityClass());
 		createTableAndIndex(ec, icL, es);
 	}

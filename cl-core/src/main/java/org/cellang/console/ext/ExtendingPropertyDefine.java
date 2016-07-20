@@ -1,10 +1,12 @@
-package org.cellang.console.view;
+package org.cellang.console.ext;
 
 import org.cellang.core.entity.EntityObject;
 
-public interface ExtendingProperty {
+public interface ExtendingPropertyDefine<T extends EntityObject> {
 
-	public String getName();
+	public Class<T> getEntityClass();
+
+	public String getKey();
 
 	/**
 	 * Initialize this property before using it.

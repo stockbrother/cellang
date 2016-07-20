@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
-import org.cellang.console.view.ExtendingProperty;
 import org.cellang.console.view.HasDelagates;
 import org.cellang.core.entity.BalanceSheetItemEntity;
 import org.cellang.core.entity.BalanceSheetReportEntity;
@@ -18,7 +17,7 @@ import org.cellang.core.entity.IncomeStatementItemEntity;
 import org.cellang.core.entity.IncomeStatementReportEntity;
 import org.cellang.core.entity.QuotesEntity;
 
-public class CorpEPExtendingProperty implements ExtendingProperty {
+public class CorpEPExtendingProperty implements ExtendingPropertyDefine<CorpInfoEntity> {
 	EntitySessionFactory esf;
 
 	private class QuotesGetterOp extends EntityOp<QuotesEntity> {
@@ -66,6 +65,7 @@ public class CorpEPExtendingProperty implements ExtendingProperty {
 			return bd;
 		}
 	};
+
 	private class SszbGetterOp extends EntityOp<BigDecimal> {
 		String corpId;
 		int year;
@@ -99,7 +99,7 @@ public class CorpEPExtendingProperty implements ExtendingProperty {
 	QuotesGetterOp quotesGetter = new QuotesGetterOp();
 
 	JingLiRunGetterOp jlrGetter = new JingLiRunGetterOp();
-	
+
 	SszbGetterOp sszbGetter = new SszbGetterOp();
 
 	@Override
@@ -121,7 +121,7 @@ public class CorpEPExtendingProperty implements ExtendingProperty {
 	}
 
 	@Override
-	public String getName() {
+	public String getKey() {
 
 		return "P/E";
 	}
@@ -138,13 +138,18 @@ public class CorpEPExtendingProperty implements ExtendingProperty {
 		if (sszb == null) {
 			return null;
 		}
-		
+
 		BigDecimal jlr = this.jlrGetter.set(eo.getId(), 2015).execute(this.esf);
 		if (jlr == null) {
 			return null;
 		}
-		BigDecimal price2 = price.multiply(sszb); 
+		BigDecimal price2 = price.multiply(sszb);
 		return price2.divide(jlr, 2, RoundingMode.HALF_UP);
+	}
+
+	@Override
+	public Class<CorpInfoEntity> getEntityClass() {
+		return CorpInfoEntity.class;
 	}
 
 }

@@ -5,7 +5,6 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import java.util.Map;
 import org.cellang.commons.jdbc.ConnectionProvider;
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
 import org.cellang.commons.jdbc.JdbcOperation;
-import org.cellang.commons.util.UUIDUtil;
 import org.cellang.core.h2db.H2ConnectionPoolWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +38,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 		upgraderList.add(new V0_0_3DBUpgrader());
 		upgraderList.add(new V0_0_4DBUpgrader());
 		upgraderList.add(new V0_0_5DBUpgrader());
+		upgraderList.add(new V0_0_6DBUpgrader());
 		
 	}
 
