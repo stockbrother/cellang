@@ -13,13 +13,11 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.cellang.console.view.EntityConfigTableView;
-import org.cellang.console.view.EntityObjectTableView;
-import org.cellang.console.view.View;
+import org.cellang.console.view.HelpersPane;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
-import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
 import org.cellang.core.entity.EntitySessionFactory;
@@ -68,14 +66,14 @@ public class OperationContext {
 		return views;
 	}
 
-	public OperationContext(File dataDir, ViewsPane views) {
+	public OperationContext(File dataDir, ViewsPane views, HelpersPane helpers) {
 		this.dataHome = dataDir;
 		this.views = views;
 		entityConfigFactory = new EntityConfigFactory();
 
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
-		this.entityConfigManager = new EntityConfigManager(this.entityService);
+		this.entityConfigManager = new EntityConfigManager(this.entityService, helpers);
 	}
 
 	public void addListener(Listener l) {

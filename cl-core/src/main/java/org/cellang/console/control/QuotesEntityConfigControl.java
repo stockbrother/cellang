@@ -75,7 +75,7 @@ public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity>
 	}
 
 	@Override
-	public List<Action> getActions(View v, List<Action> al) {
+	public List<Action> getActions(List<Action> al) {
 		al.addAll(this.actions);
 		return al;
 	}

@@ -10,7 +10,6 @@ import org.cellang.core.entity.EntityConfig;
 
 public class EntityConfigTableView extends TableDataView<EntityConfig>implements HasActions {
 	OperationContext oc;
-	EntityConfig selected;
 
 	public EntityConfigTableView(OperationContext oc, List<EntityConfig> list) {
 		super("EntityConfigs", new EntityConfigTableDataProvider(list));
@@ -18,7 +17,7 @@ public class EntityConfigTableView extends TableDataView<EntityConfig>implements
 	}
 
 	@Override
-	public List<Action> getActions(View view, List<Action> al) {
+	public List<Action> getActions(List<Action> al) {
 		al.add(new Action() {
 
 			@Override
@@ -42,12 +41,6 @@ public class EntityConfigTableView extends TableDataView<EntityConfig>implements
 		}
 		View view = this.oc.getEntityConfigManager().newEntityListView(this.selected);
 		this.oc.getViewManager().addView(view, true);//
-	}
-
-	@Override
-	protected void onSelected(EntityConfig row) {
-		super.onSelected(row);//
-		this.selected = row;
 	}
 
 }

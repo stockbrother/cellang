@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.console.ext.CorpEPExtendingProperty;
-import org.cellang.console.view.View;
 import org.cellang.core.entity.CorpInfoEntity;
-import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
@@ -14,13 +12,11 @@ import org.cellang.core.entity.InterestedCorpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>
-		implements HasActions, SelectionListener<EntityObject> {
+public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>implements HasActions {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
 	private List<Action> actions = new ArrayList<>();
 	EntitySessionFactory entitySessions;
-	private CorpInfoEntity selected;
 
 	public CorpInfoEntityConfigControl(EntitySessionFactory entitySessions) {
 		this.entitySessions = entitySessions;
@@ -53,35 +49,32 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	}
 
 	@Override
-	public List<Action> getActions(View view, List<Action> al) {
+	public List<Action> getActions(List<Action> al) {
 		al.addAll(this.actions);
 		return al;
 	}
 
 	protected void addToInterested() {
-		if (this.selected == null) {
+		CorpInfoEntity ce = this.selected;
+		if (ce == null) {
 			LOG.debug("no selected entity");
 			return;
 		}
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("add corp:" + this.selected.getCode() + " as interested.");
+			LOG.debug("add corp:" + ce.getCode() + " as interested.");
 		}
 		this.entitySessions.execute(new EntityOp<Void>() {
 
 			@Override
 			public Void execute(EntitySession es) {
 				InterestedCorpEntity ic = new InterestedCorpEntity();
-				ic.setId(selected.getId());//
-				ic.setCorpId(selected.getId());//
+				ic.setId(ce.getId());//
+				ic.setCorpId(ce.getId());//
 				es.save(ic);
 				return null;
 			}
 		});
 	}
 
-	@Override
-	public void onSelected(EntityObject eo) {
-		this.selected = (CorpInfoEntity) eo;
-	}
 }

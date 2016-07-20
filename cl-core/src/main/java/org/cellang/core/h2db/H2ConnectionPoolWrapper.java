@@ -27,7 +27,7 @@ public class H2ConnectionPoolWrapper implements ConnectionProvider {
 				LOG.trace("autocommit disabled for connection:" + c);
 			}
 		}
-		LOG.debug("connection opened.");
+		LOG.trace("connection opened,it may be closed later without notified.");
 		return c;
 	}
 
@@ -41,13 +41,6 @@ public class H2ConnectionPoolWrapper implements ConnectionProvider {
 	public void dispose() {
 		this.pool.dispose();
 		LOG.info("connection pool closed");//
-	}
-
-	@Override
-	public void closeConnection(Connection con) throws SQLException {
-		con.close();
-		LOG.debug("connection closed.");
-
 	}
 
 }

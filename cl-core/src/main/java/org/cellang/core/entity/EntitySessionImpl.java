@@ -17,11 +17,11 @@ public class EntitySessionImpl implements EntitySession {
 	private static final Logger LOG = LoggerFactory.getLogger(EntitySessionImpl.class);
 
 	private Connection con;
-	EntitySessionFactory esf;
+	EntitySessionFactoryImpl esf;
 	EntityConfigFactory ecf;
 	JdbcDataAccessTemplate template;
 
-	public EntitySessionImpl(Connection con, EntityConfigFactory ecf, EntitySessionFactory esf) {
+	public EntitySessionImpl(Connection con, EntityConfigFactory ecf, EntitySessionFactoryImpl esf) {
 		this.con = con;
 		this.esf = esf;
 		this.ecf = ecf;
