@@ -135,20 +135,6 @@ public class OperationContext {
 	}
 
 	/**
-	 * Query entity data from DB by limit and offset. Open a view for the
-	 * result.
-	 */
-	public void list() {
-		if (this.entityConfigManager.getSelectedEntityConfig() == null) {
-			LOG.error("no entity config selected.");
-			return;
-		}
-		View v = entityConfigManager.newEntityListView();
-
-		this.views.addView(v, true);
-	}
-
-	/**
 	 * Close the current view.
 	 */
 	public void closeView() {

@@ -7,20 +7,20 @@ import javax.swing.JScrollPane;
 
 import org.cellang.console.view.View;
 
-public class ViewActionPane extends JScrollPane {
+public class ViewHelpersPane extends JScrollPane {
 
-	Map<String, ActionsPane> viewMap = new HashMap<>();
+	Map<String, ViewHelperPane> viewMap = new HashMap<>();
 
-	public ViewActionPane() {
+	public ViewHelpersPane() {
 
 	}
 
-	public void addActionPane(ActionsPane actionPane) {
+	public void addActionPane(ViewHelperPane actionPane) {
 		this.viewMap.put(actionPane.getViewId(), actionPane);
 	}
 
 	public void viewSelected(View v) {
-		ActionsPane ap = this.viewMap.get(v.getId());
+		ViewHelperPane ap = this.viewMap.get(v.getId());
 		this.setViewportView(ap);//
 	}
 

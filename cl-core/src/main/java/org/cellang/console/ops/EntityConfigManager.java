@@ -23,14 +23,9 @@ public class EntityConfigManager implements EntityConfigSelector {
 
 	private EntitySessionFactory entityService;
 
-	private EntityConfig selectedEntityConfig;
-
 	private List<EntityConfigSelectionListener> selectionListenerList = new ArrayList<>();
 
-	private Map<String, EntityConfigControl> controlMap = new HashMap<>();
-
-	private EntityConfigControl defaultControl = new EntityConfigControl() {
-	};
+	private Map<String, EntityConfigControl<?>> controlMap = new HashMap<>();
 
 	public EntityConfigManager(EntitySessionFactory es) {
 		this.entityService = es;
@@ -39,36 +34,21 @@ public class EntityConfigManager implements EntityConfigSelector {
 		
 	}
 
-	public View newEntityListView() {
-		return this.newEntityListView(this.selectedEntityConfig);
-	}
-
 	public View newEntityListView(EntityConfig ec) {
-		EntityConfigControl ecc = this.getEntityConfigControl(ec);
+		EntityConfigControl<?> ecc = this.getEntityConfigControl(ec);
 		EntityObjectTableView rt = new EntityObjectTableView(ec, ecc, this.entityService, this.queryLimit);
 
 		return rt;
 	}
 
-	public EntityConfig getSelectedEntityConfig() {
-		return selectedEntityConfig;
-	}
-
-	public void setSelectedEntityConfig(EntityConfig selectedEntityConfig) {
-		this.selectedEntityConfig = selectedEntityConfig;
-		for (EntityConfigSelectionListener sl : this.selectionListenerList) {
-			sl.onEntityConfigSelected(this.selectedEntityConfig);//
-		}
-	}
-
-	public EntityConfigControl getEntityConfigControl(Class<?> entityClass) {
+	public EntityConfigControl<?> getEntityConfigControl(Class<?> entityClass) {
 		EntityConfig ec = this.entityService.getEntityConfigFactory().get(entityClass);
 		return this.getEntityConfigControl(ec);
 	}
 
-	public EntityConfigControl getEntityConfigControl(EntityConfig ec) {
-		EntityConfigControl rt = this.controlMap.get(ec.getTableName());
-		return rt == null ? this.defaultControl : rt;
+	public EntityConfigControl<?> getEntityConfigControl(EntityConfig ec) {
+		EntityConfigControl<?> rt = this.controlMap.get(ec.getTableName());
+		return rt;
 	}
 
 	@Override

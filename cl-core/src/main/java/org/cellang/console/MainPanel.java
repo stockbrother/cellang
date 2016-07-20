@@ -22,8 +22,8 @@ import org.cellang.console.clojure.ClojureConsolePane;
 import org.cellang.console.clojure.ClojureConsolePane.ConsoleListener;
 import org.cellang.console.clojure.ReplSession;
 import org.cellang.console.control.ActionsControl;
-import org.cellang.console.control.ActionsPane;
-import org.cellang.console.control.ViewActionPane;
+import org.cellang.console.control.ViewHelperPane;
+import org.cellang.console.control.ViewHelpersPane;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.ViewsPane;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
 	private ExecutorService executor;
 	JFrame frame;
 	Future<Object> consoleFuture;
-	private ViewActionPane actionManagerPane;
+	private ViewHelpersPane actionManagerPane;
 
 	public MainPanel(File dataDir) {
 		super(new GridLayout(1, 0));
@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
 				}
 				this.splitPaneSub.add(views);
 				{
-					actionManagerPane = new ViewActionPane();
+					actionManagerPane = new ViewHelpersPane();
 				}
 				this.splitPaneSub.add(actionManagerPane);
 			}

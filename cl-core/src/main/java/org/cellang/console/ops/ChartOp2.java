@@ -36,7 +36,7 @@ public class ChartOp2 extends ConsoleOp<Void> {
 	@Override
 	public Void execute(OperationContext oc) {
 		ViewsPane views = oc.getViewManager();
-		EntityConfig ec = oc.getEntityConfigManager().getSelectedEntityConfig();
+		EntityConfig ec = null;//oc.getEntityConfigManager().getSelectedEntityConfig();
 		EntityConfig ecItem = null;
 		if (BalanceSheetReportEntity.class.equals(ec.getEntityClass())) {
 			ecItem = oc.getEntityConfigFactory().get(BalanceSheetItemEntity.class);

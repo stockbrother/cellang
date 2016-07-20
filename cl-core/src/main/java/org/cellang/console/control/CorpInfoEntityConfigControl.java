@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>
-		implements HasActions, EntityObjectSelectionListener {
+		implements HasActions, SelectionListener<EntityObject> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
 	private List<Action> actions = new ArrayList<>();
@@ -44,7 +44,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	public <T> T getDelegate(Class<T> cls) {
 		if (HasActions.class.equals(cls)) {
 			return (T) this;
-		} else if (EntityObjectSelectionListener.class.equals(cls)) {
+		} else if (SelectionListener.class.equals(cls)) {
 			return (T) this;
 		} else if (EntitySessionFactory.class.equals(cls)) {
 			return (T) this.entitySessions;
@@ -81,7 +81,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	}
 
 	@Override
-	public void onEntitySelected(EntityObject eo) {
+	public void onSelected(EntityObject eo) {
 		this.selected = (CorpInfoEntity) eo;
 	}
 }

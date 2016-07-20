@@ -22,7 +22,7 @@ public class ChartOp extends ConsoleOp<Void> {
 	@Override
 	public Void execute(OperationContext oc) {
 		ViewsPane views = oc.getViewManager();
-		EntityConfig ec = oc.getEntityConfigManager().getSelectedEntityConfig();
+		EntityConfig ec = null;//oc.getEntityConfigManager().getSelectedEntityConfig();
 		List<Method> methodList = ec.getGetMethodList();
 		Method xM = methodList.get(this.xCol);
 		Method yM = methodList.get(this.yCol);

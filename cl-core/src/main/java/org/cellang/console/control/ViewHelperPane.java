@@ -19,9 +19,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
+import org.cellang.console.model.TableDataProvider;
 import org.cellang.console.view.View;
 
-public class ActionsPane extends JScrollPane {
+public class ViewHelperPane extends JScrollPane {
 	private static class ActionUI {
 		public ActionUI(Action a, JButton bu) {
 			this.action = a;
@@ -42,7 +43,7 @@ public class ActionsPane extends JScrollPane {
 		return this.view.getId();
 	}
 
-	public ActionsPane(View view) {
+	public ViewHelperPane(View view) {
 		this.view = view;
 		this.panel = new Box(BoxLayout.Y_AXIS);
 		this.panel.setPreferredSize(new Dimension(200, 300));
@@ -51,16 +52,36 @@ public class ActionsPane extends JScrollPane {
 		this.tailGlue = Box.createVerticalGlue();
 		this.clear();
 		// if the view support query
-		DataPageQuerable dpq = view.getDelegate(DataPageQuerable.class);
+		this.processTableDataProviderView();
+		this.processActions();
+	}
+
+	private void processActions() {
+		HasActions has = view.getDelegate(HasActions.class);
+		if (has == null) {
+			return;
+		}
+
+		this.addActions(has);
+
+	}
+
+	private void processTableDataProviderView() {
+		TableDataProvider<?> dp = view.getDelegate(TableDataProvider.class);
+		if (dp == null) {
+			return;
+		}
+
+		DataPageQuerable dpq = dp.getDelegate(DataPageQuerable.class);
 		if (dpq != null) {
-			this.addAction("prePage", new ActionHandler() {
+			this.addAction("<<", new ActionHandler() {
 
 				@Override
 				public void performAction() {
 					dpq.prePage();
 				}
 			});
-			this.addAction("refresh", new ActionHandler() {
+			this.addAction("Refresh", new ActionHandler() {
 
 				@Override
 				public void performAction() {
@@ -68,7 +89,7 @@ public class ActionsPane extends JScrollPane {
 				}
 			});
 
-			this.addAction("nextPage", new ActionHandler() {
+			this.addAction(">>", new ActionHandler() {
 
 				@Override
 				public void performAction() {
@@ -76,19 +97,9 @@ public class ActionsPane extends JScrollPane {
 				}
 			});
 		}
-		// if the view is entity config list
-		DrillDowable dd = view.getDelegate(DrillDowable.class);
-		if (dd != null) {
-			this.addAction("drillDown", new ActionHandler() {
 
-				@Override
-				public void performAction() {
-					dd.drillDown();
-				}
-			});
-		}
 		// if the view contains description
-		Descriable des = view.getDelegate(Descriable.class);
+		Descriable des = dp.getDelegate(Descriable.class);
 		if (des != null) {
 			Map<String, Object> desMap = new HashMap<>();
 			des.getDescription(desMap);
@@ -96,17 +107,25 @@ public class ActionsPane extends JScrollPane {
 
 		}
 		// if the view support fitler
-		Filterable fil = view.getDelegate(Filterable.class);
+		Filterable fil = dp.getDelegate(Filterable.class);
 		if (fil != null) {
 
 			this.addFilter(new FilterPane(fil));
 		}
+		// add new column to table.
+		ColumnAppendable ce = dp.getDelegate(ColumnAppendable.class);
+		if (ce != null) {
+			List<String> nameL = ce.getExtenableColumnList();
+			if (!nameL.isEmpty()) {
 
-		//
-		HasActions has = view.getDelegate(HasActions.class);
+				addDropDownList(nameL, new ValueChangeListener<String>() {
 
-		if (has != null) {
-			this.addActions(has);
+					@Override
+					public void valueChanged(String value) {
+						ce.appendColumn(value);//
+					}
+				});
+			}
 		}
 
 	}
