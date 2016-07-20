@@ -22,21 +22,28 @@ public class EntityObjectTableView extends TableDataView<EntityObject>implements
 
 	static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableView.class);
 	EntityConfigControl<?> ecc;
-
-	public EntityObjectTableView(EntityConfig cfg, EntityConfigControl<?> ecc, EntitySessionFactory es, int pageSize) {
+	
+	HelpersPane helpers;
+	
+	public EntityObjectTableView(HelpersPane helpers, EntityConfig cfg, EntityConfigControl<?> ecc, EntitySessionFactory es, int pageSize) {
 		super("Entities", new EntityObjectTableDataProvider(es, cfg, ecc, pageSize));
 		this.ecc = ecc;
+		this.helpers = helpers;
 	}
 
 	@Override
-	public List<Action> getActions(View view, List<Action> al) {
+	public List<Action> getActions(List<Action> al) {
 		if (this.ecc == null) {
 			return al;
 		}
-		HasActions has = this.ecc.getDelegate(HasActions.class);
-		if (has != null) {
-			return has.getActions(view, al);
-		}
+
 		return al;
 	}
+
+	@Override
+	protected void onSelected(EntityObject row) {
+		super.onSelected(row);//
+		this.helpers.entitySelected(row);//				
+	}
+
 }

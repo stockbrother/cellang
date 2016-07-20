@@ -33,7 +33,8 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 	Comparator<Method> comparator = DEF;
 
 	Map<String, ExtendingProperty> extendingPropertyMap = new HashMap<>();
-
+	
+	E selected;
 	@Override
 	public <T> T getDelegate(Class<T> cls) {
 
@@ -61,6 +62,10 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 	public ExtendingProperty getExtendingProperty(String key) {
 		//
 		return this.extendingPropertyMap.get(key);
+	}
+
+	public void setSelected(EntityObject co) {
+		this.selected = (E)co;
 	}
 
 }

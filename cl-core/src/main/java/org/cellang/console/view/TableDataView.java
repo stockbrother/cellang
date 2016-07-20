@@ -40,6 +40,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	String id;
 	TableDataProvider<T> dp;
 	List<SelectionListener<T>> rowSelectionListenerList = new ArrayList<>();
+	T selected;
 
 	public TableDataView(String title, TableDataProvider<T> dp) {
 
@@ -89,11 +90,15 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 		// int idx0 = e.getFirstIndex();
 		// int idx1 = e.getLastIndex();
 		int idx = this.table.getSelectedRow();
-		T row = this.dp.getRowObject(idx);
+		T row = null;
+		if (idx >= 0) {
+			row = this.dp.getRowObject(idx);
+		}
 		this.onSelected(row);//
 	}
 
 	protected void onSelected(T row) {
+		this.selected = row;
 		for (SelectionListener<T> sl : this.rowSelectionListenerList) {
 			sl.onSelected(row);
 		}

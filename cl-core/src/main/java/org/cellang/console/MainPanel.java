@@ -21,10 +21,10 @@ import org.cellang.collector.EnvUtil;
 import org.cellang.console.clojure.ClojureConsolePane;
 import org.cellang.console.clojure.ClojureConsolePane.ConsoleListener;
 import org.cellang.console.clojure.ReplSession;
-import org.cellang.console.control.ActionsControl;
-import org.cellang.console.control.ViewHelperPane;
-import org.cellang.console.control.ViewHelpersPane;
+import org.cellang.console.control.ViewsControl;
 import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.ViewHelperPane;
+import org.cellang.console.view.HelpersPane;
 import org.cellang.console.view.ViewsPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
 	private ExecutorService executor;
 	JFrame frame;
 	Future<Object> consoleFuture;
-	private ViewHelpersPane actionManagerPane;
+	private HelpersPane helpersPane;
 
 	public MainPanel(File dataDir) {
 		super(new GridLayout(1, 0));
@@ -84,13 +84,13 @@ public class MainPanel extends JPanel {
 				}
 				this.splitPaneSub.add(views);
 				{
-					actionManagerPane = new ViewHelpersPane();
+					helpersPane = new HelpersPane();
 				}
-				this.splitPaneSub.add(actionManagerPane);
+				this.splitPaneSub.add(helpersPane);
 			}
 			this.splitPaneTop.add(this.splitPaneSub);
 
-			oc = new OperationContext(dataDir, views);
+			oc = new OperationContext(dataDir, views, helpersPane);
 
 			//
 			File consoleDataDir = new File(oc.getDataHome(), ".console");
@@ -107,7 +107,8 @@ public class MainPanel extends JPanel {
 		this.add(splitPaneTop);
 
 		// add control code for integrate the views.
-		ActionsControl ac = new ActionsControl(oc.getEntityConfigManager(),this.views, this.actionManagerPane);
+		ViewsControl ac = new ViewsControl(oc.getEntityConfigManager(), this.views, this.helpersPane);
+
 	}
 
 	/**

@@ -11,6 +11,7 @@ import org.cellang.console.control.EntityConfigSelectionListener;
 import org.cellang.console.control.EntityConfigSelector;
 import org.cellang.console.control.QuotesEntityConfigControl;
 import org.cellang.console.view.EntityObjectTableView;
+import org.cellang.console.view.HelpersPane;
 import org.cellang.console.view.View;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityConfig;
@@ -27,16 +28,20 @@ public class EntityConfigManager implements EntityConfigSelector {
 
 	private Map<String, EntityConfigControl<?>> controlMap = new HashMap<>();
 
-	public EntityConfigManager(EntitySessionFactory es) {
+	HelpersPane helpers;
+	
+	public EntityConfigManager(EntitySessionFactory es,HelpersPane helpers) {
 		this.entityService = es;
+		this.helpers = helpers;
+		this.helpers.entityHelper.setEntityConfigManager(this);//NOTE:
 		controlMap.put(QuotesEntity.tableName, new QuotesEntityConfigControl(this.entityService));
 		controlMap.put(CorpInfoEntity.tableName, new CorpInfoEntityConfigControl(this.entityService));
-		
+
 	}
 
 	public View newEntityListView(EntityConfig ec) {
 		EntityConfigControl<?> ecc = this.getEntityConfigControl(ec);
-		EntityObjectTableView rt = new EntityObjectTableView(ec, ecc, this.entityService, this.queryLimit);
+		EntityObjectTableView rt = new EntityObjectTableView(helpers, ec, ecc, this.entityService, this.queryLimit);
 
 		return rt;
 	}
