@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.cellang.console.control.ActionHandler;
 import org.cellang.console.control.ColumnAppendable;
+import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
 import org.cellang.console.control.FilterPane;
@@ -82,6 +83,20 @@ public class ViewHelperPane extends HelperPane<View> {
 					@Override
 					public void valueChanged(String value) {
 						ce.appendColumn(value);//
+					}
+				});
+			}
+		}
+		ColumnOrderable co = dp.getDelegate(ColumnOrderable.class);
+		if(co != null){
+			List<String> nameL = co.getOrderableColumnList();
+			if (!nameL.isEmpty()) {
+
+				addDropDownList(nameL, new ValueChangeListener<String>() {
+
+					@Override
+					public void valueChanged(String value) {
+						co.setOrderBy(value);//
 					}
 				});
 			}

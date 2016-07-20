@@ -11,10 +11,10 @@ import java.util.Map;
 
 import org.cellang.commons.util.BeanUtil;
 import org.cellang.console.control.ColumnAppendable;
+import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.Filterable;
-import org.cellang.console.control.HasActions;
 import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>
-		implements Filterable, DataPageQuerable, ColumnAppendable, DataChangable, ColumnChangable {
+		implements Filterable, DataPageQuerable, ColumnAppendable, DataChangable, ColumnChangable, ColumnOrderable {
 	public static abstract class Column {
 		EntityObjectTableDataProvider model;
 		String name;
@@ -144,6 +144,8 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 
 	List<ColumnChangedListener> columnChangedListenerList = new ArrayList<>();
 
+	String[] orderBy;
+
 	public EntityObjectTableDataProvider(EntitySessionFactory entityService, EntityConfig cfg,
 			EntityConfigControl<?> ecc, int pageSize) {
 		this.ecc = ecc;
@@ -229,7 +231,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	private void query() {
 		int offset = this.pageNumber * this.pageSize;
 		List<? extends EntityObject> el = new EntityQuery<>(cfg).like(this.getLikeMap()).offset(offset)
-				.limit(this.pageSize).execute(this.entityService);
+				.limit(this.pageSize).orderBy(this.orderBy).execute(this.entityService);
 
 		this.list = el;
 		this.fireTableDataChanged();
@@ -287,10 +289,10 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		ExtendingPropertyDefine cal = this.ecc.getExtendingProperty(columnName);
 		ExtendingColumn ec = new ExtendingColumn(this, cal);
 		this.columnList.add(ec);
-		
-		ExtendingPropertyUpdater epu = new ExtendingPropertyUpdater(cal,this.entityService);
+
+		ExtendingPropertyUpdater epu = new ExtendingPropertyUpdater(cal, this.entityService);
 		epu.execute();
-		
+
 		fireColumnChanged();
 	}
 
@@ -318,6 +320,8 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 			return (T) this;
 		} else if (cls.equals(ColumnAppendable.class)) {
 			return (T) this;
+		} else if (cls.equals(ColumnOrderable.class)) {
+			return (T) this;
 		}
 
 		return null;
@@ -339,5 +343,21 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 			return null;
 		}
 		return this.list.get(idx);
+	}
+
+	@Override
+	public List<String> getOrderableColumnList() {
+		return this.cfg.getPropertyKeyList();
+	}
+
+	@Override
+	public void setOrderBy(String key) {
+		if (key == null) {
+			this.orderBy = null;
+		} else {
+			this.orderBy = new String[] { key };
+		}
+
+		this.refresh();
 	}
 }

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.cellang.commons.jdbc.CreateTableOperation;
 import org.cellang.commons.jdbc.InsertRowOperation;
+import org.cellang.commons.util.BeanUtil;
 
 /**
  * A container that manage information about entity type.Which includes the
@@ -74,6 +75,15 @@ public class EntityConfig {
 			}
 		}
 		this.initGetSetMethods(cls.getSuperclass());//
+	}
+
+	public List<String> getPropertyKeyList() {
+		List<String> rt = new ArrayList<>();
+		List<Method> mL = this.getGetMethodList();
+		for (Method m : mL) {
+			rt.add(BeanUtil.getPropertyNameFromGetMethod(m));
+		}
+		return rt;
 	}
 
 	public List<Method> getGetMethodList() {
