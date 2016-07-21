@@ -1,5 +1,6 @@
 package org.cellang.console;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -23,7 +24,6 @@ import org.cellang.console.clojure.ClojureConsolePane.ConsoleListener;
 import org.cellang.console.clojure.ReplSession;
 import org.cellang.console.control.ViewsControl;
 import org.cellang.console.ops.OperationContext;
-import org.cellang.console.view.ViewHelperPane;
 import org.cellang.console.view.HelpersPane;
 import org.cellang.console.view.ViewsPane;
 import org.slf4j.Logger;
@@ -57,6 +57,7 @@ public class MainPanel extends JPanel {
 		this.executor = Executors.newCachedThreadPool();
 		this.setOpaque(true); // content panes must be opaque
 		frame = new JFrame("Tables");
+		frame.setPreferredSize(new Dimension(800,600));
 		{
 
 			frame.setContentPane(this);

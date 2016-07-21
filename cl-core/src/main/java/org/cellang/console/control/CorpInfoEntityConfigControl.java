@@ -32,7 +32,8 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 				CorpInfoEntityConfigControl.this.addToInterested();
 			}
 		});
-		this.addExtendingProperty(new CorpEPExtendingProperty(), true);
+		this.addExtendingProperty(new CorpEPExtendingProperty(1), true);
+		this.addExtendingProperty(new CorpEPExtendingProperty(5), true);
 
 	}
 
