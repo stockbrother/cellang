@@ -1,6 +1,11 @@
 package org.cellang.console.model;
 
-public interface ColumnChangable {
+/**
+ * 
+ * @author wu
+ *
+ */
+public interface ColumnChangedEventSource {
 
 	public void addColumnListener(ColumnChangedListener l);
 

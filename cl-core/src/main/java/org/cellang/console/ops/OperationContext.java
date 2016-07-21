@@ -73,7 +73,7 @@ public class OperationContext {
 
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
-		this.entityConfigManager = new EntityConfigManager(this.entityService, helpers);
+		this.entityConfigManager = new EntityConfigManager(this, this.entityService, helpers);
 	}
 
 	public void addListener(Listener l) {

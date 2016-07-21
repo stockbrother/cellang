@@ -14,8 +14,10 @@ import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.EntityConfigControl;
+import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.ext.ExtendingPropertyDefine;
+import org.cellang.console.ext.SavableExtendingPropertyDefine;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
@@ -23,8 +25,15 @@ import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>
-		implements Filterable, DataPageQuerable, ColumnAppendable, DataChangable, ColumnChangable, ColumnOrderable {
+/**
+ * EntityObject as the RowObject.
+ * 
+ * @see FavoriteActionFactory for open favorite action.
+ * @author wu
+ *
+ */
+public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>implements Filterable,
+		DataPageQuerable, ColumnAppendable, DataChangable, ColumnChangedEventSource, ColumnOrderable, Favoriteable {
 	public static abstract class Column {
 		EntityObjectTableDataProvider model;
 		String name;
@@ -147,7 +156,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	String[] orderBy;
 
 	public EntityObjectTableDataProvider(EntitySessionFactory entityService, EntityConfig cfg,
-			EntityConfigControl<?> ecc, int pageSize) {
+			EntityConfigControl<?> ecc, List<String> extPropL, int pageSize) {
 		this.ecc = ecc;
 		this.cfg = cfg;
 		this.entityService = entityService;
@@ -158,12 +167,16 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 			Arrays.sort(getters, columnSorter);
 		}
 
+		this.columnList.add(new LineNumberColumn(this));
 		for (Method m : getters) {
 			Column col = new GetterMethodColumn(m, this);
 			this.columnList.add(col);
 		}
 
-		this.columnList.add(0, new LineNumberColumn(this));
+		for (String col : extPropL) {
+			this.appendColumn(col, false);//
+		}
+
 		this.nextPage();
 	}
 
@@ -283,15 +296,23 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 
 	@Override
 	public void appendColumn(String columnName) {
+		this.appendColumn(columnName, true);//
+	}
+
+	public void appendColumn(String columnName, boolean save) {
 		if (this.ecc == null) {
 			throw new RuntimeException("not supported.");
 		}
 		ExtendingPropertyDefine cal = this.ecc.getExtendingProperty(columnName);
+		cal.install(this.entityService);// TODO not install many times.
 		ExtendingColumn ec = new ExtendingColumn(this, cal);
 		this.columnList.add(ec);
 
-		ExtendingPropertyUpdater epu = new ExtendingPropertyUpdater(cal, this.entityService);
-		epu.execute();
+		if (save && (cal instanceof SavableExtendingPropertyDefine)) {
+			ExtendingPropertyUpdater epu = new ExtendingPropertyUpdater((SavableExtendingPropertyDefine) cal,
+					this.entityService);
+			epu.execute();
+		}
 
 		fireColumnChanged();
 	}
@@ -312,7 +333,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	public <T> T getDelegate(Class<T> cls) {
 		if (cls.equals(DataChangable.class)) {
 			return (T) this;
-		} else if (cls.equals(ColumnChangable.class)) {
+		} else if (cls.equals(ColumnChangedEventSource.class)) {
 			return (T) this;
 		} else if (cls.equals(DataPageQuerable.class)) {
 			return (T) this;
@@ -321,6 +342,8 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		} else if (cls.equals(ColumnAppendable.class)) {
 			return (T) this;
 		} else if (cls.equals(ColumnOrderable.class)) {
+			return (T) this;
+		} else if (cls.equals(Favoriteable.class)) {
 			return (T) this;
 		}
 
@@ -359,5 +382,29 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		}
 
 		this.refresh();
+	}
+
+	@Override
+	public String getFavoriteType() {
+		return "open-view";
+	}
+
+	@Override
+	public String getFavoriteContent() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(this.cfg.getEntityClass().getName())//
+				.append(";")//
+				;
+
+		for (Column col : columnList) {
+			if (col instanceof ExtendingColumn) {
+				ExtendingColumn ec = (ExtendingColumn) col;
+				sb.append(ec.calculator.getKey());//
+				sb.append(",");
+			}
+
+		}
+		;
+		return sb.toString();
 	}
 }

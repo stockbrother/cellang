@@ -2,7 +2,9 @@ package org.cellang.console.view;
 
 import javax.swing.JSplitPane;
 
+import org.cellang.console.ops.OperationContext;
 import org.cellang.core.entity.EntityObject;
+import org.cellang.core.entity.EntitySessionFactory;
 
 public class HelpersPane extends JSplitPane {
 	
@@ -24,6 +26,10 @@ public class HelpersPane extends JSplitPane {
 	
 	public void entitySelected(EntityObject eo){
 		this.entityHelper.setContextObject(eo);
+	}
+
+	public void install(OperationContext oc) {
+		this.viewHelper.install(oc);
 	}
 
 }

@@ -1,5 +1,11 @@
 package org.cellang.core.entity;
 
+/**
+ * Global properties.
+ * 
+ * @author wu
+ *
+ */
 public class PropertyEntity extends EntityObject {
 
 	public static final String tableName = "property";

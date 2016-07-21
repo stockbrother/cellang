@@ -9,6 +9,8 @@ import org.cellang.console.control.CorpInfoEntityConfigControl;
 import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.EntityConfigSelectionListener;
 import org.cellang.console.control.EntityConfigSelector;
+import org.cellang.console.control.ExtendingPropertyEntityConfigControl;
+import org.cellang.console.control.FavoriteActionEntityConfigControl;
 import org.cellang.console.control.QuotesEntityConfigControl;
 import org.cellang.console.view.EntityObjectTableView;
 import org.cellang.console.view.HelpersPane;
@@ -16,6 +18,8 @@ import org.cellang.console.view.View;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
+import org.cellang.core.entity.ExtendingPropertyEntity;
+import org.cellang.core.entity.FavoriteActionEntity;
 import org.cellang.core.entity.QuotesEntity;
 
 public class EntityConfigManager implements EntityConfigSelector {
@@ -29,19 +33,25 @@ public class EntityConfigManager implements EntityConfigSelector {
 	private Map<String, EntityConfigControl<?>> controlMap = new HashMap<>();
 
 	HelpersPane helpers;
-	
-	public EntityConfigManager(EntitySessionFactory es,HelpersPane helpers) {
+
+	public EntityConfigManager(OperationContext oc, EntitySessionFactory es, HelpersPane helpers) {
 		this.entityService = es;
 		this.helpers = helpers;
-		this.helpers.entityHelper.setEntityConfigManager(this);//NOTE:
+		this.helpers.entityHelper.setEntityConfigManager(this);// NOTE:
 		controlMap.put(QuotesEntity.tableName, new QuotesEntityConfigControl(this.entityService));
 		controlMap.put(CorpInfoEntity.tableName, new CorpInfoEntityConfigControl(this.entityService));
+		controlMap.put(ExtendingPropertyEntity.tableName, new ExtendingPropertyEntityConfigControl(this.entityService));
+		controlMap.put(FavoriteActionEntity.tableName, new FavoriteActionEntityConfigControl(oc, this.entityService));
 
 	}
 
 	public View newEntityListView(EntityConfig ec) {
+		return newEntityListView(ec, new ArrayList<String>());
+	}
+
+	public View newEntityListView(EntityConfig ec, List<String> extPropL) {
 		EntityConfigControl<?> ecc = this.getEntityConfigControl(ec);
-		EntityObjectTableView rt = new EntityObjectTableView(helpers, ec, ecc, this.entityService, this.queryLimit);
+		EntityObjectTableView rt = new EntityObjectTableView(helpers, ec, ecc, extPropL,this.entityService, this.queryLimit);
 
 		return rt;
 	}

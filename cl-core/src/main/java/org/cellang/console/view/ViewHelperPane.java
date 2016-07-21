@@ -4,25 +4,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cellang.commons.util.UUIDUtil;
 import org.cellang.console.control.ActionHandler;
 import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
+import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.FilterPane;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.control.ValueChangeListener;
 import org.cellang.console.model.TableDataProvider;
+import org.cellang.console.ops.OperationContext;
+import org.cellang.core.entity.EntityOp;
+import org.cellang.core.entity.EntitySession;
+import org.cellang.core.entity.EntitySessionFactory;
+import org.cellang.core.entity.FavoriteActionEntity;
 
 public class ViewHelperPane extends HelperPane<View> {
+	EntitySessionFactory esf;
 
 	public ViewHelperPane() {
 	}
-	
-	public void setContextObject(View view){
+
+	public void setContextObject(View view) {
 		// if the view support query
 		super.setContextObject(view);
-		if(view == null){
+		if (view == null) {
 			return;
 		}
 		TableDataProvider<?> dp = view.getDelegate(TableDataProvider.class);
@@ -47,7 +55,7 @@ public class ViewHelperPane extends HelperPane<View> {
 					dpq.nextPage();
 				}
 			});
-			
+
 			this.addAction("Refresh", new ActionHandler() {
 
 				@Override
@@ -56,6 +64,18 @@ public class ViewHelperPane extends HelperPane<View> {
 				}
 			});
 
+		}
+
+		Favoriteable fv = dp.getDelegate(Favoriteable.class);
+		if (fv != null) {
+
+			this.addAction("Add to Favorite", new ActionHandler() {
+
+				@Override
+				public void performAction() {
+					ViewHelperPane.this.addToFavorite(fv);
+				}
+			});
 		}
 
 		// if the view contains description
@@ -88,7 +108,7 @@ public class ViewHelperPane extends HelperPane<View> {
 			}
 		}
 		ColumnOrderable co = dp.getDelegate(ColumnOrderable.class);
-		if(co != null){
+		if (co != null) {
 			List<String> nameL = co.getOrderableColumnList();
 			if (!nameL.isEmpty()) {
 
@@ -102,6 +122,29 @@ public class ViewHelperPane extends HelperPane<View> {
 			}
 		}
 
+	}
+
+	protected void addToFavorite(Favoriteable fv) {
+		String type = fv.getFavoriteType();
+		String content = fv.getFavoriteContent();
+		FavoriteActionEntity ae = new FavoriteActionEntity();
+		ae.setId(UUIDUtil.randomStringUUID());
+		ae.setContent(content);
+		ae.setName("Favorite View");
+		ae.setDescription("Favorite View Description");
+		ae.setType(type);
+		this.esf.execute(new EntityOp<Void>() {
+
+			@Override
+			public Void execute(EntitySession es) {
+				es.save(ae);
+				return null;
+			}
+		});
+	}
+
+	public void install(OperationContext oc) {
+		this.esf = oc.getEntityService();
 	}
 
 }

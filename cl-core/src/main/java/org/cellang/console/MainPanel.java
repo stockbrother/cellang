@@ -92,7 +92,7 @@ public class MainPanel extends JPanel {
 			this.splitPaneTop.add(this.splitPaneSub);
 
 			oc = new OperationContext(dataDir, views, helpersPane);
-
+			this.helpersPane.install(oc);
 			//
 			File consoleDataDir = new File(oc.getDataHome(), ".console");
 			if (!consoleDataDir.exists()) {

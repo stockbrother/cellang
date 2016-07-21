@@ -39,6 +39,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 		upgraderList.add(new V0_0_4DBUpgrader());
 		upgraderList.add(new V0_0_5DBUpgrader());
 		upgraderList.add(new V0_0_6DBUpgrader());
+		upgraderList.add(new V0_0_7DBUpgrader());
 		
 	}
 

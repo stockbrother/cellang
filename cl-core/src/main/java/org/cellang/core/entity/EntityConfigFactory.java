@@ -25,6 +25,7 @@ public class EntityConfigFactory {
 		this.addEntity(new EntityConfig(InterestedCorpEntity.class, InterestedCorpEntity.tableName));
 		this.addEntity(new EntityConfig(PropertyEntity.class, PropertyEntity.tableName));
 		this.addEntity(new EntityConfig(ExtendingPropertyEntity.class, ExtendingPropertyEntity.tableName));
+		this.addEntity(new EntityConfig(FavoriteActionEntity.class, FavoriteActionEntity.tableName));
 
 		// indices
 		this.addIndex(BalanceSheetReportEntity.class, new String[] { "corpId", "reportDate" });

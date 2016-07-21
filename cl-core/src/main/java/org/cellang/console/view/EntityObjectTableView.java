@@ -22,11 +22,12 @@ public class EntityObjectTableView extends TableDataView<EntityObject>implements
 
 	static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableView.class);
 	EntityConfigControl<?> ecc;
-	
+
 	HelpersPane helpers;
-	
-	public EntityObjectTableView(HelpersPane helpers, EntityConfig cfg, EntityConfigControl<?> ecc, EntitySessionFactory es, int pageSize) {
-		super("Entities", new EntityObjectTableDataProvider(es, cfg, ecc, pageSize));
+
+	public EntityObjectTableView(HelpersPane helpers, EntityConfig cfg, EntityConfigControl<?> ecc,
+			List<String> extPropL, EntitySessionFactory es, int pageSize) {
+		super("Entities", new EntityObjectTableDataProvider(es, cfg, ecc,extPropL, pageSize));
 		this.ecc = ecc;
 		this.helpers = helpers;
 	}
@@ -43,7 +44,7 @@ public class EntityObjectTableView extends TableDataView<EntityObject>implements
 	@Override
 	protected void onSelected(EntityObject row) {
 		super.onSelected(row);//
-		this.helpers.entitySelected(row);//				
+		this.helpers.entitySelected(row);//
 	}
 
 }

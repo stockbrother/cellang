@@ -11,7 +11,7 @@ import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.QuotesEntity;
 
-public class CorpEPExtendingProperty implements ExtendingPropertyDefine<CorpInfoEntity> {
+public class CorpEPExtendingProperty implements SavableExtendingPropertyDefine<CorpInfoEntity> {
 	EntitySessionFactory esf;
 
 	private class QuotesGetterOp extends EntityOp<QuotesEntity> {
@@ -74,17 +74,17 @@ public class CorpEPExtendingProperty implements ExtendingPropertyDefine<CorpInfo
 		}
 		int thisYear = 2015;
 		BigDecimal price = qe.getSettlement();
-		BigDecimal sszb = this.sszbGetter.set(eo.getId(), thisYear,thisYear - this.years, "实收资本").execute(this.esf);
+		BigDecimal sszb = this.sszbGetter.set(eo.getId(), thisYear, thisYear - this.years, "实收资本").execute(this.esf);
 		if (sszb == null) {
 			return null;
 		}
 
-		BigDecimal jlr = this.jlrGetter.set(eo.getId(), thisYear,thisYear - this.years, "净利润").execute(this.esf);
+		BigDecimal jlr = this.jlrGetter.set(eo.getId(), thisYear, thisYear - this.years, "净利润").execute(this.esf);
 		if (jlr == null) {
 			return null;
 		}
 		BigDecimal price2 = price.multiply(sszb);
-		if(BigDecimal.ZERO.equals(jlr)){
+		if (BigDecimal.ZERO.equals(jlr)) {
 			return BigDecimal.ZERO;
 		}
 		return price2.divide(jlr, 2, RoundingMode.HALF_UP);
