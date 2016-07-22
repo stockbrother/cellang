@@ -1,6 +1,5 @@
 package org.cellang.console.control;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.console.ext.CorpEPExtendingProperty;
@@ -15,23 +14,11 @@ import org.slf4j.LoggerFactory;
 public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>implements HasActions {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
-	private List<Action> actions = new ArrayList<>();
 	EntitySessionFactory entitySessions;
 
 	public CorpInfoEntityConfigControl(EntitySessionFactory entitySessions) {
 		this.entitySessions = entitySessions;
-		actions.add(new Action() {
-
-			@Override
-			public String getName() {
-				return "Add to Interested";
-			}
-
-			@Override
-			public void perform() {
-				CorpInfoEntityConfigControl.this.addToInterested();
-			}
-		});
+		
 		this.addExtendingProperty(new CorpEPExtendingProperty(1), true);
 		this.addExtendingProperty(new CorpEPExtendingProperty(5), true);
 
@@ -50,18 +37,27 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	}
 
 	@Override
-	public List<Action> getActions(List<Action> al) {
-		al.addAll(this.actions);
+	public List<Action> getActions(Object context, List<Action> al) {
+		if(!(context instanceof CorpInfoEntity)){
+			return al;
+		}
+		al.add(new Action() {
+
+			@Override
+			public String getName() {
+				return "Add to Interested";
+			}
+
+			@Override
+			public void perform() {
+				CorpInfoEntityConfigControl.this.addToInterested((CorpInfoEntity)context);
+			}
+		});
 		return al;
 	}
 
-	protected void addToInterested() {
-		CorpInfoEntity ce = this.selected;
-		if (ce == null) {
-			LOG.debug("no selected entity");
-			return;
-		}
-
+	protected void addToInterested(CorpInfoEntity ce) {
+	
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("add corp:" + ce.getCode() + " as interested.");
 		}

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cellang.collector.EnvUtil;
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
 import org.cellang.commons.util.UUIDUtil;
@@ -93,9 +94,9 @@ public class CorpMetricService {
 		MetricCalculator mc = this.metricDefineMap.get(key);
 
 		List<CorpInfoEntity> corpL = this.getCorpInfoList();
-		int year = 2015 - 1900;
+		int year = 2015;
 		for (int i = 0; i < 10; i++) {
-			Date date = new Date(year, 11, 31);
+			Date date = EnvUtil.newDateOfYearLastDay(year);
 			year--;
 			for (CorpInfoEntity c : corpL) {
 				String corpId = c.getCode();

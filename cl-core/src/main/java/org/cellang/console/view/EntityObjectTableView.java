@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class EntityObjectTableView extends TableDataView<EntityObject>implements HasActions {
+public class EntityObjectTableView extends TableDataView<EntityObject> implements HasActions {
 
 	static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableView.class);
 	EntityConfigControl<?> ecc;
@@ -27,17 +27,22 @@ public class EntityObjectTableView extends TableDataView<EntityObject>implements
 
 	public EntityObjectTableView(HelpersPane helpers, EntityConfig cfg, EntityConfigControl<?> ecc,
 			List<String> extPropL, EntitySessionFactory es, int pageSize) {
-		super("Entities", new EntityObjectTableDataProvider(es, cfg, ecc,extPropL, pageSize));
+		super("Entities", new EntityObjectTableDataProvider(es, cfg, ecc, extPropL, pageSize));
 		this.ecc = ecc;
 		this.helpers = helpers;
 	}
 
 	@Override
-	public List<Action> getActions(List<Action> al) {
+	public List<Action> getActions(Object context, List<Action> al) {
 		if (this.ecc == null) {
 			return al;
 		}
-
+		if (this.ecc instanceof HasDelagates) {
+			HasActions has = this.ecc.getDelegate(HasActions.class);
+			if (has != null) {
+				has.getActions(context, al);
+			}
+		}
 		return al;
 	}
 

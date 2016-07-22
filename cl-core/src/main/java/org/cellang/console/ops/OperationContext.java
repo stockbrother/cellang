@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
+import org.cellang.core.entity.EntityOp;
+import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.EntitySessionFactoryImpl;
 import org.cellang.core.util.FileUtil;
@@ -137,6 +140,30 @@ public class OperationContext {
 	 */
 	public void closeView() {
 		this.views.closeCurrentView();
+	}
+
+	public void sql(String sql) {
+
+		StringBuffer sb = new StringBuffer();
+		this.entityService.execute(new EntityOp<StringBuffer>() {
+
+			@Override
+			public StringBuffer execute(EntitySession es) {
+				List<Object[]> rst = es.getDataAccessTemplate().executeQuery(es.getConnection(), sql);
+				int i = 0;
+				for (Object[] row : rst) {
+					sb.append(++i);
+					sb.append("\t");
+					sb.append(Arrays.asList(row));
+					sb.append("\n");
+				}
+
+				return sb;
+			}
+		});
+
+		LOG.info(sb.toString());
+
 	}
 
 	public void update(int idx) throws IOException {

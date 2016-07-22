@@ -4,6 +4,7 @@ import org.cellang.console.chart.ChartModel;
 import org.cellang.console.chart.LineChart;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
+import org.cellang.console.model.AbstractChartDataProvider;
 
 public class ChartView<T> extends AbstractView {
 	LineChart<T> chart;

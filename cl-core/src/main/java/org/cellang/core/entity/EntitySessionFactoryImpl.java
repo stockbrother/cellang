@@ -64,17 +64,18 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 	}
 
 	private void upgrade() {
-		DataVersion old = this.dataVersion;
 		while (true) {
 			if (this.dataVersion == this.targetDataVersion) {
 				break;
 			}
+			
+			DataVersion pre = this.dataVersion;
 			DataVersion dv = this.tryUpgrade();
 			if (dv == null) {
-				LOG.warn("cannot upgrade from:" + old + " to target:" + this.targetDataVersion);
+				LOG.warn("cannot upgrade from:" + pre + " to target:" + this.targetDataVersion);
 				break;
 			}
-			LOG.info("successfuly upgrade from:" + old + " to target:" + dv);
+			LOG.info("successfuly upgrade from:" + pre + " to target:" + dv);
 		}
 	}
 

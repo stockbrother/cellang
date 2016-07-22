@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.cellang.collector.EnvUtil;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
+import org.cellang.core.util.DateUtil;
 
 public class AbstractReportItemValueGetterOp extends EntityOp<BigDecimal> {
 
@@ -22,7 +24,7 @@ public class AbstractReportItemValueGetterOp extends EntityOp<BigDecimal> {
 		String agS = "sum";
 		sql = "select count(itm.id)," + agS + "(itm.value) from " + tableNameItem + " itm," + tableNameReport
 				+ " rpt where rpt.corpId=? and rpt.reportDate >= ? and rpt.reportDate <= ? and itm.reportId = rpt.id and itm.key=?"//
-				;
+		;
 
 	}
 
@@ -47,8 +49,8 @@ public class AbstractReportItemValueGetterOp extends EntityOp<BigDecimal> {
 	@Override
 	public BigDecimal execute(EntitySession es) {
 		int years = this.yearTo - this.yearFrom + 1;
-		Date dateFrom = new Date(this.yearFrom - 1900, 11, 31);
-		Date dateTo = new Date(this.yearTo - 1900, 11, 31);
+		Date dateFrom = EnvUtil.newDateOfYearLastDay(this.yearFrom);
+		Date dateTo = EnvUtil.newDateOfYearLastDay(this.yearTo);
 
 		List<Object[]> oL = es.getDataAccessTemplate().executeQuery(es.getConnection(), sql,
 				new Object[] { corpId, dateFrom, dateTo, key });

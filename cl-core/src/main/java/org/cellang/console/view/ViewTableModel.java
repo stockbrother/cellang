@@ -24,6 +24,11 @@ public class ViewTableModel<T> extends AbstractTableModel implements ColumnChang
 	}
 
 	@Override
+	public Class<?> getColumnClass(int index) {
+		return dp.getColumnClass(index);
+	}
+
+	@Override
 	public int getRowCount() {
 
 		return dp.getRowCount();

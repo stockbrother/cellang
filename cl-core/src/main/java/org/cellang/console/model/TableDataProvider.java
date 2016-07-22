@@ -22,4 +22,6 @@ public interface TableDataProvider<T> extends HasDelagates {
 
 	public T getRowObject(int idx);
 
+	public Class<?> getColumnClass(int index);
+	
 }

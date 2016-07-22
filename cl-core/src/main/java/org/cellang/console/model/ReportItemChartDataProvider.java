@@ -1,4 +1,4 @@
-package org.cellang.console.view;
+package org.cellang.console.model;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -11,6 +11,8 @@ import java.util.Map;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ObjectArrayListResultSetProcessor;
+import org.cellang.console.view.ReportDate;
+import org.cellang.console.view.ReportItemChartSerial;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
 

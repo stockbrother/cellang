@@ -33,12 +33,18 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 	Comparator<Method> comparator = DEF;
 
 	Map<String, ExtendingPropertyDefine> extendingPropertyMap = new HashMap<>();
-	
+
+	protected DefaultHasDelagates delagatesHelper = new DefaultHasDelagates();
+
 	E selected;
+
+	public EntityConfigControl() {
+		this.delagatesHelper.putIf(HasActions.class, this);
+	}
+
 	@Override
 	public <T> T getDelegate(Class<T> cls) {
-
-		return null;
+		return this.delagatesHelper.getDelegate(cls);
 	}
 
 	protected void addExtendingProperty(ExtendingPropertyDefine ep, boolean install) {
@@ -65,7 +71,7 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 	}
 
 	public void setSelected(EntityObject co) {
-		this.selected = (E)co;
+		this.selected = (E) co;
 	}
 
 }

@@ -1,10 +1,11 @@
-package org.cellang.console.view;
+package org.cellang.console.model;
 
 import java.util.Map;
 
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
+import org.cellang.console.view.ChartView;
 
 public abstract class AbstractChartDataProvider<T> implements DataPageQuerable, Descriable {
 

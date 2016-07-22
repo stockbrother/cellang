@@ -11,7 +11,7 @@ import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.QuotesEntity;
 
-public class CorpEPExtendingProperty implements SavableExtendingPropertyDefine<CorpInfoEntity> {
+public class CorpEPExtendingProperty extends AbstractExtendingPropertyDefine<CorpInfoEntity, BigDecimal> {
 	EntitySessionFactory esf;
 
 	private class QuotesGetterOp extends EntityOp<QuotesEntity> {
@@ -39,6 +39,7 @@ public class CorpEPExtendingProperty implements SavableExtendingPropertyDefine<C
 	int years;
 
 	public CorpEPExtendingProperty(int years) {
+		super(CorpInfoEntity.class, BigDecimal.class);
 		this.years = years;
 	}
 
@@ -88,11 +89,6 @@ public class CorpEPExtendingProperty implements SavableExtendingPropertyDefine<C
 			return BigDecimal.ZERO;
 		}
 		return price2.divide(jlr, 2, RoundingMode.HALF_UP);
-	}
-
-	@Override
-	public Class<CorpInfoEntity> getEntityClass() {
-		return CorpInfoEntity.class;
 	}
 
 }

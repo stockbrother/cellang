@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>implements Filterable,
+public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject> implements Filterable,
 		DataPageQuerable, ColumnAppendable, DataChangable, ColumnChangedEventSource, ColumnOrderable, Favoriteable {
 	public static abstract class Column {
 		EntityObjectTableDataProvider model;
@@ -48,6 +48,8 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		// if the column is filterable, action ui will add conditional input
 		// argument for filtering of the data table based on this column.
 		public abstract String getFilterableColumn();
+
+		public abstract Class<?> getValueRenderingClass();
 
 		public String getDisplayName() {
 
@@ -70,6 +72,11 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		@Override
 		public String getFilterableColumn() {
 			return null;
+		}
+
+		@Override
+		public Class<?> getValueRenderingClass() {
+			return String.class;
 		}
 
 	}
@@ -95,6 +102,11 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		public String getFilterableColumn() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		@Override
+		public Class<?> getValueRenderingClass() {
+			return calculator.getValueClass();
 		}
 
 	}
@@ -133,6 +145,10 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 			return null;
 		}
 
+		@Override
+		public Class<?> getValueRenderingClass() {
+			return method.getReturnType();
+		}
 	}
 
 	private static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableDataProvider.class);
@@ -394,7 +410,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		StringBuffer sb = new StringBuffer();
 		sb.append(this.cfg.getEntityClass().getName())//
 				.append(";")//
-				;
+		;
 
 		for (Column col : columnList) {
 			if (col instanceof ExtendingColumn) {
@@ -406,5 +422,12 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		}
 		;
 		return sb.toString();
+	}
+
+	@Override
+	public Class<?> getColumnClass(int index) {
+
+		return this.columnList.get(index).getValueRenderingClass();
+
 	}
 }

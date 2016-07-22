@@ -9,6 +9,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.cellang.collector.EnvUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,11 +19,26 @@ public class HttpClientFactory {
 
 	private boolean proxyEnabled;
 
-	private String httpProxyHost = "proxy.houston.hpecorp.net";
+	private String httpProxyHost;
 
-	private int httpProxyPort = 8080;
+	private int httpProxyPort;
 
 	private long pause = 10 * 1000;
+
+	private HttpClientFactory() {
+
+	}
+
+	public static HttpClientFactory newInstance() {
+		return new HttpClientFactory();
+	}
+
+	public HttpClientFactory setProxy(String host, int port) {
+		this.proxyEnabled = true;
+		this.httpProxyHost = host;
+		this.httpProxyPort = port;
+		return this;
+	}
 
 	public long getPause() {
 		return pause;

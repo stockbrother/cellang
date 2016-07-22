@@ -39,7 +39,10 @@ public class SinaQuotesCollector {
 	private File output;
 
 	public SinaQuotesCollector() {
-		this.clients = new HttpClientFactory();
+		this.clients = HttpClientFactory.newInstance();
+		if (EnvUtil.isProxyEnabled()) {
+			this.clients.setProxy(EnvUtil.getProxyHome(), EnvUtil.getProxyPort());
+		}
 		this.clients.setPauseInterval(5 * 1000);//
 
 	}
@@ -121,33 +124,45 @@ public class SinaQuotesCollector {
 		}
 		LOG.info("onResponse,statusLine:" + response.getStatusLine() + sb.toString());
 
-		File outputFile = new File(output, "Market_Center.getHQNodeData.p" + this.responses + ".json");
+		int stateCode = response.getStatusLine().getStatusCode();
+		if (stateCode != 200) {
+			LOG.error("stop for statusCode:" + stateCode + " not expected.");
+			this.stop = true;
+			return;
+		}
 
-		if (response.getStatusLine().getStatusCode() == 200) {
-			Header h = response.getEntity().getContentEncoding();
-			File workFile = null;
-			int i = 0;
-			while (true) {
-				workFile = new File(outputFile.getAbsolutePath() + ".work" + (i++));
-				if (!workFile.exists()) {
-					break;
-				}
+		Header headerContentType = response.getFirstHeader("Content-Type");
+		String contentType = headerContentType.getValue();
+		if (contentType.startsWith("text/html")) {
+			LOG.error("stop contentType:" + contentType + " not expected.");
+			this.stop = true;
+			return;
+		}
+
+		File outputFile = new File(output, "Market_Center.getHQNodeData.p" + this.responses + ".json");
+		Header h = response.getEntity().getContentEncoding();
+		File workFile = null;
+		int i = 0;
+		while (true) {
+			workFile = new File(outputFile.getAbsolutePath() + ".work" + (i++));
+			if (!workFile.exists()) {
+				break;
 			}
-			FileOutputStream os = new FileOutputStream(workFile);
-			response.getEntity().writeTo(os);
-			os.close();
-			boolean succ = workFile.renameTo(outputFile);
-			if (succ) {
-				LOG.info("got:" + outputFile.getAbsolutePath());//
-			} else {
-				LOG.error("cannot rename from:" + workFile.getAbsolutePath() + ",to:" + outputFile.getAbsolutePath());
-			}
-			Reader fr = new InputStreamReader(new FileInputStream(outputFile));
-			char[] line = new char[4];
-			int len = fr.read(line);
-			if ("null".equals(new String(line, 0, len))) {
-				this.stop = true;
-			}
+		}
+		FileOutputStream os = new FileOutputStream(workFile);
+		response.getEntity().writeTo(os);
+		os.close();
+		boolean succ = workFile.renameTo(outputFile);
+		if (succ) {
+			LOG.info("got:" + outputFile.getAbsolutePath());//
+		} else {
+			LOG.error("cannot rename from:" + workFile.getAbsolutePath() + ",to:" + outputFile.getAbsolutePath());
+		}
+		Reader fr = new InputStreamReader(new FileInputStream(outputFile));
+		char[] line = new char[4];
+		int len = fr.read(line);
+		if ("null".equals(new String(line, 0, len))) {
+			this.stop = true;
 		}
 
 	}
@@ -162,7 +177,7 @@ public class SinaQuotesCollector {
 				.append("&symbol=")//
 				.append("&_s_r_a=page")//
 				.append("&page=").append(this.nextPage)//
-				;
+		;
 		this.nextPage++;
 		return sb.toString();
 	}

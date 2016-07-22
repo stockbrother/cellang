@@ -37,7 +37,9 @@ public interface EntitySession {
 	public void saveAll(Iterator<EntityObject> eoIt);
 
 	public void save(EntityObject se);
-
+	
+	public <T extends EntityObject> long delete(Class<T> cls);
+	
 	public <T extends EntityObject> long delete(Class<T> cls, String[] strings, Object[] objects);
 
 	public EntitySessionFactory getFactory();
@@ -58,5 +60,8 @@ public interface EntitySession {
 	public void commit();
 
 	public JdbcDataAccessTemplate getDataAccessTemplate();
+
+	
+	
 
 }

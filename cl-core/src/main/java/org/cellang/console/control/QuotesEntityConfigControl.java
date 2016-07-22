@@ -2,7 +2,6 @@ package org.cellang.console.control;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +19,7 @@ import org.cellang.core.loader.DataLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity>implements HasActions {
+public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity> implements HasActions {
 	private static class Sorter implements Comparator<Method> {
 		Map<String, String> sorted = new HashMap<>();
 
@@ -46,13 +45,22 @@ public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity>
 	}
 
 	private static final Logger LOG = LoggerFactory.getLogger(QuotesEntityConfigControl.class);
-	private List<Action> actions = new ArrayList<>();
+
 	EntitySessionFactory entitySessions;
 
 	public QuotesEntityConfigControl(EntitySessionFactory entitySessions) {
 		super.comparator = new Sorter();
 		this.entitySessions = entitySessions;
-		actions.add(new Action() {
+		
+	}
+
+	@Override
+	public List<Action> getActions(Object context, List<Action> al) {
+		if (!(context instanceof View)) {
+			return al;
+		}
+
+		al.add(new Action() {
 
 			@Override
 			public String getName() {
@@ -64,19 +72,7 @@ public class QuotesEntityConfigControl extends EntityConfigControl<QuotesEntity>
 				QuotesEntityConfigControl.this.updateAndReload();
 			}
 		});
-	}
 
-	@Override
-	public <T> T getDelegate(Class<T> cls) {
-		if (HasActions.class.equals(cls)) {
-			return (T) this;
-		}
-		return null;
-	}
-
-	@Override
-	public List<Action> getActions(List<Action> al) {
-		al.addAll(this.actions);
 		return al;
 	}
 

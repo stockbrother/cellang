@@ -1,6 +1,5 @@
 package org.cellang.console.control;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.console.ext.CorpEPExtendingProperty;
@@ -16,10 +15,10 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class FavoriteActionEntityConfigControl extends EntityConfigControl<FavoriteActionEntity>implements HasActions {
+public class FavoriteActionEntityConfigControl extends EntityConfigControl<FavoriteActionEntity> implements HasActions {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FavoriteActionEntityConfigControl.class);
-	private List<Action> actions = new ArrayList<>();
+
 	EntitySessionFactory entitySessions;
 	OperationContext oc;
 	FavoriteActionFactory faf;
@@ -27,18 +26,7 @@ public class FavoriteActionEntityConfigControl extends EntityConfigControl<Favor
 	public FavoriteActionEntityConfigControl(OperationContext oc, EntitySessionFactory entitySessions) {
 		this.oc = oc;
 		this.entitySessions = entitySessions;
-		actions.add(new Action() {
 
-			@Override
-			public String getName() {
-				return "Open Favorite";
-			}
-
-			@Override
-			public void perform() {
-				FavoriteActionEntityConfigControl.this.executeFavoriteAction();
-			}
-		});
 		this.addExtendingProperty(new CorpEPExtendingProperty(1), true);
 		this.addExtendingProperty(new CorpEPExtendingProperty(5), true);
 		this.faf = new FavoriteActionFactory(this.oc);
@@ -57,22 +45,31 @@ public class FavoriteActionEntityConfigControl extends EntityConfigControl<Favor
 	}
 
 	@Override
-	public List<Action> getActions(List<Action> al) {
-		al.addAll(this.actions);
+	public List<Action> getActions(Object context, List<Action> al) {
+		if (!(context instanceof FavoriteActionEntity)) {
+			return al;
+		}
+		al.add(new Action() {
+
+			@Override
+			public String getName() {
+				return "Open Favorite";
+			}
+
+			@Override
+			public void perform() {
+				FavoriteActionEntityConfigControl.this.executeFavoriteAction((FavoriteActionEntity)context);
+			}
+		});
 		return al;
 	}
 
-	protected void executeFavoriteAction() {
-		FavoriteActionEntity ae = this.selected;
-		if (ae == null) {
-			LOG.debug("no selected entity");
-			return;
-		}
-
+	protected void executeFavoriteAction(FavoriteActionEntity context) {
+		
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("execute action:" + ae.getName() + "");
+			LOG.debug("execute action:" + context.getName() + "");
 		}
-		this.faf.execute(ae);
+		this.faf.execute(context);
 	}
 
 }
