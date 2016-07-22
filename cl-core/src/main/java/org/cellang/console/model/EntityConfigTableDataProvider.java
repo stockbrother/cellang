@@ -61,4 +61,10 @@ public class EntityConfigTableDataProvider extends AbstractTableDataProvider<Ent
 		return this.list.get(idx);
 	}
 
+	@Override
+	public Class<?> getColumnClass(int index) {
+		// 
+		return Object.class;
+	}
+
 }

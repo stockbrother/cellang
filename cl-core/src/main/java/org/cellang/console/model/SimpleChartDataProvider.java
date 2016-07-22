@@ -1,9 +1,10 @@
-package org.cellang.console.view;
+package org.cellang.console.model;
 
 import java.lang.reflect.Method;
 import java.util.List;
 
 import org.cellang.console.chart.ChartModel;
+import org.cellang.console.view.EntityChartModel;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;

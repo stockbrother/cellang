@@ -2,9 +2,9 @@ package org.cellang.console.ext;
 
 import org.cellang.core.entity.EntityObject;
 
-public interface ExtendingPropertyDefine<T extends EntityObject> {
+public interface ExtendingPropertyDefine<E extends EntityObject,T> {
 
-	public Class<T> getEntityClass();
+	public Class<E> getEntityClass();
 
 	public String getKey();
 
@@ -17,5 +17,7 @@ public interface ExtendingPropertyDefine<T extends EntityObject> {
 	public boolean install(Object context);
 
 	public Object getValue(EntityObject eo);
+	
+	public Class<T> getValueClass();
 
 }

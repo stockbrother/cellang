@@ -61,7 +61,7 @@ public class HelperPane<T> extends JScrollPane {
 			HasDelagates hs = (HasDelagates) co;
 			HasActions has = hs.getDelegate(HasActions.class);
 			if (has != null) {
-				this.addActions(has);//
+				this.addActions(co, has);//
 			}
 		}
 	}
@@ -104,15 +104,15 @@ public class HelperPane<T> extends JScrollPane {
 		this.panel.add(this.tailGlue);
 	}
 
-	public void addActions(HasActions has) {
-		List<Action> aL = has.getActions(new ArrayList<>());
+	public void addActions(Object context, HasActions has) {
+		List<Action> aL = has.getActions(context, new ArrayList<>());
 		for (Action a : aL) {
-//			ActionUI aui = this.uiMap.get(a.getId());
-//
-//			if (aui != null) {
-//				// avoid duplicated.
-//				continue;
-//			}
+			// ActionUI aui = this.uiMap.get(a.getId());
+			//
+			// if (aui != null) {
+			// // avoid duplicated.
+			// continue;
+			// }
 			JButton bu = new JButton(a.getName());
 			{
 				bu.addActionListener(new ActionListener() {
@@ -124,9 +124,9 @@ public class HelperPane<T> extends JScrollPane {
 				});
 			}
 
-//			aui = new ActionUI(a, bu);
+			// aui = new ActionUI(a, bu);
 			this.addToBox(bu);
-	//		uiMap.put(a.getId(), aui);
+			// uiMap.put(a.getId(), aui);
 
 		}
 		this.updateUI();

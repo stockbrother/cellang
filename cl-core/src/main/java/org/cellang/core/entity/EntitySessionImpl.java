@@ -91,6 +91,12 @@ public class EntitySessionImpl implements EntitySession {
 		saveAll(ol);
 	}
 
+	@Override
+	public <T extends EntityObject> long delete(Class<T> cls) {
+		return delete(cls, new String[] {}, new Object[] {});
+	}
+
+	@Override
 	public <T extends EntityObject> long delete(Class<T> cls, String[] strings, Object[] objects) {
 		String sql = "delete from " + this.ecf.get(cls).getTableName() + " where 1=1 ";
 		for (int i = 0; i < strings.length; i++) {

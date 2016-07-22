@@ -2,6 +2,8 @@ package org.cellang.console.view;
 
 import java.util.Calendar;
 
+import org.cellang.collector.EnvUtil;
+
 public class ReportDate {
 	public int year;
 
@@ -22,12 +24,9 @@ public class ReportDate {
 
 		return new ReportDate(i);
 	}
-
-	// TODO use locale
-	public long getTimeInMillis() {
-		Calendar c = Calendar.getInstance();
-		c.set(year, 12, 31);//
-		return c.getTimeInMillis();
+	
+	public long getTimeInMillis() {		
+		return EnvUtil.newDateOfYearLastDay(this.year).getTime();
 	}
 
 	@Override

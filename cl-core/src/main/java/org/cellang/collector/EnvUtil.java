@@ -1,8 +1,24 @@
 package org.cellang.collector;
 
 import java.io.File;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.TimeZone;
+
+import org.cellang.core.util.DateUtil;
 
 public class EnvUtil {
+	static TimeZone timeZone = TimeZone.getTimeZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC));
+	static TimeZone dataTimeZone = TimeZone.getTimeZone(ZoneOffset.ofHours(8));//
+	public static TimeZone getTimeZone() {
+		return dataTimeZone;
+	}
+
+	public static Date newDateOfYearLastDay(int year) {
+		return DateUtil.newDateOfYearLastDay(year, dataTimeZone);
+	}
+
 	public static File getDataDir() {
 		String dataDirS = System.getProperty("cellang.data.dir");
 		if (dataDirS == null) {
@@ -26,6 +42,10 @@ public class EnvUtil {
 
 		return new File(getDataDir(), "1");
 
+	}
+	
+	public static boolean isProxyEnabled(){
+		return true;
 	}
 
 	public static String getProxyHome() {

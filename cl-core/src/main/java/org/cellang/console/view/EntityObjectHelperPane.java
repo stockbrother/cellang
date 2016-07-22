@@ -32,10 +32,9 @@ public class EntityObjectHelperPane extends HelperPane<EntityObject> {
 		Class<?> cls = co.getClass();
 		EntityConfigControl<?> ecc = this.ecm.getEntityConfigControl(cls);
 		if (ecc != null) {
-			ecc.setSelected(co);
 			HasActions has = ecc.getDelegate(HasActions.class);
 			if (has != null) {
-				super.addActions(has);
+				super.addActions(co, has);
 			}
 		}
 		Map<String, Object> des = new HashMap<String, Object>();

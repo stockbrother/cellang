@@ -2,6 +2,7 @@ package org.cellang.console.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 
 	protected String title;
 
-	protected JTable table;
+	protected DefaultTablePane table;
 
 	ViewTableModel<T> model;
 	TableColumnAdjuster tableColumnAdjuster;
@@ -46,6 +47,8 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 
 		this.id = UUIDUtil.randomStringUUID();
 		this.dp = dp;
+		
+	
 		model = new ViewTableModel<T>(dp);
 
 		// TODO remove this and adjustColumns when double click the header of
@@ -58,8 +61,9 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 			}
 		});
 
-		this.table = new JTable(model);
+		this.table = new DefaultTablePane(model);
 		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//this.table.setDefaultRenderer(Object.class, renderer);
 		tableColumnAdjuster = new TableColumnAdjuster(this.table, 5);
 		tableColumnAdjuster.setOnlyAdjustLarger(true);//
 		// tableColumnAdjuster.setDynamicAdjustment(true);//

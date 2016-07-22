@@ -14,6 +14,6 @@ public interface HasActions {
 	 * @param al
 	 * @return
 	 */
-	public List<Action> getActions(List<Action> al);
+	public List<Action> getActions(Object context, List<Action> al);
 
 }

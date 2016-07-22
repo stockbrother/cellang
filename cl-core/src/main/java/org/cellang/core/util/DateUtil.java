@@ -8,15 +8,16 @@ package org.cellang.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * @author wuzhen
  * 
  */
 public class DateUtil {
-	private static SimpleDateFormat FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+	private static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	public static String format(Date dd) {
 		return FORMAT.format(dd);
@@ -28,7 +29,14 @@ public class DateUtil {
 			dt = FORMAT.parse(date);
 		} catch (ParseException e) {
 			throw new RuntimeException(e);//
-		}//
+		} //
 		return dt;
+	}
+
+	public static Date newDateOfYearLastDay(int year, TimeZone zone) {
+		Calendar c = Calendar.getInstance(zone);
+		c.set(year, 11, 31, 0, 0, 0);
+		c.set(Calendar.MILLISECOND, 0);//
+		return c.getTime();
 	}
 }

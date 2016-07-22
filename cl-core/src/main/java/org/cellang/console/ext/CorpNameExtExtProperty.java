@@ -8,7 +8,11 @@ import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.ExtendingPropertyEntity;
 
-public class CorpNameExtExtProperty implements ExtendingPropertyDefine<ExtendingPropertyEntity> {
+public class CorpNameExtExtProperty extends AbstractExtendingPropertyDefine<ExtendingPropertyEntity, String> {
+
+	public CorpNameExtExtProperty() {
+		super(ExtendingPropertyEntity.class, String.class);
+	}
 
 	static class GetCorpNameOp extends EntityOp<String> {
 
@@ -32,12 +36,6 @@ public class CorpNameExtExtProperty implements ExtendingPropertyDefine<Extending
 
 	EntitySessionFactory esf;
 	GetCorpNameOp getOp = new GetCorpNameOp();
-
-	@Override
-	public Class<ExtendingPropertyEntity> getEntityClass() {
-
-		return ExtendingPropertyEntity.class;
-	}
 
 	@Override
 	public String getKey() {

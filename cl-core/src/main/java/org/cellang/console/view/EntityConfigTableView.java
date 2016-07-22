@@ -8,7 +8,7 @@ import org.cellang.console.model.EntityConfigTableDataProvider;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.core.entity.EntityConfig;
 
-public class EntityConfigTableView extends TableDataView<EntityConfig>implements HasActions {
+public class EntityConfigTableView extends TableDataView<EntityConfig> implements HasActions {
 	OperationContext oc;
 
 	public EntityConfigTableView(OperationContext oc, List<EntityConfig> list) {
@@ -17,21 +17,24 @@ public class EntityConfigTableView extends TableDataView<EntityConfig>implements
 	}
 
 	@Override
-	public List<Action> getActions(List<Action> al) {
-		al.add(new Action() {
+	public List<Action> getActions(Object context, List<Action> al) {
+		if (context == this) {
 
-			@Override
-			public String getName() {
+			al.add(new Action() {
 
-				return "Drill Down";
-			}
+				@Override
+				public String getName() {
 
-			@Override
-			public void perform() {
-				openSelectedView();
-			}
+					return "Drill Down";
+				}
 
-		});
+				@Override
+				public void perform() {
+					openSelectedView();
+				}
+
+			});
+		}
 		return al;
 	}
 

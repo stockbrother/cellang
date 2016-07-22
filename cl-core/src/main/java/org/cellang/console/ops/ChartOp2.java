@@ -1,10 +1,10 @@
 
 package org.cellang.console.ops;
 
-import org.cellang.console.view.AbstractChartDataProvider;
+import org.cellang.console.model.AbstractChartDataProvider;
+import org.cellang.console.model.ReportItemChartDataProvider;
 import org.cellang.console.view.DateChartView;
 import org.cellang.console.view.ReportDate;
-import org.cellang.console.view.ReportItemChartDataProvider;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.core.entity.BalanceSheetItemEntity;
 import org.cellang.core.entity.BalanceSheetReportEntity;
