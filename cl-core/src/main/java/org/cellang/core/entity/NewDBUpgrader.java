@@ -30,21 +30,34 @@ public class NewDBUpgrader extends DBUpgrader {
 			// entity is view.
 			es.getDataAccessTemplate().executeUpdate(es.getConnection(), viewSql);
 		}
+		createIndex(icL, es);
+	}
 
+	public static void createIndex(EntitySessionFactory esf, EntityConfig ec, EntitySession es) {
+		List<IndexConfig> icL = esf.getEntityConfigFactory().getIndexConfigList(ec.getEntityClass());
+		createIndex(icL, es);
+	}
+
+	public static void createIndex(List<IndexConfig> icL, EntitySession es) {
 		for (IndexConfig ic : icL) {
-			String tableName = ec.getTableName();
-			String sql = "create index " + ic.getIndexName() + " on " + tableName + "(";
-			String[] fs = ic.getFieldArray();
-			for (int i = 0; i < fs.length; i++) {
-				String f = fs[i];
-				sql += f;
-				if (i < fs.length - 1) {
-					sql += ",";
-				}
-			}
-			sql += ")";
-			es.getDataAccessTemplate().executeUpdate(es.getConnection(), sql);
+			createIndex(ic, es);
 		}
+	}
+
+	public static void createIndex(IndexConfig ic, EntitySession es) {
+		EntityConfig ec = es.getEntityConfigFactory().getEntityConfig(ic.getEntityCls());
+		String tableName = ec.getTableName();
+		String sql = "create index " + ic.getIndexName() + " on " + tableName + "(";
+		String[] fs = ic.getFieldArray();
+		for (int i = 0; i < fs.length; i++) {
+			String f = fs[i];
+			sql += f;
+			if (i < fs.length - 1) {
+				sql += ",";
+			}
+		}
+		sql += ")";
+		es.getDataAccessTemplate().executeUpdate(es.getConnection(), sql);
 	}
 
 	@Override

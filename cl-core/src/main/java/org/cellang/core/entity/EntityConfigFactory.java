@@ -37,6 +37,8 @@ public class EntityConfigFactory {
 		this.addIndex(QuotesEntity.class, new String[] { "code" });
 		this.addIndex(InterestedCorpEntity.class, new String[] { "corpId" });
 		this.addIndex(PropertyEntity.class, new String[] { "category" });
+		this.addIndex(ExtendingPropertyEntity.class, new String[] { "entityType","entityId","key" });
+		
 
 	}
 

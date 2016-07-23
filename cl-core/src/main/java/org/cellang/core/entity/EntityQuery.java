@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 	private List<WhereField> whereFields = new ArrayList<>();
 
 	private String[] orderBy;
+	private String orderByExtendingPropertyKey;
 	private Integer limit;
 	private Integer offset;
 
@@ -70,26 +72,45 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 				return rt;
 			}
 		};
-		StringBuffer sql = new StringBuffer().append("select * from ").append(this.entityConfig.getTableName())
-				.append(" where 1=1");
-		// equal query fields
 		List<Object> args = new ArrayList<Object>();
+		StringBuffer sql = new StringBuffer()//
+				.append("select * from ")//
+				.append(this.entityConfig.getTableName())//
+				.append(" as t1")//
+				.append(" left join")//
+				.append(" " + ExtendingPropertyEntity.tableName)//
+				.append(" as t2")//
+				.append(" on t2.entityId = t1.id and t2.entityType=? and t2.key=?")//
+				.append(" where 1=1")//
+				;
+		//
+		args.add(this.entityConfig.getEntityClass().getName());
+		args.add(this.orderByExtendingPropertyKey);
+		// equal query fields
 
 		for (int i = 0; i < this.whereFields.size(); i++) {
 			WhereField wf = this.whereFields.get(i);
 			sql.append(" and " + wf.field + " " + wf.operator + " ?");
 			args.add(wf.value);
 		}
-
+		List<String> orderByL = new ArrayList<>();
 		if (orderBy != null) {
+			orderByL.addAll(Arrays.asList(this.orderBy));
+		}
+		if (this.orderByExtendingPropertyKey != null) {
+			orderByL.add(" t2.value");
+		}
+
+		if (orderByL.size() > 0) {
 			sql.append(" order by");
-			for (int i = 0; i < this.orderBy.length; i++) {
-				sql.append(" ").append(this.orderBy[i]);
-				if (i < this.orderBy.length - 1) {
+			for (int i = 0; i < orderByL.size(); i++) {
+				sql.append(" ").append(orderByL.get(i));
+				if (i < orderByL.size() - 1) {
 					sql.append(",");
 				}
 			}
 		}
+
 		if (this.limit != null) {
 			sql.append(" limit ").append(this.limit);
 		}
@@ -126,6 +147,11 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 
 	public EntityQuery<T> offset(int offset) {
 		this.offset = offset;
+		return this;
+	}
+
+	public EntityQuery<T> orderByExtendingPropertyKey(String key) {
+		this.orderByExtendingPropertyKey = key;
 		return this;
 	}
 

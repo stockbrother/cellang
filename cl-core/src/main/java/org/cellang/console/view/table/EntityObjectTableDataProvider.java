@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject> implements Filterable,
+public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>implements Filterable,
 		DataPageQuerable, ColumnAppendable, DataChangable, ColumnChangedEventSource, ColumnOrderable, Favoriteable {
 	public static abstract class Column {
 		EntityObjectTableDataProvider model;
@@ -176,6 +176,8 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 
 	String[] orderBy;
 
+	String orderByExtendingPropertyKey;
+
 	public EntityObjectTableDataProvider(EntitySessionFactory entityService, EntityConfig cfg,
 			EntityConfigControl<?> ecc, List<String> extPropL, int pageSize) {
 		this.ecc = ecc;
@@ -265,7 +267,8 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	private void query() {
 		int offset = this.pageNumber * this.pageSize;
 		List<? extends EntityObject> el = new EntityQuery<>(cfg).like(this.getLikeMap()).offset(offset)
-				.limit(this.pageSize).orderBy(this.orderBy).execute(this.entityService);
+				.limit(this.pageSize).orderBy(this.orderBy)
+				.orderByExtendingPropertyKey(this.orderByExtendingPropertyKey).execute(this.entityService);
 
 		this.list = el;
 		this.fireTableDataChanged();
@@ -391,7 +394,11 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 
 	@Override
 	public List<String> getOrderableColumnList() {
-		return this.cfg.getPropertyKeyList();
+		List<String> rt = new ArrayList<>();
+		rt.addAll(this.cfg.getPropertyKeyList());
+		rt.addAll(this.getExtenableColumnList());
+
+		return rt;
 	}
 
 	@Override
@@ -399,7 +406,14 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		if (key == null) {
 			this.orderBy = null;
 		} else {
-			this.orderBy = new String[] { key };
+			if (this.cfg.containsGetPropertyKey(key)) {
+				// the key is the column name of this table.
+				this.orderBy = new String[] { key };
+			} else {
+				// the key is extending property key column value(for instance
+				// P/E).
+				this.orderByExtendingPropertyKey = key;
+			}
 		}
 
 		this.refresh();
@@ -415,7 +429,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		StringBuffer sb = new StringBuffer();
 		sb.append(this.cfg.getEntityClass().getName())//
 				.append(";")//
-		;
+				;
 
 		for (Column col : columnList) {
 			if (col instanceof ExtendingColumn) {
