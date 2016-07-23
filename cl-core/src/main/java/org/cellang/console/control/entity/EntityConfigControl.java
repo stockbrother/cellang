@@ -1,4 +1,4 @@
-package org.cellang.console.control;
+package org.cellang.console.control.entity;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.console.HasDelagates;
+import org.cellang.console.control.DefaultHasDelagates;
+import org.cellang.console.control.HasActions;
 import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
@@ -56,7 +58,7 @@ public abstract class EntityConfigControl<E extends EntityObject> implements Has
 			}
 		}
 	}
-
+	
 	public Comparator<Method> getColumnSorter() {
 		return this.comparator;
 	}

@@ -1,27 +1,28 @@
-package org.cellang.console.ops;
+package org.cellang.console.control.entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.console.control.CorpInfoEntityConfigControl;
-import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.EntityConfigSelectionListener;
 import org.cellang.console.control.EntityConfigSelector;
-import org.cellang.console.control.ExtendingPropertyEntityConfigControl;
-import org.cellang.console.control.FavoriteActionEntityConfigControl;
-import org.cellang.console.control.QuotesEntityConfigControl;
-import org.cellang.console.view.EntityObjectTableView;
+import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
 import org.cellang.console.view.helper.HelpersPane;
+import org.cellang.console.view.table.EntityObjectTableView;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.ExtendingPropertyEntity;
 import org.cellang.core.entity.FavoriteActionEntity;
+import org.cellang.core.entity.InterestedCorpEntity;
 import org.cellang.core.entity.QuotesEntity;
-
+/**
+ * 
+ * @author wu
+ *
+ */
 public class EntityConfigManager implements EntityConfigSelector {
 
 	private int queryLimit = 1000;
@@ -42,6 +43,7 @@ public class EntityConfigManager implements EntityConfigSelector {
 		controlMap.put(CorpInfoEntity.tableName, new CorpInfoEntityConfigControl(this.entityService));
 		controlMap.put(ExtendingPropertyEntity.tableName, new ExtendingPropertyEntityConfigControl(this.entityService));
 		controlMap.put(FavoriteActionEntity.tableName, new FavoriteActionEntityConfigControl(oc, this.entityService));
+		controlMap.put(InterestedCorpEntity.tableName, new InterestedCorpEntityConfigControl(this.entityService));
 
 	}
 

@@ -1,7 +1,10 @@
-package org.cellang.console.control;
+package org.cellang.console.control.entity;
 
 import java.util.List;
 
+import org.cellang.console.control.Action;
+import org.cellang.console.control.HasActions;
+import org.cellang.console.control.SelectionListener;
 import org.cellang.console.ext.CorpEPExtendingProperty;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.EntityObjectTableDataProvider;

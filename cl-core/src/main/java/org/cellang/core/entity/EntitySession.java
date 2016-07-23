@@ -40,6 +40,8 @@ public interface EntitySession {
 	
 	public <T extends EntityObject> long delete(Class<T> cls);
 	
+	public <T extends EntityObject> long delete(Class<T> cls, String id);
+
 	public <T extends EntityObject> long delete(Class<T> cls, String[] strings, Object[] objects);
 
 	public EntitySessionFactory getFactory();
@@ -61,7 +63,5 @@ public interface EntitySession {
 
 	public JdbcDataAccessTemplate getDataAccessTemplate();
 
-	
-	
 
 }

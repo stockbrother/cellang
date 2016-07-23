@@ -1,4 +1,4 @@
-package org.cellang.console.view;
+package org.cellang.console.view.table;
 
 import java.awt.*;
 import java.awt.event.*;

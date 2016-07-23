@@ -1,4 +1,4 @@
-package org.cellang.console.control;
+package org.cellang.console.view.helper;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import org.cellang.console.control.Filterable;
 
 public class FilterPane extends Box {
 
@@ -30,7 +32,7 @@ public class FilterPane extends Box {
 
 			JTextField text = new JTextField();
 			text.setPreferredSize(new Dimension(100, 20));
-			text.setMaximumSize(new Dimension(200, 25));//
+			text.setMaximumSize(new Dimension(200, 20));//
 			line.add(text);
 			text.getDocument().addDocumentListener(new DocumentListener() {
 

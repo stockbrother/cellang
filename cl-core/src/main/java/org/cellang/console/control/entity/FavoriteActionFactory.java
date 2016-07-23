@@ -1,4 +1,4 @@
-package org.cellang.console.control;
+package org.cellang.console.control.entity;
 
 import java.util.ArrayList;
 import java.util.List;

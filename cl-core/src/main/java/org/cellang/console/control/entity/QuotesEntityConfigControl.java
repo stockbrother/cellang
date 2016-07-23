@@ -1,4 +1,4 @@
-package org.cellang.console.control;
+package org.cellang.console.control.entity;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -12,6 +12,8 @@ import org.cellang.collector.SinaAllQuotesPreprocessor;
 import org.cellang.collector.SinaQuotesCollector;
 import org.cellang.commons.jdbc.DeleteOperation;
 import org.cellang.commons.util.BeanUtil;
+import org.cellang.console.control.Action;
+import org.cellang.console.control.HasActions;
 import org.cellang.console.view.View;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.QuotesEntity;

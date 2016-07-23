@@ -95,6 +95,11 @@ public class EntitySessionImpl implements EntitySession {
 	public <T extends EntityObject> long delete(Class<T> cls) {
 		return delete(cls, new String[] {}, new Object[] {});
 	}
+	
+	@Override
+	public <T extends EntityObject> long delete(Class<T> cls,String id) {
+		return delete(cls, new String[] {"id"}, new Object[] {id});
+	}
 
 	@Override
 	public <T extends EntityObject> long delete(Class<T> cls, String[] strings, Object[] objects) {

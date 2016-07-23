@@ -22,7 +22,6 @@ import javax.swing.JScrollPane;
 import org.cellang.console.HasDelagates;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.ActionHandler;
-import org.cellang.console.control.FilterPane;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.ValueChangeListener;
 
@@ -137,6 +136,8 @@ public class HelperPane<T> extends JScrollPane {
 		Vector<String> vec = new Vector<String>(nameL);
 		vec.insertElementAt(null, 0);//
 		JComboBox<String> com = new JComboBox<>(vec);
+		com.setPreferredSize(new Dimension(200, 20));//
+		com.setMaximumSize(new Dimension(200, 20));//
 		com.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {

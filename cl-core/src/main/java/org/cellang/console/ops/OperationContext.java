@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.console.view.helper.HelpersPane;
 import org.cellang.console.view.table.EntityConfigTableView;

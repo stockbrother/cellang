@@ -11,7 +11,6 @@ import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
 import org.cellang.console.control.Favoriteable;
-import org.cellang.console.control.FilterPane;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.control.ValueChangeListener;
 import org.cellang.console.ops.OperationContext;

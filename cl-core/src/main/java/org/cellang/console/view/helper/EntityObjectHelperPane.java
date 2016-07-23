@@ -3,9 +3,9 @@ package org.cellang.console.view.helper;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.HasActions;
-import org.cellang.console.ops.EntityConfigManager;
+import org.cellang.console.control.entity.EntityConfigControl;
+import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.core.entity.EntityObject;
 
 public class EntityObjectHelperPane extends HelperPane<EntityObject> {

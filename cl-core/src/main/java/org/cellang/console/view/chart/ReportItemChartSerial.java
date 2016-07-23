@@ -1,4 +1,4 @@
-package org.cellang.console.view;
+package org.cellang.console.view.chart;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

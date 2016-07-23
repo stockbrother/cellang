@@ -1,7 +1,10 @@
-package org.cellang.console.control;
+package org.cellang.console.control.entity;
 
 import java.util.List;
 
+import org.cellang.console.control.Action;
+import org.cellang.console.control.HasActions;
+import org.cellang.console.control.SelectionListener;
 import org.cellang.console.ext.CorpEPExtendingProperty;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityOp;
@@ -11,6 +14,11 @@ import org.cellang.core.entity.InterestedCorpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @see EntityConfigManager
+ * @author wu
+ *
+ */
 public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>implements HasActions {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
@@ -18,7 +26,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 	public CorpInfoEntityConfigControl(EntitySessionFactory entitySessions) {
 		this.entitySessions = entitySessions;
-		
+
 		this.addExtendingProperty(new CorpEPExtendingProperty(1), true);
 		this.addExtendingProperty(new CorpEPExtendingProperty(5), true);
 
@@ -38,7 +46,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 	@Override
 	public List<Action> getActions(Object context, List<Action> al) {
-		if(!(context instanceof CorpInfoEntity)){
+		if (!(context instanceof CorpInfoEntity)) {
 			return al;
 		}
 		al.add(new Action() {
@@ -50,14 +58,14 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 			@Override
 			public void perform() {
-				CorpInfoEntityConfigControl.this.addToInterested((CorpInfoEntity)context);
+				CorpInfoEntityConfigControl.this.addToInterested((CorpInfoEntity) context);
 			}
 		});
 		return al;
 	}
 
 	protected void addToInterested(CorpInfoEntity ce) {
-	
+
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("add corp:" + ce.getCode() + " as interested.");
 		}

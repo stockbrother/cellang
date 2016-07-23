@@ -1,7 +1,9 @@
-package org.cellang.console.control;
+package org.cellang.console.control.entity;
 
 import java.util.List;
 
+import org.cellang.console.control.Action;
+import org.cellang.console.control.HasActions;
 import org.cellang.console.ext.CorpNameExtExtProperty;
 import org.cellang.console.view.View;
 import org.cellang.core.entity.CorpInfoEntity;

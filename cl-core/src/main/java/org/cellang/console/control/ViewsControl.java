@@ -1,6 +1,6 @@
 package org.cellang.console.control;
 
-import org.cellang.console.ops.EntityConfigManager;
+import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.View;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.console.view.ViewsPane.ViewsListener;

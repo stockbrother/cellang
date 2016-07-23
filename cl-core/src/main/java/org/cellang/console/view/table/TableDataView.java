@@ -17,7 +17,6 @@ import org.cellang.commons.util.UUIDUtil;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.RowSelector;
 import org.cellang.console.control.SelectionListener;
-import org.cellang.console.view.TableColumnAdjuster;
 import org.cellang.console.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
