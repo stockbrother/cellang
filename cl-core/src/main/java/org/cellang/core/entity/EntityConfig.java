@@ -33,7 +33,7 @@ public class EntityConfig {
 	private Map<String, Method> getMethodMap = new HashMap<String, Method>();
 
 	private Map<String, Method> setMethodMap = new HashMap<String, Method>();
-
+	
 	private static Map<Class, Converter> converterMap = new HashMap<Class, Converter>();
 
 	static {
@@ -75,6 +75,10 @@ public class EntityConfig {
 			}
 		}
 		this.initGetSetMethods(cls.getSuperclass());//
+	}
+	
+	public boolean containsGetPropertyKey(String key){
+		return this.getMethodMap.containsKey(key);
 	}
 
 	public List<String> getPropertyKeyList() {
