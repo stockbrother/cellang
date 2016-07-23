@@ -1,4 +1,8 @@
+<<<<<<< HEAD:cl-core/src/main/java/org/cellang/console/view/table/EntityObjectTableDataProvider.java
 package org.cellang.console.view.table;
+=======
+package org.cellang.console.model;
+>>>>>>> 2b639be440c5b20f5f0b6ae76cdc9ca83773fbaf:cl-core/src/main/java/org/cellang/console/model/EntityObjectTableDataProvider.java
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,11 +22,14 @@ import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.console.ext.SavableExtendingPropertyDefine;
+<<<<<<< HEAD:cl-core/src/main/java/org/cellang/console/view/table/EntityObjectTableDataProvider.java
 import org.cellang.console.model.ColumnChangedEventSource;
 import org.cellang.console.model.ColumnChangedListener;
 import org.cellang.console.model.DataChangable;
 import org.cellang.console.model.DataChangedListener;
 import org.cellang.console.model.ExtendingPropertyUpdater;
+=======
+>>>>>>> 2b639be440c5b20f5f0b6ae76cdc9ca83773fbaf:cl-core/src/main/java/org/cellang/console/model/EntityObjectTableDataProvider.java
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;

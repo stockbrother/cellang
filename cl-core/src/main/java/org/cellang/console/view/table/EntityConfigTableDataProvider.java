@@ -1,4 +1,8 @@
+<<<<<<< HEAD:cl-core/src/main/java/org/cellang/console/view/table/EntityConfigTableDataProvider.java
 package org.cellang.console.view.table;
+=======
+package org.cellang.console.model;
+>>>>>>> 2b639be440c5b20f5f0b6ae76cdc9ca83773fbaf:cl-core/src/main/java/org/cellang/console/model/EntityConfigTableDataProvider.java
 
 import java.util.List;
 
