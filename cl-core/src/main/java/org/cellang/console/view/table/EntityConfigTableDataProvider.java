@@ -1,4 +1,4 @@
-package org.cellang.console.model;
+package org.cellang.console.view.table;
 
 import java.util.List;
 

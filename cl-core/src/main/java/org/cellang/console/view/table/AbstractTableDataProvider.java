@@ -1,4 +1,4 @@
-package org.cellang.console.model;
+package org.cellang.console.view.table;
 
 public abstract class AbstractTableDataProvider<T> implements TableDataProvider<T> {
 

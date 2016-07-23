@@ -1,6 +1,6 @@
-package org.cellang.console.model;
+package org.cellang.console.view.table;
 
-import org.cellang.console.view.HasDelagates;
+import org.cellang.console.HasDelagates;
 
 /**
  * This interface is the data source for a table to render data cells.

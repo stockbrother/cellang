@@ -1,11 +1,11 @@
-package org.cellang.console.view;
+package org.cellang.console.view.table;
 
 import java.util.List;
 
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
-import org.cellang.console.model.EntityConfigTableDataProvider;
 import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.View;
 import org.cellang.core.entity.EntityConfig;
 
 public class EntityConfigTableView extends TableDataView<EntityConfig> implements HasActions {

@@ -1,8 +1,9 @@
-package org.cellang.console.view;
+package org.cellang.console.view.helper;
 
 import javax.swing.JSplitPane;
 
 import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.View;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntitySessionFactory;
 

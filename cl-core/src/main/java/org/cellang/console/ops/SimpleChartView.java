@@ -2,8 +2,8 @@ package org.cellang.console.ops;
 
 import java.lang.reflect.Method;
 
-import org.cellang.console.model.SimpleChartDataProvider;
-import org.cellang.console.view.ChartView;
+import org.cellang.console.view.chart.ChartView;
+import org.cellang.console.view.chart.SimpleChartDataProvider;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
 

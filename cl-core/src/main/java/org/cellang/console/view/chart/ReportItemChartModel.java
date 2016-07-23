@@ -1,7 +1,7 @@
-package org.cellang.console.model;
+package org.cellang.console.view.chart;
 
 import org.cellang.console.chart.ChartModel;
-import org.cellang.console.view.ReportDate;
+import org.cellang.core.util.ReportDate;
 
 public class ReportItemChartModel extends ChartModel<ReportDate> {
 

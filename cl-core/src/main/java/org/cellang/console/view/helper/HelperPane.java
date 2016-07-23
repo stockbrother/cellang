@@ -1,4 +1,4 @@
-package org.cellang.console.view;
+package org.cellang.console.view.helper;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
+import org.cellang.console.HasDelagates;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.ActionHandler;
 import org.cellang.console.control.FilterPane;

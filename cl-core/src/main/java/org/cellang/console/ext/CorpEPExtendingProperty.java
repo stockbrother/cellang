@@ -3,7 +3,7 @@ package org.cellang.console.ext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.cellang.console.view.HasDelagates;
+import org.cellang.console.HasDelagates;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityOp;

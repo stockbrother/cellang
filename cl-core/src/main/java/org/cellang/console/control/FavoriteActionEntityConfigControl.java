@@ -3,8 +3,8 @@ package org.cellang.console.control;
 import java.util.List;
 
 import org.cellang.console.ext.CorpEPExtendingProperty;
-import org.cellang.console.model.EntityObjectTableDataProvider;
 import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.table.EntityObjectTableDataProvider;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.FavoriteActionEntity;
 import org.slf4j.Logger;

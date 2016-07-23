@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cellang.console.HasDelagates;
 import org.cellang.console.ext.ExtendingPropertyDefine;
-import org.cellang.console.view.HasDelagates;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.slf4j.Logger;

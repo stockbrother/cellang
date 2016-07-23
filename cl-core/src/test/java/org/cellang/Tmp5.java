@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.chart.LineChart;
-import org.cellang.console.view.CompoundGrowModel;
+import org.cellang.console.view.chart.CompoundGrowModel;
 
 public class Tmp5 {
 	private static void createAndShowGui() {

@@ -1,4 +1,4 @@
-package org.cellang.console.model;
+package org.cellang.console.view.table;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +18,11 @@ import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.console.ext.SavableExtendingPropertyDefine;
+import org.cellang.console.model.ColumnChangedEventSource;
+import org.cellang.console.model.ColumnChangedListener;
+import org.cellang.console.model.DataChangable;
+import org.cellang.console.model.DataChangedListener;
+import org.cellang.console.model.ExtendingPropertyUpdater;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;

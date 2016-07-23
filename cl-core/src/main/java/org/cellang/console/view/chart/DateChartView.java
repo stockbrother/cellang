@@ -1,6 +1,6 @@
-package org.cellang.console.view;
+package org.cellang.console.view.chart;
 
-import org.cellang.console.model.AbstractChartDataProvider;
+import org.cellang.core.util.ReportDate;
 
 public class DateChartView extends ChartView<ReportDate> {
 

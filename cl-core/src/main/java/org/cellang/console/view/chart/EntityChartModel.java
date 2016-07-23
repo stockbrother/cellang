@@ -1,4 +1,4 @@
-package org.cellang.console.view;
+package org.cellang.console.view.chart;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

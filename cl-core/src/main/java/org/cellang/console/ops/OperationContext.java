@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import org.cellang.console.view.EntityConfigTableView;
-import org.cellang.console.view.HelpersPane;
 import org.cellang.console.view.ViewsPane;
+import org.cellang.console.view.helper.HelpersPane;
+import org.cellang.console.view.table.EntityConfigTableView;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;

@@ -2,10 +2,10 @@ package org.cellang.console.control;
 
 import org.cellang.console.ops.EntityConfigManager;
 import org.cellang.console.view.View;
-import org.cellang.console.view.ViewHelperPane;
-import org.cellang.console.view.HelpersPane;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.console.view.ViewsPane.ViewsListener;
+import org.cellang.console.view.helper.HelpersPane;
+import org.cellang.console.view.helper.ViewHelperPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

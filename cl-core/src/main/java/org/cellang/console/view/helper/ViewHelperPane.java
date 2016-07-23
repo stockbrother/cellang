@@ -1,4 +1,4 @@
-package org.cellang.console.view;
+package org.cellang.console.view.helper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +14,9 @@ import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.FilterPane;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.control.ValueChangeListener;
-import org.cellang.console.model.TableDataProvider;
 import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.View;
+import org.cellang.console.view.table.TableDataProvider;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;

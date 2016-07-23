@@ -3,8 +3,8 @@ package org.cellang.console.ops;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.cellang.console.view.ChartView;
 import org.cellang.console.view.ViewsPane;
+import org.cellang.console.view.chart.ChartView;
 import org.cellang.core.entity.EntityConfig;
 
 public class ChartOp extends ConsoleOp<Void> {

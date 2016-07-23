@@ -24,8 +24,8 @@ import org.cellang.console.clojure.ClojureConsolePane.ConsoleListener;
 import org.cellang.console.clojure.ReplSession;
 import org.cellang.console.control.ViewsControl;
 import org.cellang.console.ops.OperationContext;
-import org.cellang.console.view.HelpersPane;
 import org.cellang.console.view.ViewsPane;
+import org.cellang.console.view.helper.HelpersPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

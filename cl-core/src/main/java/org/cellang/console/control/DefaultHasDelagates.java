@@ -3,7 +3,7 @@ package org.cellang.console.control;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.console.view.HasDelagates;
+import org.cellang.console.HasDelagates;
 
 public class DefaultHasDelagates implements HasDelagates {
 

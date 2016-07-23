@@ -1,10 +1,10 @@
-package org.cellang.console.view;
+package org.cellang.console.view.chart;
 
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.chart.LineChart;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
-import org.cellang.console.model.AbstractChartDataProvider;
+import org.cellang.console.view.AbstractView;
 
 public class ChartView<T> extends AbstractView {
 	LineChart<T> chart;

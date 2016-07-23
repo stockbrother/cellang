@@ -2,10 +2,13 @@ package org.cellang.console.view;
 
 import java.util.List;
 
+import org.cellang.console.HasDelagates;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.EntityConfigControl;
 import org.cellang.console.control.HasActions;
-import org.cellang.console.model.EntityObjectTableDataProvider;
+import org.cellang.console.view.helper.HelpersPane;
+import org.cellang.console.view.table.EntityObjectTableDataProvider;
+import org.cellang.console.view.table.TableDataView;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntitySessionFactory;

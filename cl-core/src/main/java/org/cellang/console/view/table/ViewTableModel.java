@@ -1,4 +1,4 @@
-package org.cellang.console.view;
+package org.cellang.console.view.table;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -6,7 +6,6 @@ import org.cellang.console.model.ColumnChangedEventSource;
 import org.cellang.console.model.ColumnChangedListener;
 import org.cellang.console.model.DataChangable;
 import org.cellang.console.model.DataChangedListener;
-import org.cellang.console.model.TableDataProvider;
 
 public class ViewTableModel<T> extends AbstractTableModel implements ColumnChangedListener, DataChangedListener {
 	TableDataProvider<T> dp;
