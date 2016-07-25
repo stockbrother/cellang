@@ -55,15 +55,6 @@ public abstract class AbstractTableDataProvider<T>
 		}
 	}
 
-	@Override
-	public String getColumnName(int column) {
-
-		String result = "";
-		for (; column >= 0; column = column / 26 - 1) {
-			result = (char) ((char) (column % 26) + 'A') + result;
-		}
-		return result;
-	}
 	
 	@Override
 	public AbstractColumn<T> getColumn(int idx){
@@ -73,12 +64,6 @@ public abstract class AbstractTableDataProvider<T>
 	@Override
 	public int getColumnCount() {
 		return this.columnList.size();
-	}
-
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		AbstractColumn<T> col = this.columnList.get(columnIndex);
-		return col.getValue(rowIndex);
 	}
 
 	@Override

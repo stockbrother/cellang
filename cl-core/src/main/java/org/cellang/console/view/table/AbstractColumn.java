@@ -1,6 +1,6 @@
 package org.cellang.console.view.table;
 
-public abstract class AbstractColumn<T> {
+public abstract class AbstractColumn<T> implements ColumnDefine<T> {
 	AbstractTableDataProvider<T> model;
 	String name;
 
@@ -9,17 +9,31 @@ public abstract class AbstractColumn<T> {
 		this.name = name;
 	}
 
-	public abstract Object getValue(int rowIndex);
-
+	public String getFilterableColumn() {
+		return null;
+	}
 	// if the column is filterable, action ui will add conditional input
 	// argument for filtering of the data table based on this column.
-	public abstract String getFilterableColumn();
 
-	public abstract Class<?> getValueRenderingClass();
+	public Class<?> getValueRenderingClass() {
+		return Object.class;
+	}
 
 	public String getDisplayName() {
 
 		return name;
 
 	}
+
+	@Override
+	public String getColumnName(int column) {
+
+		String result = "";
+		for (; column >= 0; column = column / 26 - 1) {
+			result = (char) ((char) (column % 26) + 'A') + result;
+		}
+		result += "(" + this.name + ")";
+		return result;
+	}
+
 }

@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class TableDataView<T> extends JScrollPane implements View, RowSelector<T>, ColumnSelector<T> {
+public class TableDataView<T> extends JScrollPane implements View, RowSelector<T>, ColumnSelector {
 
 	static final Logger LOG = LoggerFactory.getLogger(TableDataView.class);
 
@@ -41,7 +41,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	String id;
 	TableDataProvider<T> dp;
 	List<SelectionListener<T>> rowSelectionListenerList = new ArrayList<>();
-	List<SelectionListener<AbstractColumn<T>>> columnSelectionListenerList = new ArrayList<>();
+	List<SelectionListener<ColumnDefine>> columnSelectionListenerList = new ArrayList<>();
 
 	T selected;
 
@@ -103,8 +103,8 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 		// int idx0 = e.getFirstIndex();
 		// int idx1 = e.getLastIndex();
 		int idx = this.table.getSelectedColumn();
-		AbstractColumn<T> colDef = null;
-		if (idx < 0) {
+		ColumnDefine colDef = null;
+		if (idx >= 0) {
 			colDef = this.dp.getColumn(idx);
 		}
 		this.onColumnSelected(idx < 0 ? null : idx, colDef);//
@@ -128,12 +128,12 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 		this.onRowSelected(integer, row);//
 	}
 
-	protected void onColumnSelected(Integer col, AbstractColumn<T> colDef) {
+	protected void onColumnSelected(Integer col, ColumnDefine colDef) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("columnSelected:" + col);
 		}
 
-		for (SelectionListener<AbstractColumn<T>> sl : this.columnSelectionListenerList) {
+		for (SelectionListener<ColumnDefine> sl : this.columnSelectionListenerList) {
 			sl.onSelected(colDef);
 		}
 
@@ -186,7 +186,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	}
 
 	@Override
-	public void addColumnSelectionListener(SelectionListener<AbstractColumn<T>> esl) {
+	public void addColumnSelectionListener(SelectionListener<ColumnDefine> esl) {
 		this.columnSelectionListenerList.add(esl);
 	}
 

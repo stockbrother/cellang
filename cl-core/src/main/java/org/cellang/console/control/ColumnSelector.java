@@ -1,9 +1,9 @@
 package org.cellang.console.control;
 
-import org.cellang.console.view.table.AbstractColumn;
+import org.cellang.console.view.table.ColumnDefine;
 
-public interface ColumnSelector<T> {
+public interface ColumnSelector {
 
-	public void addColumnSelectionListener(SelectionListener<AbstractColumn<T>> esl);
+	public void addColumnSelectionListener(SelectionListener<ColumnDefine> esl);
 
 }

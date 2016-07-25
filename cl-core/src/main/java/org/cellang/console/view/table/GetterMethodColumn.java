@@ -16,9 +16,8 @@ class GetterMethodColumn extends AbstractColumn<EntityObject> {
 	}
 
 	@Override
-	public Object getValue(int rowIndex) {
+	public Object getValue(int rowIndex,EntityObject ec) {
 		
-		EntityObject ec = model.getRowObject(rowIndex);
 		if(ec == null){
 			return null;
 		}

@@ -4,7 +4,7 @@ import javax.swing.JSplitPane;
 
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
-import org.cellang.console.view.table.AbstractColumn;
+import org.cellang.console.view.table.ColumnDefine;
 import org.cellang.core.entity.EntityObject;
 
 public class HelpersPane extends JSplitPane {
@@ -25,11 +25,11 @@ public class HelpersPane extends JSplitPane {
 		this.entityHelper.setContextObject(null);//
 	}
 
-	public void columnSelected(Integer col, AbstractColumn<EntityObject> colDef) {
+	public void columnSelected(Integer col, ColumnDefine colDef) {
 		// TODO
 	}
 
-	public void entitySelected(EntityObject eo) {
+	public void rowSelected(EntityObject eo) {
 		this.entityHelper.setContextObject(eo);
 	}
 

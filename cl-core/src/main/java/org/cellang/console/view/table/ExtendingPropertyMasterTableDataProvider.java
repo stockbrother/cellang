@@ -49,11 +49,10 @@ public class ExtendingPropertyMasterTableDataProvider extends AbstractTableDataP
 		}
 
 		@Override
-		public Object getValue(int rowIndex) {
+		public Object getValue(int rowIndex,RowObject ro) {
 			if (rowIndex < 0 || rowIndex > this.model.list.size() - 1) {
 				return null;
 			}
-			RowObject ro = this.model.list.get(rowIndex);
 			return getValue(ro);
 		}
 
@@ -160,12 +159,6 @@ public class ExtendingPropertyMasterTableDataProvider extends AbstractTableDataP
 			return null;
 		}
 		return this.list.get(idx);
-	}
-
-	@Override
-	public Class<?> getColumnClass(int index) {
-		//
-		return Object.class;
 	}
 
 	@Override

@@ -5,12 +5,40 @@ import java.util.List;
 import org.cellang.console.control.HasActions;
 import org.cellang.core.entity.EntityConfig;
 
-public class EntityConfigTableDataProvider extends AbstractTableDataProvider<EntityConfig>  {
-	
+public class EntityConfigTableDataProvider extends AbstractTableDataProvider<EntityConfig> {
+
 	List<EntityConfig> list;
 
 	public EntityConfigTableDataProvider(List<EntityConfig> list) {
 		this.list = list;
+		this.columnList.add(new AbstractColumn<EntityConfig>(this, "1") {
+
+			@Override
+			public Object getValue(int rowIndex, EntityConfig ec) {
+
+				return doGetValueAt(rowIndex, 0);
+			}
+
+		});
+		this.columnList.add(new AbstractColumn<EntityConfig>(this, "1") {
+
+			@Override
+			public Object getValue(int rowIndex, EntityConfig ec) {
+
+				return doGetValueAt(rowIndex, 1);
+			}
+
+		});
+		this.columnList.add(new AbstractColumn<EntityConfig>(this, "1") {
+
+			@Override
+			public Object getValue(int rowIndex, EntityConfig ec) {
+
+				return doGetValueAt(rowIndex, 2);
+			}
+
+		});
+
 	}
 
 	@Override
@@ -20,13 +48,7 @@ public class EntityConfigTableDataProvider extends AbstractTableDataProvider<Ent
 
 	}
 
-	@Override
-	public int getColumnCount() {
-		return 3;
-	}
-
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
+	public Object doGetValueAt(int rowIndex, int columnIndex) {
 		Object rt = null;
 		EntityConfig ec = this.list.get(rowIndex);
 
@@ -63,13 +85,7 @@ public class EntityConfigTableDataProvider extends AbstractTableDataProvider<Ent
 	}
 
 	@Override
-	public Class<?> getColumnClass(int index) {
-		// 
-		return Object.class;
-	}
-
-	@Override
-	public int getRowNumber(int rowIndex) {		
+	public int getRowNumber(int rowIndex) {
 		return rowIndex;
 	}
 

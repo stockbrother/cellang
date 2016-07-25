@@ -2,6 +2,7 @@ package org.cellang.console.view.table;
 
 import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.console.ext.ExtendingPropertyGetOp;
+import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.ExtendingPropertyEntity;
@@ -19,9 +20,8 @@ class ExtendingPropertyColumn extends AbstractColumn<EntityObject> {
 	}
 
 	@Override
-	public Object getValue(int rowIndex) {
+	public Object getValue(int rowIndex,EntityObject ec) {
 
-		EntityObject ec = model.getRowObject(rowIndex);
 		if (ec == null) {
 			return null;
 		}

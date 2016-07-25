@@ -7,7 +7,7 @@ class LineNumberColumn<T> extends AbstractColumn<T> {
 	}
 
 	@Override
-	public Object getValue(int rowIndex) {
+	public Object getValue(int rowIndex,T ro) {
 		return model.getRowNumber(rowIndex);
 	}
 

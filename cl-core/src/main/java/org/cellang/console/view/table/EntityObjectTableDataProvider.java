@@ -96,18 +96,6 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	}
 
 	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-
-		AbstractColumn<EntityObject> col = this.columnList.get(columnIndex);
-		Object rt = col.getValue(rowIndex);
-		if (LOG.isTraceEnabled()) {
-			LOG.trace("getValueAt,col:" + col + ",rt:" + rt);//
-		}
-
-		return rt;
-	}
-
-	@Override
 	public String[] getFilterableColumnList() {
 		List<String> rt = new ArrayList<String>();
 		for (AbstractColumn<EntityObject> col : this.columnList) {
@@ -167,13 +155,6 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	@Override
 	public void refresh() {
 		this.query();
-	}
-
-	@Override
-	public String getColumnName(int column) {
-		String cname = this.columnList.get(column).getDisplayName();
-		String aname = super.getColumnName(column);
-		return aname + "(" + cname + ")";
 	}
 
 	public EntityObject getEntityObject(int idx) {
@@ -279,10 +260,4 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		return this.pageSize * this.pageNumber + rowIndex + 1;
 	}
 
-	@Override
-	public Class<?> getColumnClass(int index) {
-
-		return this.columnList.get(index).getValueRenderingClass();
-
-	}
 }

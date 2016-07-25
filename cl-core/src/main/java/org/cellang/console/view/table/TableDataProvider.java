@@ -16,14 +16,8 @@ public interface TableDataProvider<T> extends HasDelagates {
 
 	public int getColumnCount();
 
-	public String getColumnName(int column);
-	
-	public AbstractColumn<T> getColumn(int col);
-
-	public Object getValueAt(int rowIndex, int columnIndex);
+	public ColumnDefine getColumn(int col);
 
 	public T getRowObject(int idx);
-
-	public Class<?> getColumnClass(int index);
 
 }

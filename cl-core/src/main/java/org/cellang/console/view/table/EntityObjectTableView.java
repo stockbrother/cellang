@@ -48,7 +48,7 @@ public class EntityObjectTableView extends TableDataView<EntityObject> implement
 	}
 
 	@Override
-	protected void onColumnSelected(Integer col, AbstractColumn<EntityObject> colDef) {
+	protected void onColumnSelected(Integer col, ColumnDefine colDef) {
 		super.onColumnSelected(col, colDef);
 		this.helpers.columnSelected(col, colDef);
 	}
@@ -56,7 +56,7 @@ public class EntityObjectTableView extends TableDataView<EntityObject> implement
 	@Override
 	protected void onRowSelected(Integer row, EntityObject rowObj) {
 		super.onRowSelected(row, rowObj);//
-		this.helpers.entitySelected(rowObj);//
+		this.helpers.rowSelected(rowObj);//
 	}
 
 }
