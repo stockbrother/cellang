@@ -63,5 +63,6 @@ public interface EntitySession {
 
 	public JdbcDataAccessTemplate getDataAccessTemplate();
 
+	public Long counter(Class<? extends EntityObject> entityClass, String[] fields, Object[] args);
 
 }

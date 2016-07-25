@@ -5,8 +5,9 @@ import java.util.Map;
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
+import org.cellang.console.control.Refreshable;
 
-public abstract class AbstractChartDataProvider<T> implements DataPageQuerable, Descriable {
+public abstract class AbstractChartDataProvider<T> implements DataPageQuerable, Descriable,Refreshable {
 
 	protected int pageSize;
 

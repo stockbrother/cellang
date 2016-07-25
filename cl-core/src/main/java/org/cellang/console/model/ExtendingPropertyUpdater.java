@@ -2,7 +2,7 @@ package org.cellang.console.model;
 
 import java.util.List;
 
-import org.cellang.console.ext.SavableExtendingPropertyDefine;
+import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityOp;
@@ -18,10 +18,10 @@ import org.cellang.core.entity.ExtendingPropertyEntity;
  */
 public class ExtendingPropertyUpdater {
 
-	SavableExtendingPropertyDefine define;
+	ExtendingPropertyDefine define;
 	EntitySessionFactory esf;
 
-	public ExtendingPropertyUpdater(SavableExtendingPropertyDefine pd, EntitySessionFactory esf) {
+	public ExtendingPropertyUpdater(ExtendingPropertyDefine pd, EntitySessionFactory esf) {
 		this.define = pd;
 		this.esf = esf;
 	}

@@ -11,7 +11,7 @@ import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.QuotesEntity;
 
-public class CorpEPExtendingProperty extends AbstractExtendingPropertyDefine<CorpInfoEntity, BigDecimal> {
+public class CorpP_EExtendingProperty extends AbstractExtendingPropertyDefine<CorpInfoEntity, BigDecimal> {
 	EntitySessionFactory esf;
 
 	private class QuotesGetterOp extends EntityOp<QuotesEntity> {
@@ -38,7 +38,7 @@ public class CorpEPExtendingProperty extends AbstractExtendingPropertyDefine<Cor
 
 	int years;
 
-	public CorpEPExtendingProperty(int years) {
+	public CorpP_EExtendingProperty(int years) {
 		super(CorpInfoEntity.class, BigDecimal.class);
 		this.years = years;
 	}

@@ -5,7 +5,7 @@ import java.util.List;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.SelectionListener;
-import org.cellang.console.ext.CorpEPExtendingProperty;
+import org.cellang.console.ext.CorpP_EExtendingProperty;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.EntityObjectTableDataProvider;
 import org.cellang.core.entity.EntitySessionFactory;
@@ -30,8 +30,8 @@ public class FavoriteActionEntityConfigControl extends EntityConfigControl<Favor
 		this.oc = oc;
 		this.entitySessions = entitySessions;
 
-		this.addExtendingProperty(new CorpEPExtendingProperty(1), true);
-		this.addExtendingProperty(new CorpEPExtendingProperty(5), true);
+		this.addExtendingProperty(new CorpP_EExtendingProperty(1), true);
+		this.addExtendingProperty(new CorpP_EExtendingProperty(5), true);
 		this.faf = new FavoriteActionFactory(this.oc);
 	}
 

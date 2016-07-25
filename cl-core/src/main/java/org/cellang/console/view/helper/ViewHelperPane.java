@@ -12,6 +12,7 @@ import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
 import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.Filterable;
+import org.cellang.console.control.Refreshable;
 import org.cellang.console.control.ValueChangeListener;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
@@ -55,12 +56,14 @@ public class ViewHelperPane extends HelperPane<View> {
 					dpq.nextPage();
 				}
 			});
-
+		}
+		Refreshable rfs = dp.getDelegate(Refreshable.class);
+		if (rfs != null) {
 			this.addAction("Refresh", new ActionHandler() {
 
 				@Override
 				public void performAction() {
-					dpq.refresh();
+					rfs.refresh();
 				}
 			});
 

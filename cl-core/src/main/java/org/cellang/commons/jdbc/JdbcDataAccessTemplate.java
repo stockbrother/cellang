@@ -97,4 +97,8 @@ public class JdbcDataAccessTemplate {
 				new ResultSetProcessorPreparedStatementExecutor<T>(rsp));
 	}
 
+	public Long counter(Connection con, String sql, Object[] args) {
+		return this.executeQuery(con, sql, args, new CounterResultSetProcessor());
+	}
+
 }

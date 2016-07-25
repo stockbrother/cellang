@@ -5,7 +5,8 @@ import java.util.List;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.SelectionListener;
-import org.cellang.console.ext.CorpEPExtendingProperty;
+import org.cellang.console.ext.CorpP_EExtendingProperty;
+import org.cellang.console.ext.CorpP_EBITDAExtendingProperty;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
@@ -27,8 +28,10 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	public CorpInfoEntityConfigControl(EntitySessionFactory entitySessions) {
 		this.entitySessions = entitySessions;
 
-		this.addExtendingProperty(new CorpEPExtendingProperty(1), true);
-		this.addExtendingProperty(new CorpEPExtendingProperty(5), true);
+		this.addExtendingProperty(new CorpP_EExtendingProperty(1), true);
+		this.addExtendingProperty(new CorpP_EExtendingProperty(5), true);
+		this.addExtendingProperty(new CorpP_EBITDAExtendingProperty(1), true);
+		this.addExtendingProperty(new CorpP_EBITDAExtendingProperty(5), true);
 
 	}
 

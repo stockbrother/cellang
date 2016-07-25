@@ -19,5 +19,7 @@ public interface ExtendingPropertyDefine<E extends EntityObject,T> {
 	public Object getValue(EntityObject eo);
 	
 	public Class<T> getValueClass();
+	
+	public boolean isSavable();
 
 }

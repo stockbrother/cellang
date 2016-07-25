@@ -17,6 +17,7 @@ import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.console.view.helper.HelpersPane;
 import org.cellang.console.view.table.EntityConfigTableView;
+import org.cellang.console.view.table.ExtendingPropertyMasterTableView;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
 import org.cellang.core.entity.CorpMetricEntity;
@@ -134,6 +135,10 @@ public class OperationContext {
 		EntityConfigTableView table = new EntityConfigTableView(this,
 				this.getEntityConfigFactory().getEntityConfigList());
 		views.addView(table, true);
+		
+		ExtendingPropertyMasterTableView table2 = new ExtendingPropertyMasterTableView(this);
+		views.addView(table2, true);
+		
 	}
 
 	/**

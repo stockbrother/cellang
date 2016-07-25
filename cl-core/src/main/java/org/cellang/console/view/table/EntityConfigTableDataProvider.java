@@ -6,6 +6,7 @@ import org.cellang.console.control.HasActions;
 import org.cellang.core.entity.EntityConfig;
 
 public class EntityConfigTableDataProvider extends AbstractTableDataProvider<EntityConfig>  {
+	
 	List<EntityConfig> list;
 
 	public EntityConfigTableDataProvider(List<EntityConfig> list) {
@@ -65,6 +66,11 @@ public class EntityConfigTableDataProvider extends AbstractTableDataProvider<Ent
 	public Class<?> getColumnClass(int index) {
 		// 
 		return Object.class;
+	}
+
+	@Override
+	public int getRowNumber(int rowIndex) {		
+		return rowIndex;
 	}
 
 }

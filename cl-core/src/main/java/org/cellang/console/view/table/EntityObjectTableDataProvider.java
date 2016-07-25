@@ -1,6 +1,5 @@
 package org.cellang.console.view.table;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,20 +8,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.commons.util.BeanUtil;
 import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.Filterable;
+import org.cellang.console.control.Refreshable;
 import org.cellang.console.control.entity.EntityConfigControl;
+import org.cellang.console.control.entity.FavoriteActionFactory;
 import org.cellang.console.ext.ExtendingPropertyDefine;
-import org.cellang.console.ext.SavableExtendingPropertyDefine;
 import org.cellang.console.model.ColumnChangedEventSource;
 import org.cellang.console.model.ColumnChangedListener;
 import org.cellang.console.model.DataChangable;
 import org.cellang.console.model.DataChangedListener;
-import org.cellang.console.model.ExtendingPropertyUpdater;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
@@ -37,142 +35,20 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>implements Filterable,
-		DataPageQuerable, ColumnAppendable, DataChangable, ColumnChangedEventSource, ColumnOrderable, Favoriteable {
-	public static abstract class Column {
-		EntityObjectTableDataProvider model;
-		String name;
-
-		Column(EntityObjectTableDataProvider model, String name) {
-			this.model = model;
-			this.name = name;
-		}
-
-		public abstract Object getValue(int rowIndex);
-
-		// if the column is filterable, action ui will add conditional input
-		// argument for filtering of the data table based on this column.
-		public abstract String getFilterableColumn();
-
-		public abstract Class<?> getValueRenderingClass();
-
-		public String getDisplayName() {
-
-			return name;
-
-		}
-	}
-
-	private static class LineNumberColumn extends Column {
-
-		LineNumberColumn(EntityObjectTableDataProvider model) {
-			super(model, "LN.");
-		}
-
-		@Override
-		public Object getValue(int rowIndex) {
-			return model.pageSize * model.pageNumber + rowIndex;
-		}
-
-		@Override
-		public String getFilterableColumn() {
-			return null;
-		}
-
-		@Override
-		public Class<?> getValueRenderingClass() {
-			return String.class;
-		}
-
-	}
-
-	private static class ExtendingColumn extends Column {
-		ExtendingPropertyDefine calculator;
-
-		ExtendingColumn(EntityObjectTableDataProvider model, ExtendingPropertyDefine calculator) {
-			super(model, calculator.getKey());
-			this.calculator = calculator;
-		}
-
-		@Override
-		public Object getValue(int rowIndex) {
-			if (model.list == null || rowIndex > model.list.size() - 1) {
-				return null;
-			}
-			EntityObject ec = model.list.get(rowIndex);
-			return this.calculator.getValue(ec);
-		}
-
-		@Override
-		public String getFilterableColumn() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Class<?> getValueRenderingClass() {
-			return calculator.getValueClass();
-		}
-
-	}
-
-	private static class GetterMethodColumn extends Column {
-		Method method;
-
-		public GetterMethodColumn(Method m, EntityObjectTableDataProvider model) {
-			super(model, null);
-			name = BeanUtil.getPropertyNameFromGetMethod(m);
-			this.method = m;
-		}
-
-		@Override
-		public Object getValue(int rowIndex) {
-			if (model.list == null || rowIndex > model.list.size() - 1) {
-				return null;
-			}
-			EntityObject ec = model.list.get(rowIndex);
-			Object rt;
-			try {
-				rt = method.invoke(ec);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				throw new RuntimeException(e);
-			}
-			return rt;
-
-		}
-
-		@Override
-		public String getFilterableColumn() {
-			Class cls = method.getReturnType();
-			if (String.class.equals(cls)) {
-				return this.name;
-			}
-			return null;
-		}
-
-		@Override
-		public Class<?> getValueRenderingClass() {
-			return method.getReturnType();
-		}
-	}
-
+public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>
+		implements Filterable, DataPageQuerable, ColumnAppendable, ColumnOrderable, Favoriteable, Refreshable {
 	private static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableDataProvider.class);
 
 	protected int pageSize;
 
 	protected int pageNumber = -1;
 
-	private List<? extends EntityObject> list;
+	List<? extends EntityObject> list;
 	EntityConfig cfg;
-	List<Column> columnList = new ArrayList<>();
 
 	private Map<String, String> likeMap = new HashMap<String, String>();
 	EntitySessionFactory entityService;
 	EntityConfigControl<?> ecc;
-
-	List<DataChangedListener> dataChangedListenerList = new ArrayList<>();
-
-	List<ColumnChangedListener> columnChangedListenerList = new ArrayList<>();
 
 	String[] orderBy;
 
@@ -180,6 +56,14 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 
 	public EntityObjectTableDataProvider(EntitySessionFactory entityService, EntityConfig cfg,
 			EntityConfigControl<?> ecc, List<String> extPropL, int pageSize) {
+		
+		this.addDelagate(DataPageQuerable.class, this);
+		this.addDelagate(Filterable.class, this);
+		this.addDelagate(ColumnAppendable.class, this);
+		this.addDelagate(ColumnOrderable.class, this);
+		this.addDelagate(Favoriteable.class, this);
+		this.addDelagate(Refreshable.class, this);
+
 		this.ecc = ecc;
 		this.cfg = cfg;
 		this.entityService = entityService;
@@ -190,9 +74,9 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 			Arrays.sort(getters, columnSorter);
 		}
 
-		this.columnList.add(new LineNumberColumn(this));
+		this.columnList.add(new LineNumberColumn<EntityObject>(this));
 		for (Method m : getters) {
-			Column col = new GetterMethodColumn(m, this);
+			AbstractColumn<EntityObject> col = new GetterMethodColumn(m, this);
 			this.columnList.add(col);
 		}
 
@@ -218,7 +102,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 
-		Column col = this.columnList.get(columnIndex);
+		AbstractColumn<EntityObject> col = this.columnList.get(columnIndex);
 		Object rt = col.getValue(rowIndex);
 		if (LOG.isTraceEnabled()) {
 			LOG.trace("getValueAt,col:" + col + ",rt:" + rt);//
@@ -230,7 +114,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	@Override
 	public String[] getFilterableColumnList() {
 		List<String> rt = new ArrayList<String>();
-		for (Column col : this.columnList) {
+		for (AbstractColumn<EntityObject> col : this.columnList) {
 			String fname = col.getFilterableColumn();
 			if (fname == null) {
 				continue;
@@ -323,7 +207,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		this.appendColumn(columnName, true);//
 	}
 
-	public void appendColumn(String columnName, boolean save) {
+	private void appendColumn(String columnName, boolean save) {
 		if (this.ecc == null) {
 			throw new RuntimeException("not supported.");
 		}
@@ -332,56 +216,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		ExtendingColumn ec = new ExtendingColumn(this, cal);
 		this.columnList.add(ec);
 
-		if (save && (cal instanceof SavableExtendingPropertyDefine)) {
-			ExtendingPropertyUpdater epu = new ExtendingPropertyUpdater((SavableExtendingPropertyDefine) cal,
-					this.entityService);
-			epu.execute();
-		}
-
 		fireColumnChanged();
-	}
-
-	private void fireTableDataChanged() {
-		for (DataChangedListener l : this.dataChangedListenerList) {
-			l.onDataChanged();
-		}
-	}
-
-	private void fireColumnChanged() {
-		for (ColumnChangedListener l : this.columnChangedListenerList) {
-			l.onColumnChanged();
-		}
-	}
-
-	@Override
-	public <T> T getDelegate(Class<T> cls) {
-		if (cls.equals(DataChangable.class)) {
-			return (T) this;
-		} else if (cls.equals(ColumnChangedEventSource.class)) {
-			return (T) this;
-		} else if (cls.equals(DataPageQuerable.class)) {
-			return (T) this;
-		} else if (cls.equals(Filterable.class)) {
-			return (T) this;
-		} else if (cls.equals(ColumnAppendable.class)) {
-			return (T) this;
-		} else if (cls.equals(ColumnOrderable.class)) {
-			return (T) this;
-		} else if (cls.equals(Favoriteable.class)) {
-			return (T) this;
-		}
-
-		return null;
-	}
-
-	@Override
-	public void addDataChangeListener(DataChangedListener l) {
-		this.dataChangedListenerList.add(l);
-	}
-
-	@Override
-	public void addColumnListener(ColumnChangedListener l) {
-		this.columnChangedListenerList.add(l);
 	}
 
 	@Override
@@ -429,9 +264,9 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		StringBuffer sb = new StringBuffer();
 		sb.append(this.cfg.getEntityClass().getName())//
 				.append(";")//
-				;
+		;
 
-		for (Column col : columnList) {
+		for (AbstractColumn<EntityObject> col : columnList) {
 			if (col instanceof ExtendingColumn) {
 				ExtendingColumn ec = (ExtendingColumn) col;
 				sb.append(ec.calculator.getKey());//
@@ -441,6 +276,11 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		}
 		;
 		return sb.toString();
+	}
+
+	@Override
+	public int getRowNumber(int rowIndex) {
+		return this.pageSize * this.pageNumber + rowIndex + 1;
 	}
 
 	@Override

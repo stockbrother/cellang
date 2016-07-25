@@ -95,10 +95,10 @@ public class EntitySessionImpl implements EntitySession {
 	public <T extends EntityObject> long delete(Class<T> cls) {
 		return delete(cls, new String[] {}, new Object[] {});
 	}
-	
+
 	@Override
-	public <T extends EntityObject> long delete(Class<T> cls,String id) {
-		return delete(cls, new String[] {"id"}, new Object[] {id});
+	public <T extends EntityObject> long delete(Class<T> cls, String id) {
+		return delete(cls, new String[] { "id" }, new Object[] { id });
 	}
 
 	@Override
@@ -196,6 +196,17 @@ public class EntitySessionImpl implements EntitySession {
 	@Override
 	public JdbcDataAccessTemplate getDataAccessTemplate() {
 		return this.template;
+	}
+
+	@Override
+	public Long counter(Class<? extends EntityObject> entityClass, String[] fields, Object[] args) {
+		EntityConfig ec = this.ecf.getEntityConfig(entityClass);
+		String sql = "select count(*) from " + ec.getTableName() + " where 1=1";
+		for (int i = 0; i < fields.length; i++) {
+			sql += " and " + fields[i] + " = ?";
+		}
+
+		return this.template.counter(this.con, sql, args);
 	}
 
 }
