@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cellang.console.HasDelagates;
 import org.cellang.console.model.ColumnChangedEventSource;
 import org.cellang.console.model.ColumnChangedListener;
 import org.cellang.console.model.DataChangable;
 import org.cellang.console.model.DataChangedListener;
 
 public abstract class AbstractTableDataProvider<T>
-		implements TableDataProvider<T>, DataChangable, ColumnChangedEventSource {
+		implements HasDelagates ,TableDataProvider<T>, DataChangable, ColumnChangedEventSource {
 	List<AbstractColumn<T>> columnList = new ArrayList<>();
 
 	List<DataChangedListener> dataChangedListenerList = new ArrayList<>();

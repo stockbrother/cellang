@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class TableDataView<T> extends JScrollPane implements View, RowSelector<T>, ColumnSelector {
+public class TableDataView<T> extends JScrollPane implements View, RowSelector<T>, ColumnSelector<T> {
 
 	static final Logger LOG = LoggerFactory.getLogger(TableDataView.class);
 
@@ -41,7 +41,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	String id;
 	TableDataProvider<T> dp;
 	List<SelectionListener<T>> rowSelectionListenerList = new ArrayList<>();
-	List<SelectionListener<ColumnDefine>> columnSelectionListenerList = new ArrayList<>();
+	List<SelectionListener<ColumnDefine<T>>> columnSelectionListenerList = new ArrayList<>();
 
 	T selected;
 
@@ -128,12 +128,12 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 		this.onRowSelected(integer, row);//
 	}
 
-	protected void onColumnSelected(Integer col, ColumnDefine colDef) {
+	protected void onColumnSelected(Integer col, ColumnDefine<T> colDef) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("columnSelected:" + col);
 		}
 
-		for (SelectionListener<ColumnDefine> sl : this.columnSelectionListenerList) {
+		for (SelectionListener<ColumnDefine<T>> sl : this.columnSelectionListenerList) {
 			sl.onSelected(colDef);
 		}
 
@@ -161,6 +161,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 
 	@Override
 	public <T> T getDelegate(Class<T> cls) {
+		
 		if (cls.equals(TableDataProvider.class)) {
 			return (T) this.dp;
 		} else if (cls.equals(HasActions.class)) {
@@ -186,7 +187,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	}
 
 	@Override
-	public void addColumnSelectionListener(SelectionListener<ColumnDefine> esl) {
+	public void addColumnSelectionListener(SelectionListener<ColumnDefine<T>> esl) {
 		this.columnSelectionListenerList.add(esl);
 	}
 

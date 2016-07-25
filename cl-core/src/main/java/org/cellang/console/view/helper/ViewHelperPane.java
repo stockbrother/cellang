@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.commons.util.UUIDUtil;
+import org.cellang.console.HasDelagates;
 import org.cellang.console.control.ActionHandler;
 import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
@@ -34,97 +35,98 @@ public class ViewHelperPane extends HelperPane<View> {
 		if (view == null) {
 			return;
 		}
-		TableDataProvider<?> dp = view.getDelegate(TableDataProvider.class);
-		if (dp == null) {
+		TableDataProvider dpa = view.getDelegate(TableDataProvider.class);
+		if (dpa == null) {
 			return;
 		}
-
-		DataPageQuerable dpq = dp.getDelegate(DataPageQuerable.class);
-		if (dpq != null) {
-			this.addAction("<<", new ActionHandler() {
-
-				@Override
-				public void performAction() {
-					dpq.prePage();
-				}
-			});
-
-			this.addAction(">>", new ActionHandler() {
-
-				@Override
-				public void performAction() {
-					dpq.nextPage();
-				}
-			});
-		}
-		Refreshable rfs = dp.getDelegate(Refreshable.class);
-		if (rfs != null) {
-			this.addAction("Refresh", new ActionHandler() {
-
-				@Override
-				public void performAction() {
-					rfs.refresh();
-				}
-			});
-
-		}
-
-		Favoriteable fv = dp.getDelegate(Favoriteable.class);
-		if (fv != null) {
-
-			this.addAction("Add to Favorite", new ActionHandler() {
-
-				@Override
-				public void performAction() {
-					ViewHelperPane.this.addToFavorite(fv);
-				}
-			});
-		}
-
-		// if the view contains description
-		Descriable des = dp.getDelegate(Descriable.class);
-		if (des != null) {
-			Map<String, Object> desMap = new HashMap<>();
-			des.getDescription(desMap);
-			this.addText(desMap);// TODO
-
-		}
-		// if the view support fitler
-		Filterable fil = dp.getDelegate(Filterable.class);
-		if (fil != null) {
-
-			this.addFilter(new FilterPane(fil));
-		}
-		// add new column to table.
-		ColumnAppendable ce = dp.getDelegate(ColumnAppendable.class);
-		if (ce != null) {
-			List<String> nameL = ce.getExtenableColumnList();
-			if (!nameL.isEmpty()) {
-
-				addDropDownList(nameL, new ValueChangeListener<String>() {
+		if (dpa instanceof HasDelagates) {
+			HasDelagates dp = (HasDelagates) dpa;
+			DataPageQuerable dpq = dp.getDelegate(DataPageQuerable.class);
+			if (dpq != null) {
+				this.addAction("<<", new ActionHandler() {
 
 					@Override
-					public void valueChanged(String value) {
-						ce.appendColumn(value);//
+					public void performAction() {
+						dpq.prePage();
+					}
+				});
+
+				this.addAction(">>", new ActionHandler() {
+
+					@Override
+					public void performAction() {
+						dpq.nextPage();
 					}
 				});
 			}
-		}
-		ColumnOrderable co = dp.getDelegate(ColumnOrderable.class);
-		if (co != null) {
-			List<String> nameL = co.getOrderableColumnList();
-			if (!nameL.isEmpty()) {
-
-				addDropDownList(nameL, new ValueChangeListener<String>() {
+			Refreshable rfs = dp.getDelegate(Refreshable.class);
+			if (rfs != null) {
+				this.addAction("Refresh", new ActionHandler() {
 
 					@Override
-					public void valueChanged(String value) {
-						co.setOrderBy(value);//
+					public void performAction() {
+						rfs.refresh();
+					}
+				});
+
+			}
+
+			Favoriteable fv = dp.getDelegate(Favoriteable.class);
+			if (fv != null) {
+
+				this.addAction("Add to Favorite", new ActionHandler() {
+
+					@Override
+					public void performAction() {
+						ViewHelperPane.this.addToFavorite(fv);
 					}
 				});
 			}
-		}
 
+			// if the view contains description
+			Descriable des = dp.getDelegate(Descriable.class);
+			if (des != null) {
+				Map<String, Object> desMap = new HashMap<>();
+				des.getDescription(desMap);
+				this.addText(desMap);// TODO
+
+			}
+			// if the view support fitler
+			Filterable fil = dp.getDelegate(Filterable.class);
+			if (fil != null) {
+
+				this.addFilter(new FilterPane(fil));
+			}
+			// add new column to table.
+			ColumnAppendable ce = dp.getDelegate(ColumnAppendable.class);
+			if (ce != null) {
+				List<String> nameL = ce.getExtenableColumnList();
+				if (!nameL.isEmpty()) {
+
+					addDropDownList(nameL, new ValueChangeListener<String>() {
+
+						@Override
+						public void valueChanged(String value) {
+							ce.appendColumn(value);//
+						}
+					});
+				}
+			}
+			ColumnOrderable co = dp.getDelegate(ColumnOrderable.class);
+			if (co != null) {
+				List<String> nameL = co.getOrderableColumnList();
+				if (!nameL.isEmpty()) {
+
+					addDropDownList(nameL, new ValueChangeListener<String>() {
+
+						@Override
+						public void valueChanged(String value) {
+							co.setOrderBy(value);//
+						}
+					});
+				}
+			}
+		}
 	}
 
 	protected void addToFavorite(Favoriteable fv) {
