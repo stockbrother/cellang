@@ -17,10 +17,6 @@ import org.cellang.console.control.Refreshable;
 import org.cellang.console.control.entity.EntityConfigControl;
 import org.cellang.console.control.entity.FavoriteActionFactory;
 import org.cellang.console.ext.ExtendingPropertyDefine;
-import org.cellang.console.model.ColumnChangedEventSource;
-import org.cellang.console.model.ColumnChangedListener;
-import org.cellang.console.model.DataChangable;
-import org.cellang.console.model.DataChangedListener;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
@@ -56,7 +52,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 
 	public EntityObjectTableDataProvider(EntitySessionFactory entityService, EntityConfig cfg,
 			EntityConfigControl<?> ecc, List<String> extPropL, int pageSize) {
-		
+
 		this.addDelagate(DataPageQuerable.class, this);
 		this.addDelagate(Filterable.class, this);
 		this.addDelagate(ColumnAppendable.class, this);
@@ -213,7 +209,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		}
 		ExtendingPropertyDefine cal = this.ecc.getExtendingProperty(columnName);
 		cal.install(this.entityService);// TODO not install many times.
-		ExtendingColumn ec = new ExtendingColumn(this, cal);
+		ExtendingPropertyColumn ec = new ExtendingPropertyColumn(this.entityService, this, cal);
 		this.columnList.add(ec);
 
 		fireColumnChanged();
@@ -267,9 +263,9 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		;
 
 		for (AbstractColumn<EntityObject> col : columnList) {
-			if (col instanceof ExtendingColumn) {
-				ExtendingColumn ec = (ExtendingColumn) col;
-				sb.append(ec.calculator.getKey());//
+			if (col instanceof ExtendingPropertyColumn) {
+				ExtendingPropertyColumn ec = (ExtendingPropertyColumn) col;
+				sb.append(ec.def.getKey());//
 				sb.append(",");
 			}
 

@@ -16,7 +16,7 @@ public interface ExtendingPropertyDefine<E extends EntityObject,T> {
 	 */
 	public boolean install(Object context);
 
-	public Object getValue(EntityObject eo);
+	public Object calculate(EntityObject eo);
 	
 	public Class<T> getValueClass();
 	

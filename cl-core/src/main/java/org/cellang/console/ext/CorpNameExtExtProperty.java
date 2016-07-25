@@ -62,7 +62,7 @@ public class CorpNameExtExtProperty extends AbstractExtendingPropertyDefine<Exte
 	}
 
 	@Override
-	public Object getValue(EntityObject eo) {
+	public Object calculate(EntityObject eo) {
 		ExtendingPropertyEntity ep = (ExtendingPropertyEntity) eo;
 		ep.getEntityType();
 		String id = ep.getEntityId();

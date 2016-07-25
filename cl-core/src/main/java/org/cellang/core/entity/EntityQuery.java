@@ -90,7 +90,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 
 		for (int i = 0; i < this.whereFields.size(); i++) {
 			WhereField wf = this.whereFields.get(i);
-			sql.append(" and " + wf.field + " " + wf.operator + " ?");
+			sql.append(" and t1." + wf.field + " " + wf.operator + " ?");
 			args.add(wf.value);
 		}
 		List<String> orderByL = new ArrayList<>();

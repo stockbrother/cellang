@@ -64,6 +64,11 @@ public abstract class AbstractTableDataProvider<T>
 		}
 		return result;
 	}
+	
+	@Override
+	public AbstractColumn<T> getColumn(int idx){
+		return this.columnList.get(idx);
+	}
 
 	@Override
 	public int getColumnCount() {

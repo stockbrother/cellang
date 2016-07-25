@@ -4,11 +4,11 @@ import javax.swing.JSplitPane;
 
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
+import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.core.entity.EntityObject;
-import org.cellang.core.entity.EntitySessionFactory;
 
 public class HelpersPane extends JSplitPane {
-	
+
 	public ViewHelperPane viewHelper;
 	public EntityObjectHelperPane entityHelper;
 
@@ -24,8 +24,12 @@ public class HelpersPane extends JSplitPane {
 		this.viewHelper.setContextObject(v);//
 		this.entityHelper.setContextObject(null);//
 	}
-	
-	public void entitySelected(EntityObject eo){
+
+	public void columnSelected(Integer col, AbstractColumn<EntityObject> colDef) {
+		// TODO
+	}
+
+	public void entitySelected(EntityObject eo) {
 		this.entityHelper.setContextObject(eo);
 	}
 

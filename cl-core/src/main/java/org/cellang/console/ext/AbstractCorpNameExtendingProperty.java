@@ -62,7 +62,7 @@ public abstract class AbstractCorpNameExtendingProperty<T extends EntityObject> 
 	protected abstract String getCorpId(T eo);
 	
 	@Override
-	public Object getValue(EntityObject eo) {
+	public Object calculate(EntityObject eo) {
 		String id = this.getCorpId((T)eo);
 		String name = this.esf.execute(getOp.set(id));
 		return name;

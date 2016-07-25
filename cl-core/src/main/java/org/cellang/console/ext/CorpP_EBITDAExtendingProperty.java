@@ -49,7 +49,7 @@ public class CorpP_EBITDAExtendingProperty  extends AbstractExtendingPropertyDef
 	}
 
 	@Override
-	public Object getValue(EntityObject eo) {
+	public Object calculate(EntityObject eo) {
 		CorpInfoEntity ce = (CorpInfoEntity) eo;
 		QuotesEntity qe = this.quotesGetter.set(eo.getId()).execute(this.esf);
 		if (qe == null) {
@@ -57,24 +57,24 @@ public class CorpP_EBITDAExtendingProperty  extends AbstractExtendingPropertyDef
 		}
 		int thisYear = 2015;
 		BigDecimal price = qe.getSettlement();
-		BigDecimal sszb = this.bsiGetter.set(eo.getId(), thisYear, thisYear - this.years, "å®žæ”¶èµ„æœ¬").execute(this.esf);
+		BigDecimal sszb = this.bsiGetter.set(eo.getId(), thisYear, thisYear - this.years, "实收资本").execute(this.esf);
 		if (sszb == null) {
 			return null;
 		}
 
-		BigDecimal yysr = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "è�¥ä¸šæ”¶å…¥").execute(this.esf);
+		BigDecimal yysr = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "营业收入").execute(this.esf);
 		if (yysr == null) {
 			return null;
 		}
-		BigDecimal yycb = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "è�¥ä¸šæˆ�æœ¬").execute(this.esf);
+		BigDecimal yycb = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "营业成本").execute(this.esf);
 		if (yycb == null) {
 			return null;
 		}
-		BigDecimal xsfy = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "é”€å”®è´¹ç”¨").execute(this.esf);
+		BigDecimal xsfy = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "销售费用").execute(this.esf);
 		if (xsfy == null) {
 			return null;
 		}
-		BigDecimal glfy = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "ç®¡ç�†è´¹ç”¨").execute(this.esf);
+		BigDecimal glfy = this.isiGetter.set(eo.getId(), thisYear, thisYear - this.years, "管理费用").execute(this.esf);
 		if (glfy == null) {
 			return null;
 		}

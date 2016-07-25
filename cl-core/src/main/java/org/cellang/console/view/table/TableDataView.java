@@ -2,7 +2,6 @@ package org.cellang.console.view.table;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.cellang.commons.util.UUIDUtil;
+import org.cellang.console.control.ColumnSelector;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.RowSelector;
 import org.cellang.console.control.SelectionListener;
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class TableDataView<T> extends JScrollPane implements View, RowSelector<T> {
+public class TableDataView<T> extends JScrollPane implements View, RowSelector<T>, ColumnSelector<T> {
 
 	static final Logger LOG = LoggerFactory.getLogger(TableDataView.class);
 
@@ -41,14 +41,15 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	String id;
 	TableDataProvider<T> dp;
 	List<SelectionListener<T>> rowSelectionListenerList = new ArrayList<>();
+	List<SelectionListener<AbstractColumn<T>>> columnSelectionListenerList = new ArrayList<>();
+
 	T selected;
 
 	public TableDataView(String title, TableDataProvider<T> dp) {
 
 		this.id = UUIDUtil.randomStringUUID();
 		this.dp = dp;
-		
-	
+
 		model = new ViewTableModel<T>(dp);
 
 		// TODO remove this and adjustColumns when double click the header of
@@ -63,7 +64,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 
 		this.table = new DefaultTablePane(model);
 		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		//this.table.setDefaultRenderer(Object.class, renderer);
+		// this.table.setDefaultRenderer(Object.class, renderer);
 		tableColumnAdjuster = new TableColumnAdjuster(this.table, 5);
 		tableColumnAdjuster.setOnlyAdjustLarger(true);//
 		// tableColumnAdjuster.setDynamicAdjustment(true);//
@@ -78,14 +79,38 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 
-				TableDataView.this.onSelectEvent(e);
+				TableDataView.this.onRowSelectEvent(e);
+			}
+		});
+		this.table.getColumnModel().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				TableDataView.this.onColumnSelectEvent(e);
 			}
 		});
 		// Note, JTable must be added to a JScrollPane,otherwise the header not
 		// showing.
 	}
 
-	private void onSelectEvent(ListSelectionEvent e) {
+	private void onColumnSelectEvent(ListSelectionEvent e) {
+		if (e.getValueIsAdjusting()) {
+			// ignore if not finalized selected.
+			return;
+		}
+
+		// int idx0 = e.getFirstIndex();
+		// int idx1 = e.getLastIndex();
+		int idx = this.table.getSelectedColumn();
+		AbstractColumn<T> colDef = null;
+		if (idx < 0) {
+			colDef = this.dp.getColumn(idx);
+		}
+		this.onColumnSelected(idx < 0 ? null : idx, colDef);//
+	}
+
+	private void onRowSelectEvent(ListSelectionEvent e) {
 		if (e.getValueIsAdjusting()) {
 			// ignore if not finalized selected.
 			return;
@@ -95,16 +120,32 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 		// int idx1 = e.getLastIndex();
 		int idx = this.table.getSelectedRow();
 		T row = null;
+		Integer integer = null;
 		if (idx >= 0) {
 			row = this.dp.getRowObject(idx);
+			integer = idx;
 		}
-		this.onSelected(row);//
+		this.onRowSelected(integer, row);//
 	}
 
-	protected void onSelected(T row) {
-		this.selected = row;
+	protected void onColumnSelected(Integer col, AbstractColumn<T> colDef) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("columnSelected:" + col);
+		}
+
+		for (SelectionListener<AbstractColumn<T>> sl : this.columnSelectionListenerList) {
+			sl.onSelected(colDef);
+		}
+
+	}
+
+	protected void onRowSelected(Integer row, T rowObj) {
+		this.selected = rowObj;
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("rowSelected:" + row);
+		}
 		for (SelectionListener<T> sl : this.rowSelectionListenerList) {
-			sl.onSelected(row);
+			sl.onSelected(rowObj);
 		}
 	}
 
@@ -140,8 +181,13 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	}
 
 	@Override
-	public void addSelectionListener(SelectionListener<T> esl) {
+	public void addRowSelectionListener(SelectionListener<T> esl) {
 		this.rowSelectionListenerList.add(esl);
+	}
+
+	@Override
+	public void addColumnSelectionListener(SelectionListener<AbstractColumn<T>> esl) {
+		this.columnSelectionListenerList.add(esl);
 	}
 
 }

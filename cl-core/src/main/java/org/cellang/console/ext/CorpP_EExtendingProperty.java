@@ -67,7 +67,7 @@ public class CorpP_EExtendingProperty extends AbstractExtendingPropertyDefine<Co
 	}
 
 	@Override
-	public Object getValue(EntityObject eo) {
+	public Object calculate(EntityObject eo) {
 		CorpInfoEntity ce = (CorpInfoEntity) eo;
 		QuotesEntity qe = this.quotesGetter.set(eo.getId()).execute(this.esf);
 		if (qe == null) {

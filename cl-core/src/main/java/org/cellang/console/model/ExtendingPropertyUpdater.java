@@ -50,7 +50,7 @@ public class ExtendingPropertyUpdater {
 		List<? extends EntityObject> l = es.query(ec.getEntityClass()).execute(es);
 		for (EntityObject eo : l) {
 			String eid = eo.getId();
-			Object obj = define.getValue(eo);
+			Object obj = define.calculate(eo);
 			ExtendingPropertyEntity ep = new ExtendingPropertyEntity();
 			ep.setId(type + "[" + eid + "]." + key);
 			ep.setEntityId(eo.getId());
