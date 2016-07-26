@@ -1,9 +1,7 @@
 package org.cellang.console.view.helper;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -24,15 +22,15 @@ public class FilterPane extends Box {
 
 		for (String key : cols) {
 			Box line = new Box(BoxLayout.X_AXIS);
-
+			line.add(Box.createHorizontalGlue());
 			this.add(line);
 			JLabel label = new JLabel(key);
-			label.setMinimumSize(new Dimension(100, 20));
+			label.setMinimumSize(new Dimension(50, 20));
 			line.add(label);
 
 			JTextField text = new JTextField();
-			text.setPreferredSize(new Dimension(100, 20));
-			text.setMaximumSize(new Dimension(200, 20));//
+			text.setPreferredSize(new Dimension(200, 20));
+			text.setMaximumSize(new Dimension(300, 20));//
 			line.add(text);
 			text.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -62,9 +60,9 @@ public class FilterPane extends Box {
 
 				}
 			});
-
+			
 		}
-		this.add(Box.createVerticalGlue());//
+		//this.add(Box.createVerticalGlue());//
 
 	}
 

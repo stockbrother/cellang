@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.console.HasDelagates;
+import org.cellang.console.control.Action;
 import org.cellang.console.control.ActionHandler;
 import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
@@ -43,29 +44,53 @@ public class ViewHelperPane extends HelperPane<View> {
 			HasDelagates dp = (HasDelagates) dpa;
 			DataPageQuerable dpq = dp.getDelegate(DataPageQuerable.class);
 			if (dpq != null) {
-				this.addAction("<<", new ActionHandler() {
+				
+				this.addAction(new Action() {
 
 					@Override
-					public void performAction() {
+					public String getName() {
+						// TODO Auto-generated method stub
+						return "<<";
+					}
+
+					@Override
+					public void perform() {
 						dpq.prePage();
+
 					}
 				});
-
-				this.addAction(">>", new ActionHandler() {
+				
+				this.addAction(new Action() {
 
 					@Override
-					public void performAction() {
+					public String getName() {
+						// TODO Auto-generated method stub
+						return ">>";
+					}
+
+					@Override
+					public void perform() {
 						dpq.nextPage();
+
 					}
 				});
+
 			}
 			Refreshable rfs = dp.getDelegate(Refreshable.class);
 			if (rfs != null) {
-				this.addAction("Refresh", new ActionHandler() {
+				
+				this.addAction(new Action() {
 
 					@Override
-					public void performAction() {
+					public String getName() {
+						// TODO Auto-generated method stub
+						return "Refresh";
+					}
+
+					@Override
+					public void perform() {
 						rfs.refresh();
+
 					}
 				});
 
@@ -74,13 +99,21 @@ public class ViewHelperPane extends HelperPane<View> {
 			Favoriteable fv = dp.getDelegate(Favoriteable.class);
 			if (fv != null) {
 
-				this.addAction("Add to Favorite", new ActionHandler() {
+				this.addAction(new Action() {
 
 					@Override
-					public void performAction() {
+					public String getName() {
+						// TODO Auto-generated method stub
+						return "Add to Favorite";
+					}
+
+					@Override
+					public void perform() {
 						ViewHelperPane.this.addToFavorite(fv);
+
 					}
 				});
+
 			}
 
 			// if the view contains description
@@ -103,7 +136,7 @@ public class ViewHelperPane extends HelperPane<View> {
 				List<String> nameL = ce.getExtenableColumnList();
 				if (!nameL.isEmpty()) {
 
-					addDropDownList(nameL, new ValueChangeListener<String>() {
+					addDropDownList("Add Column", nameL, new ValueChangeListener<String>() {
 
 						@Override
 						public void valueChanged(String value) {
@@ -117,7 +150,7 @@ public class ViewHelperPane extends HelperPane<View> {
 				List<String> nameL = co.getOrderableColumnList();
 				if (!nameL.isEmpty()) {
 
-					addDropDownList(nameL, new ValueChangeListener<String>() {
+					addDropDownList("Order By", nameL, new ValueChangeListener<String>() {
 
 						@Override
 						public void valueChanged(String value) {

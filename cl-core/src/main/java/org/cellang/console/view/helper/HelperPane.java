@@ -17,6 +17,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.cellang.console.HasDelagates;
@@ -37,6 +39,7 @@ public class HelperPane<T> extends JScrollPane {
 	}
 
 	Box panel;
+	Box childActions;
 	private Component tailGlue;
 
 	private Map<String, ActionUI> uiMap = new HashMap<>();
@@ -51,6 +54,8 @@ public class HelperPane<T> extends JScrollPane {
 		this.contextObject = co;
 		this.panel = new Box(BoxLayout.Y_AXIS);
 		this.panel.setPreferredSize(new Dimension(100, 50));
+		this.childActions = null;
+
 		this.tailGlue = Box.createVerticalGlue();
 		this.setViewportView(this.panel);
 
@@ -66,20 +71,25 @@ public class HelperPane<T> extends JScrollPane {
 		}
 	}
 
-	public void addAction(String name, ActionHandler ah) {
-		JButton bu = new JButton(name);
+	public void addAction(Action a) {
+		JButton bu = new JButton(a.getName());
 		{
 			bu.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ah.performAction();
+					a.perform();
 				}
 			});
 		}
+		if (this.childActions == null) {
+			this.childActions = Box.createHorizontalBox();
+			this.childActions.add(Box.createHorizontalGlue());
+			this.addToBox(this.childActions);
+		}
 
-		this.addToBox(bu);
-
+		//this.childActions.add(bu, this.childActions.getComponentCount() - 1);//
+		this.childActions.add(bu);//
 		this.updateUI();
 	}
 
@@ -113,31 +123,18 @@ public class HelperPane<T> extends JScrollPane {
 			// // avoid duplicated.
 			// continue;
 			// }
-			JButton bu = new JButton(a.getName());
-			{
-				bu.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						a.perform();
-					}
-				});
-			}
-
-			// aui = new ActionUI(a, bu);
-			this.addToBox(bu);
-			// uiMap.put(a.getId(), aui);
+			this.addAction(a);
 
 		}
 		this.updateUI();
 	}
 
-	public void addDropDownList(List<String> nameL, ValueChangeListener<String> vcl) {
+	public void addDropDownList(String title, List<String> nameL, ValueChangeListener<String> vcl) {
 		Vector<String> vec = new Vector<String>(nameL);
 		vec.insertElementAt(null, 0);//
 		JComboBox<String> com = new JComboBox<>(vec);
-		com.setPreferredSize(new Dimension(200, 20));//
-		com.setMaximumSize(new Dimension(200, 20));//
+		com.setPreferredSize(new Dimension(100, 20));//
+		com.setMaximumSize(new Dimension(100, 20));//
 		com.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -147,7 +144,14 @@ public class HelperPane<T> extends JScrollPane {
 				}
 			}
 		});
-		this.addToBox(com);
+		Box line = Box.createHorizontalBox();
+		line.add(Box.createHorizontalGlue());
+		JLabel label = new JLabel(title);
+		label.setMinimumSize(new Dimension(50, 20));
+		line.add(label);
+		line.add(com);
+
+		this.addToBox(line);
 
 	}
 
