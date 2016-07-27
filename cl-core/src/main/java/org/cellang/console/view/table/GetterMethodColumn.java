@@ -9,7 +9,7 @@ import org.cellang.core.entity.EntityObject;
 class GetterMethodColumn extends AbstractColumn<EntityObject> {
 	Method method;
 
-	public GetterMethodColumn(Method m, EntityObjectTableDataProvider model) {
+	public GetterMethodColumn(Method m, AbstractTableDataProvider<EntityObject> model) {
 		super(model, null);
 		name = BeanUtil.getPropertyNameFromGetMethod(m);
 		this.method = m;

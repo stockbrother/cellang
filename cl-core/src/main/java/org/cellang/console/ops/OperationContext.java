@@ -27,6 +27,7 @@ import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.EntitySessionFactoryImpl;
+import org.cellang.core.metrics.ReportConfigFactory;
 import org.cellang.core.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,8 @@ public class OperationContext {
 	private String[] matrics = new String[] { "负债权益比", "QUOTES" };
 	ViewsPane views;
 	OpExecutor opExecutor = new OpExecutor();
-
+	private ReportConfigFactory reportConfigFactory;
+	
 	public OperationContext() {
 
 	}
@@ -75,6 +77,7 @@ public class OperationContext {
 		this.dataHome = dataDir;
 		this.views = views;
 		entityConfigFactory = new EntityConfigFactory();
+		this.reportConfigFactory = new ReportConfigFactory(entityConfigFactory);
 
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
@@ -217,6 +220,10 @@ public class OperationContext {
 
 	public EntityConfigManager getEntityConfigManager() {
 		return entityConfigManager;
+	}
+
+	public ReportConfigFactory getReportConfigFactory() {
+		return reportConfigFactory;
 	}
 
 }

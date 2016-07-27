@@ -1,12 +1,17 @@
 package org.cellang.console.control.entity;
 
+import java.util.Date;
 import java.util.List;
 
+import org.cellang.collector.EnvUtil;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.SelectionListener;
-import org.cellang.console.ext.CorpP_EExtendingProperty;
 import org.cellang.console.ext.CorpP_EBITDAExtendingProperty;
+import org.cellang.console.ext.CorpP_EExtendingProperty;
+import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.View;
+import org.cellang.console.view.table.ReportTableView;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
@@ -24,8 +29,10 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
 	EntitySessionFactory entitySessions;
+	OperationContext oc;
 
-	public CorpInfoEntityConfigControl(EntitySessionFactory entitySessions) {
+	public CorpInfoEntityConfigControl(OperationContext oc, EntitySessionFactory entitySessions) {
+		this.oc = oc;
 		this.entitySessions = entitySessions;
 
 		this.addExtendingProperty(new CorpP_EExtendingProperty(1), true);
@@ -64,7 +71,29 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 				CorpInfoEntityConfigControl.this.addToInterested((CorpInfoEntity) context);
 			}
 		});
+		al.add(new Action() {
+
+			@Override
+			public String getName() {
+				return "Open B/S Report";
+			}
+
+			@Override
+			public void perform() {
+				CorpInfoEntityConfigControl.this.openBSReport((CorpInfoEntity) context);
+			}
+		});
+
 		return al;
+	}
+
+	protected void openBSReport(CorpInfoEntity context) {
+
+		Date date = EnvUtil.newDateOfYearLastDay(2015);
+
+		View v = new ReportTableView(oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, date,
+				context.getId());
+		oc.getViewManager().addView(v, true);
 	}
 
 	protected void addToInterested(CorpInfoEntity ce) {

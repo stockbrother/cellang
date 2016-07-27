@@ -18,6 +18,7 @@ import org.cellang.core.entity.ExtendingPropertyEntity;
 import org.cellang.core.entity.FavoriteActionEntity;
 import org.cellang.core.entity.InterestedCorpEntity;
 import org.cellang.core.entity.QuotesEntity;
+
 /**
  * 
  * @author wu
@@ -40,7 +41,7 @@ public class EntityConfigManager implements EntityConfigSelector {
 		this.helpers = helpers;
 		this.helpers.entityHelper.setEntityConfigManager(this);// NOTE:
 		controlMap.put(QuotesEntity.tableName, new QuotesEntityConfigControl(this.entityService));
-		controlMap.put(CorpInfoEntity.tableName, new CorpInfoEntityConfigControl(this.entityService));
+		controlMap.put(CorpInfoEntity.tableName, new CorpInfoEntityConfigControl(oc, this.entityService));
 		controlMap.put(ExtendingPropertyEntity.tableName, new ExtendingPropertyEntityConfigControl(this.entityService));
 		controlMap.put(FavoriteActionEntity.tableName, new FavoriteActionEntityConfigControl(oc, this.entityService));
 		controlMap.put(InterestedCorpEntity.tableName, new InterestedCorpEntityConfigControl(this.entityService));
@@ -53,7 +54,8 @@ public class EntityConfigManager implements EntityConfigSelector {
 
 	public View newEntityListView(EntityConfig ec, List<String> extPropL) {
 		EntityConfigControl<?> ecc = this.getEntityConfigControl(ec);
-		EntityObjectTableView rt = new EntityObjectTableView(helpers, ec, ecc, extPropL,this.entityService, this.queryLimit);
+		EntityObjectTableView rt = new EntityObjectTableView(helpers, ec, ecc, extPropL, this.entityService,
+				this.queryLimit);
 
 		return rt;
 	}
