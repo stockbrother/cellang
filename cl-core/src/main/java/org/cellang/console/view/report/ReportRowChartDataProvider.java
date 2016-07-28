@@ -13,14 +13,15 @@ public class ReportRowChartDataProvider extends AbstractChartDataProvider<Date> 
 		ReportRow row;
 
 		public ReportRowChartSerial(ReportRow rowObj) {
-			super("ReportRow");
+			super(rowObj.getKey());
 			this.row = rowObj;
 		}
 
 		@Override
 		public BigDecimal getYValue(Date xValue) {
-			int year = 2015 - xValue.getYear();
-			return this.row.getValue(year);
+			int year = EnvUtil.getYear(xValue);
+			int idx = 2015 - year;
+			return this.row.getValue(idx);
 		}
 
 		@Override

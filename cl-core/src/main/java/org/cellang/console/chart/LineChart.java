@@ -36,10 +36,12 @@ public class LineChart<T> extends JPanel {
 
 	private ChartModel<T> model;
 
-	private int xLabelRotateAngle = 45;
+	private int xLabelRotateAngle = 15;
 
 	private DecimalFormat format = new DecimalFormat("#,##0.00");
-
+	
+	XLabelRenderer<T> xLabelRenderer = new DefaultXLabelRenderer<T>();
+	
 	public LineChart(ChartModel<T> model) {
 		this.model = model;
 	}
@@ -139,7 +141,7 @@ public class LineChart<T> extends JPanel {
 				g2.drawLine(xI, y1, xI, y2, gridColor);
 			}
 			T xValue = this.model.getXValue(i);
-			String xLabel = this.model.getXDisplayValue(xValue);
+			String xLabel = this.xLabelRenderer.toDisplayValue(xValue);
 
 			FontMetrics metrics = g2.get().getFontMetrics();
 			int labelWidth = metrics.stringWidth(xLabel);

@@ -55,10 +55,6 @@ public class ChartModel<T> extends ChartWindow<T> {
 
 	}
 
-	public String getXDisplayValue(T xValue) {
-		return String.valueOf(xValue);//
-	}
-
 	@Override
 	public T getXValue(int idx) {
 		if (this.serialMap.isEmpty()) {

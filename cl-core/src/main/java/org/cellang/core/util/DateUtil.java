@@ -33,6 +33,13 @@ public class DateUtil {
 		return dt;
 	}
 
+	public static int getYear(Date date, TimeZone zone) {
+		Calendar c = Calendar.getInstance(zone);
+		c.setTime(date);
+
+		return c.get(Calendar.YEAR);
+	}
+
 	public static Date newDateOfYearLastDay(int year, TimeZone zone) {
 		Calendar c = Calendar.getInstance(zone);
 		c.set(year, 11, 31, 0, 0, 0);

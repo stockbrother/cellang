@@ -10,8 +10,4 @@ public class ReportRowChartView extends ChartView<Date> {
 		super("ReportRow", dp);
 	}
 
-	public void setReportRow(ReportRow rowObj) {
-		
-	}
-
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ObjectArrayListResultSetProcessor;
+import org.cellang.console.chart.ChartModel;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.util.ReportDate;
@@ -25,7 +26,7 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Repor
 
 	public ReportItemChartDataProvider(int pageSize, EntitySessionFactory esf, String[] corpIdArray, String itemKey,
 			EntityConfig reportCfg, EntityConfig itemCfg, ReportDate startDate) {
-		super(new ReportItemChartModel(), pageSize);
+		super(new ChartModel<ReportDate>(), pageSize);
 		this.corpIdArray = corpIdArray;
 		this.itemKey = itemKey;
 		for (String corpId : corpIdArray) {

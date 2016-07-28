@@ -7,13 +7,24 @@ import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
 import org.cellang.console.control.Refreshable;
 
-public abstract class AbstractChartDataProvider<T> implements DataPageQuerable, Descriable,Refreshable {
+/**
+ * TODO remove pageXXX.
+ * 
+ * @author wu
+ *
+ * @param <T>
+ */
+public abstract class AbstractChartDataProvider<T> implements DataPageQuerable, Descriable, Refreshable {
 
 	protected int pageSize;
 
 	protected int pageNumber = -1;
 	protected ChartView<T> view;
 	protected ChartModel<T> model;
+
+	public AbstractChartDataProvider(int pageSize) {
+		this(new ChartModel<T>(), pageSize);
+	}
 
 	public AbstractChartDataProvider(ChartModel<T> model, int pageSize) {
 		this.pageSize = pageSize;
