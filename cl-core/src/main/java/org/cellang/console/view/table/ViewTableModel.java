@@ -39,6 +39,16 @@ public class ViewTableModel<T> extends AbstractTableModel implements ColumnChang
 	}
 
 	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		ColumnDefine<T> cd = dp.getColumn(columnIndex);
+		Class<?> rt = cd.getValueRenderingClass();
+		if (rt == null) {
+			throw new RuntimeException("bug,column class is null for column define:" + cd);
+		}
+		return rt;
+	}
+
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		T ro = dp.getRowObject(rowIndex);
 		return dp.getColumn(columnIndex).getValue(rowIndex, ro);

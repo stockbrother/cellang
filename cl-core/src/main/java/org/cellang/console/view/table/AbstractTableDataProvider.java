@@ -13,7 +13,7 @@ import org.cellang.console.model.DataChangedListener;
 
 public abstract class AbstractTableDataProvider<T>
 		implements HasDelagates ,TableDataProvider<T>, DataChangable, ColumnChangedEventSource {
-	List<AbstractColumn<T>> columnList = new ArrayList<>();
+	protected List<AbstractColumn<T>> columnList = new ArrayList<>();
 
 	List<DataChangedListener> dataChangedListenerList = new ArrayList<>();
 

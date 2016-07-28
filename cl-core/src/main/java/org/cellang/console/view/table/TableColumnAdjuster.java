@@ -127,6 +127,9 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 		// Inovke the renderer for the cell to calculate the preferred width
 
 		TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
+		if(cellRenderer == null){
+			throw new RuntimeException();
+		}
 		Component c = table.prepareRenderer(cellRenderer, row, column);
 		int width = c.getPreferredSize().width + table.getIntercellSpacing().width;
 

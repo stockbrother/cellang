@@ -11,7 +11,7 @@ import org.cellang.console.ext.CorpP_EBITDAExtendingProperty;
 import org.cellang.console.ext.CorpP_EExtendingProperty;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
-import org.cellang.console.view.table.ReportTableView;
+import org.cellang.console.view.report.ReportTableView;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
@@ -89,9 +89,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 	protected void openBSReport(CorpInfoEntity context) {
 
-		Date date = EnvUtil.newDateOfYearLastDay(2015);
-
-		View v = new ReportTableView(oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, date,
+		View v = new ReportTableView(oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10,
 				context.getId());
 		oc.getViewManager().addView(v, true);
 	}

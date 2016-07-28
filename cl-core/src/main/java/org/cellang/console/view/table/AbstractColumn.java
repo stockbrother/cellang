@@ -1,10 +1,10 @@
 package org.cellang.console.view.table;
 
 public abstract class AbstractColumn<T> implements ColumnDefine<T> {
-	AbstractTableDataProvider<T> model;
-	String name;
+	protected AbstractTableDataProvider<T> model;
+	protected String name;
 
-	AbstractColumn(AbstractTableDataProvider<T> model, String name) {
+	public AbstractColumn(AbstractTableDataProvider<T> model, String name) {
 		this.model = model;
 		this.name = name;
 	}

@@ -1,13 +1,13 @@
 package org.cellang.console.view.table;
 
-class LineNumberColumn<T> extends AbstractColumn<T> {
+public class LineNumberColumn<T> extends AbstractColumn<T> {
 
-	LineNumberColumn(AbstractTableDataProvider<T> model) {
+	public LineNumberColumn(AbstractTableDataProvider<T> model) {
 		super(model, "LN.");
 	}
 
 	@Override
-	public Object getValue(int rowIndex,T ro) {
+	public Object getValue(int rowIndex, T ro) {
 		return model.getRowNumber(rowIndex);
 	}
 
@@ -18,7 +18,7 @@ class LineNumberColumn<T> extends AbstractColumn<T> {
 
 	@Override
 	public Class<?> getValueRenderingClass() {
-		return String.class;
+		return Long.class;
 	}
 
 }

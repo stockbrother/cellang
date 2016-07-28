@@ -84,4 +84,15 @@ public class ReportItemLocator {
 	public int getOrder() {
 		return order;
 	}
+
+	public void addAllToList(List<ReportItemLocator> list, boolean addThis) {
+
+		if (addThis) {
+			list.add(this);
+		}
+		for (ReportItemLocator cI : this.childList) {
+			cI.addAllToList(list, true);//
+		}
+	}
+
 }

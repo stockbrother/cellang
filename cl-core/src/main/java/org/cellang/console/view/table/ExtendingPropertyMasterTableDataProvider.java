@@ -44,11 +44,6 @@ public class ExtendingPropertyMasterTableDataProvider extends AbstractTableDataP
 		}
 
 		@Override
-		public Class<?> getValueRenderingClass() {
-			return null;
-		}
-
-		@Override
 		public Object getValue(int rowIndex,RowObject ro) {
 			if (rowIndex < 0 || rowIndex > this.model.list.size() - 1) {
 				return null;
