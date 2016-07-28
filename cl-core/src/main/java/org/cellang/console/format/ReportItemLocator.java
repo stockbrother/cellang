@@ -5,11 +5,19 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 1-1 ReportItemEntity
+ * 
+ * @see ReportItemLocators
+ * @author wuzhen
+ *
+ */
 public class ReportItemLocator {
 	private ReportItemLocator parent;
 	private String key;
 	private List<ReportItemLocator> childList = new ArrayList<>();
 	private int order;
+
 	public ReportItemLocator(ReportItemLocator parent, String key) {
 		this.parent = parent;
 		this.key = key;
