@@ -202,7 +202,7 @@ public class LineChart<T> extends JPanel {
 		g2.translate(paddingLeft, paddingTop);
 
 		int size = model.getWindowSize();
-
+		
 		int centerWidth = getWidth() - this.getPaddingLeft() - this.getPaddingRight();
 		int centerHeight = getHeight() - this.getPaddingTop() - this.getPaddingBottom();
 		// draw white background

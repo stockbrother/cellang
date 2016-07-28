@@ -1,5 +1,6 @@
 package org.cellang.console.view.report;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +15,18 @@ public class ReportRow {
 
 	ReportItemLocator locator;
 
+	int size;
+
+	public int getSize() {
+		return size;
+	}
+
 	public String getKey() {
 		return key;
 	}
 
-	public ReportRow(String key, ReportItemLocator ri) {
+	public ReportRow(int size, String key, ReportItemLocator ri) {
+		this.size = size;
 		this.key = key;
 		this.locator = ri;
 	}
@@ -44,5 +52,11 @@ public class ReportRow {
 			itemList.add(null);
 		}
 		itemList.set(idx, eo);
+	}
+
+	public BigDecimal getValue(int year) {
+		//
+		AbstractReportItemEntity en = this.get(year);
+		return en == null ? null : en.getValue();
 	}
 }

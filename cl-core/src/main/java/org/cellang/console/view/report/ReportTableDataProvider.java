@@ -77,7 +77,7 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 		List<ReportItemLocator> locL = new ArrayList<>();
 		RIL.getRoot().addAllToList(locL, false);
 		for (ReportItemLocator ri : locL) {
-			ReportRow rr = new ReportRow(ri.getKey(), ri);
+			ReportRow rr = new ReportRow(years, ri.getKey(), ri);
 			rL.add(rr);
 		}
 		return rL;
