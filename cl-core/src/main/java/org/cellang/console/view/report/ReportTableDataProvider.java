@@ -48,13 +48,15 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 
 	static ReportItemLocators RIL = ReportItemLocators.load();
 
-	List<ReportRow> list;
+	List<ReportRow> backList;
 	ReportConfig rptCfg;
 	EntitySessionFactory esf;
 	List<Method> itemGetMethodList;
 	String corpId;
 
 	private int years;
+	
+	ReportRowFilter filter = new ReportRowFilter();
 
 	public ReportTableDataProvider(ReportConfig rptCfg, EntitySessionFactory es, int years, String corpId) {
 		this.years = years;
@@ -72,6 +74,10 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 		this.refresh();
 	}
 
+	/**
+	 * Template
+	 * @return
+	 */
 	private List<ReportRow> newReportRowListFromLocaltors() {
 		List<ReportRow> rL = new ArrayList<>();
 		List<ReportItemLocator> locL = new ArrayList<>();
@@ -125,12 +131,15 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 		 * 
 		 * this.list = Arrays.asList(oA); </code>
 		 */
-		this.list = rL;
+		this.backList = rL;
 		AbstractColumn<ReportRow> ac = this.columnList.get(this.columnList.size() - 1);
 
 		this.fireTableDataChanged();
 	}
-
+	/**
+	 * Query year by year.
+	 * @return
+	 */
 	private List<List<? extends AbstractReportItemEntity>> query() {
 		List<List<? extends AbstractReportItemEntity>> rt = new ArrayList<>();
 		int year = 2015;
@@ -160,18 +169,18 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 
 	@Override
 	public int getRowCount() {
-		if (this.list == null) {
+		if (this.backList == null) {
 			return 0;
 		}
-		return this.list.size();
+		return this.backList.size();
 	}
 
 	@Override
 	public ReportRow getRowObject(int idx) {
-		if (idx < 0 || this.list == null || idx > this.list.size() - 1) {
+		if (idx < 0 || this.backList == null || idx > this.backList.size() - 1) {
 			return null;
 		}
-		return this.list.get(idx);
+		return this.backList.get(idx);
 	}
 
 	@Override
