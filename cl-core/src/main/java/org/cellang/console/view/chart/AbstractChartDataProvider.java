@@ -12,8 +12,8 @@ public abstract class AbstractChartDataProvider<T> implements DataPageQuerable, 
 	protected int pageSize;
 
 	protected int pageNumber = -1;
-	ChartView<T> view;
-	ChartModel<T> model;
+	protected ChartView<T> view;
+	protected ChartModel<T> model;
 
 	public AbstractChartDataProvider(ChartModel<T> model, int pageSize) {
 		this.pageSize = pageSize;

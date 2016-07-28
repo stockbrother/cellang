@@ -12,12 +12,18 @@ public class ChartModel<T> extends ChartWindow<T> {
 
 	private Map<String, ChartSerial<T>> serialMap = new HashMap<>();
 
-	public ChartModel() {
+	private int defaultWindowSize;
 
+	public ChartModel() {
+		this(2);
+	}
+
+	public ChartModel(int defaultWindowSize) {
+		this.defaultWindowSize = defaultWindowSize;
 	}
 
 	public ChartModel(ChartSerial<T> css) {
-		this();
+		this(css.getWindowSize());
 		this.addSerail(css);
 	}
 
@@ -36,7 +42,9 @@ public class ChartModel<T> extends ChartWindow<T> {
 
 	@Override
 	public int getWindowSize() {
-
+		if (this.serialMap.isEmpty()) {
+			return this.defaultWindowSize;
+		}
 		return this.serialMap.values().iterator().next().getWindowSize();
 	}
 
@@ -53,6 +61,9 @@ public class ChartModel<T> extends ChartWindow<T> {
 
 	@Override
 	public T getXValue(int idx) {
+		if (this.serialMap.isEmpty()) {
+			return null;
+		}
 		return this.serialMap.values().iterator().next().getXValue(idx);
 	}
 

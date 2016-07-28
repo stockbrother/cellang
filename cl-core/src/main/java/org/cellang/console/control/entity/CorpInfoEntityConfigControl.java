@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>implements HasActions {
+public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity> implements HasActions {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
 	EntitySessionFactory entitySessions;
@@ -89,7 +89,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 	protected void openBSReport(CorpInfoEntity context) {
 
-		View v = new ReportTableView(oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10,
+		View v = new ReportTableView(oc, oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10,
 				context.getId());
 		oc.getViewManager().addView(v, true);
 	}
