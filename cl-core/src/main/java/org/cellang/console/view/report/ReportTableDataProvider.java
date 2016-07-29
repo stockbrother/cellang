@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.collector.EnvUtil;
+import org.cellang.commons.lang.Visitor;
 import org.cellang.console.format.ReportItemLocator;
 import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.view.table.AbstractColumn;
@@ -55,8 +56,8 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 	String corpId;
 
 	private int years;
-	
-	ReportRowFilter filter = new ReportRowFilter();
+
+	ReportItemLocatorFilter filter = new ReportItemLocatorFilter();
 
 	public ReportTableDataProvider(ReportConfig rptCfg, EntitySessionFactory es, int years, String corpId) {
 		this.years = years;
@@ -66,7 +67,7 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 		itemGetMethodList = this.rptCfg.getItemEntityConfig().getGetMethodList();
 
 		this.columnList.add(new LineNumberColumn<ReportRow>(this));
-		this.columnList.add(new ReportRowKeyColumn(this));
+		this.columnList.add(new ReportRowKeyColumn(this,filter));
 
 		for (int i = 0; i < years; i++) {
 			this.columnList.add(new ReportRowValueColumn(i, this));
@@ -76,12 +77,23 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 
 	/**
 	 * Template
+	 * 
 	 * @return
 	 */
 	private List<ReportRow> newReportRowListFromLocaltors() {
 		List<ReportRow> rL = new ArrayList<>();
 		List<ReportItemLocator> locL = new ArrayList<>();
-		RIL.getRoot().addAllToList(locL, false);
+
+		RIL.getRoot().forEach(new Visitor<ReportItemLocator>() {
+
+			@Override
+			public void visit(ReportItemLocator t) {
+				if (filter.accept(t)) {
+					locL.add(t);
+				}
+			}
+		}, false);
+
 		for (ReportItemLocator ri : locL) {
 			ReportRow rr = new ReportRow(years, ri.getKey(), ri);
 			rL.add(rr);
@@ -136,8 +148,10 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 
 		this.fireTableDataChanged();
 	}
+
 	/**
 	 * Query year by year.
+	 * 
 	 * @return
 	 */
 	private List<List<? extends AbstractReportItemEntity>> query() {
@@ -186,6 +200,11 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 	@Override
 	public int getRowNumber(int rowIndex) {
 		return rowIndex;
+	}
+
+	public void changeCollapse(String key) {
+		this.filter.changeCollapse(key);
+		this.refresh();
 	}
 
 }

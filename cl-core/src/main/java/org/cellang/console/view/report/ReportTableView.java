@@ -24,6 +24,7 @@ public class ReportTableView extends TableDataView<ReportRow> implements HasActi
 	OperationContext oc;
 	ReportRowChartView chartView;
 	ReportRowChartDataProvider chartDp;
+	ReportRow selectedRow ;
 	public ReportTableView(OperationContext oc, ReportConfig rptCfg, EntitySessionFactory es, int years,
 			String corpId) {
 		super("Report of " + rptCfg.getReportEntityConfig().getTableName(),
@@ -39,20 +40,30 @@ public class ReportTableView extends TableDataView<ReportRow> implements HasActi
 	@Override
 	protected void onColumnSelected(Integer col, ColumnDefine<ReportRow> colDef) {
 		super.onColumnSelected(col, colDef);
-
+		this.onRowOrColSelected(this.selectedRow);
 	}
 
 	@Override
 	protected void onRowSelected(Integer row, ReportRow rowObj) {
 		super.onRowSelected(row, rowObj);
+		this.selectedRow = rowObj;
+		this.onRowOrColSelected(this.selectedRow);
+	}
+
+	protected void onRowOrColSelected(ReportRow rowObj) {
+		if (rowObj == null) {
+			return;
+		}
 		if (this.chartView == null) {
-			chartDp = new ReportRowChartDataProvider();			
+			chartDp = new ReportRowChartDataProvider();
 			ReportRowChartView cv = new ReportRowChartView(chartDp);
 			this.oc.getViewManager().addView(cv, false);
 			this.chartView = cv;
 		}
-		this.chartDp.setReportRow(rowObj);
-
+		boolean add = this.chartDp.addReportRow(rowObj);
+		if (!add) {
+			((ReportTableDataProvider) this.dp).changeCollapse(rowObj.getKey());
+		}
 	}
 
 }

@@ -5,6 +5,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cellang.commons.lang.Visitor;
+
 /**
  * 1-1 ReportItemEntity
  * 
@@ -83,6 +85,15 @@ public class ReportItemLocator {
 
 	public int getOrder() {
 		return order;
+	}
+
+	public void forEach(Visitor<ReportItemLocator> vis, boolean includeThis) {
+		if (includeThis) {
+			vis.visit(this);
+		}
+		for (ReportItemLocator cI : this.childList) {
+			cI.forEach(vis, true);//
+		}
 	}
 
 	public void addAllToList(List<ReportItemLocator> list, boolean addThis) {

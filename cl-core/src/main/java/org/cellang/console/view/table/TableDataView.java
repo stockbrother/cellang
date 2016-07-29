@@ -39,7 +39,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	TableColumnAdjuster tableColumnAdjuster;
 
 	String id;
-	TableDataProvider<T> dp;
+	protected TableDataProvider<T> dp;
 	List<SelectionListener<T>> rowSelectionListenerList = new ArrayList<>();
 	List<SelectionListener<ColumnDefine<T>>> columnSelectionListenerList = new ArrayList<>();
 

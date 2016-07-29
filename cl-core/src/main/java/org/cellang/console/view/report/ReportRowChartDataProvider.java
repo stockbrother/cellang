@@ -12,8 +12,8 @@ public class ReportRowChartDataProvider extends AbstractChartDataProvider<Date> 
 	public static class ReportRowChartSerial extends ChartSerial<Date> {
 		ReportRow row;
 
-		public ReportRowChartSerial(ReportRow rowObj) {
-			super(rowObj.getKey());
+		public ReportRowChartSerial(String key,ReportRow rowObj) {
+			super(key);
 			this.row = rowObj;
 		}
 
@@ -50,10 +50,16 @@ public class ReportRowChartDataProvider extends AbstractChartDataProvider<Date> 
 
 	}
 
-	public void setReportRow(ReportRow rowObj) {
-		ChartSerial<Date> cs = new ReportRowChartSerial(rowObj);
-		this.model.addSerail(cs);
-		this.view.updateUI();
+	public boolean addReportRow(ReportRow rowObj) {
+		String key = rowObj.getKey();
+		if(this.model.getSerial(key) == null){
+			ChartSerial<Date> cs = new ReportRowChartSerial(key,rowObj);
+			this.model.addSerail(cs);			
+			this.view.updateUI();
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }
