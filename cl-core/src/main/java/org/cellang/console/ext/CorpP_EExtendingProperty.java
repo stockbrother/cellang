@@ -3,32 +3,11 @@ package org.cellang.console.ext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.cellang.console.HasDelagates;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityObject;
-import org.cellang.core.entity.EntityOp;
-import org.cellang.core.entity.EntitySession;
-import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.QuotesEntity;
 
-public class CorpP_EExtendingProperty extends AbstractExtendingPropertyDefine<CorpInfoEntity, BigDecimal> {
-	EntitySessionFactory esf;
-
-	private class QuotesGetterOp extends EntityOp<QuotesEntity> {
-		String corpId;
-
-		QuotesGetterOp set(String corpId) {
-			this.corpId = corpId;
-			return this;
-		}
-
-		@Override
-		public QuotesEntity execute(EntitySession es) {
-
-			return es.getSingle(QuotesEntity.class, "code", corpId);
-
-		}
-	};
+public class CorpP_EExtendingProperty extends AbstractCorpExtendingPropertyDefine {
 
 	QuotesGetterOp quotesGetter = new QuotesGetterOp();
 
@@ -39,31 +18,8 @@ public class CorpP_EExtendingProperty extends AbstractExtendingPropertyDefine<Co
 	int years;
 
 	public CorpP_EExtendingProperty(int years) {
-		super(CorpInfoEntity.class, BigDecimal.class);
+		super("P/E(" + years + ")");
 		this.years = years;
-	}
-
-	@Override
-	public boolean install(Object context) {
-		if (context instanceof EntitySessionFactory) {
-			this.esf = (EntitySessionFactory) context;
-			return true;
-		}
-		if (context instanceof HasDelagates) {
-			HasDelagates dela = (HasDelagates) context;
-			EntitySessionFactory esf = dela.getDelegate(EntitySessionFactory.class);
-			if (esf == null) {
-				return false;
-			}
-			this.esf = esf;
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String getKey() {
-		return "P/E(" + years + ")";
 	}
 
 	@Override

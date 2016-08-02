@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
+import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.ColumnDefine;
 import org.cellang.console.view.table.TableDataView;
@@ -24,11 +25,12 @@ public class ReportTableView extends TableDataView<ReportRow> implements HasActi
 	OperationContext oc;
 	ReportRowChartView chartView;
 	ReportRowChartDataProvider chartDp;
-	ReportRow selectedRow ;
-	public ReportTableView(OperationContext oc, ReportConfig rptCfg, EntitySessionFactory es, int years,
-			String corpId) {
+	ReportRow selectedRow;
+
+	public ReportTableView(OperationContext oc, ReportItemLocators.Group template, ReportConfig rptCfg,
+			EntitySessionFactory es, int years, String corpId) {
 		super("Report of " + rptCfg.getReportEntityConfig().getTableName(),
-				new ReportTableDataProvider(rptCfg, es, years, corpId));
+				new ReportTableDataProvider(template, rptCfg, es, years, corpId));
 		this.oc = oc;
 	}
 

@@ -47,7 +47,7 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 
 	}
 
-	static ReportItemLocators RIL = ReportItemLocators.load();
+	static ReportItemLocators RIL = ReportItemLocators.getInstance();
 
 	List<ReportRow> backList;
 	ReportConfig rptCfg;
@@ -58,8 +58,11 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 	private int years;
 
 	ReportItemLocatorFilter filter = new ReportItemLocatorFilter();
+	ReportItemLocators.Group template;
 
-	public ReportTableDataProvider(ReportConfig rptCfg, EntitySessionFactory es, int years, String corpId) {
+	public ReportTableDataProvider(ReportItemLocators.Group template, ReportConfig rptCfg, EntitySessionFactory es,
+			int years, String corpId) {
+		this.template = template;
 		this.years = years;
 		this.rptCfg = rptCfg;
 		this.esf = es;
@@ -67,7 +70,7 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 		itemGetMethodList = this.rptCfg.getItemEntityConfig().getGetMethodList();
 
 		this.columnList.add(new LineNumberColumn<ReportRow>(this));
-		this.columnList.add(new ReportRowKeyColumn(this,filter));
+		this.columnList.add(new ReportRowKeyColumn(template, this, filter));
 
 		for (int i = 0; i < years; i++) {
 			this.columnList.add(new ReportRowValueColumn(i, this));
@@ -84,7 +87,7 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 		List<ReportRow> rL = new ArrayList<>();
 		List<ReportItemLocator> locL = new ArrayList<>();
 
-		RIL.getRoot().forEach(new Visitor<ReportItemLocator>() {
+		template.getRoot().forEach(new Visitor<ReportItemLocator>() {
 
 			@Override
 			public void visit(ReportItemLocator t) {

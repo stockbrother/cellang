@@ -1,17 +1,18 @@
 package org.cellang.console.control.entity;
 
-import java.util.Date;
 import java.util.List;
 
-import org.cellang.collector.EnvUtil;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.SelectionListener;
 import org.cellang.console.ext.CorpP_EBITDAExtendingProperty;
 import org.cellang.console.ext.CorpP_EExtendingProperty;
+import org.cellang.console.ext.CorpROEExtendingPropertyDefine;
+import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
 import org.cellang.console.view.report.ReportTableView;
+import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
@@ -39,6 +40,8 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 		this.addExtendingProperty(new CorpP_EExtendingProperty(5), true);
 		this.addExtendingProperty(new CorpP_EBITDAExtendingProperty(1), true);
 		this.addExtendingProperty(new CorpP_EBITDAExtendingProperty(5), true);
+		this.addExtendingProperty(new CorpROEExtendingPropertyDefine(1), true);
+		this.addExtendingProperty(new CorpROEExtendingPropertyDefine(5), true);
 
 	}
 
@@ -88,9 +91,9 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	}
 
 	protected void openBSReport(CorpInfoEntity context) {
-
-		View v = new ReportTableView(oc, oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10,
-				context.getId());
+		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(BalanceSheetReportEntity.class);
+		View v = new ReportTableView(oc, template, oc.getReportConfigFactory().balanceSheetReportConfig,
+				this.entitySessions, 10, context.getId());
 		oc.getViewManager().addView(v, true);
 	}
 
