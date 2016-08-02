@@ -14,6 +14,7 @@ import org.cellang.console.view.View;
 import org.cellang.console.view.report.ReportTableView;
 import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.CorpInfoEntity;
+import org.cellang.core.entity.CustomizedReportEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
@@ -86,8 +87,27 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 				CorpInfoEntityConfigControl.this.openBSReport((CorpInfoEntity) context);
 			}
 		});
+		al.add(new Action() {
+
+			@Override
+			public String getName() {
+				return "Open Customized Report";
+			}
+
+			@Override
+			public void perform() {
+				CorpInfoEntityConfigControl.this.openCustomizedReport((CorpInfoEntity) context);
+			}
+		});
 
 		return al;
+	}
+
+	protected void openCustomizedReport(CorpInfoEntity context) {
+		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(CustomizedReportEntity.class);
+		View v = new ReportTableView(oc, template, oc.getReportConfigFactory().customizedReportConfig,
+				this.entitySessions, 10, context.getId());
+		oc.getViewManager().addView(v, true);
 	}
 
 	protected void openBSReport(CorpInfoEntity context) {
