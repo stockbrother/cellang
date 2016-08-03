@@ -7,7 +7,11 @@ import org.cellang.console.control.HasActions;
 import org.cellang.console.customized.CustomizedReportUpdater;
 import org.cellang.console.ext.ExtendingPropertyUpdater;
 import org.cellang.console.ops.OperationContext;
-
+/**
+ * @deprecated
+ * @author wu
+ *
+ */
 public class ExtendingPropertyMasterTableView extends TableDataView<ExtendingPropertyMasterTableDataProvider.RowObject>
 		implements HasActions {
 	OperationContext oc;

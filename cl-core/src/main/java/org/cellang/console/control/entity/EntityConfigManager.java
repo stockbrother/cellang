@@ -48,6 +48,14 @@ public class EntityConfigManager implements EntityConfigSelector {
 
 	}
 
+	public View newEntityListView(Class entityCls) {
+		EntityConfig ec = this.entityService.getEntityConfigFactory().get(entityCls);
+		if (ec == null) {
+			throw new RuntimeException("no this entity class:" + entityCls);
+		}
+		return newEntityListView(ec);
+	}
+
 	public View newEntityListView(EntityConfig ec) {
 		return newEntityListView(ec, new ArrayList<String>());
 	}

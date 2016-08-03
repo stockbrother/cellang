@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Favoriteable;
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class EntityObjectTableDataProvider extends AbstractTableDataProvider<EntityObject>
-		implements Filterable, DataPageQuerable, ColumnAppendable, ColumnOrderable, Favoriteable, Refreshable {
+		implements Filterable, DataPageQuerable, ColumnOrderable, Favoriteable, Refreshable {
 	private static final Logger LOG = LoggerFactory.getLogger(EntityObjectTableDataProvider.class);
 
 	protected int pageSize;
@@ -48,14 +47,13 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 
 	String[] orderBy;
 
-	String orderByExtendingPropertyKey;
+	//String orderByExtendingPropertyKey;
 
 	public EntityObjectTableDataProvider(EntitySessionFactory entityService, EntityConfig cfg,
 			EntityConfigControl<?> ecc, List<String> extPropL, int pageSize) {
 
 		this.addDelagate(DataPageQuerable.class, this);
-		this.addDelagate(Filterable.class, this);
-		this.addDelagate(ColumnAppendable.class, this);
+		this.addDelagate(Filterable.class, this);		
 		this.addDelagate(ColumnOrderable.class, this);
 		this.addDelagate(Favoriteable.class, this);
 		this.addDelagate(Refreshable.class, this);
@@ -136,7 +134,8 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		int offset = this.pageNumber * this.pageSize;
 		List<? extends EntityObject> el = new EntityQuery<>(cfg).like(this.getLikeMap()).offset(offset)
 				.limit(this.pageSize).orderBy(this.orderBy)
-				.orderByExtendingPropertyKey(this.orderByExtendingPropertyKey).execute(this.entityService);
+				//.orderByExtendingPropertyKey(this.orderByExtendingPropertyKey)
+				.execute(this.entityService);
 
 		this.list = el;
 		this.fireTableDataChanged();
@@ -164,25 +163,25 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 		}
 		return this.list.get(idx);//
 	}
-
-	@Override
-	public List<String> getExtenableColumnList() {
-
-		List<String> rt = new ArrayList<>();
-		if (this.ecc == null) {
-			return rt;
-		}
-		List<ExtendingPropertyDefine> epL = this.ecc.getExtendingPropertyList();
-		for (ExtendingPropertyDefine ep : epL) {
-			rt.add(ep.getKey());
-		}
-		return rt;
-	}
-
-	@Override
-	public void appendColumn(String columnName) {
-		this.appendColumn(columnName, true);//
-	}
+//
+//	@Override
+//	public List<String> getExtenableColumnList() {
+//
+//		List<String> rt = new ArrayList<>();
+//		if (this.ecc == null) {
+//			return rt;
+//		}
+//		List<ExtendingPropertyDefine> epL = this.ecc.getExtendingPropertyList();
+//		for (ExtendingPropertyDefine ep : epL) {
+//			rt.add(ep.getKey());
+//		}
+//		return rt;
+//	}
+//
+//	@Override
+//	public void appendColumn(String columnName) {
+//		this.appendColumn(columnName, true);//
+//	}
 
 	private void appendColumn(String columnName, boolean save) {
 		if (this.ecc == null) {
@@ -208,7 +207,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	public List<String> getOrderableColumnList() {
 		List<String> rt = new ArrayList<>();
 		rt.addAll(this.cfg.getPropertyKeyList());
-		rt.addAll(this.getExtenableColumnList());
+		//rt.addAll(this.getExtenableColumnList());
 
 		return rt;
 	}
@@ -224,7 +223,7 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 			} else {
 				// the key is extending property key column value(for instance
 				// P/E).
-				this.orderByExtendingPropertyKey = key;
+				//this.orderByExtendingPropertyKey = key;
 			}
 		}
 

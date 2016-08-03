@@ -38,7 +38,7 @@ public class EntityConfigTableView extends TableDataView<EntityConfig> implement
 		return al;
 	}
 
-	private void openSelectedView() {
+	public void openSelectedView() {
 		if (this.selected == null) {
 			return;
 		}

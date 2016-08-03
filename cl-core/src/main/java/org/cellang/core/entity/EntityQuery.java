@@ -36,7 +36,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 	private List<WhereField> whereFields = new ArrayList<>();
 
 	private String[] orderBy;
-	private String orderByExtendingPropertyKey;
+	//private String orderByExtendingPropertyKey;
 	private Integer limit;
 	private Integer offset;
 
@@ -77,15 +77,15 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 				.append("select * from ")//
 				.append(this.entityConfig.getTableName())//
 				.append(" as t1")//
-				.append(" left join")//
-				.append(" " + ExtendingPropertyEntity.tableName)//
-				.append(" as t2")//
-				.append(" on t2.entityId = t1.id and t2.entityType=? and t2.key=?")//
+				//.append(" left join")//
+				//.append(" " + ExtendingPropertyEntity.tableName)//
+				//.append(" as t2")//
+				//.append(" on t2.entityId = t1.id and t2.entityType=? and t2.key=?")//
 				.append(" where 1=1")//
 				;
 		//
-		args.add(this.entityConfig.getEntityClass().getName());
-		args.add(this.orderByExtendingPropertyKey);
+		//args.add(this.entityConfig.getEntityClass().getName());
+		//args.add(this.orderByExtendingPropertyKey);
 		// equal query fields
 
 		for (int i = 0; i < this.whereFields.size(); i++) {
@@ -97,9 +97,9 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		if (orderBy != null) {
 			orderByL.addAll(Arrays.asList(this.orderBy));
 		}
-		if (this.orderByExtendingPropertyKey != null) {
-			orderByL.add(" t2.value");
-		}
+//		if (this.orderByExtendingPropertyKey != null) {
+//			orderByL.add(" t2.value");
+//		}
 
 		if (orderByL.size() > 0) {
 			sql.append(" order by");
@@ -149,11 +149,11 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		this.offset = offset;
 		return this;
 	}
-
-	public EntityQuery<T> orderByExtendingPropertyKey(String key) {
-		this.orderByExtendingPropertyKey = key;
-		return this;
-	}
+//
+//	public EntityQuery<T> orderByExtendingPropertyKey(String key) {
+//		this.orderByExtendingPropertyKey = key;
+//		return this;
+//	}
 
 	public EntityQuery<T> orderBy(String[] strings) {
 		//

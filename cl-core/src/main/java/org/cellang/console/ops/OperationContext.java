@@ -14,12 +14,14 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.cellang.console.control.entity.EntityConfigManager;
+import org.cellang.console.view.View;
 import org.cellang.console.view.ViewsPane;
 import org.cellang.console.view.helper.HelpersPane;
 import org.cellang.console.view.table.EntityConfigTableView;
-import org.cellang.console.view.table.ExtendingPropertyMasterTableView;
+import org.cellang.console.view.table.EntityObjectTableView;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
+import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.CorpMetricEntity;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.EntityCsvWriter;
@@ -139,8 +141,11 @@ public class OperationContext {
 				this.getEntityConfigFactory().getEntityConfigList());
 		views.addView(table, true);
 		
-		ExtendingPropertyMasterTableView table2 = new ExtendingPropertyMasterTableView(this);
-		views.addView(table2, true);
+		View view = this.getEntityConfigManager().newEntityListView(CorpInfoEntity.class);
+		this.getViewManager().addView(view, true);//
+		
+		//ExtendingPropertyMasterTableView table2 = new ExtendingPropertyMasterTableView(this);
+		//views.addView(table2, true);
 		
 	}
 
