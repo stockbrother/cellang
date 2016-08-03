@@ -43,7 +43,7 @@ public abstract class ChartWindow<T> {
 	public BigDecimal getDisplayYMax() {
 		BigDecimal actual = this.doGetActualMinMax()[1];
 		if (actual == null || actual.compareTo(this.preferedMax) < 0) {
-			actual = this.preferedMin;
+			actual = this.preferedMax;
 		}
 		return actual;
 	}

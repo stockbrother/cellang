@@ -8,6 +8,7 @@ import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.ColumnDefine;
 import org.cellang.console.view.table.TableDataView;
+import org.cellang.core.entity.AbstractReportEntity;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.metrics.ReportConfig;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class ReportTableView extends TableDataView<ReportRow> implements HasActions {
+public class ReportTableView<T extends AbstractReportEntity> extends TableDataView<ReportRow> implements HasActions {
 
 	static final Logger LOG = LoggerFactory.getLogger(ReportTableView.class);
 	OperationContext oc;
@@ -27,10 +28,10 @@ public class ReportTableView extends TableDataView<ReportRow> implements HasActi
 	ReportRowChartDataProvider chartDp;
 	ReportRow selectedRow;
 
-	public ReportTableView(OperationContext oc, ReportItemLocators.Group template, ReportConfig rptCfg,
+	public ReportTableView(OperationContext oc, Class<T> cls, ReportItemLocators.Group template, ReportConfig rptCfg,
 			EntitySessionFactory es, int years, String corpId) {
 		super("Report of " + rptCfg.getReportEntityConfig().getTableName(),
-				new ReportTableDataProvider(template, rptCfg, es, years, corpId));
+				new ReportTableDataProvider<T>(cls, template, rptCfg, es, years, corpId));
 		this.oc = oc;
 	}
 

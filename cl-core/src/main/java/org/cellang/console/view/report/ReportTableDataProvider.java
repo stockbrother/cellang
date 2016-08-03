@@ -14,8 +14,8 @@ import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
 import org.cellang.console.view.table.LineNumberColumn;
+import org.cellang.core.entity.AbstractReportEntity;
 import org.cellang.core.entity.AbstractReportItemEntity;
-import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntityQuery;
@@ -23,7 +23,7 @@ import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.metrics.ReportConfig;
 
-public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow> {
+public class ReportTableDataProvider<T extends AbstractReportEntity> extends AbstractTableDataProvider<ReportRow> {
 
 	public static class GetReportOp<T> extends EntityOp<T> {
 		Class<T> rptEntityCls;
@@ -59,9 +59,10 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 
 	ReportItemLocatorFilter filter = new ReportItemLocatorFilter();
 	ReportItemLocators.Group template;
-
-	public ReportTableDataProvider(ReportItemLocators.Group template, ReportConfig rptCfg, EntitySessionFactory es,
+	Class<T> reportEntityClass;
+	public ReportTableDataProvider(Class<T> rptEntityCls, ReportItemLocators.Group template, ReportConfig rptCfg, EntitySessionFactory es,
 			int years, String corpId) {
+		this.reportEntityClass = rptEntityCls;
 		this.template = template;
 		this.years = years;
 		this.rptCfg = rptCfg;
@@ -172,10 +173,10 @@ public class ReportTableDataProvider extends AbstractTableDataProvider<ReportRow
 
 	private List<? extends AbstractReportItemEntity> query(int year) {
 		Date date = EnvUtil.newDateOfYearLastDay(year);
-		GetReportOp<BalanceSheetReportEntity> getRpt = new GetReportOp<>();
-		BalanceSheetReportEntity bsr = getRpt.set(BalanceSheetReportEntity.class, corpId, date).execute(this.esf);
+		GetReportOp<T> getRpt = new GetReportOp<>();
+		T bsr = getRpt.set(this.reportEntityClass, corpId, date).execute(this.esf);
 		if (bsr == null) {
-			return null;
+			return new ArrayList<>();
 		}
 		String reportId = bsr.getId();
 		List<? extends EntityObject> el = new EntityQuery<>(this.rptCfg.getItemEntityConfig(),

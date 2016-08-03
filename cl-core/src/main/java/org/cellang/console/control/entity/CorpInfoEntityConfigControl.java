@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity> implements HasActions {
+public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>implements HasActions {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
 	EntitySessionFactory entitySessions;
@@ -105,15 +105,15 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 	protected void openCustomizedReport(CorpInfoEntity context) {
 		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(CustomizedReportEntity.class);
-		View v = new ReportTableView(oc, template, oc.getReportConfigFactory().customizedReportConfig,
-				this.entitySessions, 10, context.getId());
+		View v = new ReportTableView<CustomizedReportEntity>(oc, CustomizedReportEntity.class, template,
+				oc.getReportConfigFactory().customizedReportConfig, this.entitySessions, 10, context.getId());
 		oc.getViewManager().addView(v, true);
 	}
 
 	protected void openBSReport(CorpInfoEntity context) {
 		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(BalanceSheetReportEntity.class);
-		View v = new ReportTableView(oc, template, oc.getReportConfigFactory().balanceSheetReportConfig,
-				this.entitySessions, 10, context.getId());
+		View v = new ReportTableView<BalanceSheetReportEntity>(oc, BalanceSheetReportEntity.class, template,
+				oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10, context.getId());
 		oc.getViewManager().addView(v, true);
 	}
 
