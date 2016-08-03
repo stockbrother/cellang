@@ -12,6 +12,8 @@ import org.cellang.core.entity.CustomizedReportEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Update all the property under the property key plus the entity type.
@@ -20,6 +22,7 @@ import org.cellang.core.entity.EntitySessionFactory;
  *
  */
 public class CustomizedReportUpdater {
+	private static final Logger LOG = LoggerFactory.getLogger(CustomizedReportUpdater.class);
 
 	List<CustomizedReportItemDefine> defineList = new ArrayList<>();
 
@@ -51,11 +54,16 @@ public class CustomizedReportUpdater {
 	}
 
 	private void doExecute(EntitySession es) {
+
+		es.delete(CustomizedReportEntity.class);
+		es.delete(CustomizedItemEntity.class);
+		LOG.info("doExecute");
+
 		List<CorpInfoEntity> l = es.query(CorpInfoEntity.class).execute(es);
 		for (CorpInfoEntity corp : l) {
 			String corpId = corp.getId();
-			for (int year = 2015; year > 2005; year--) {
-
+			for (int year = 2015; year > 2010; year--) {
+				LOG.info("doExecute,year:" + year + ",corpId:" + corpId);
 				CustomizedReportEntity report = new CustomizedReportEntity();
 				report.setId(UUIDUtil.randomStringUUID());
 				report.setCorpId(corpId);

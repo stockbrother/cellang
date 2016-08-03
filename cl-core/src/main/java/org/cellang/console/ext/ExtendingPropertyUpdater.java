@@ -1,8 +1,7 @@
-package org.cellang.console.model;
+package org.cellang.console.ext;
 
 import java.util.List;
 
-import org.cellang.console.ext.ExtendingPropertyDefine;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityOp;

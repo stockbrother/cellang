@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
-import org.cellang.console.model.ExtendingPropertyUpdater;
+import org.cellang.console.customized.CustomizedReportUpdater;
+import org.cellang.console.ext.ExtendingPropertyUpdater;
 import org.cellang.console.ops.OperationContext;
 
 public class ExtendingPropertyMasterTableView extends TableDataView<ExtendingPropertyMasterTableDataProvider.RowObject>
@@ -26,7 +27,21 @@ public class ExtendingPropertyMasterTableView extends TableDataView<ExtendingPro
 				@Override
 				public String getName() {
 
-					return "Do Update";
+					return "Update Customized Report";
+				}
+
+				@Override
+				public void perform() {
+					updateCustomizedReport();
+				}
+
+			});
+			al.add(new Action() {
+
+				@Override
+				public String getName() {
+
+					return "Update ExtendingProperties";
 				}
 
 				@Override
@@ -35,11 +50,15 @@ public class ExtendingPropertyMasterTableView extends TableDataView<ExtendingPro
 				}
 
 			});
-						
+
 		}
 		return al;
 	}
-	
+
+	public void updateCustomizedReport() {
+		new CustomizedReportUpdater(oc.getEntityService()).execute();
+	}
+
 	private void updateExtendingProperty() {
 		if (this.selected == null) {
 			return;

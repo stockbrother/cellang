@@ -32,7 +32,7 @@ public class AbstractReportItemValueGetterOp extends EntityOp<BigDecimal> {
 		return set(corpId, year, year, key);
 	}
 
-	AbstractReportItemValueGetterOp set(String corpId, int yearFrom, int yearTo, String key) {
+	public AbstractReportItemValueGetterOp set(String corpId, int yearFrom, int yearTo, String key) {
 		this.corpId = corpId;
 		if (yearFrom > yearTo) {
 			int tmp = yearTo;
