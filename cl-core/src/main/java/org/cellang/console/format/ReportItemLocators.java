@@ -8,7 +8,9 @@ import java.util.Map;
 
 import org.cellang.core.entity.AbstractReportEntity;
 import org.cellang.core.entity.BalanceSheetReportEntity;
+import org.cellang.core.entity.CashFlowStatementReportEntity;
 import org.cellang.core.entity.CustomizedReportEntity;
+import org.cellang.core.entity.IncomeStatementReportEntity;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -17,14 +19,15 @@ public class ReportItemLocators {
 		ReportItemLocator root;
 		Map<String, ReportItemLocator> keyMap = new HashMap<>();
 
-		public Group(ReportItemLocator root) {			
+		public Group(ReportItemLocator root) {
 			this.root = root;
 			this.doInit(root);//
 		}
-		public ReportItemLocator getRoot(){
+
+		public ReportItemLocator getRoot() {
 			return root;
 		}
-		
+
 		private void doInit(ReportItemLocator ril) {
 			ReportItemLocator old = keyMap.put(ril.getKey(), ril);
 			if (old != null) {
@@ -54,10 +57,27 @@ public class ReportItemLocators {
 			return ME;
 		}
 		ME = new ReportItemLocators();
-		Group g1 = load(new StringReader(BalanceSheetContent.content));
-		ME.groupMap.put(BalanceSheetReportEntity.class, g1);
-		Group g2 = load(new StringReader(CustomizedReport.content));
-		ME.groupMap.put(CustomizedReportEntity.class, g2);
+		{
+
+			Group g1 = load(new StringReader(BalanceSheetContent.content));
+			ME.groupMap.put(BalanceSheetReportEntity.class, g1);
+		}
+		{
+
+			Group g1 = load(new StringReader(BalanceSheetContent.incomeStatement));
+			ME.groupMap.put(IncomeStatementReportEntity.class, g1);
+		}
+		{
+
+			Group g1 = load(new StringReader(BalanceSheetContent.cashFlowStatement));
+			ME.groupMap.put(CashFlowStatementReportEntity.class, g1);
+		}
+		
+		{
+
+			Group g2 = load(new StringReader(CustomizedReport.content));
+			ME.groupMap.put(CustomizedReportEntity.class, g2);
+		}
 		return ME;
 	}
 
