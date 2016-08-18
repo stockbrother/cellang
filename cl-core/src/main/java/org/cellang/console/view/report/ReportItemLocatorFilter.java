@@ -20,7 +20,7 @@ public class ReportItemLocatorFilter {
 			parent = parent.getParent();
 		}
 
-		System.out.println("closed set:" + collapsedKey + ",key:" + rr.getKey() + ",rt:" + rt);
+		//System.out.println("closed set:" + collapsedKey + ",key:" + rr.getKey() + ",rt:" + rt);
 		return rt;
 	}
 

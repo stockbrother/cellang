@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.cellang.commons.jdbc.JdbcOperation;
 import org.cellang.commons.jdbc.ResultSetProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility, for ease of query operation.
@@ -19,6 +21,9 @@ import org.cellang.commons.jdbc.ResultSetProcessor;
  * @param <T>
  */
 public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(EntityQuery.class);
+	
 	private static class WhereField {
 		public WhereField(String field, String oper, Object value) {
 			this.field = field;
@@ -118,7 +123,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		if (this.offset != null) {
 			sql.append(" offset ").append(this.offset);
 		}
-
+		
 		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>() {
 
 			@Override
@@ -127,7 +132,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 				return (List<T>) template.executeQuery(con, sql.toString(), args, rsp);
 			}
 		};
-
+		
 		List<T> rt = es.execute(op);
 		return rt;
 	}

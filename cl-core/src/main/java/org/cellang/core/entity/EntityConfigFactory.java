@@ -18,6 +18,8 @@ public class EntityConfigFactory {
 		this.addEntity(new EntityConfig(BalanceSheetReportEntity.class, BalanceSheetReportEntity.tableName));
 		this.addEntity(new EntityConfig(IncomeStatementReportEntity.class, IncomeStatementReportEntity.tableName));
 		this.addEntity(new EntityConfig(IncomeStatementItemEntity.class, IncomeStatementItemEntity.tableName));
+		this.addEntity(new EntityConfig(CashFlowStatementReportEntity.class, CashFlowStatementReportEntity.tableName));
+		this.addEntity(new EntityConfig(CashFlowStatementItemEntity.class, CashFlowStatementItemEntity.tableName));
 		this.addEntity(new EntityConfig(CorpInfoEntity.class, CorpInfoEntity.tableName));
 		this.addEntity(new EntityConfig(DateInfoEntity.class, DateInfoEntity.tableName));
 		this.addEntity(new EntityConfig(CorpMetricEntity.class, CorpMetricEntity.tableName));

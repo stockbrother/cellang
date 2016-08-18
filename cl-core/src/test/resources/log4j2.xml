@@ -10,6 +10,7 @@
 	<Loggers>
 		<Logger name="org.cellang" level="debug" />
 		<Logger name="org.cellang.console" level="debug" />
+		<Logger name="org.cellang.commons.jdbc.JdbcDataAccessTemplate" level="trace" />		
 		<Root level="info">
 			<AppenderRef ref="STDOUT" />			
 		</Root>

@@ -42,6 +42,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 		upgraderList.add(new V0_0_7DBUpgrader());
 		upgraderList.add(new V0_0_8DBUpgrader());
 		upgraderList.add(new V0_0_9DBUpgrader());
+		upgraderList.add(new V0_0_10DBUpgrader());
 	}
 
 	public static EntitySessionFactory newInstance(File dbHome, String dbName, EntityConfigFactory ecf) {

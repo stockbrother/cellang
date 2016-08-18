@@ -13,11 +13,13 @@ import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
 import org.cellang.console.view.report.ReportTableView;
 import org.cellang.core.entity.BalanceSheetReportEntity;
+import org.cellang.core.entity.CashFlowStatementReportEntity;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.CustomizedReportEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
+import org.cellang.core.entity.IncomeStatementReportEntity;
 import org.cellang.core.entity.InterestedCorpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +69,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 			@Override
 			public String getName() {
-				return "Add to Interested";
+				return "Interest";
 			}
 
 			@Override
@@ -79,7 +81,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 			@Override
 			public String getName() {
-				return "Open B/S Report";
+				return "B/S";
 			}
 
 			@Override
@@ -91,7 +93,33 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 
 			@Override
 			public String getName() {
-				return "Open Customized Report";
+				return "I/S";
+			}
+
+			@Override
+			public void perform() {
+				CorpInfoEntityConfigControl.this.openISReport((CorpInfoEntity) context);
+			}
+		});
+		
+		al.add(new Action() {
+
+			@Override
+			public String getName() {
+				return "CF/S";
+			}
+
+			@Override
+			public void perform() {
+				CorpInfoEntityConfigControl.this.openCFSReport((CorpInfoEntity) context);
+			}
+		});
+		
+		al.add(new Action() {
+
+			@Override
+			public String getName() {
+				return "Customized Report";
 			}
 
 			@Override
@@ -116,7 +144,20 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 				oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10, context.getId());
 		oc.getViewManager().addView(v, true);
 	}
-
+	
+	protected void openISReport(CorpInfoEntity context) {
+		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(IncomeStatementReportEntity.class);
+		View v = new ReportTableView<IncomeStatementReportEntity>(oc, IncomeStatementReportEntity.class, template,
+				oc.getReportConfigFactory().incomeStatementReportConfig, this.entitySessions, 10, context.getId());
+		oc.getViewManager().addView(v, true);
+	}
+	
+	protected void openCFSReport(CorpInfoEntity context) {
+		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(CashFlowStatementReportEntity.class);
+		View v = new ReportTableView<CashFlowStatementReportEntity>(oc, CashFlowStatementReportEntity.class, template,
+				oc.getReportConfigFactory().cashFlowStatementReportConfig, this.entitySessions, 10, context.getId());
+		oc.getViewManager().addView(v, true);
+	}
 	protected void addToInterested(CorpInfoEntity ce) {
 
 		if (LOG.isDebugEnabled()) {

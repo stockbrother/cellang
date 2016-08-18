@@ -11,7 +11,8 @@ import org.cellang.core.entity.IncomeStatementReportEntity;
 public class ReportConfigFactory {
 	public ReportConfig balanceSheetReportConfig;
 	public ReportConfig incomeStatementReportConfig;
-	public ReportConfig customizedReportConfig;
+	public ReportConfig customizedReportConfig;	
+	public ReportConfig cashFlowStatementReportConfig;
 
 	public ReportConfigFactory(EntityConfigFactory ecf) {
 		this.balanceSheetReportConfig = new ReportConfig(ecf.get(BalanceSheetReportEntity.class),

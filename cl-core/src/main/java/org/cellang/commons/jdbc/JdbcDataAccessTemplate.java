@@ -3,6 +3,7 @@ package org.cellang.commons.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -51,14 +52,16 @@ public class JdbcDataAccessTemplate {
 	}
 
 	public <T> T execute(Connection con, String sql, ParameterProvider pp, PreparedStatementExecutor<T> pse) {
-
+		Object[] args = pp.getAsArray();
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("execute,sql:" + sql + ",parameters:" + Arrays.asList(args) + "");
+		}
 		try {
 
 			PreparedStatement ps = con.prepareStatement(sql);
-			int size = pp.size();
-			for (int i = 0; i < size; i++) {
-				Object obj = pp.get(i);
-				ps.setObject(i + 1, obj);
+			int size = args.length;
+			for (int i = 0; i < size; i++) {				
+				ps.setObject(i + 1, args[i]);
 			}
 			try {
 				return pse.execute(ps);//

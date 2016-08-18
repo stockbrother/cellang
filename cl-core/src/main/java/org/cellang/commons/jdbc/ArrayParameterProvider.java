@@ -1,6 +1,6 @@
 package org.cellang.commons.jdbc;
 
-public class ArrayParameterProvider implements ParameterProvider {
+public class ArrayParameterProvider extends ParameterProvider {
 
 	private Object[] values;
 
