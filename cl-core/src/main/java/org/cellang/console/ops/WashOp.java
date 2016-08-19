@@ -7,6 +7,12 @@ import org.cellang.collector.SinaAllQuotesPreprocessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Wash Data.
+ * 
+ * @author wu
+ *
+ */
 public class WashOp extends ConsoleOp<Void> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WashOp.class);
@@ -27,7 +33,7 @@ public class WashOp extends ConsoleOp<Void> {
 
 		File to = new File(dataHome, source + "pp");
 		if ("163".equals(source)) {
-			new NeteasePreprocessor(from, to).process();
+			new NeteasePreprocessor(from, to).xjllb().process();
 		} else if ("sina".equals(source)) {
 			new SinaAllQuotesPreprocessor(from, to).process();
 		} else {

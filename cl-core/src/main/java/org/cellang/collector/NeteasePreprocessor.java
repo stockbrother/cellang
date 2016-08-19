@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,19 +17,33 @@ import org.slf4j.LoggerFactory;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
+/**
+ * Convert original file format to the target format acceptable.
+ * 
+ * @author wu
+ *
+ */
 public class NeteasePreprocessor {
 	private static final Logger LOG = LoggerFactory.getLogger(NeteasePreprocessor.class);
 
 	private File sourceDir;
 	private File targetDir;
 
+
+	List<String> types = new ArrayList<>();
+
 	public NeteasePreprocessor(File sourceDir, File targetDir) {
 		this.sourceDir = sourceDir;
 		this.targetDir = targetDir;
 	}
+	
+	public NeteasePreprocessor xjllb(){
+		this.types.add("xjllb");
+		return this;
+	}
 
 	public void process() {
-		try {
+		try {			
 			this.process(this.sourceDir);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -43,7 +59,7 @@ public class NeteasePreprocessor {
 				return;
 			}
 			String type = null;
-			String[] types = new String[] { "zcfzb", "lrb" };
+
 			for (String typeI : types) {
 				if (name.startsWith(typeI)) {
 					type = typeI;
@@ -68,13 +84,12 @@ public class NeteasePreprocessor {
 
 	/**
 	 * <code>
-	    Header,
-		报告名称,资产负债表
+	    Header,		
 		报告日期,2015-12-31,2014-12-31,2013-12-31,2012-12-31,2011-12-31,2010-12-31,2009-12-31,2008-12-31,
 		日期格式,yyyy-MM-dd
-		公司代码,300201
-		公司名称,海伦哲
+		公司代码,300201		
 		单位,10000
+		备注,zcfzb
 		Body,
 		... ... 
 		</code>

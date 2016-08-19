@@ -21,6 +21,7 @@ public class DataLoader {
 		processMap.put("corplist", new CorpListFileProcessor(esf));
 		processMap.put("zcfzb", new BalanceSheetFileProcessor(esf));
 		processMap.put("lrb", new IncomeStatementFileProcessor(esf));
+		processMap.put("xjllb", new CashFlowStatementFileProcessor(esf));
 		processMap.put("all-quotes", new AllQuotesFileProcessor(esf));
 	}
 
