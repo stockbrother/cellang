@@ -10,7 +10,7 @@ public class ReportRowKeyColumn extends AbstractColumn<ReportRow> {
 	ReportItemLocatorFilter filter;
 	ReportItemLocators.Group template;
 	public ReportRowKeyColumn(ReportItemLocators.Group template,AbstractTableDataProvider<ReportRow> model, ReportItemLocatorFilter filter) {
-		super(model, "key");
+		super(model, "Key");
 		this.template = template;
 		this.filter = filter;
 	}

@@ -10,8 +10,8 @@ public class ReportRowValueColumn extends AbstractColumn<ReportRow> {
 
 	int valueColumnIndex;
 
-	public ReportRowValueColumn(int valueColumnIndex, AbstractTableDataProvider<ReportRow> model) {
-		super(model, "value");//
+	public ReportRowValueColumn(int valueColumnIndex,String name, AbstractTableDataProvider<ReportRow> model) {
+		super(model, name);//
 		this.valueColumnIndex = valueColumnIndex;
 	}
 

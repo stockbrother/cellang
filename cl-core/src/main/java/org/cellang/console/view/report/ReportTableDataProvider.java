@@ -60,8 +60,9 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 	ReportItemLocatorFilter filter = new ReportItemLocatorFilter();
 	ReportItemLocators.Group template;
 	Class<T> reportEntityClass;
-	public ReportTableDataProvider(Class<T> rptEntityCls, ReportItemLocators.Group template, ReportConfig rptCfg, EntitySessionFactory es,
-			int years, String corpId) {
+
+	public ReportTableDataProvider(Class<T> rptEntityCls, ReportItemLocators.Group template, ReportConfig rptCfg,
+			EntitySessionFactory es, int years, String corpId) {
 		this.reportEntityClass = rptEntityCls;
 		this.template = template;
 		this.years = years;
@@ -74,7 +75,7 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 		this.columnList.add(new ReportRowKeyColumn(template, this, filter));
 
 		for (int i = 0; i < years; i++) {
-			this.columnList.add(new ReportRowValueColumn(i, this));
+			this.columnList.add(new ReportRowValueColumn(i, "Y" + (2015 - i), this));
 		}
 		this.refresh();
 	}
