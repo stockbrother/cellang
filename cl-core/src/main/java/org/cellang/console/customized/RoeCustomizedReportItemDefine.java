@@ -5,7 +5,11 @@ import java.math.RoundingMode;
 
 import org.cellang.console.ext.BalanceSheetItemValueGetterOp;
 import org.cellang.console.ext.IncomeStatementItemValueGetterOp;
-
+/**
+ * @see CustomizedReportUpdater
+ * @author wu
+ *
+ */
 public class RoeCustomizedReportItemDefine extends AbstractCustomizedReportItemDefine {
 	IncomeStatementItemValueGetterOp jlrGetter = IncomeStatementItemValueGetterOp.newSumOp();
 
