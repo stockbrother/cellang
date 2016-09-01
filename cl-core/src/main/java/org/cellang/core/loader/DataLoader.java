@@ -39,6 +39,7 @@ public class DataLoader {
 	}
 
 	private void doLoadDirOrFile(File dir, EntitySession es) {
+
 		if (dir.isFile()) {
 			File f = dir;
 			String fname = f.getName();
@@ -54,14 +55,11 @@ public class DataLoader {
 			}
 			return;
 		}
+
 		// is directory
 
 		for (File f : dir.listFiles()) {
-			if (f.isDirectory()) {
-				this.doLoadDirOrFile(f, es);
-				continue;
-			}
-
+			this.doLoadDirOrFile(f, es);
 		}
 
 	}

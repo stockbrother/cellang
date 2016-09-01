@@ -16,6 +16,12 @@ public class NewDBUpgrader extends DBUpgrader {
 		List<IndexConfig> icL = esf.getEntityConfigFactory().getIndexConfigList(ec.getEntityClass());
 		createTableAndIndex(ec, icL, es);
 	}
+	
+	public static void createIndex(EntitySessionFactory esf, EntitySession es,
+			Class<? extends EntityObject> class1) {
+		EntityConfig ec = esf.getEntityConfigFactory().getEntityConfig(class1);		
+		createIndex(esf, ec, es);
+	}
 
 	public static void createTableAndIndex(EntityConfig ec, List<IndexConfig> icL, EntitySession es) {
 		String viewSql = ec.getCreateViewSql();

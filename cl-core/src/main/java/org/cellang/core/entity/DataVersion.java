@@ -32,7 +32,9 @@ public class DataVersion {
 	
 	public static final DataVersion V_0_0_10 = DataVersion.addVersion(0, 0, 10);
 	
-	public static final DataVersion V_latest = V_0_0_10;
+	public static final DataVersion V_0_0_11 = DataVersion.addVersion(0, 0, 11);
+	
+	public static final DataVersion V_latest = V_0_0_11;
 	private int[] verionNumbers;
 
 	static {
