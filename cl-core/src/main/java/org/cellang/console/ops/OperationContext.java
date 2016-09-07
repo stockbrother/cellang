@@ -16,7 +16,8 @@ import java.util.concurrent.Future;
 import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.HomeView;
 import org.cellang.console.view.View;
-import org.cellang.console.view.ViewsPane;
+import org.cellang.console.view.ViewGroupPanel;
+import org.cellang.console.view.ViewGroupsPanel;
 import org.cellang.console.view.helper.HelpersPane;
 import org.cellang.console.view.table.EntityConfigTableView;
 import org.cellang.core.converter.DateStringConverter;
@@ -59,7 +60,7 @@ public class OperationContext {
 
 	private boolean started;
 	private String[] matrics = new String[] { "负债权益比", "QUOTES" };
-	ViewsPane views;
+	ViewGroupsPanel views;
 	OpExecutor opExecutor = new OpExecutor();
 	private ReportConfigFactory reportConfigFactory;
 
@@ -71,11 +72,11 @@ public class OperationContext {
 		return this.opExecutor.execute(op, this);
 	}
 
-	public ViewsPane getViewManager() {
+	public ViewGroupsPanel getViewManager() {
 		return views;
 	}
 
-	public OperationContext(File dataDir, ViewsPane views, HelpersPane helpers) {
+	public OperationContext(File dataDir, ViewGroupsPanel views, HelpersPane helpers) {
 		this.dataHome = dataDir;
 		this.views = views;
 		entityConfigFactory = new EntityConfigFactory();
@@ -151,14 +152,7 @@ public class OperationContext {
 		// views.addView(table2, true);
 
 	}
-
-	/**
-	 * Close the current view.
-	 */
-	public void closeView() {
-		this.views.closeCurrentView();
-	}
-
+	
 	public void sql(String sql) {
 
 		StringBuffer sb = new StringBuffer();

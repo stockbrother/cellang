@@ -2,40 +2,35 @@ package org.cellang.console.control;
 
 import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.View;
-import org.cellang.console.view.ViewsPane;
-import org.cellang.console.view.ViewsPane.ViewsListener;
+import org.cellang.console.view.ViewGroupsPanel;
+import org.cellang.console.view.ViewSelectionListener;
+import org.cellang.console.view.ViewAddListener;
 import org.cellang.console.view.helper.HelpersPane;
-import org.cellang.console.view.helper.ViewHelperPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ViewsControl implements ViewsListener {
+public class ViewsControl implements ViewAddListener, ViewSelectionListener {
 	private static final Logger LOG = LoggerFactory.getLogger(ViewsControl.class);
 
-	ViewsPane views;
+	ViewGroupsPanel views;
 
-	HelpersPane actionManagerPane;
+	HelpersPane helpers;
 
-	public ViewsControl(EntityConfigManager ecm, ViewsPane views, HelpersPane actions) {
+	public ViewsControl(EntityConfigManager ecm, ViewGroupsPanel views, HelpersPane actions) {
 		this.views = views;
-		this.actionManagerPane = actions;
-		this.views.addViewsListener(this);
+		this.helpers = actions;
+		this.views.addViewAddListener(this);
 
 	}
 
 	@Override
 	public void viewAdded(View v) {
-		return;
-	}
-
-	@Override
-	public void viewRemoved(View v) {
-		//TODO
+		v.addViewSelectionListener(this);
 	}
 
 	@Override
 	public void viewSelected(View v) {
-		actionManagerPane.viewSelected(v);
+		helpers.viewSelected(v);
 	}
 
 }

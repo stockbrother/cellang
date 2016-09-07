@@ -9,24 +9,15 @@ import javax.swing.JTabbedPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ViewsPane extends JTabbedPane {
+public class ViewGroupPanel extends JTabbedPane {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ViewsPane.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ViewGroupPanel.class);
 
-	public static interface ViewsListener {
-
-		public void viewAdded(View v);
-
-		public void viewRemoved(View v);
-
-		public void viewSelected(View v);
-	}
-
-	// TODO use property change mechanism for event processing.
-
-	List<ViewsListener> llist = new ArrayList<ViewsListener>();
-
-	public ViewsPane() {
+	List<ViewAddListener> llist = new ArrayList<ViewAddListener>();
+	
+	ViewGroupsPanel parent;
+	
+	public ViewGroupPanel(ViewGroupsPanel parent) {
 		super.setUI(new ViewsTabbedPaneUI());
 	}
 
@@ -41,21 +32,17 @@ public class ViewsPane extends JTabbedPane {
 
 	private void selectedChanged() {
 		View v = (View) this.getSelectedComponent();
-		for (ViewsListener l : llist) {
-			l.viewSelected(v);//
-		}
+		v.select(true);//
 	}
 
-	public void addViewsListener(ViewsListener vl) {
+	public void addViewsListener(ViewAddListener vl) {
 		this.llist.add(vl);
 	}
 
 	public void addView(View v, boolean select) {
 		Component com = v.getComponent();
 		this.addTab(v.getTitle() + "   ", com);
-		for (ViewsListener l : llist) {
-			l.viewAdded(v);
-		}
+		
 		if (select) {
 			this.setSelectedComponent(com);
 		}
@@ -68,10 +55,7 @@ public class ViewsPane extends JTabbedPane {
 		}
 		View v = (View) this.getTabComponentAt(idx);
 		this.remove(idx);
-		for (ViewsListener l : llist) {
-			l.viewRemoved(v);
-		}
-
+		parent.viewRemoved(v);
 	}
 
 	public void clear() {
@@ -81,10 +65,8 @@ public class ViewsPane extends JTabbedPane {
 			vl.add(v);
 		}
 		this.removeAll();
-		for (View v : vl) {
-			for (ViewsListener l : llist) {
-				l.viewRemoved(v);
-			}
+		for (View v : vl) {			
+			parent.viewRemoved(v);			
 		}
 		this.selectedChanged();
 

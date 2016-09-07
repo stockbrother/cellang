@@ -10,6 +10,10 @@ public interface View extends HasDelagates {
 
 	public Component getComponent();
 
-	public String getId();	
+	public String getId();
+
+	public void addViewSelectionListener(ViewSelectionListener vsl);
+	
+	public void select(boolean sel);
 
 }

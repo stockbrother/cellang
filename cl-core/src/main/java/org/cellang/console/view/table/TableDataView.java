@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -17,7 +16,7 @@ import org.cellang.console.control.ColumnSelector;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.RowSelector;
 import org.cellang.console.control.SelectionListener;
-import org.cellang.console.view.View;
+import org.cellang.console.view.AbstractView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,11 +26,9 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class TableDataView<T> extends JScrollPane implements View, RowSelector<T>, ColumnSelector<T> {
+public class TableDataView<T> extends AbstractView implements RowSelector<T>, ColumnSelector<T> {
 
 	static final Logger LOG = LoggerFactory.getLogger(TableDataView.class);
-
-	protected String title;
 
 	protected DefaultTablePane table;
 
@@ -46,7 +43,7 @@ public class TableDataView<T> extends JScrollPane implements View, RowSelector<T
 	T selected;
 
 	public TableDataView(String title, TableDataProvider<T> dp) {
-
+		super(title);
 		this.id = UUIDUtil.randomStringUUID();
 		this.dp = dp;
 

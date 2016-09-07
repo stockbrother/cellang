@@ -3,7 +3,7 @@ package org.cellang.console.ops;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.cellang.console.view.ViewsPane;
+import org.cellang.console.view.ViewGroupsPanel;
 import org.cellang.console.view.chart.ChartView;
 import org.cellang.core.entity.EntityConfig;
 
@@ -21,7 +21,7 @@ public class ChartOp extends ConsoleOp<Void> {
 
 	@Override
 	public Void execute(OperationContext oc) {
-		ViewsPane views = oc.getViewManager();
+		ViewGroupsPanel views = oc.getViewManager();
 		EntityConfig ec = null;//oc.getEntityConfigManager().getSelectedEntityConfig();
 		List<Method> methodList = ec.getGetMethodList();
 		Method xM = methodList.get(this.xCol);

@@ -24,7 +24,7 @@ import org.cellang.console.clojure.ClojureConsolePane.ConsoleListener;
 import org.cellang.console.clojure.ReplSession;
 import org.cellang.console.control.ViewsControl;
 import org.cellang.console.ops.OperationContext;
-import org.cellang.console.view.ViewsPane;
+import org.cellang.console.view.ViewGroupsPanel;
 import org.cellang.console.view.helper.HelpersPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +42,7 @@ public class MainPanel extends JPanel {
 
 	private OperationContext oc;
 
-	private ViewsPane views;
-
-	private JSplitPane splitPaneTop;
-	private JSplitPane splitPaneSub;
+	private ViewGroupsPanel views;
 	private int port = 7888;
 	private ExecutorService executor;
 	JFrame frame;
@@ -57,7 +54,7 @@ public class MainPanel extends JPanel {
 		this.executor = Executors.newCachedThreadPool();
 		this.setOpaque(true); // content panes must be opaque
 		frame = new JFrame("Tables");
-		frame.setPreferredSize(new Dimension(800,600));
+		frame.setPreferredSize(new Dimension(800, 600));
 		{
 
 			frame.setContentPane(this);
@@ -71,41 +68,26 @@ public class MainPanel extends JPanel {
 			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		}
-		this.splitPaneTop = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		{
 
-			this.splitPaneTop.setResizeWeight(0.8D);
-			this.splitPaneTop.setContinuousLayout(true);//
-			{
-				this.splitPaneSub = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-				this.splitPaneSub.setResizeWeight(0.6D);//
-				this.splitPaneTop.setContinuousLayout(true);//
-				{
-					views = new ViewsPane();
-				}
-				this.splitPaneSub.add(views);
-				{
-					helpersPane = new HelpersPane();
-				}
-				this.splitPaneSub.add(helpersPane);
-			}
-			this.splitPaneTop.add(this.splitPaneSub);
+		views = new ViewGroupsPanel();
+		this.add(views);
 
-			oc = new OperationContext(dataDir, views, helpersPane);
-			this.helpersPane.install(oc);
-			//
-			File consoleDataDir = new File(oc.getDataHome(), ".console");
-			if (!consoleDataDir.exists()) {
-				LOG.info("mkdirs:" + consoleDataDir.getAbsolutePath());//
-				consoleDataDir.mkdirs();
-			}
+		helpersPane = new HelpersPane();
 
-			this.console = new ClojureConsolePane(consoleDataDir, oc, port);
+		this.add(helpersPane);
 
-			this.splitPaneTop.add(console);
+		oc = new OperationContext(dataDir, views, helpersPane);
+		this.helpersPane.install(oc);
+		//
+		File consoleDataDir = new File(oc.getDataHome(), ".console");
+		if (!consoleDataDir.exists()) {
+			LOG.info("mkdirs:" + consoleDataDir.getAbsolutePath());//
+			consoleDataDir.mkdirs();
 		}
 
-		this.add(splitPaneTop);
+		this.console = new ClojureConsolePane(consoleDataDir, oc, port);
+
+		this.add(console);
 
 		// add control code for integrate the views.
 		ViewsControl ac = new ViewsControl(oc.getEntityConfigManager(), this.views, this.helpersPane);
