@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
 
 		this.add(helpersPane);
 
-		oc = new OperationContext(dataDir, views, helpersPane);
+		oc = new OperationContext(dataDir, views);
 		this.helpersPane.install(oc);
 		//
 		File consoleDataDir = new File(oc.getDataHome(), ".console");

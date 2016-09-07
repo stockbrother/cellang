@@ -33,13 +33,10 @@ public class EntityConfigManager implements EntityConfigSelector {
 	private List<EntityConfigSelectionListener> selectionListenerList = new ArrayList<>();
 
 	private Map<String, EntityConfigControl<?>> controlMap = new HashMap<>();
-
-	HelpersPane helpers;
-
-	public EntityConfigManager(OperationContext oc, EntitySessionFactory es, HelpersPane helpers) {
+	OperationContext oc;
+	public EntityConfigManager(OperationContext oc, EntitySessionFactory es) {
+		this.oc = oc;
 		this.entityService = es;
-		this.helpers = helpers;
-		this.helpers.entityHelper.setEntityConfigManager(this);// NOTE:
 		controlMap.put(QuotesEntity.tableName, new QuotesEntityConfigControl(this.entityService));
 		controlMap.put(CorpInfoEntity.tableName, new CorpInfoEntityConfigControl(oc, this.entityService));
 		controlMap.put(ExtendingPropertyEntity.tableName, new ExtendingPropertyEntityConfigControl(this.entityService));
@@ -62,7 +59,7 @@ public class EntityConfigManager implements EntityConfigSelector {
 
 	public View newEntityListView(EntityConfig ec, List<String> extPropL) {
 		EntityConfigControl<?> ecc = this.getEntityConfigControl(ec);
-		EntityObjectTableView rt = new EntityObjectTableView(helpers, ec, ecc, extPropL, this.entityService,
+		EntityObjectTableView rt = new EntityObjectTableView(oc, ec, ecc, extPropL, this.entityService,
 				this.queryLimit);
 
 		return rt;

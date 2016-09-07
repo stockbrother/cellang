@@ -28,6 +28,7 @@ public class ViewHelperPane extends HelperPane<View> {
 	EntitySessionFactory esf;
 
 	public ViewHelperPane() {
+		super("ViewHelper");
 	}
 
 	public void setContextObject(View view) {

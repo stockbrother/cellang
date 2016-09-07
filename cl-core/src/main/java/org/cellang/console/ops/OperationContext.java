@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.cellang.console.EventBus;
 import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.HomeView;
 import org.cellang.console.view.View;
-import org.cellang.console.view.ViewGroupPanel;
 import org.cellang.console.view.ViewGroupsPanel;
-import org.cellang.console.view.helper.HelpersPane;
+import org.cellang.console.view.helper.EntityObjectHelperPane;
 import org.cellang.console.view.table.EntityConfigTableView;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
@@ -64,10 +64,16 @@ public class OperationContext {
 	OpExecutor opExecutor = new OpExecutor();
 	private ReportConfigFactory reportConfigFactory;
 
+	private EventBus eventBus = new EventBus();
+	
 	public OperationContext() {
 
 	}
 
+	public EventBus getEventBus(){
+		return this.eventBus;
+	}
+	
 	public <T> Future<T> execute(ConsoleOp<T> op) {
 		return this.opExecutor.execute(op, this);
 	}
@@ -76,7 +82,7 @@ public class OperationContext {
 		return views;
 	}
 
-	public OperationContext(File dataDir, ViewGroupsPanel views, HelpersPane helpers) {
+	public OperationContext(File dataDir, ViewGroupsPanel views) {
 		this.dataHome = dataDir;
 		this.views = views;
 		entityConfigFactory = new EntityConfigFactory();
@@ -84,7 +90,7 @@ public class OperationContext {
 
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
-		this.entityConfigManager = new EntityConfigManager(this, this.entityService, helpers);
+		this.entityConfigManager = new EntityConfigManager(this, this.entityService);
 	}
 
 	public void addListener(Listener l) {
@@ -143,9 +149,10 @@ public class OperationContext {
 		views.addView(table, true);
 
 		View view = this.getEntityConfigManager().newEntityListView(CorpInfoEntity.class);
-		this.getViewManager().addView(view, true);//
-
-		this.getViewManager().addView(new HomeView(this), true);
+		views.addView(view, true);//
+		views.addView(new HomeView(this), true);
+		
+		views.addView(new EntityObjectHelperPane(), true);
 
 		// ExtendingPropertyMasterTableView table2 = new
 		// ExtendingPropertyMasterTableView(this);

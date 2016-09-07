@@ -1,14 +1,17 @@
-package org.cellang.console.control;
+package org.cellang.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventBus {
-	private Map<Integer, List<EventListener>> listenerMap = new HashMap<Integer, List<EventListener>>();
+import org.cellang.console.control.EventListener;
 
-	public void addEventListener(int type, EventListener elistener) {
+public class EventBus {
+
+	private Map<Class, List<EventListener>> listenerMap = new HashMap<>();
+
+	public void addEventListener(Class type, EventListener elistener) {
 		List<EventListener> list = this.listenerMap.get(type);
 		if (list == null) {
 			list = new ArrayList<EventListener>();
@@ -18,8 +21,11 @@ public class EventBus {
 		list.add(elistener);
 	}
 
-	public void dispatch(Event evt) {
-		List<EventListener> list = this.listenerMap.get(evt.getType());
+	public void dispatch(Object evt) {
+
+		Class type = evt.getClass();
+
+		List<EventListener> list = this.listenerMap.get(type);
 		if (list == null) {
 			return;
 		}

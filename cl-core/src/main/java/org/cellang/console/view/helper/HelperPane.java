@@ -18,16 +18,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.cellang.console.HasDelagates;
 import org.cellang.console.control.Action;
-import org.cellang.console.control.ActionHandler;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.ValueChangeListener;
+import org.cellang.console.view.AbstractView;
 
-public class HelperPane<T> extends JScrollPane {
+public class HelperPane<T> extends AbstractView {
 	private static class ActionUI {
 		public ActionUI(Action a, JButton bu) {
 			this.action = a;
@@ -46,8 +44,8 @@ public class HelperPane<T> extends JScrollPane {
 
 	protected T contextObject;
 
-	public HelperPane() {
-
+	public HelperPane(String title) {
+		super(title);
 	}
 
 	public void setContextObject(T co) {

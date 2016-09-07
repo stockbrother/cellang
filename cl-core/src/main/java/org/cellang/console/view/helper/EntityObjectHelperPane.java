@@ -12,6 +12,7 @@ public class EntityObjectHelperPane extends HelperPane<EntityObject> {
 	EntityConfigManager ecm;
 
 	public EntityObjectHelperPane() {
+		super("EntityObjectHelper");
 	}
 
 	/**

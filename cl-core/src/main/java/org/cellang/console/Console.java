@@ -2,7 +2,6 @@ package org.cellang.console;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -14,7 +13,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.cellang.collector.EnvUtil;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.ViewGroupsPanel;
-import org.cellang.console.view.helper.HelpersPane;
 
 public class Console {
 	private static final boolean RIGHT_TO_LEFT = false;
@@ -34,8 +32,8 @@ public class Console {
 		button.setEnabled(false);
 		pane.add(button, BorderLayout.PAGE_START);
 
-		HelpersPane helpersPane = new HelpersPane();
-		helpersPane.setPreferredSize(new Dimension(200, 100));
+		//HelpersPane helpersPane = new HelpersPane();
+		//helpersPane.setPreferredSize(new Dimension(200, 100));
 		
 		ViewGroupsPanel views = new ViewGroupsPanel();
 		//views.setPreferredSize(new Dimension(200, 100));
@@ -48,10 +46,10 @@ public class Console {
 		button.setEnabled(false);
 		pane.add(button, BorderLayout.PAGE_END);
 
-		pane.add(helpersPane, BorderLayout.LINE_END);
+		//pane.add(helpersPane, BorderLayout.LINE_END);
 
-		OperationContext oc = new OperationContext(dataDir, views, helpersPane);
-		helpersPane.install(oc);
+		OperationContext oc = new OperationContext(dataDir, views);
+		//helpersPane.install(oc);
 		oc.home();
 	}
 
