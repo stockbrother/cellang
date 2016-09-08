@@ -14,7 +14,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>
-
+		
 	</properties>
 	<build>
 
@@ -148,6 +148,7 @@
 			<version>${log4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<!-- scope:test -->
 		<dependency>
 			<groupId>junit</groupId>
