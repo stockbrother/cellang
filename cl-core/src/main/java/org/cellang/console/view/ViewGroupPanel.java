@@ -15,9 +15,9 @@ public class ViewGroupPanel extends JTabbedPane {
 
 	List<ViewAddListener> llist = new ArrayList<ViewAddListener>();
 	
-	ViewGroupsPanel parent;
+	PerspectivePanel parent;
 	
-	public ViewGroupPanel(ViewGroupsPanel parent) {
+	public ViewGroupPanel(PerspectivePanel parent) {
 		super.setUI(new ViewsTabbedPaneUI());
 	}
 

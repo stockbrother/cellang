@@ -3,25 +3,23 @@ package org.cellang.console.view.helper;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cellang.console.control.EventListener;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.entity.EntityConfigControl;
 import org.cellang.console.control.entity.EntityConfigManager;
+import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.table.EntityObjectTableView;
 import org.cellang.core.entity.EntityObject;
 
-public class EntityObjectHelperPane extends HelperPane<EntityObject> {
+public class EntityObjectHelperPane extends HelperPane<EntityObject> implements EventListener {
 	EntityConfigManager ecm;
+	OperationContext oc;
 
-	public EntityObjectHelperPane() {
+	public EntityObjectHelperPane(OperationContext oc) {
 		super("EntityObjectHelper");
-	}
-
-	/**
-	 * TODO use a container for global reference transfer.
-	 * 
-	 * @param ecm
-	 */
-	public void setEntityConfigManager(EntityConfigManager ecm) {
-		this.ecm = ecm;
+		this.oc = oc;
+		this.oc.getEventBus().addEventListener(EntityObjectTableView.EntityObjectSelectionEvent.class, this);
+		this.ecm = oc.getEntityConfigManager();
 	}
 
 	@Override
@@ -43,6 +41,12 @@ public class EntityObjectHelperPane extends HelperPane<EntityObject> {
 		des.put("id", co.getId());//
 
 		this.addText(des);
+	}
+
+	@Override
+	public void onEvent(Object evt) {
+		EntityObjectTableView.EntityObjectSelectionEvent eose = (EntityObjectTableView.EntityObjectSelectionEvent) evt;
+		this.setContextObject(eose.entityObject);
 	}
 
 }

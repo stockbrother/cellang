@@ -12,7 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.cellang.collector.EnvUtil;
 import org.cellang.console.ops.OperationContext;
-import org.cellang.console.view.ViewGroupsPanel;
+import org.cellang.console.view.PerspectivePanel;
 
 public class Console {
 	private static final boolean RIGHT_TO_LEFT = false;
@@ -35,7 +35,7 @@ public class Console {
 		//HelpersPane helpersPane = new HelpersPane();
 		//helpersPane.setPreferredSize(new Dimension(200, 100));
 		
-		ViewGroupsPanel views = new ViewGroupsPanel();
+		PerspectivePanel views = new PerspectivePanel();
 		//views.setPreferredSize(new Dimension(200, 100));
 		pane.add(views, BorderLayout.CENTER);
 

@@ -9,7 +9,6 @@ import org.cellang.console.control.EntityConfigSelectionListener;
 import org.cellang.console.control.EntityConfigSelector;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
-import org.cellang.console.view.helper.HelpersPane;
 import org.cellang.console.view.table.EntityObjectTableView;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityConfig;

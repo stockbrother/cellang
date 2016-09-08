@@ -60,7 +60,7 @@ public class ReportTableView<T extends AbstractReportEntity> extends TableDataVi
 		if (this.chartView == null) {
 			chartDp = new ReportRowChartDataProvider();
 			ReportRowChartView cv = new ReportRowChartView(chartDp);
-			this.oc.getViewManager().addView(cv, false);
+			this.oc.getViewManager().addView(2, cv, true);
 			this.chartView = cv;
 		}
 		boolean add = this.chartDp.addReportRow(rowObj);

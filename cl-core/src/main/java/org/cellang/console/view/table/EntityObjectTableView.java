@@ -22,6 +22,11 @@ import org.slf4j.LoggerFactory;
 public class EntityObjectTableView extends TableDataView<EntityObject> implements HasActions {
 
 	public static class EntityObjectSelectionEvent {
+		public EntityObject entityObject;
+
+		public EntityObjectSelectionEvent(EntityObject rowObj) {
+			this.entityObject = rowObj;
+		}
 
 	}
 
@@ -61,7 +66,7 @@ public class EntityObjectTableView extends TableDataView<EntityObject> implement
 	protected void onRowSelected(Integer row, EntityObject rowObj) {
 		super.onRowSelected(row, rowObj);//
 		// this.helpers.rowSelected(rowObj);//
-		oc.getEventBus().dispatch(new EntityObjectSelectionEvent());
+		oc.getEventBus().dispatch(new EntityObjectSelectionEvent(rowObj));
 	}
 
 }

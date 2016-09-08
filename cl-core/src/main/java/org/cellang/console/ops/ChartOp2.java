@@ -1,7 +1,7 @@
 
 package org.cellang.console.ops;
 
-import org.cellang.console.view.ViewGroupsPanel;
+import org.cellang.console.view.PerspectivePanel;
 import org.cellang.console.view.chart.AbstractChartDataProvider;
 import org.cellang.console.view.chart.DateChartView;
 import org.cellang.console.view.chart.ReportItemChartDataProvider;
@@ -35,7 +35,7 @@ public class ChartOp2 extends ConsoleOp<Void> {
 
 	@Override
 	public Void execute(OperationContext oc) {
-		ViewGroupsPanel views = oc.getViewManager();
+		PerspectivePanel views = oc.getViewManager();
 		EntityConfig ec = null;//oc.getEntityConfigManager().getSelectedEntityConfig();
 		EntityConfig ecItem = null;
 		if (BalanceSheetReportEntity.class.equals(ec.getEntityClass())) {

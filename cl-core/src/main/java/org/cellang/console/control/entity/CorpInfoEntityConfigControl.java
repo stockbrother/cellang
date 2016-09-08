@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity>implements HasActions {
+public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEntity> implements HasActions {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CorpInfoEntityConfigControl.class);
 	EntitySessionFactory entitySessions;
@@ -101,7 +101,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 				CorpInfoEntityConfigControl.this.openISReport((CorpInfoEntity) context);
 			}
 		});
-		
+
 		al.add(new Action() {
 
 			@Override
@@ -114,7 +114,7 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 				CorpInfoEntityConfigControl.this.openCFSReport((CorpInfoEntity) context);
 			}
 		});
-		
+
 		al.add(new Action() {
 
 			@Override
@@ -135,29 +135,30 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(CustomizedReportEntity.class);
 		View v = new ReportTableView<CustomizedReportEntity>(oc, CustomizedReportEntity.class, template,
 				oc.getReportConfigFactory().customizedReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(v, true);
+		oc.getViewManager().addView(1, v, true);
 	}
 
 	protected void openBSReport(CorpInfoEntity context) {
 		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(BalanceSheetReportEntity.class);
 		View v = new ReportTableView<BalanceSheetReportEntity>(oc, BalanceSheetReportEntity.class, template,
 				oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(v, true);
+		oc.getViewManager().addView(1, v, true);
 	}
-	
+
 	protected void openISReport(CorpInfoEntity context) {
 		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(IncomeStatementReportEntity.class);
 		View v = new ReportTableView<IncomeStatementReportEntity>(oc, IncomeStatementReportEntity.class, template,
 				oc.getReportConfigFactory().incomeStatementReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(v, true);
+		oc.getViewManager().addView(1, v, true);
 	}
-	
+
 	protected void openCFSReport(CorpInfoEntity context) {
 		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(CashFlowStatementReportEntity.class);
 		View v = new ReportTableView<CashFlowStatementReportEntity>(oc, CashFlowStatementReportEntity.class, template,
 				oc.getReportConfigFactory().cashFlowStatementReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(v, true);
+		oc.getViewManager().addView(1, v, true);
 	}
+
 	protected void addToInterested(CorpInfoEntity ce) {
 
 		if (LOG.isDebugEnabled()) {

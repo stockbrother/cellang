@@ -17,7 +17,7 @@ import org.cellang.console.EventBus;
 import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.HomeView;
 import org.cellang.console.view.View;
-import org.cellang.console.view.ViewGroupsPanel;
+import org.cellang.console.view.PerspectivePanel;
 import org.cellang.console.view.helper.EntityObjectHelperPane;
 import org.cellang.console.view.table.EntityConfigTableView;
 import org.cellang.core.converter.DateStringConverter;
@@ -60,29 +60,29 @@ public class OperationContext {
 
 	private boolean started;
 	private String[] matrics = new String[] { "负债权益比", "QUOTES" };
-	ViewGroupsPanel views;
+	PerspectivePanel views;
 	OpExecutor opExecutor = new OpExecutor();
 	private ReportConfigFactory reportConfigFactory;
 
 	private EventBus eventBus = new EventBus();
-	
+
 	public OperationContext() {
 
 	}
 
-	public EventBus getEventBus(){
+	public EventBus getEventBus() {
 		return this.eventBus;
 	}
-	
+
 	public <T> Future<T> execute(ConsoleOp<T> op) {
 		return this.opExecutor.execute(op, this);
 	}
 
-	public ViewGroupsPanel getViewManager() {
+	public PerspectivePanel getViewManager() {
 		return views;
 	}
 
-	public OperationContext(File dataDir, ViewGroupsPanel views) {
+	public OperationContext(File dataDir, PerspectivePanel views) {
 		this.dataHome = dataDir;
 		this.views = views;
 		entityConfigFactory = new EntityConfigFactory();
@@ -148,18 +148,17 @@ public class OperationContext {
 				this.getEntityConfigFactory().getEntityConfigList());
 		views.addView(table, true);
 
+		views.addView(0, new HomeView(this), true);
 		View view = this.getEntityConfigManager().newEntityListView(CorpInfoEntity.class);
-		views.addView(view, true);//
-		views.addView(new HomeView(this), true);
-		
-		views.addView(new EntityObjectHelperPane(), true);
+		views.addView(1, view, true);//
+		views.addView(2, new EntityObjectHelperPane(this), true);
 
 		// ExtendingPropertyMasterTableView table2 = new
 		// ExtendingPropertyMasterTableView(this);
 		// views.addView(table2, true);
 
 	}
-	
+
 	public void sql(String sql) {
 
 		StringBuffer sb = new StringBuffer();

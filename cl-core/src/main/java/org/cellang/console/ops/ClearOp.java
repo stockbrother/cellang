@@ -7,7 +7,7 @@ public class ClearOp extends ConsoleOp<Void> {
 
 	@Override
 	public Void execute(OperationContext oc) {
-		oc.getViewManager().clear();
+		
 		EntityOp<Void> op = new EntityOp<Void>() {
 
 			@Override
