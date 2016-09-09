@@ -11,13 +11,23 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.cellang.collector.EnvUtil;
+import org.cellang.console.control.DefaultHasDelagates;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.PerspectivePanel;
 
 public class Console {
+	public static class Context extends DefaultHasDelagates implements HasDelagates {
+
+		public Context() {
+			
+			this.put(EventBus.class, new EventBus());
+			
+		}
+	}
+
 	private static final boolean RIGHT_TO_LEFT = false;
 
-	public static void addComponentsToPane(File dataDir, Container pane) {
+	public static void addComponentsToPane(Context context, File dataDir, Container pane) {
 
 		if (!(pane.getLayout() instanceof BorderLayout)) {
 			pane.add(new JLabel("Container doesn't use BorderLayout!"));
@@ -32,35 +42,35 @@ public class Console {
 		button.setEnabled(false);
 		pane.add(button, BorderLayout.PAGE_START);
 
-		//HelpersPane helpersPane = new HelpersPane();
-		//helpersPane.setPreferredSize(new Dimension(200, 100));
-		
-		PerspectivePanel views = new PerspectivePanel();
-		//views.setPreferredSize(new Dimension(200, 100));
+		// HelpersPane helpersPane = new HelpersPane();
+		// helpersPane.setPreferredSize(new Dimension(200, 100));
+
+		PerspectivePanel views = new PerspectivePanel(context);
+		// views.setPreferredSize(new Dimension(200, 100));
 		pane.add(views, BorderLayout.CENTER);
 
-		//button = new JButton("Button 3 (LINE_START)");
-		//pane.add(button, BorderLayout.LINE_START);
+		// button = new JButton("Button 3 (LINE_START)");
+		// pane.add(button, BorderLayout.LINE_START);
 
 		button = new JButton("Status bar.");
 		button.setEnabled(false);
 		pane.add(button, BorderLayout.PAGE_END);
 
-		//pane.add(helpersPane, BorderLayout.LINE_END);
+		// pane.add(helpersPane, BorderLayout.LINE_END);
 
-		OperationContext oc = new OperationContext(dataDir, views);
-		//helpersPane.install(oc);
+		OperationContext oc = new OperationContext(context, dataDir, views);
+		// helpersPane.install(oc);
 		oc.home();
 	}
 
 	private static void createAndShowGUI() {
-
+		Context context = new Context();
 		// Create and set up the window.
 		JFrame frame = new JFrame("BorderLayoutDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Set up the content pane.
 		File dataDir = EnvUtil.getDataDir();
-		addComponentsToPane(dataDir, frame.getContentPane());
+		addComponentsToPane(context, dataDir, frame.getContentPane());
 		// Use the content pane's default BorderLayout. No need for
 		// setLayout(new BorderLayout());
 		// Display the window.

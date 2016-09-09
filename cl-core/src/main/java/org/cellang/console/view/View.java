@@ -12,8 +12,4 @@ public interface View extends HasDelagates {
 
 	public String getId();
 
-	public void addViewSelectionListener(ViewSelectionListener vsl);
-	
-	public void select(boolean sel);
-
 }

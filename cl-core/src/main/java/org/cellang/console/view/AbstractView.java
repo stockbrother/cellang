@@ -1,8 +1,6 @@
 package org.cellang.console.view;
 
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JScrollPane;
 
@@ -13,8 +11,6 @@ public class AbstractView extends JScrollPane implements View {
 
 	protected String title;
 	protected String id;
-	protected boolean selected;
-	List<ViewSelectionListener> llist = new ArrayList<>();
 
 	public AbstractView(String title) {
 		this.title = title;
@@ -47,24 +43,5 @@ public class AbstractView extends JScrollPane implements View {
 	public String getId() {
 		return this.id;
 	}
-	@Override
-	public void addViewSelectionListener(ViewSelectionListener vsl){
-		this.llist.add(vsl);
-	}
 	
-	@Override
-	public void select(boolean sel) {
-		
-		if(this.selected == sel){
-			return;
-		}
-		this.selected = sel;
-		if(this.selected){
-			for (ViewSelectionListener vL : this.llist) {
-				vL.viewSelected(this);
-			}			
-		}
-
-	}
-
 }

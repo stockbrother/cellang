@@ -5,30 +5,37 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.commons.util.UUIDUtil;
+import org.cellang.console.EventBus;
+import org.cellang.console.HasDelagateUtil;
 import org.cellang.console.HasDelagates;
 import org.cellang.console.control.Action;
-import org.cellang.console.control.ActionHandler;
 import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
+import org.cellang.console.control.EventListener;
 import org.cellang.console.control.Favoriteable;
 import org.cellang.console.control.Filterable;
 import org.cellang.console.control.Refreshable;
 import org.cellang.console.control.ValueChangeListener;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
+import org.cellang.console.view.ViewGroupPanel;
 import org.cellang.console.view.table.TableDataProvider;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.FavoriteActionEntity;
 
-public class ViewHelperPane extends HelperPane<View> {
+public class ViewHelperPane extends HelperPane<View> implements EventListener {
 	EntitySessionFactory esf;
+	EventBus eventBus;
 
-	public ViewHelperPane() {
+	public ViewHelperPane(Object context, OperationContext oc) {
 		super("ViewHelper");
+		this.eventBus = HasDelagateUtil.getDelagate(context, EventBus.class, true);
+		this.eventBus.addEventListener(ViewGroupPanel.ViewSelectionEvent.class, this);
+		this.esf = oc.getEntityService();
 	}
 
 	public void setContextObject(View view) {
@@ -45,7 +52,7 @@ public class ViewHelperPane extends HelperPane<View> {
 			HasDelagates dp = (HasDelagates) dpa;
 			DataPageQuerable dpq = dp.getDelegate(DataPageQuerable.class);
 			if (dpq != null) {
-				
+
 				this.addAction(new Action() {
 
 					@Override
@@ -60,7 +67,7 @@ public class ViewHelperPane extends HelperPane<View> {
 
 					}
 				});
-				
+
 				this.addAction(new Action() {
 
 					@Override
@@ -79,7 +86,7 @@ public class ViewHelperPane extends HelperPane<View> {
 			}
 			Refreshable rfs = dp.getDelegate(Refreshable.class);
 			if (rfs != null) {
-				
+
 				this.addAction(new Action() {
 
 					@Override
@@ -182,8 +189,10 @@ public class ViewHelperPane extends HelperPane<View> {
 		});
 	}
 
-	public void install(OperationContext oc) {
-		this.esf = oc.getEntityService();
+	@Override
+	public void onEvent(Object evt) {
+		ViewGroupPanel.ViewSelectionEvent vse = (ViewGroupPanel.ViewSelectionEvent) evt;
+		this.setContextObject(vse.view);
 	}
 
 }

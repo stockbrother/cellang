@@ -14,11 +14,13 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.cellang.console.EventBus;
+import org.cellang.console.HasDelagateUtil;
 import org.cellang.console.control.entity.EntityConfigManager;
 import org.cellang.console.view.HomeView;
-import org.cellang.console.view.View;
 import org.cellang.console.view.PerspectivePanel;
+import org.cellang.console.view.View;
 import org.cellang.console.view.helper.EntityObjectHelperPane;
+import org.cellang.console.view.helper.ViewHelperPane;
 import org.cellang.console.view.table.EntityConfigTableView;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
@@ -64,11 +66,7 @@ public class OperationContext {
 	OpExecutor opExecutor = new OpExecutor();
 	private ReportConfigFactory reportConfigFactory;
 
-	private EventBus eventBus = new EventBus();
-
-	public OperationContext() {
-
-	}
+	private EventBus eventBus;
 
 	public EventBus getEventBus() {
 		return this.eventBus;
@@ -82,7 +80,12 @@ public class OperationContext {
 		return views;
 	}
 
-	public OperationContext(File dataDir, PerspectivePanel views) {
+	Object context;
+
+	public OperationContext(Object context, File dataDir, PerspectivePanel views) {
+		this.context = context;
+
+		this.eventBus = HasDelagateUtil.getDelagate(context, EventBus.class, true);
 		this.dataHome = dataDir;
 		this.views = views;
 		entityConfigFactory = new EntityConfigFactory();
@@ -152,6 +155,7 @@ public class OperationContext {
 		View view = this.getEntityConfigManager().newEntityListView(CorpInfoEntity.class);
 		views.addView(1, view, true);//
 		views.addView(2, new EntityObjectHelperPane(this), true);
+		views.addView(2, new ViewHelperPane(this.context, this), true);
 
 		// ExtendingPropertyMasterTableView table2 = new
 		// ExtendingPropertyMasterTableView(this);

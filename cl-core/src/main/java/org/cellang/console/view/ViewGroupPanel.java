@@ -6,19 +6,33 @@ import java.util.List;
 
 import javax.swing.JTabbedPane;
 
+import org.cellang.console.EventBus;
+import org.cellang.console.HasDelagateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ViewGroupPanel extends JTabbedPane {
 
+	public static class ViewSelectionEvent {
+		public View view;
+		public ViewGroupPanel group;
+
+		public ViewSelectionEvent(ViewGroupPanel g, View view) {
+			this.group = g;
+			this.view = view;
+		}
+	}
+
 	private static final Logger LOG = LoggerFactory.getLogger(ViewGroupPanel.class);
 
 	List<ViewAddListener> llist = new ArrayList<ViewAddListener>();
-	
+
 	PerspectivePanel parent;
-	
-	public ViewGroupPanel(PerspectivePanel parent) {
+	EventBus eventBus;
+
+	public ViewGroupPanel(Object context, PerspectivePanel parent) {
 		super.setUI(new ViewsTabbedPaneUI());
+		this.eventBus = HasDelagateUtil.getDelagate(context, EventBus.class, true);
 	}
 
 	@Override
@@ -32,7 +46,7 @@ public class ViewGroupPanel extends JTabbedPane {
 
 	private void selectedChanged() {
 		View v = (View) this.getSelectedComponent();
-		v.select(true);//
+		this.eventBus.dispatch(new ViewSelectionEvent(this, v));
 	}
 
 	public void addViewsListener(ViewAddListener vl) {
@@ -42,7 +56,7 @@ public class ViewGroupPanel extends JTabbedPane {
 	public void addView(View v, boolean select) {
 		Component com = v.getComponent();
 		this.addTab(v.getTitle() + "   ", com);
-		
+
 		if (select) {
 			this.setSelectedComponent(com);
 		}
@@ -65,8 +79,8 @@ public class ViewGroupPanel extends JTabbedPane {
 			vl.add(v);
 		}
 		this.removeAll();
-		for (View v : vl) {			
-			parent.viewRemoved(v);			
+		for (View v : vl) {
+			parent.viewRemoved(v);
 		}
 		this.selectedChanged();
 
