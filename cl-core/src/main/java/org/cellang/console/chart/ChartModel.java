@@ -30,6 +30,11 @@ public class ChartModel<T> extends ChartWindow<T> {
 	public ChartSerial<T> getSerial(String sname) {
 		return serialMap.get(sname);
 	}
+	
+	public void clearSerials(){
+		this.serialMap.clear();
+		this.serialList.clear();
+	}
 
 	public void addSerail(ChartSerial<T> css) {
 		String key = css.getName();

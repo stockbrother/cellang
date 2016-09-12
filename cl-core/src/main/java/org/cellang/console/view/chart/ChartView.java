@@ -1,5 +1,13 @@
 package org.cellang.console.view.chart;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.chart.LineChart;
 import org.cellang.console.control.DataPageQuerable;
@@ -10,6 +18,8 @@ public class ChartView<T> extends AbstractView {
 	LineChart<T> chart;
 	ChartModel<T> model;
 	AbstractChartDataProvider<T> data;
+	JPanel top;
+	JPanel tools;
 
 	public ChartView(String title, AbstractChartDataProvider<T> cd) {
 		super(title);
@@ -18,8 +28,30 @@ public class ChartView<T> extends AbstractView {
 		this.data = cd;
 
 		this.chart = new LineChart<T>(model);
-		this.setViewportView(this.chart);
+		this.top = new JPanel(new BorderLayout());
+		this.top.setBackground(Color.blue);//
+		this.top.add(this.chart, BorderLayout.CENTER);
+		this.tools = new JPanel();
+		JButton button = new JButton();
+		button.setText("Clear");
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clearSerials();
+			}
+		});
+		this.tools.add(button);
+		this.top.add(this.tools, BorderLayout.NORTH);
+
+		this.setViewportView(this.top);
+
 		this.data.nextPage();
+	}
+
+	private void clearSerials() {
+		this.model.clearSerials();
+		this.chart.updateUI();
 	}
 
 	@Override
