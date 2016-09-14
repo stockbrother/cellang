@@ -31,10 +31,14 @@ public class CustomizedReportUpdater {
 	public CustomizedReportUpdater(EntitySessionFactory esf) {
 		this.esf = esf;
 		this.add(new RoeCustomizedReportItemDefine());
-		this.add(new InventoryTurnDaysCustomizedReportItemDefine());
-		this.add(new YingshouTurnDaysCustomizedReportItemDefine());
-		this.add(new YingfuTurnDaysCustomizedReportItemDefine());
-		this.add(new CashTurnDaysCustomizedReportItemDefine());
+		//this.add(new InventoryTurnDaysCustomizedReportItemDefine());
+		//this.add(new YingshouTurnDaysCustomizedReportItemDefine());
+		//this.add(new YingfuTurnDaysCustomizedReportItemDefine());
+		//this.add(new CashTurnDaysCustomizedReportItemDefine());
+		this.add(new XiaoShouJingLiLvCustomizedReportItemDefine());		
+		this.add(new ZongZiChanZhouZhuanLvCustomizedReportItemDefine());
+		this.add(new QuanYiChengShuCustomizedReportItemDefine());
+		
 
 		for (CustomizedReportItemDefine define : this.defineList) {
 			define.install(this.esf);
