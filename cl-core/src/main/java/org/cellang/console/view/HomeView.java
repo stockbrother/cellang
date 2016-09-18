@@ -5,7 +5,10 @@ import java.util.List;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.customized.CustomizedReportUpdater;
+import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.ops.OperationContext;
+import org.cellang.console.view.report.ReportTemplateTableView;
+import org.cellang.core.entity.BalanceSheetReportEntity;
 
 public class HomeView extends AbstractView implements HasActions {
 	OperationContext oc;
@@ -33,9 +36,30 @@ public class HomeView extends AbstractView implements HasActions {
 				}
 
 			});
+			al.add(new Action() {
+
+				@Override
+				public String getName() {
+
+					return "Report Template";
+				}
+
+				@Override
+				public void perform() {
+					openIndexSummary();
+				}
+
+			});
+			
 
 		}
 		return al;
+	}
+	
+	public void openIndexSummary(){
+		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(BalanceSheetReportEntity.class);
+		View v = new ReportTemplateTableView<BalanceSheetReportEntity>(oc, BalanceSheetReportEntity.class, template);
+		oc.getViewManager().addView(1, v, true);
 	}
 
 	public void updateCustomizedReport() {

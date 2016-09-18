@@ -12,7 +12,7 @@ public class AbstractView extends JScrollPane implements View {
 	protected String title;
 	protected String id;
 
-	public AbstractView(String title) {
+	public AbstractView(String title) {		
 		this.title = title;
 		this.id = UUIDUtil.randomStringUUID();
 	}
