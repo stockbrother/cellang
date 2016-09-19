@@ -1,13 +1,8 @@
 package org.cellang.console.view.report;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.cellang.collector.EnvUtil;
 import org.cellang.commons.lang.Visitor;
 import org.cellang.console.format.ReportItemLocator;
 import org.cellang.console.format.ReportItemLocators;
@@ -15,12 +10,6 @@ import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
 import org.cellang.console.view.table.LineNumberColumn;
 import org.cellang.core.entity.AbstractReportEntity;
-import org.cellang.core.entity.AbstractReportItemEntity;
-import org.cellang.core.entity.EntityObject;
-import org.cellang.core.entity.EntityOp;
-import org.cellang.core.entity.EntityQuery;
-import org.cellang.core.entity.EntitySession;
-import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.metrics.ReportConfig;
 
 public class ReportTemplateTableDataProvider<T extends AbstractReportEntity> extends AbstractTableDataProvider<ReportTemplateRow> {
@@ -29,10 +18,10 @@ public class ReportTemplateTableDataProvider<T extends AbstractReportEntity> ext
 
 	ReportItemLocatorFilter filter = new ReportItemLocatorFilter();
 	ReportItemLocators.Group template;
-	Class<T> reportEntityClass;
+	ReportConfig reportConfig;
 	List<ReportTemplateRow> backList;
-	public ReportTemplateTableDataProvider(Class<T> rptEntityCls, ReportItemLocators.Group template) {
-		this.reportEntityClass = rptEntityCls;
+	public ReportTemplateTableDataProvider(ReportConfig rc, ReportItemLocators.Group template) {
+		this.reportConfig = rc;
 		this.template = template;
 
 		this.columnList.add(new LineNumberColumn<ReportTemplateRow>(this));
@@ -61,7 +50,7 @@ public class ReportTemplateTableDataProvider<T extends AbstractReportEntity> ext
 		}, false);
 
 		for (ReportItemLocator ri : locL) {
-			ReportTemplateRow rr = new ReportTemplateRow(ri.getKey(), ri);
+			ReportTemplateRow rr = new ReportTemplateRow(this.reportConfig, ri.getKey(), ri);
 			rL.add(rr);
 		}
 		return rL;

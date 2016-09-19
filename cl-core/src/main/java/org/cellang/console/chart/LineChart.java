@@ -45,6 +45,10 @@ public class LineChart<T> extends JPanel {
 	public LineChart(ChartModel<T> model) {
 		this.model = model;
 	}
+	
+	public void setXLabelRenderer(XLabelRenderer<T> xLR){
+		this.xLabelRenderer = xLR;
+	}
 
 	protected void paintSerial(ColorGenerator cg, Grahpics2DWrapper g2, int centerWidth, int centerHeight,
 			ChartSerial<T> ser, int size, double yrange, double ymax) {

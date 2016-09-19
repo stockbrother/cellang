@@ -9,6 +9,7 @@ import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.ColumnDefine;
 import org.cellang.console.view.table.TableDataView;
 import org.cellang.core.entity.AbstractReportEntity;
+import org.cellang.core.metrics.ReportConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +26,9 @@ public class ReportTemplateTableView<T extends AbstractReportEntity> extends Tab
 	
 	ReportTemplateRow selectedRow;
 
-	public ReportTemplateTableView(OperationContext oc, Class<T> cls, ReportItemLocators.Group template) {
+	public ReportTemplateTableView(OperationContext oc, ReportConfig rc, ReportItemLocators.Group template) {
 		super("Report Template",
-				new ReportTemplateTableDataProvider<T>(cls, template));
+				new ReportTemplateTableDataProvider<T>(rc, template));
 		this.oc = oc;
 	}
 
@@ -50,9 +51,7 @@ public class ReportTemplateTableView<T extends AbstractReportEntity> extends Tab
 	}
 
 	protected void onRowOrColSelected(ReportTemplateRow rowObj) {
-		if (rowObj == null) {
-			return;
-		}		
+		oc.setReportTemplateRow(rowObj);
 	}
 
 }

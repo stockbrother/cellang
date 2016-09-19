@@ -1,13 +1,14 @@
 package org.cellang.console.view.report;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cellang.console.format.ReportItemLocator;
-import org.cellang.core.entity.AbstractReportItemEntity;
+import org.cellang.core.metrics.ReportConfig;
 
 public class ReportTemplateRow {
-	List<AbstractReportItemEntity> itemList = new ArrayList<>();
+	
+	ReportConfig reportConfig;
+	public ReportConfig getReportConfig() {
+		return reportConfig;
+	}
 
 	private String key;
 
@@ -17,7 +18,8 @@ public class ReportTemplateRow {
 		return key;
 	}
 
-	public ReportTemplateRow(String key, ReportItemLocator ri) {
+	public ReportTemplateRow(ReportConfig rc, String key, ReportItemLocator ri) {
+		this.reportConfig = rc;
 		this.key = key;
 		this.locator = ri;
 	}

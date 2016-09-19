@@ -7,12 +7,15 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.cellang.collector.EnvUtil;
 import org.cellang.console.control.DefaultHasDelagates;
 import org.cellang.console.ops.OperationContext;
+import org.cellang.console.toolbar.MenuBar;
 import org.cellang.console.view.PerspectivePanel;
 
 public class Console {
@@ -37,28 +40,29 @@ public class Console {
 		if (RIGHT_TO_LEFT) {
 			pane.setComponentOrientation(java.awt.ComponentOrientation.RIGHT_TO_LEFT);
 		}
-
-		JButton button = new JButton("Tool bar");
-		button.setEnabled(false);
-		pane.add(button, BorderLayout.PAGE_START);
+		OperationContext oc = new OperationContext(context, dataDir);
+		MenuBar menubar = new MenuBar(oc);
+		
+		pane.add(menubar, BorderLayout.PAGE_START);
 
 		// HelpersPane helpersPane = new HelpersPane();
 		// helpersPane.setPreferredSize(new Dimension(200, 100));
 
 		PerspectivePanel views = new PerspectivePanel(context);
+		oc.addComponent(views);//
 		// views.setPreferredSize(new Dimension(200, 100));
 		pane.add(views, BorderLayout.CENTER);
 
 		// button = new JButton("Button 3 (LINE_START)");
 		// pane.add(button, BorderLayout.LINE_START);
 
-		button = new JButton("Status bar.");
+		JButton button = new JButton("Status bar.");
 		button.setEnabled(false);
 		pane.add(button, BorderLayout.PAGE_END);
 
 		// pane.add(helpersPane, BorderLayout.LINE_END);
 
-		OperationContext oc = new OperationContext(context, dataDir, views);
+		
 		// helpersPane.install(oc);
 		oc.home();
 	}

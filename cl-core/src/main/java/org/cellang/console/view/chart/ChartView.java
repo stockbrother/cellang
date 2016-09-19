@@ -15,7 +15,7 @@ import org.cellang.console.control.Descriable;
 import org.cellang.console.view.AbstractView;
 
 public class ChartView<T> extends AbstractView {
-	LineChart<T> chart;
+	protected LineChart<T> chart;
 	ChartModel<T> model;
 	AbstractChartDataProvider<T> data;
 	JPanel top;
@@ -23,7 +23,7 @@ public class ChartView<T> extends AbstractView {
 
 	public ChartView(String title, AbstractChartDataProvider<T> cd) {
 		super(title);
-		cd.setView(this);//
+		//cd.setView(this);//
 		model = cd.getModel();
 		this.data = cd;
 

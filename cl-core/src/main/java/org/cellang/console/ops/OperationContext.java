@@ -21,6 +21,7 @@ import org.cellang.console.view.PerspectivePanel;
 import org.cellang.console.view.View;
 import org.cellang.console.view.helper.EntityObjectHelperPane;
 import org.cellang.console.view.helper.ViewHelperPane;
+import org.cellang.console.view.report.ReportTemplateRow;
 import org.cellang.console.view.table.EntityConfigTableView;
 import org.cellang.core.converter.DateStringConverter;
 import org.cellang.core.entity.Converter;
@@ -68,8 +69,19 @@ public class OperationContext {
 
 	private EventBus eventBus;
 
+	private ReportTemplateRow selectedReportTemplateRow;
+
 	public EventBus getEventBus() {
 		return this.eventBus;
+	}
+	public ReportTemplateRow getReportTemplateRow() {
+		return this.selectedReportTemplateRow;
+	}
+	
+	public ReportTemplateRow setReportTemplateRow(ReportTemplateRow rtr) {
+		ReportTemplateRow rt = this.selectedReportTemplateRow;
+		this.selectedReportTemplateRow = rtr;
+		return rt;
 	}
 
 	public <T> Future<T> execute(ConsoleOp<T> op) {
@@ -82,18 +94,20 @@ public class OperationContext {
 
 	Object context;
 
-	public OperationContext(Object context, File dataDir, PerspectivePanel views) {
+	public OperationContext(Object context, File dataDir) {
 		this.context = context;
-
 		this.eventBus = HasDelagateUtil.getDelagate(context, EventBus.class, true);
 		this.dataHome = dataDir;
-		this.views = views;
 		entityConfigFactory = new EntityConfigFactory();
 		this.reportConfigFactory = new ReportConfigFactory(entityConfigFactory);
 
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
 		this.entityConfigManager = new EntityConfigManager(this, this.entityService);
+	}
+
+	public void addComponent(PerspectivePanel views) {
+		this.views = views;
 	}
 
 	public void addListener(Listener l) {
