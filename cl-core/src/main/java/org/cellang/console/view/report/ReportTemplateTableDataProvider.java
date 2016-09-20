@@ -12,7 +12,7 @@ import org.cellang.console.view.table.LineNumberColumn;
 import org.cellang.core.entity.AbstractReportEntity;
 import org.cellang.core.metrics.ReportConfig;
 
-public class ReportTemplateTableDataProvider<T extends AbstractReportEntity> extends AbstractTableDataProvider<ReportTemplateRow> {
+public class ReportTemplateTableDataProvider extends AbstractTableDataProvider<ReportTemplateRow> {
 
 	static ReportItemLocators RIL = ReportItemLocators.getInstance();
 
@@ -20,9 +20,10 @@ public class ReportTemplateTableDataProvider<T extends AbstractReportEntity> ext
 	ReportItemLocators.Group template;
 	ReportConfig reportConfig;
 	List<ReportTemplateRow> backList;
-	public ReportTemplateTableDataProvider(ReportConfig rc, ReportItemLocators.Group template) {
+	public ReportTemplateTableDataProvider(ReportConfig rc) {
 		this.reportConfig = rc;
-		this.template = template;
+		
+		this.template = ReportItemLocators.getInstance().get((Class<? extends AbstractReportEntity>)rc.getReportEntityConfig().getEntityClass());		
 
 		this.columnList.add(new LineNumberColumn<ReportTemplateRow>(this));
 		this.columnList.add(new ReportTemplateRowKeyColumn(template, this, filter));

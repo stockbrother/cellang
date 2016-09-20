@@ -59,8 +59,6 @@ public class ReportTemplateRowChartDataProvider extends AbstractChartDataProvide
 
 		BigDecimal maxValue;
 
-		int size = 20;
-
 		BigDecimal step;
 
 		List<Scope> target;
@@ -88,24 +86,41 @@ public class ReportTemplateRowChartDataProvider extends AbstractChartDataProvide
 			if (this.minValue.compareTo(this.maxValue) == 0) {
 				this.step = new BigDecimal(1);
 			}
+			int SIZE = 20;
 			int LEFT = 1;
 			int RIGHT = 1;
-			step = maxValue.subtract(minValue).divide(new BigDecimal(size - LEFT - RIGHT), 2, RoundingMode.UP);
+			step = maxValue.subtract(minValue).divide(new BigDecimal(SIZE - LEFT - RIGHT), 2, RoundingMode.UP);
 
-			BigDecimal from = this.minValue.subtract(step.multiply(new BigDecimal(LEFT)));// move
-																							// one
-																							// left
-																							// step
+			// adjust step.
+			int pow = String.valueOf(step.unscaledValue()).length() - step.scale();
+			if (pow > 0) {
+				step = new BigDecimal(10).pow(pow);//
+			} else {
+				step = new BigDecimal("0.1").pow(-pow);//
+			}
 
+			BigDecimal steps = this.minValue.divide(step, 0, RoundingMode.CEILING);
+
+			BigDecimal from = step.multiply(steps.subtract(BigDecimal.ONE));
+
+			if (from.compareTo(this.minValue) > 0) {
+				throw new RuntimeException("bug.");
+			}
+			// adjust left/from.
+
+			// counting.
 			int j = 0;
-			for (int i = 0; i < size; i++) {
+			for (int i = 0;; i++) {
+
 				BigDecimal to = from.add(this.step);
 				Scope scope = new Scope(i, from, to);
 
 				this.target.add(scope);
 				while (j < list.size()) {
 					Tuple2<String, BigDecimal> item = list.get(j);
-					if (scope.add(item.a, item.b)) {
+					if (item.b == null) {
+						j++;
+					} else if (scope.add(item.a, item.b)) {
 						LOG.debug("add corpId:" + item.a + ",value:" + item.b + " to scope:" + scope.from + "-"
 								+ scope.to);
 
@@ -113,6 +128,9 @@ public class ReportTemplateRowChartDataProvider extends AbstractChartDataProvide
 					} else {
 						break;
 					}
+				}
+				if (j > list.size() - 1) {
+					break;
 				}
 				from = to;
 			}

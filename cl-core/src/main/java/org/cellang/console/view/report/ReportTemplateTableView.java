@@ -8,7 +8,6 @@ import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.ColumnDefine;
 import org.cellang.console.view.table.TableDataView;
-import org.cellang.core.entity.AbstractReportEntity;
 import org.cellang.core.metrics.ReportConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +18,16 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class ReportTemplateTableView<T extends AbstractReportEntity> extends TableDataView<ReportTemplateRow> implements HasActions {
+public class ReportTemplateTableView extends TableDataView<ReportTemplateRow> implements HasActions {
 
 	static final Logger LOG = LoggerFactory.getLogger(ReportTemplateTableView.class);
 	OperationContext oc;
 	
 	ReportTemplateRow selectedRow;
 
-	public ReportTemplateTableView(OperationContext oc, ReportConfig rc, ReportItemLocators.Group template) {
+	public ReportTemplateTableView(OperationContext oc, ReportConfig rc) {
 		super("Report Template",
-				new ReportTemplateTableDataProvider<T>(rc, template));
+				new ReportTemplateTableDataProvider(rc));
 		this.oc = oc;
 	}
 

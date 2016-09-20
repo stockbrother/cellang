@@ -20,6 +20,21 @@ import org.cellang.core.metrics.ReportConfig;
 
 public class MenuBar extends JMenuBar {
 
+	public static class ReportTemplateAction extends Action {
+
+		@Override
+		public String getName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void perform() {
+
+		}
+
+	}
+
 	public static class Menu extends JMenu {
 		public Menu(String title) {
 			super(title);
@@ -46,25 +61,41 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public String getName() {
 
-				return "Report Template";
+				return "Report Template(Balance)";
 
 			}
 
 			@Override
 			public void perform() {
-				ReportItemLocators.Group template = ReportItemLocators.getInstance()
-						.get(BalanceSheetReportEntity.class);
+				
 				ReportConfig rc = oc.getReportConfigFactory().balanceSheetReportConfig;
-				View v = new ReportTemplateTableView<BalanceSheetReportEntity>(oc, rc,
-						template);
+				View v = new ReportTemplateTableView(oc, rc);
 				oc.getViewManager().addView(1, v, true);
 			}
 		});
+
 		file.addItem(new Action() {
 
 			@Override
 			public String getName() {
-				return "Report Template Row Chart";
+
+				return "Report Template(Other)";
+
+			}
+
+			@Override
+			public void perform() {				
+				ReportConfig rc = oc.getReportConfigFactory().customizedReportConfig;
+				View v = new ReportTemplateTableView(oc, rc);
+				oc.getViewManager().addView(1, v, true);
+			}
+		});
+
+		file.addItem(new Action() {
+
+			@Override
+			public String getName() {
+				return "Template Chart";
 			}
 
 			@Override
@@ -72,11 +103,12 @@ public class MenuBar extends JMenuBar {
 				ReportTemplateRow rtr = oc.getReportTemplateRow();
 				ReportTemplateRowChartDataProvider chartDp = new ReportTemplateRowChartDataProvider(oc);
 				chartDp.addReportRow(rtr);
-				ReportTemplateRowChartView cv = new ReportTemplateRowChartView(chartDp);		
+				ReportTemplateRowChartView cv = new ReportTemplateRowChartView(chartDp);
 				oc.getViewManager().addView(2, cv, true);
-				
+
 			}
 		});
+
 	}
 
 	public Menu addMenu(String title) {

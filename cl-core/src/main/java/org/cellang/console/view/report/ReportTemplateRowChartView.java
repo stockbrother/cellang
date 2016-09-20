@@ -16,8 +16,10 @@ public class ReportTemplateRowChartView extends ChartView<Scope> {
 
 			@Override
 			public String toDisplayValue(Scope value) {
-
-				return format.format(value.from) + "-" + format.format(value.to);
+				if(value == null){
+					return "null";
+				}
+				return format.format(value.from);
 			}
 		});
 	}
