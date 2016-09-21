@@ -19,7 +19,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LineChart<T> extends JPanel {
+
 	private static final Logger LOG = LoggerFactory.getLogger(LineChart.class);
+
+	public static class ZoomSetting {
+		float zoomY = 1;
+
+		float zoomX = 1;
+
+		float x = 0;
+
+		float y = 0;
+
+		public ZoomSetting setZoomY(float zy) {
+			this.zoomY = zy;
+			return this;
+		}
+
+		public float getZoomY() {
+			return this.zoomY;
+		}
+	}
 
 	private int paddingLabel = 3;
 	private int padding = 25;
@@ -39,24 +59,39 @@ public class LineChart<T> extends JPanel {
 	private int xLabelRotateAngle = 15;
 
 	private DecimalFormat format = new DecimalFormat("#,##0.00");
-	
+
 	XLabelRenderer<T> xLabelRenderer = new DefaultXLabelRenderer<T>();
-	
+
+	private int maxXLabelForDrawing = 10;
+
+	private ZoomSetting zoomSetting = new ZoomSetting();
+
 	public LineChart(ChartModel<T> model) {
 		this.model = model;
 	}
-	
-	public void setXLabelRenderer(XLabelRenderer<T> xLR){
+
+	public ZoomSetting getZoomSetting() {
+		return zoomSetting;
+	}
+
+	public void setZoomSetting(ZoomSetting zoomSetting) {
+		this.zoomSetting = zoomSetting;
+		this.updateUI();
+	}
+
+	public void setXLabelRenderer(XLabelRenderer<T> xLR) {
 		this.xLabelRenderer = xLR;
 	}
 
-	protected void paintSerial(ColorGenerator cg, Grahpics2DWrapper g2, int centerWidth, int centerHeight,
+	protected void paintSerial(ColorGenerator cg, Grahpics2DWrapper g2, int viewPointWidth, int viewPointHeight,
 			ChartSerial<T> ser, int size, double yrange, double ymax) {
 		Color color = cg.next();
+		int paintWidth = viewPointWidth;
+		int paintHeight = (int) (this.zoomSetting.zoomY * viewPointHeight);
 
-		double xScale = (double) centerWidth / (size - 1);
-		double yScale = (double) centerHeight / yrange;
-
+		double xScale = (double) paintWidth / (size - 1);
+		double ystep = (double) paintHeight / yrange;
+		int yoffset = -paintHeight + viewPointHeight;
 		List<Point> graphPoints = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
 			int x1 = (int) (i * xScale);
@@ -66,7 +101,7 @@ public class LineChart<T> extends JPanel {
 				continue;
 			}
 
-			int y1 = (int) ((ymax - yValue.doubleValue()) * yScale);
+			int y1 = (int) ((ymax - yValue.doubleValue()) * ystep) + yoffset;
 
 			graphPoints.add(new Point(x1, y1));
 		}
@@ -97,7 +132,7 @@ public class LineChart<T> extends JPanel {
 		if (graphPoints.size() > 0) {
 
 			Point last = graphPoints.get(graphPoints.size() - 1);
-			int x = centerWidth;
+			int x = viewPointWidth;
 			int y = last.y;
 			g2.drawString(ser.getName(), x, y, color);
 
@@ -128,14 +163,19 @@ public class LineChart<T> extends JPanel {
 		return this.padding + this.getLeftLabelPadding();
 	}
 
-	private void drawXAxis(Grahpics2DWrapper g2, int centerWidth, int centerHeight, int size) {
-		double xScale = (double)centerWidth / (size - 1);
+	private void drawXAxis(Grahpics2DWrapper g2, int viewPointWidth, int viewPointHeight, int xsize) {
+		double xScale = (double) viewPointWidth / (xsize - 1);
+		int drawXLabelStep = xsize / this.maxXLabelForDrawing;
 
-		for (int i = 0; i < size; i++) {
+		if (drawXLabelStep == 0) {
+			drawXLabelStep = 1;
+		}
+
+		for (int i = 0; i < xsize; i++) {
 			int xI = (int) (xScale * i);
-			int y0 = centerHeight + paddingLabel;// TODO
+			int y0 = viewPointHeight + paddingLabel;// TODO
 
-			int y1 = centerHeight - pointWidth;
+			int y1 = viewPointHeight - pointWidth;
 			int y2 = 0;
 			if (i > 0) {
 
@@ -150,30 +190,49 @@ public class LineChart<T> extends JPanel {
 			FontMetrics metrics = g2.get().getFontMetrics();
 			int labelWidth = metrics.stringWidth(xLabel);
 			// label X label
-			g2.drawString(xLabel, xI, y0 + (metrics.getHeight() / 2) - 3, Color.BLACK, this.xLabelRotateAngle);
-
+			if (i % drawXLabelStep == 0) {
+				g2.drawString(xLabel, xI, y0 + (metrics.getHeight() / 2) - 3, Color.BLACK, this.xLabelRotateAngle);
+			}
 		}
 
-		g2.drawLine(0, centerHeight, centerWidth, centerHeight, Color.black);
+		g2.drawLine(0, viewPointHeight, viewPointWidth, viewPointHeight, Color.black);
 	}
 
-	private void drawYAxis(Grahpics2DWrapper g2, int centerWidth, int centerHeight, double min, double max) {
-		double range = max - min;
+	private static double adjustStep(double stepD) {
+		BigDecimal stepBD = new BigDecimal(stepD);
+		int pow = String.valueOf(stepBD.unscaledValue()).length() - stepBD.scale();
+		if (pow > 0) {
+			stepBD = new BigDecimal(10).pow(pow);//
+		} else {
+			stepBD = new BigDecimal("0.1").pow(-pow);//
+		}
+
+		return stepBD.doubleValue();
+	}
+
+	private void drawYAxis(Grahpics2DWrapper g2, int viewPointWidth, int viewPointHeight, double minY, double maxY) {
+		double range = (maxY - minY) / this.zoomSetting.zoomY;
+		double yRangeStep = range / (double) numberYDivisions;
+		yRangeStep = adjustStep(yRangeStep);
+		double yViewStep = viewPointHeight * (yRangeStep / range);
+
 		// draw y axis and grid lines.
-		for (int i = 0; i < numberYDivisions + 1; i++) {
+		double yValue = minY;
+		double yViewValue = 0f;
+		while (yValue < maxY) {
+
+			BigDecimal yLabelValue = new BigDecimal(yValue);
+
 			int x0 = 0;
-			int yI = (int) (centerHeight * (1f - (float) i / numberYDivisions));
+			int yI = (int) (viewPointHeight - yViewValue);
 
 			int x1 = pointWidth;
-			int x2 = centerWidth;
+			int x2 = viewPointWidth;
 
 			// short black
 			g2.drawLine(x0, yI, x1, yI, Color.BLACK);
 			// long grid
 			g2.drawLine(x1, yI, x2, yI, gridColor);
-
-			double iD = (double) i;
-			BigDecimal yLabelValue = new BigDecimal(min + range * (iD / numberYDivisions));
 
 			String yLabel = format.format(yLabelValue);
 
@@ -182,18 +241,22 @@ public class LineChart<T> extends JPanel {
 			// label Y label
 			g2.drawString(yLabel, x0 - labelWidth - 5, yI + (metrics.getHeight() / 2) - 3, Color.BLACK);
 
+			yValue = yValue + yRangeStep;
+			yViewValue = yViewValue + yViewStep;
 		}
 
 		// Y axis
-		g2.drawLine(0, centerHeight, 0, 0, Color.BLACK);
+		g2.drawLine(0, viewPointHeight, 0, 0, Color.BLACK);
 	}
 
 	@Override
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		double max = model.getDisplayYMax().doubleValue();
 		double min = model.getDisplayYMin().doubleValue();
+
 		double range = max - min;
 
 		LOG.debug("paintComponent");
@@ -208,21 +271,21 @@ public class LineChart<T> extends JPanel {
 		g2.translate(paddingLeft, paddingTop);
 
 		int size = model.getWindowSize();
-		
-		int centerWidth = getWidth() - this.getPaddingLeft() - this.getPaddingRight();
-		int centerHeight = getHeight() - this.getPaddingTop() - this.getPaddingBottom();
+
+		int viewPointWidth = getWidth() - this.getPaddingLeft() - this.getPaddingRight();
+		int viewPointHeight = getHeight() - this.getPaddingTop() - this.getPaddingBottom();
 		// draw white background
 		g2.get().setColor(Color.WHITE);
-		g2.fillRect(0, 0, centerWidth, centerHeight);
-		this.drawYAxis(g2, centerWidth, centerHeight, min, max);
+		g2.fillRect(0, 0, viewPointWidth, viewPointHeight);
+		this.drawYAxis(g2, viewPointWidth, viewPointHeight, min, max);
 		// X axis
-		this.drawXAxis(g2, centerWidth, centerHeight, size);
+		this.drawXAxis(g2, viewPointWidth, viewPointHeight, size);
 
 		// draw serials
 		List<ChartSerial<T>> snameL = model.getSerialList();
 		cg.reset();
 		for (ChartSerial<T> ser : snameL) {
-			this.paintSerial(cg, g2, centerWidth, centerHeight, ser, size, range, max);
+			this.paintSerial(cg, g2, viewPointWidth, viewPointHeight, ser, size, range, max);
 		}
 		g2.translate(-paddingLeft, -paddingTop);
 	}

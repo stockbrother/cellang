@@ -37,6 +37,8 @@ public abstract class ChartWindow<T> {
 		if (actual == null || actual.compareTo(this.preferedMin) > 0) {
 			actual = this.preferedMin;
 		}
+		
+		
 		return actual;
 	}
 
@@ -45,6 +47,9 @@ public abstract class ChartWindow<T> {
 		if (actual == null || actual.compareTo(this.preferedMax) < 0) {
 			actual = this.preferedMax;
 		}
+		
+		
+		
 		return actual;
 	}
 

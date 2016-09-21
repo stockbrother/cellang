@@ -51,7 +51,7 @@ public class ReportTemplateRowChartDataProvider extends AbstractChartDataProvide
 
 	}
 
-	public static class ReportRowChartSerial extends ChartSerial<Scope> {
+	public static class ReportTemplateRowChartSerial extends ChartSerial<Scope> {
 
 		List<Tuple2<String, BigDecimal>> list;
 
@@ -62,8 +62,10 @@ public class ReportTemplateRowChartDataProvider extends AbstractChartDataProvide
 		BigDecimal step;
 
 		List<Scope> target;
+		
+		int maxWindowWidth = 100;
 
-		public ReportRowChartSerial(String key, List<Tuple2<String, BigDecimal>> list) {
+		public ReportTemplateRowChartSerial(String key, List<Tuple2<String, BigDecimal>> list) {
 			super(key);
 			this.list = list;
 			this.target = new ArrayList<>();
@@ -86,10 +88,9 @@ public class ReportTemplateRowChartDataProvider extends AbstractChartDataProvide
 			if (this.minValue.compareTo(this.maxValue) == 0) {
 				this.step = new BigDecimal(1);
 			}
-			int SIZE = 20;
 			int LEFT = 1;
 			int RIGHT = 1;
-			step = maxValue.subtract(minValue).divide(new BigDecimal(SIZE - LEFT - RIGHT), 2, RoundingMode.UP);
+			step = maxValue.subtract(minValue).divide(new BigDecimal(maxWindowWidth - LEFT - RIGHT), 2, RoundingMode.UP);
 
 			// adjust step.
 			int pow = String.valueOf(step.unscaledValue()).length() - step.scale();
@@ -208,7 +209,7 @@ public class ReportTemplateRowChartDataProvider extends AbstractChartDataProvide
 
 			List<Tuple2<String, BigDecimal>> list = this.oc.getEntityService().execute(op);
 
-			ChartSerial<Scope> cs = new ReportRowChartSerial(key, list);
+			ChartSerial<Scope> cs = new ReportTemplateRowChartSerial(key, list);
 			this.model.addSerail(cs);
 			return true;
 		} else {

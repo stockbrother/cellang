@@ -24,7 +24,7 @@ public class ReportTemplateRowChartTest extends TestCase {
 		list.add(new Tuple2<String,BigDecimal>("51",new BigDecimal(".51")));
 		list.add(new Tuple2<String,BigDecimal>("52",new BigDecimal(".52")));
 		
-		ReportTemplateRowChartDataProvider.ReportRowChartSerial cs = new ReportTemplateRowChartDataProvider.ReportRowChartSerial(
+		ReportTemplateRowChartDataProvider.ReportTemplateRowChartSerial cs = new ReportTemplateRowChartDataProvider.ReportTemplateRowChartSerial(
 				"key", list);
 		
 		int size = cs.getWindowSize();
