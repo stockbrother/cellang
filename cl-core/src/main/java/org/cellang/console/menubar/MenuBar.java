@@ -55,6 +55,7 @@ public class MenuBar extends JMenuBar {
 	public MenuBar(OperationContext oc) {
 		Menu file = this.addMenu("File");
 		file.addItem(new OpenCorpGroupAction(oc));
+		file.addItem(new OpenAddingCorpGroupViewAction(oc));		
 		
 		file.addItem(new Action() {
 
