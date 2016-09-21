@@ -17,6 +17,10 @@ public class PerspectivePanel extends JSplitPane {
 		this.setContinuousLayout(true);//
 	}
 
+	public void addView(View v) {
+		addView(0, v, true);
+	}
+
 	public void addView(View v, boolean b) {
 		addView(0, v, b);
 	}

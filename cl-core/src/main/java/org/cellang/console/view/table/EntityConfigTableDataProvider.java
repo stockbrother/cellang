@@ -69,14 +69,6 @@ public class EntityConfigTableDataProvider extends AbstractTableDataProvider<Ent
 	}
 
 	@Override
-	public <T> T getDelegate(Class<T> cls) {
-		if (cls.equals(HasActions.class)) {
-
-		}
-		return null;
-	}
-
-	@Override
 	public EntityConfig getRowObject(int idx) {
 		if (idx >= this.list.size()) {
 			return null;

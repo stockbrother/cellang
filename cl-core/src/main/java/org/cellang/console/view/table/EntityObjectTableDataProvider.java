@@ -52,12 +52,6 @@ public class EntityObjectTableDataProvider extends AbstractTableDataProvider<Ent
 	public EntityObjectTableDataProvider(EntitySessionFactory entityService, EntityConfig cfg,
 			EntityConfigControl<?> ecc, List<String> extPropL, int pageSize) {
 
-		this.addDelagate(DataPageQuerable.class, this);
-		this.addDelagate(Filterable.class, this);		
-		this.addDelagate(ColumnOrderable.class, this);
-		this.addDelagate(Favoriteable.class, this);
-		this.addDelagate(Refreshable.class, this);
-
 		this.ecc = ecc;
 		this.cfg = cfg;
 		this.entityService = entityService;

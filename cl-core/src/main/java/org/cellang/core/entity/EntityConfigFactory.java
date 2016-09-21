@@ -30,6 +30,9 @@ public class EntityConfigFactory {
 		this.addEntity(new EntityConfig(FavoriteActionEntity.class, FavoriteActionEntity.tableName));
 		this.addEntity(new EntityConfig(CustomizedItemEntity.class, CustomizedItemEntity.tableName));
 		this.addEntity(new EntityConfig(CustomizedReportEntity.class, CustomizedReportEntity.tableName));
+		this.addEntity(new EntityConfig(CorpGroupEntity.class, CorpGroupEntity.tableName));
+		this.addEntity(new EntityConfig(GroupCorpEntity.class, GroupCorpEntity.tableName));
+		
 		// indices
 		this.addIndex(BalanceSheetReportEntity.class, new String[] { "corpId", "reportDate" });
 		this.addIndex(IncomeStatementReportEntity.class, new String[] { "corpId", "reportDate" });
@@ -48,7 +51,9 @@ public class EntityConfigFactory {
 		this.addIndex(PropertyEntity.class, new String[] { "category" });
 		this.addIndex(ExtendingPropertyEntity.class, new String[] { "entityType","entityId","key" });
 		
-
+		this.addIndex(CorpGroupEntity.class, new String[] { "groupDate","groupType" });
+		this.addIndex(GroupCorpEntity.class, new String[] { "corpId","groupId" });
+		
 	}
 
 	public EntityConfig getEntityConfig(Class entitCls) {

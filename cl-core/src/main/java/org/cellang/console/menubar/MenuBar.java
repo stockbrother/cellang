@@ -1,4 +1,4 @@
-package org.cellang.console.toolbar;
+package org.cellang.console.menubar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,14 +8,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import org.cellang.console.control.Action;
-import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
 import org.cellang.console.view.report.ReportTemplateRow;
 import org.cellang.console.view.report.ReportTemplateRowChartDataProvider;
 import org.cellang.console.view.report.ReportTemplateRowChartView;
 import org.cellang.console.view.report.ReportTemplateTableView;
-import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.metrics.ReportConfig;
 
 public class MenuBar extends JMenuBar {
@@ -56,6 +54,8 @@ public class MenuBar extends JMenuBar {
 
 	public MenuBar(OperationContext oc) {
 		Menu file = this.addMenu("File");
+		file.addItem(new OpenCorpGroupAction(oc));
+		
 		file.addItem(new Action() {
 
 			@Override

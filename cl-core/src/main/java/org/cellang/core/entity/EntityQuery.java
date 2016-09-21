@@ -159,7 +159,11 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 //		this.orderByExtendingPropertyKey = key;
 //		return this;
 //	}
-
+	
+	public EntityQuery<T> orderBy(String string) {
+		return this.orderBy(new String[]{string});
+	}
+	
 	public EntityQuery<T> orderBy(String[] strings) {
 		//
 		this.setOrderBy(strings);//

@@ -119,7 +119,7 @@ public class ExtendingPropertyMasterTableDataProvider extends AbstractTableDataP
 
 	public ExtendingPropertyMasterTableDataProvider(EntitySessionFactory esf, EntityConfigFactory ecf,
 			EntityConfigManager ecm) {
-		this.addDelagate(Refreshable.class, this);
+//		this.addDelagate(Refreshable.class, this);
 		this.esf = esf;
 		this.columnList.add(new TableNameRowObjectColumn(this, "Table Name"));
 

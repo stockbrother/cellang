@@ -14,8 +14,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.cellang.collector.EnvUtil;
 import org.cellang.console.control.DefaultHasDelagates;
+import org.cellang.console.menubar.MenuBar;
 import org.cellang.console.ops.OperationContext;
-import org.cellang.console.toolbar.MenuBar;
 import org.cellang.console.view.PerspectivePanel;
 
 public class Console {

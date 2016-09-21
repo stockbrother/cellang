@@ -2,7 +2,6 @@ package org.cellang.console.view.table;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.cellang.console.HasDelagates;
 import org.cellang.console.model.ColumnChangedEventSource;
 import org.cellang.console.model.ColumnChangedListener;
 import org.cellang.console.model.DataChangable;
@@ -13,17 +12,15 @@ public class ViewTableModel<T> extends AbstractTableModel implements ColumnChang
 
 	ViewTableModel(TableDataProvider<T> dp) {
 		this.dp = dp;
-		if (dp instanceof HasDelagates) {
-			HasDelagates has = (HasDelagates) dp;
-			ColumnChangedEventSource cc = has.getDelegate(ColumnChangedEventSource.class);
-			if (cc != null) {
-				cc.addColumnListener(this);
-			}
-			DataChangable dc = has.getDelegate(DataChangable.class);
-			if (dc != null) {
-				dc.addDataChangeListener(this);
-			}
+		if(dp instanceof ColumnChangedEventSource){			
+			ColumnChangedEventSource cc = (ColumnChangedEventSource)dp;		
+			cc.addColumnListener(this);		
 		}
+		
+		if(dp instanceof DataChangable){			
+			((DataChangable)dp).addDataChangeListener(this);
+		}
+		
 	}
 
 	@Override
