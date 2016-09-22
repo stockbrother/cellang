@@ -19,10 +19,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.ValueChangeListener;
+import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.AbstractView;
 
 public class HelperPane<T> extends AbstractView {
@@ -44,8 +45,8 @@ public class HelperPane<T> extends AbstractView {
 
 	protected T contextObject;
 
-	public HelperPane(String title) {
-		super(title);
+	public HelperPane(String title, OperationContext oc) {
+		super(title, oc);
 	}
 
 	public void setContextObject(T co) {
@@ -60,8 +61,8 @@ public class HelperPane<T> extends AbstractView {
 		if (co == null) {
 			return;
 		}
-		if (co instanceof HasDelagates) {
-			HasDelagates hs = (HasDelagates) co;
+		if (co instanceof HasDelegates) {
+			HasDelegates hs = (HasDelegates) co;
 			HasActions has = hs.getDelegate(HasActions.class);
 			if (has != null) {
 				this.addActions(co, has);//
@@ -86,7 +87,8 @@ public class HelperPane<T> extends AbstractView {
 			this.addToBox(this.childActions);
 		}
 
-		//this.childActions.add(bu, this.childActions.getComponentCount() - 1);//
+		// this.childActions.add(bu, this.childActions.getComponentCount() -
+		// 1);//
 		this.childActions.add(bu);//
 		this.updateUI();
 	}

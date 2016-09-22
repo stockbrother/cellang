@@ -7,7 +7,8 @@ import java.util.List;
 import javax.swing.JTabbedPane;
 
 import org.cellang.console.EventBus;
-import org.cellang.console.HasDelagateUtil;
+import org.cellang.console.HasDelegateUtil;
+import org.cellang.console.ops.OperationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +16,37 @@ public class ViewGroupPanel extends JTabbedPane {
 
 	public static class ViewSelectionEvent {
 		public View view;
+
+		public View getView() {
+			return view;
+		}
+
+		public ViewGroupPanel getGroup() {
+			return group;
+		}
+
 		public ViewGroupPanel group;
 
 		public ViewSelectionEvent(ViewGroupPanel g, View view) {
+			this.group = g;
+			this.view = view;
+		}
+	}
+
+	public static class ViewRemoveEvent {
+		public View view;
+
+		public View getView() {
+			return view;
+		}
+
+		public ViewGroupPanel getGroup() {
+			return group;
+		}
+
+		public ViewGroupPanel group;
+
+		public ViewRemoveEvent(ViewGroupPanel g, View view) {
 			this.group = g;
 			this.view = view;
 		}
@@ -30,9 +59,9 @@ public class ViewGroupPanel extends JTabbedPane {
 	PerspectivePanel parent;
 	EventBus eventBus;
 
-	public ViewGroupPanel(Object context, PerspectivePanel parent) {
+	public ViewGroupPanel(OperationContext context, PerspectivePanel parent) {
 		super.setUI(new ViewsTabbedPaneUI());
-		this.eventBus = HasDelagateUtil.getDelagate(context, EventBus.class, true);
+		this.eventBus = context.getEventBus();
 	}
 
 	@Override
@@ -62,6 +91,15 @@ public class ViewGroupPanel extends JTabbedPane {
 		}
 	}
 
+	public List<View> getViewList() {
+		List<View> rt = new ArrayList<>();
+		for (int i = 0; i < this.getComponentCount(); i++) {
+			View v = (View) this.getTabComponentAt(i);
+			rt.add(v);
+		}
+		return rt;
+	}
+
 	public void closeCurrentView() {
 		int idx = this.getSelectedIndex();
 		if (idx == -1) {
@@ -69,7 +107,7 @@ public class ViewGroupPanel extends JTabbedPane {
 		}
 		View v = (View) this.getTabComponentAt(idx);
 		this.remove(idx);
-		parent.viewRemoved(v);
+		this.viewRemoved(v);
 	}
 
 	public void clear() {
@@ -80,10 +118,14 @@ public class ViewGroupPanel extends JTabbedPane {
 		}
 		this.removeAll();
 		for (View v : vl) {
-			parent.viewRemoved(v);
+			this.viewRemoved(v);
 		}
 		this.selectedChanged();
 
+	}
+
+	private void viewRemoved(View v) {
+		this.eventBus.dispatch(new ViewRemoveEvent(this, v));
 	}
 
 	@Override

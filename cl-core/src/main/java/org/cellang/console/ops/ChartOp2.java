@@ -48,7 +48,7 @@ public class ChartOp2 extends ConsoleOp<Void> {
 		AbstractChartDataProvider<ReportDate> dp = new ReportItemChartDataProvider(this.pageSize, oc.getEntityService(),
 				this.corpIdArray, this.itemKey, ec, ecItem, ReportDate.valueOf(2016));
 
-		DateChartView view = new DateChartView("ChartView", dp);
+		DateChartView view = new DateChartView("ChartView",oc, dp);
 
 		views.addView(view, true);// TODO Auto-generated method stub
 		return null;

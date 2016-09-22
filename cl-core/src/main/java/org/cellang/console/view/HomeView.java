@@ -11,7 +11,7 @@ public class HomeView extends AbstractView implements HasActions {
 	OperationContext oc;
 
 	public HomeView(OperationContext oc) {
-		super("Home");
+		super("Home", oc);
 		this.oc = oc;
 	}
 
@@ -33,12 +33,10 @@ public class HomeView extends AbstractView implements HasActions {
 				}
 
 			});
-		
 
 		}
 		return al;
 	}
-	
 
 	public void updateCustomizedReport() {
 		new CustomizedReportUpdater(oc.getEntityService()).execute();

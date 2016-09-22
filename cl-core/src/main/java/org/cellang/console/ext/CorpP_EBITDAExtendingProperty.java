@@ -3,7 +3,7 @@ package org.cellang.console.ext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntitySessionFactory;
@@ -31,8 +31,8 @@ public class CorpP_EBITDAExtendingProperty  extends AbstractExtendingPropertyDef
 			this.esf = (EntitySessionFactory) context;
 			return true;
 		}
-		if (context instanceof HasDelagates) {
-			HasDelagates dela = (HasDelagates) context;
+		if (context instanceof HasDelegates) {
+			HasDelegates dela = (HasDelegates) context;
 			EntitySessionFactory esf = dela.getDelegate(EntitySessionFactory.class);
 			if (esf == null) {
 				return false;

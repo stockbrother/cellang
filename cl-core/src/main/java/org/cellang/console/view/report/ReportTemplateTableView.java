@@ -22,12 +22,11 @@ public class ReportTemplateTableView extends TableDataView<ReportTemplateRow> im
 
 	static final Logger LOG = LoggerFactory.getLogger(ReportTemplateTableView.class);
 	OperationContext oc;
-	
+
 	ReportTemplateRow selectedRow;
 
 	public ReportTemplateTableView(OperationContext oc, ReportConfig rc) {
-		super("Report Template",
-				new ReportTemplateTableDataProvider(rc));
+		super("Report Template", oc, new ReportTemplateTableDataProvider(rc));
 		this.oc = oc;
 	}
 

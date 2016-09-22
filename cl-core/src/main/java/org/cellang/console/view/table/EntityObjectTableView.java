@@ -2,7 +2,7 @@ package org.cellang.console.view.table;
 
 import java.util.List;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.entity.EntityConfigControl;
@@ -37,7 +37,8 @@ public class EntityObjectTableView extends TableDataView<EntityObject> implement
 
 	public EntityObjectTableView(OperationContext oc, EntityConfig cfg, EntityConfigControl<?> ecc,
 			List<String> extPropL, EntitySessionFactory es, int pageSize) {
-		super("Entity of " + cfg.getTableName(), new EntityObjectTableDataProvider(es, cfg, ecc, extPropL, pageSize));
+		super("Entity of " + cfg.getTableName(), oc,
+				new EntityObjectTableDataProvider(es, cfg, ecc, extPropL, pageSize));
 		this.ecc = ecc;
 		this.oc = oc;
 	}
@@ -47,7 +48,7 @@ public class EntityObjectTableView extends TableDataView<EntityObject> implement
 		if (this.ecc == null) {
 			return al;
 		}
-		if (this.ecc instanceof HasDelagates) {
+		if (this.ecc instanceof HasDelegates) {
 			HasActions has = this.ecc.getDelegate(HasActions.class);
 			if (has != null) {
 				has.getActions(context, al);

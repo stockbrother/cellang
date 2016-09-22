@@ -5,18 +5,28 @@ import java.util.List;
 
 import javax.swing.JSplitPane;
 
+import org.cellang.console.menubar.MenuBar;
+import org.cellang.console.ops.OperationContext;
+
 public class PerspectivePanel extends JSplitPane {
 
 	List<ViewGroupPanel> viewGroupList = new ArrayList<ViewGroupPanel>();
 	List<JSplitPane> splitPaneList = new ArrayList<>();
-	Object context;
-
-	public PerspectivePanel(Object context) {
+	OperationContext context;
+	
+	ViewSelectionHistory viewSelectionHistory;
+	
+	public PerspectivePanel(OperationContext context) {
 		super(JSplitPane.HORIZONTAL_SPLIT);
 		this.context = context;
 		this.setContinuousLayout(true);//
+		
 	}
 
+	public List<ViewGroupPanel> getViewGroupPanelList(){
+		return this.viewGroupList;
+	}
+	
 	public void addView(View v) {
 		addView(0, v, true);
 	}
@@ -48,11 +58,11 @@ public class PerspectivePanel extends JSplitPane {
 
 		ViewGroupPanel vp = this.viewGroupList.get(group);
 		vp.addView(v, b);
-
 	}
 
-	public void viewRemoved(View v) {
-
+	public View getSelectedView() {
+		//
+		return null;
 	}
 
 }

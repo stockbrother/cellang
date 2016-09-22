@@ -19,18 +19,10 @@ import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.PerspectivePanel;
 
 public class Console {
-	public static class Context extends DefaultHasDelagates implements HasDelagates {
-
-		public Context() {
-			
-			this.put(EventBus.class, new EventBus());
-			
-		}
-	}
-
+	
 	private static final boolean RIGHT_TO_LEFT = false;
 
-	public static void addComponentsToPane(Context context, File dataDir, Container pane) {
+	public static void addComponentsToPane(File dataDir, Container pane) {
 
 		if (!(pane.getLayout() instanceof BorderLayout)) {
 			pane.add(new JLabel("Container doesn't use BorderLayout!"));
@@ -40,15 +32,15 @@ public class Console {
 		if (RIGHT_TO_LEFT) {
 			pane.setComponentOrientation(java.awt.ComponentOrientation.RIGHT_TO_LEFT);
 		}
-		OperationContext oc = new OperationContext(context, dataDir);
-		MenuBar menubar = new MenuBar(oc);
+		OperationContext oc = new OperationContext(dataDir);
+		MenuBar menubar = oc.getMenuBar();
 		
 		pane.add(menubar, BorderLayout.PAGE_START);
 
 		// HelpersPane helpersPane = new HelpersPane();
 		// helpersPane.setPreferredSize(new Dimension(200, 100));
 
-		PerspectivePanel views = new PerspectivePanel(context);
+		PerspectivePanel views = new PerspectivePanel(oc);
 		oc.addComponent(views);//
 		// views.setPreferredSize(new Dimension(200, 100));
 		pane.add(views, BorderLayout.CENTER);
@@ -68,13 +60,13 @@ public class Console {
 	}
 
 	private static void createAndShowGUI() {
-		Context context = new Context();
+		
 		// Create and set up the window.
 		JFrame frame = new JFrame("BorderLayoutDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Set up the content pane.
 		File dataDir = EnvUtil.getDataDir();
-		addComponentsToPane(context, dataDir, frame.getContentPane());
+		addComponentsToPane(dataDir, frame.getContentPane());
 		// Use the content pane's default BorderLayout. No need for
 		// setLayout(new BorderLayout());
 		// Display the window.

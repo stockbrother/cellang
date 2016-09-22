@@ -1,6 +1,6 @@
 package org.cellang.console.control;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 /**
@@ -8,6 +8,6 @@ import org.cellang.core.entity.EntityObject;
  * @author wu
  *
  */
-public abstract class EntityObjectControl<E extends EntityObject> implements HasDelagates {
+public abstract class EntityObjectControl<E extends EntityObject> implements HasDelegates {
 
 }

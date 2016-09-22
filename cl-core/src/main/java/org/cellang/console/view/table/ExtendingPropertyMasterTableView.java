@@ -7,6 +7,8 @@ import org.cellang.console.control.HasActions;
 import org.cellang.console.customized.CustomizedReportUpdater;
 import org.cellang.console.ext.ExtendingPropertyUpdater;
 import org.cellang.console.ops.OperationContext;
+import org.cellang.core.entity.EntityConfig;
+
 /**
  * @deprecated
  * @author wu
@@ -15,11 +17,17 @@ import org.cellang.console.ops.OperationContext;
 public class ExtendingPropertyMasterTableView extends TableDataView<ExtendingPropertyMasterTableDataProvider.RowObject>
 		implements HasActions {
 	OperationContext oc;
+	ExtendingPropertyMasterTableDataProvider.RowObject selected;
 
 	public ExtendingPropertyMasterTableView(OperationContext oc) {
-		super("EntityConfigs", new ExtendingPropertyMasterTableDataProvider(oc.getEntityService(),
+		super("EntityConfigs", oc, new ExtendingPropertyMasterTableDataProvider(oc.getEntityService(),
 				oc.getEntityConfigFactory(), oc.getEntityConfigManager()));
 		this.oc = oc;
+	}
+
+	@Override
+	protected void onRowSelected(Integer row, ExtendingPropertyMasterTableDataProvider.RowObject rowObj) {
+		this.selected = rowObj;
 	}
 
 	@Override

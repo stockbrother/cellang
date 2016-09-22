@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.cellang.console.EventBus;
-import org.cellang.console.HasDelagateUtil;
 import org.cellang.console.control.entity.EntityConfigManager;
+import org.cellang.console.menubar.MenuBar;
 import org.cellang.console.view.HomeView;
 import org.cellang.console.view.PerspectivePanel;
 import org.cellang.console.view.View;
@@ -67,17 +67,27 @@ public class OperationContext {
 	OpExecutor opExecutor = new OpExecutor();
 	private ReportConfigFactory reportConfigFactory;
 
-	private EventBus eventBus;
+	private EventBus eventBus = new EventBus();
 
 	private ReportTemplateRow selectedReportTemplateRow;
+	private SelectedObjectContext selectedObjectContext = new SelectedObjectContext();
+	private MenuBar menuBar;
+	
+	public SelectedObjectContext getSelectedObjectContext() {
+		return this.selectedObjectContext;
+	}
 
+	public MenuBar getMenuBar(){
+		return this.menuBar;
+	}
 	public EventBus getEventBus() {
 		return this.eventBus;
 	}
+
 	public ReportTemplateRow getReportTemplateRow() {
 		return this.selectedReportTemplateRow;
 	}
-	
+
 	public ReportTemplateRow setReportTemplateRow(ReportTemplateRow rtr) {
 		ReportTemplateRow rt = this.selectedReportTemplateRow;
 		this.selectedReportTemplateRow = rtr;
@@ -92,11 +102,7 @@ public class OperationContext {
 		return views;
 	}
 
-	Object context;
-
-	public OperationContext(Object context, File dataDir) {
-		this.context = context;
-		this.eventBus = HasDelagateUtil.getDelagate(context, EventBus.class, true);
+	public OperationContext(File dataDir) {
 		this.dataHome = dataDir;
 		entityConfigFactory = new EntityConfigFactory();
 		this.reportConfigFactory = new ReportConfigFactory(entityConfigFactory);
@@ -104,6 +110,7 @@ public class OperationContext {
 		File dbHome = FileUtil.newFile(dataHome, new String[] { "db" });
 		entityService = EntitySessionFactoryImpl.newInstance(dbHome, "h2", entityConfigFactory);
 		this.entityConfigManager = new EntityConfigManager(this, this.entityService);
+		this.menuBar = new MenuBar(this);
 	}
 
 	public void addComponent(PerspectivePanel views) {
@@ -169,7 +176,7 @@ public class OperationContext {
 		View view = this.getEntityConfigManager().newEntityListView(CorpInfoEntity.class);
 		views.addView(1, view, true);//
 		views.addView(2, new EntityObjectHelperPane(this), true);
-		views.addView(2, new ViewHelperPane(this.context, this), true);
+		views.addView(2, new ViewHelperPane(this), true);
 
 		// ExtendingPropertyMasterTableView table2 = new
 		// ExtendingPropertyMasterTableView(this);

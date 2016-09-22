@@ -30,7 +30,7 @@ public class ReportTableView<T extends AbstractReportEntity> extends TableDataVi
 
 	public ReportTableView(OperationContext oc, Class<T> cls, ReportItemLocators.Group template, ReportConfig rptCfg,
 			EntitySessionFactory es, int years, String corpId) {
-		super("Report of " + rptCfg.getReportEntityConfig().getTableName(),
+		super("Report of " + rptCfg.getReportEntityConfig().getTableName(), oc,
 				new ReportTableDataProvider<T>(cls, template, rptCfg, es, years, corpId));
 		this.oc = oc;
 	}
@@ -59,7 +59,7 @@ public class ReportTableView<T extends AbstractReportEntity> extends TableDataVi
 		}
 		if (this.chartView == null) {
 			chartDp = new ReportRowChartDataProvider();
-			ReportRowChartView cv = new ReportRowChartView(chartDp);
+			ReportRowChartView cv = new ReportRowChartView(oc, chartDp);
 			this.oc.getViewManager().addView(2, cv, true);
 			this.chartView = cv;
 		}

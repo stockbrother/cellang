@@ -2,8 +2,6 @@ package org.cellang.console.view.table;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -12,10 +10,10 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.cellang.commons.util.UUIDUtil;
-import org.cellang.console.control.ColumnSelector;
+import org.cellang.console.HasDelegates;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.control.RowSelector;
-import org.cellang.console.control.SelectionListener;
+import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.AbstractView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public class TableDataView<T> extends AbstractView implements RowSelector<T>, ColumnSelector<T> {
+public class TableDataView<T> extends AbstractView implements HasDelegates {
 
 	static final Logger LOG = LoggerFactory.getLogger(TableDataView.class);
 
@@ -37,13 +35,9 @@ public class TableDataView<T> extends AbstractView implements RowSelector<T>, Co
 
 	String id;
 	protected TableDataProvider<T> dp;
-	List<SelectionListener<T>> rowSelectionListenerList = new ArrayList<>();
-	List<SelectionListener<ColumnDefine<T>>> columnSelectionListenerList = new ArrayList<>();
 
-	T selected;
-
-	public TableDataView(String title, TableDataProvider<T> dp) {
-		super(title);
+	public TableDataView(String title, OperationContext oc, TableDataProvider<T> dp) {
+		super(title, oc);
 		this.id = UUIDUtil.randomStringUUID();
 		this.dp = dp;
 
@@ -129,20 +123,11 @@ public class TableDataView<T> extends AbstractView implements RowSelector<T>, Co
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("columnSelected:" + col);
 		}
-
-		for (SelectionListener<ColumnDefine<T>> sl : this.columnSelectionListenerList) {
-			sl.onSelected(colDef);
-		}
-
 	}
 
 	protected void onRowSelected(Integer row, T rowObj) {
-		this.selected = rowObj;
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("rowSelected:" + row);
-		}
-		for (SelectionListener<T> sl : this.rowSelectionListenerList) {
-			sl.onSelected(rowObj);
 		}
 	}
 
@@ -158,7 +143,7 @@ public class TableDataView<T> extends AbstractView implements RowSelector<T>, Co
 
 	@Override
 	public <T> T getDelegate(Class<T> cls) {
-		
+
 		if (cls.equals(TableDataProvider.class)) {
 			return (T) this.dp;
 		} else if (cls.equals(HasActions.class)) {
@@ -176,16 +161,6 @@ public class TableDataView<T> extends AbstractView implements RowSelector<T>, Co
 	public String getId() {
 
 		return id;
-	}
-
-	@Override
-	public void addRowSelectionListener(SelectionListener<T> esl) {
-		this.rowSelectionListenerList.add(esl);
-	}
-
-	@Override
-	public void addColumnSelectionListener(SelectionListener<ColumnDefine<T>> esl) {
-		this.columnSelectionListenerList.add(esl);
 	}
 
 }

@@ -1,15 +1,15 @@
 package org.cellang.console.corpgrouping;
 
 import java.awt.Dimension;
-import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-import org.cellang.collector.EnvUtil;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.AbstractView;
 import org.cellang.core.entity.CorpGroupEntity;
@@ -17,20 +17,45 @@ import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 
 public class CorpGroupEditView extends AbstractView {
-	Box panel;
-	TextArea groupType;
-	TextArea groupDate;
+	Box box;
+	JTextField groupType;
+	JTextField groupDate;
 	OperationContext oc;
 
 	public CorpGroupEditView(OperationContext oc) {
-		super("CorpGroupEdit");
+		super("CorpGroupEdit", oc);
 		this.oc = oc;
-		this.panel = new Box(BoxLayout.Y_AXIS);
-		this.panel.setPreferredSize(new Dimension(100, 50));
-		groupType = new TextArea();
-		groupDate = new TextArea();
-		this.panel.add(groupType);
-		this.panel.add(groupDate);
+		this.box = new Box(BoxLayout.Y_AXIS);
+		this.box.setPreferredSize(new Dimension(100, 50));
+		this.setViewportView(this.box);
+		{
+
+			Box line = Box.createHorizontalBox();
+			JLabel label = new JLabel("Group Type");
+			label.setMinimumSize(new Dimension(50, 20));
+			line.add(label);
+			groupType = new JTextField();
+			groupType.setPreferredSize(new Dimension(200, 20));
+			groupType.setMaximumSize(new Dimension(300, 20));//
+			line.add(groupType);
+			line.add(Box.createHorizontalGlue());
+			box.add(line);
+		}
+
+		{
+
+			Box line = Box.createHorizontalBox();
+			JLabel label = new JLabel("Group Date");
+			label.setMinimumSize(new Dimension(50, 20));
+			line.add(label);
+			groupDate = new JTextField();
+			groupDate.setPreferredSize(new Dimension(200, 20));
+			groupDate.setMaximumSize(new Dimension(300, 20));//
+			line.add(groupDate);
+			line.add(Box.createHorizontalGlue());
+			box.add(line);
+		}
+
 		JButton button = new JButton("Submit");
 		button.addActionListener(new ActionListener() {
 
@@ -39,10 +64,8 @@ public class CorpGroupEditView extends AbstractView {
 				doSubmit();
 			}
 		});
-		this.panel.add(button);
-		this.panel.add(Box.createVerticalGlue());
-
-		this.setViewportView(this.panel);
+		this.box.add(button);
+		this.box.add(Box.createVerticalGlue());
 
 	}
 

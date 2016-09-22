@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.cellang.commons.util.UUIDUtil;
 import org.cellang.console.EventBus;
-import org.cellang.console.HasDelagateUtil;
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegateUtil;
+import org.cellang.console.HasDelegates;
 import org.cellang.console.control.Action;
 import org.cellang.console.control.ColumnAppendable;
 import org.cellang.console.control.ColumnOrderable;
@@ -31,9 +31,9 @@ public class ViewHelperPane extends HelperPane<View> implements EventListener {
 	EntitySessionFactory esf;
 	EventBus eventBus;
 
-	public ViewHelperPane(Object context, OperationContext oc) {
-		super("ViewHelper");
-		this.eventBus = HasDelagateUtil.getDelagate(context, EventBus.class, true);
+	public ViewHelperPane(OperationContext oc) {
+		super("ViewHelper", oc);
+		this.eventBus = oc.getEventBus();
 		this.eventBus.addEventListener(ViewGroupPanel.ViewSelectionEvent.class, this);
 		this.esf = oc.getEntityService();
 	}
@@ -44,12 +44,12 @@ public class ViewHelperPane extends HelperPane<View> implements EventListener {
 		if (view == null) {
 			return;
 		}
-		TableDataProvider dpa = view.getDelegate(TableDataProvider.class);
+		TableDataProvider dpa = HasDelegateUtil.getDelegate(view, TableDataProvider.class, false);
 		if (dpa == null) {
 			return;
 		}
-		if (dpa instanceof HasDelagates) {
-			HasDelagates dp = (HasDelagates) dpa;
+		if (dpa instanceof HasDelegates) {
+			HasDelegates dp = (HasDelegates) dpa;
 			DataPageQuerable dpq = dp.getDelegate(DataPageQuerable.class);
 			if (dpq != null) {
 

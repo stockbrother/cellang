@@ -1,6 +1,6 @@
 package org.cellang.console.ext;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityOp;
@@ -48,8 +48,8 @@ public abstract class AbstractCorpNameExtendingProperty<T extends EntityObject> 
 			this.esf = (EntitySessionFactory) context;
 			return true;
 		}
-		if (context instanceof HasDelagates) {
-			HasDelagates dela = (HasDelagates) context;
+		if (context instanceof HasDelegates) {
+			HasDelegates dela = (HasDelegates) context;
 			EntitySessionFactory esf = dela.getDelegate(EntitySessionFactory.class);
 			if (esf == null) {
 				return false;

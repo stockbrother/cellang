@@ -3,6 +3,9 @@ package org.cellang.console.corpgrouping;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cellang.console.HasDelegates;
+import org.cellang.console.control.Refreshable;
+import org.cellang.console.menubar.MenuBar;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
@@ -12,8 +15,8 @@ import org.cellang.core.entity.CorpGroupEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityQuery;
 
-public class CorpGroupListView extends TableDataView<CorpGroupRowData> {
-	
+public class CorpGroupListView extends TableDataView<CorpGroupRowData> implements HasDelegates, Refreshable {
+
 	public static class GroupIdColumn extends AbstractColumn<CorpGroupRowData> {
 
 		public GroupIdColumn(AbstractTableDataProvider<CorpGroupRowData> model) {
@@ -26,6 +29,7 @@ public class CorpGroupListView extends TableDataView<CorpGroupRowData> {
 		}
 
 	}
+
 	public static class GroupTypeColumn extends AbstractColumn<CorpGroupRowData> {
 
 		public GroupTypeColumn(AbstractTableDataProvider<CorpGroupRowData> model) {
@@ -36,9 +40,9 @@ public class CorpGroupListView extends TableDataView<CorpGroupRowData> {
 		public Object getValue(int rowIdx, CorpGroupRowData rowObj) {
 			return rowObj.corpGroup.getGroupType();
 		}
-		
 
 	}
+
 	public static class GroupDateColumn extends AbstractColumn<CorpGroupRowData> {
 
 		public GroupDateColumn(AbstractTableDataProvider<CorpGroupRowData> model) {
@@ -52,7 +56,7 @@ public class CorpGroupListView extends TableDataView<CorpGroupRowData> {
 
 	}
 
-	public static class DataProvider extends AbstractTableDataProvider<CorpGroupRowData> {
+	public static class DataProvider extends AbstractTableDataProvider<CorpGroupRowData> implements Refreshable {
 		OperationContext oc;
 		List<CorpGroupRowData> list = new ArrayList<CorpGroupRowData>();
 
@@ -74,6 +78,7 @@ public class CorpGroupListView extends TableDataView<CorpGroupRowData> {
 			return this.list.get(idx);//
 		}
 
+		@Override
 		public void refresh() {
 			this.list.clear();
 			EntityConfig cfg = oc.getEntityConfigFactory().get(CorpGroupEntity.class);
@@ -87,10 +92,41 @@ public class CorpGroupListView extends TableDataView<CorpGroupRowData> {
 
 	}
 
+	CorpGroupRowData selected;
+	DeleteCorpGroupAction action;
+	
 	public CorpGroupListView(OperationContext oc) {
-		super("CorpGroupList", new DataProvider(oc));
+		super("CorpGroupList", oc, new DataProvider(oc));
+		MenuBar mbar = oc.getMenuBar();
+		
+		DeleteCorpGroupAction action = mbar.getMenuItemAction(DeleteCorpGroupAction.class);
+		action.setView(this);
+		
+		this.refresh();
+	}
+	
+	@Override
+	public <T> T getDelegate(Class<T> cls) {
+		if (cls.equals(Refreshable.class)) {
+			return (T) this;
+		}
+		return null;
+	}
+
+	@Override
+	public void refresh() {
 		DataProvider dp = (DataProvider) this.dp;
 		dp.refresh();
+	}
+
+	@Override
+	protected void onRowSelected(Integer row, CorpGroupRowData rowObj) {
+		this.selected = rowObj;
+		
+	}
+
+	public CorpGroupRowData getSelectedCorpGroup() {		
+		return this.selected;
 	}
 
 }

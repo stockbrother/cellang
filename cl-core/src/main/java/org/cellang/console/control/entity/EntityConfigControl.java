@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 import org.cellang.console.control.DefaultHasDelagates;
 import org.cellang.console.control.HasActions;
 import org.cellang.console.ext.ExtendingPropertyDefine;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author wu
  *
  */
-public abstract class EntityConfigControl<E extends EntityObject> implements HasDelagates {
+public abstract class EntityConfigControl<E extends EntityObject> implements HasDelegates {
 	private static final Logger LOG = LoggerFactory.getLogger(EntityConfigControl.class);
 
 	// default sorter.

@@ -16,7 +16,7 @@ public class EntityObjectHelperPane extends HelperPane<EntityObject> implements 
 	OperationContext oc;
 
 	public EntityObjectHelperPane(OperationContext oc) {
-		super("EntityObjectHelper");
+		super("EntityObjectHelper", oc);
 		this.oc = oc;
 		this.oc.getEventBus().addEventListener(EntityObjectTableView.EntityObjectSelectionEvent.class, this);
 		this.ecm = oc.getEntityConfigManager();

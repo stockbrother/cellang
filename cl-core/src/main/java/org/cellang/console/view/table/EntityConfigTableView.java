@@ -10,9 +10,10 @@ import org.cellang.core.entity.EntityConfig;
 
 public class EntityConfigTableView extends TableDataView<EntityConfig> implements HasActions {
 	OperationContext oc;
+	EntityConfig selected;
 
 	public EntityConfigTableView(OperationContext oc, List<EntityConfig> list) {
-		super("EntityConfigs", new EntityConfigTableDataProvider(list));
+		super("EntityConfigs", oc, new EntityConfigTableDataProvider(list));
 		this.oc = oc;
 	}
 
@@ -36,6 +37,11 @@ public class EntityConfigTableView extends TableDataView<EntityConfig> implement
 			});
 		}
 		return al;
+	}
+
+	@Override
+	protected void onRowSelected(Integer row, EntityConfig rowObj) {
+		this.selected = rowObj;
 	}
 
 	public void openSelectedView() {

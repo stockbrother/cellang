@@ -8,21 +8,23 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.cellang.console.HasDelegates;
 import org.cellang.console.chart.ChartModel;
 import org.cellang.console.chart.LineChart;
 import org.cellang.console.control.DataPageQuerable;
 import org.cellang.console.control.Descriable;
+import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.AbstractView;
 
-public class ChartView<T> extends AbstractView {
+public class ChartView<T> extends AbstractView implements HasDelegates {
 	protected LineChart<T> chart;
 	ChartModel<T> model;
 	AbstractChartDataProvider<T> data;
 	JPanel top;
 	JPanel tools;
 
-	public ChartView(String title, AbstractChartDataProvider<T> cd) {
-		super(title);
+	public ChartView(String title, OperationContext oc, AbstractChartDataProvider<T> cd) {
+		super(title, oc);
 		// cd.setView(this);//
 		model = cd.getModel();
 		this.data = cd;
@@ -54,7 +56,7 @@ public class ChartView<T> extends AbstractView {
 			}
 		});
 		this.tools.add(button);
-		
+
 		button = new JButton();
 		button.setText("ZoomReset");
 		button.addActionListener(new ActionListener() {
@@ -65,7 +67,7 @@ public class ChartView<T> extends AbstractView {
 			}
 		});
 		this.tools.add(button);
-		
+
 		this.top.add(this.tools, BorderLayout.NORTH);
 
 		this.setViewportView(this.top);
@@ -78,11 +80,11 @@ public class ChartView<T> extends AbstractView {
 		float zy = zs.getZoomY();
 		zy = zy * 2f;
 		zs.setZoomY(zy);
-		this.chart.setZoomSetting(zs);		
+		this.chart.setZoomSetting(zs);
 	}
-	
+
 	private void zoomReset() {
-		LineChart.ZoomSetting zs = this.chart.getZoomSetting();		
+		LineChart.ZoomSetting zs = this.chart.getZoomSetting();
 		zs.setZoomY(1f);
 		this.chart.setZoomSetting(zs);
 	}

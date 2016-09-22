@@ -3,9 +3,9 @@ package org.cellang.console.control;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 
-public class DefaultHasDelagates implements HasDelagates {
+public class DefaultHasDelagates implements HasDelegates {
 
 	private Map<Class, Object> interfaceObjectMap = new HashMap<>();
 

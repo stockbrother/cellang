@@ -11,7 +11,7 @@ public class SimpleChartView extends ChartView {
 
 	public SimpleChartView(String title, int pageSize, EntitySessionFactory es, EntityConfig cfg, Method xGetMethod,
 			Method yGetMethod) {
-		super(title, new SimpleChartDataProvider(pageSize, es, cfg, xGetMethod, yGetMethod));
+		super(title, null, new SimpleChartDataProvider(pageSize, es, cfg, xGetMethod, yGetMethod));
 	}
 
 }

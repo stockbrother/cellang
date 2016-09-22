@@ -5,16 +5,18 @@ import java.awt.Component;
 import javax.swing.JScrollPane;
 
 import org.cellang.commons.util.UUIDUtil;
-import org.cellang.console.control.HasActions;
+import org.cellang.console.ops.OperationContext;
 
-public class AbstractView extends JScrollPane implements View {
+public abstract class AbstractView extends JScrollPane implements View {
 
 	protected String title;
 	protected String id;
+	protected OperationContext oc;
 
-	public AbstractView(String title) {		
+	public AbstractView(String title, OperationContext oc) {
 		this.title = title;
 		this.id = UUIDUtil.randomStringUUID();
+		this.oc = oc;
 	}
 
 	@Override
@@ -28,20 +30,8 @@ public class AbstractView extends JScrollPane implements View {
 	}
 
 	@Override
-	public <T> T getDelegate(Class<T> cls) {
-
-		if (cls.equals(HasActions.class)) {
-			if (this instanceof HasActions) {
-				return (T) this;
-			}
-		}
-
-		return null;
-	}
-
-	@Override
 	public String getId() {
 		return this.id;
 	}
-	
+
 }

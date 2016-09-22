@@ -2,44 +2,33 @@ package org.cellang.console.menubar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import org.cellang.console.control.Action;
+import org.cellang.console.corpgrouping.DeleteCorpGroupAction;
 import org.cellang.console.ops.OperationContext;
-import org.cellang.console.view.View;
-import org.cellang.console.view.report.ReportTemplateRow;
-import org.cellang.console.view.report.ReportTemplateRowChartDataProvider;
-import org.cellang.console.view.report.ReportTemplateRowChartView;
-import org.cellang.console.view.report.ReportTemplateTableView;
-import org.cellang.core.metrics.ReportConfig;
 
 public class MenuBar extends JMenuBar {
 
-	public static class ReportTemplateAction extends Action {
-
-		@Override
-		public String getName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void perform() {
-
-		}
-
-	}
-
 	public static class Menu extends JMenu {
+		Map<String, Action> actionMap = new HashMap<>();
+
 		public Menu(String title) {
 			super(title);
 		}
 
 		public void addItem(Action action) {
-			JMenuItem mi = new JMenuItem(action.getName());
+			String key = action.getName();
+			if (this.actionMap.containsKey(key)) {
+				throw new RuntimeException("duplicated.");
+			}
+			this.actionMap.put(key, action);
+			JMenuItem mi = new JMenuItem(key);
 			mi.addActionListener(new ActionListener() {
 
 				@Override
@@ -50,71 +39,63 @@ public class MenuBar extends JMenuBar {
 			this.add(mi);
 		}
 
+		public Action getAction(String key) {
+			return this.actionMap.get(key);
+		}
+
 	}
 
+	private Map<String, Menu> menuMap = new HashMap<>();
+
 	public MenuBar(OperationContext oc) {
-		Menu file = this.addMenu("File");
-		file.addItem(new OpenCorpGroupAction(oc));
-		file.addItem(new OpenAddingCorpGroupViewAction(oc));		
-		
-		file.addItem(new Action() {
 
-			@Override
-			public String getName() {
+		Menu//
+		menu = this.addMenu("File");
+		{
 
-				return "Report Template(Balance)";
+			menu.addItem(new OpenCorpGroupAction(oc));
+			menu.addItem(new OpenAddingCorpGroupViewAction(oc));
+			menu.addItem(new OpenBalanceSheetTemplateAction(oc));
+			menu.addItem(new OpenTemplateTableAction(oc));
+			menu.addItem(new OpenTemplateChart(oc));
+		}
+		menu = this.addMenu("Edit");
+		{
+			menu.addItem(new DeleteCorpGroupAction(oc));
+			menu.addItem(new RefreshAllViewAction(oc));
 
+		}
+	}
+
+	public <T extends Action> T getMenuItemAction(Class<T> cls) {
+
+		for (Menu m : this.menuMap.values()) {
+			for (Action a : m.actionMap.values()) {
+				if (cls.isInstance(a)) {
+					return (T) a;
+				}
 			}
+		}
 
-			@Override
-			public void perform() {
-				
-				ReportConfig rc = oc.getReportConfigFactory().balanceSheetReportConfig;
-				View v = new ReportTemplateTableView(oc, rc);
-				oc.getViewManager().addView(1, v, true);
-			}
-		});
+		return null;
+	}
 
-		file.addItem(new Action() {
+	public Action getMenuItemAction(String[] path) {
+		Menu m = this.menuMap.get(path[0]);
 
-			@Override
-			public String getName() {
-
-				return "Report Template(Other)";
-
-			}
-
-			@Override
-			public void perform() {				
-				ReportConfig rc = oc.getReportConfigFactory().customizedReportConfig;
-				View v = new ReportTemplateTableView(oc, rc);
-				oc.getViewManager().addView(1, v, true);
-			}
-		});
-
-		file.addItem(new Action() {
-
-			@Override
-			public String getName() {
-				return "Template Chart";
-			}
-
-			@Override
-			public void perform() {
-				ReportTemplateRow rtr = oc.getReportTemplateRow();
-				ReportTemplateRowChartDataProvider chartDp = new ReportTemplateRowChartDataProvider(oc);
-				chartDp.addReportRow(rtr);
-				ReportTemplateRowChartView cv = new ReportTemplateRowChartView(chartDp);
-				oc.getViewManager().addView(2, cv, true);
-
-			}
-		});
-
+		if (m == null) {
+			return null;
+		}
+		return m.getAction(path[1]);//
 	}
 
 	public Menu addMenu(String title) {
 		Menu menu = new Menu(title);
-		this.add(menu);
+		if (menuMap.containsKey(title)) {
+			throw new RuntimeException("duplicated");
+		}
+		this.menuMap.put(title, menu);
+		super.add(menu);
 		return menu;
 	}
 

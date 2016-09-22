@@ -2,7 +2,7 @@ package org.cellang.console.customized;
 
 import java.math.BigDecimal;
 
-import org.cellang.console.HasDelagates;
+import org.cellang.console.HasDelegates;
 import org.cellang.core.entity.EntitySessionFactory;
 
 public abstract class AbstractCustomizedReportItemDefine implements CustomizedReportItemDefine {
@@ -24,8 +24,8 @@ public abstract class AbstractCustomizedReportItemDefine implements CustomizedRe
 			this.esf = (EntitySessionFactory) context;
 			return true;
 		}
-		if (context instanceof HasDelagates) {
-			HasDelagates dela = (HasDelagates) context;
+		if (context instanceof HasDelegates) {
+			HasDelegates dela = (HasDelegates) context;
 			EntitySessionFactory esf = dela.getDelegate(EntitySessionFactory.class);
 			if (esf == null) {
 				return false;
