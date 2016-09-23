@@ -10,6 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import org.cellang.console.control.Action;
+import org.cellang.console.corpgrouping.AddToMyFavoritesAction;
 import org.cellang.console.corpgrouping.DeleteCorpGroupAction;
 import org.cellang.console.ops.OperationContext;
 
@@ -52,7 +53,7 @@ public class MenuBar extends JMenuBar {
 		Menu//
 		menu = this.addMenu("File");
 		{
-
+			menu.addItem(new OpenCorpListAction(oc));
 			menu.addItem(new OpenCorpGroupAction(oc));
 			menu.addItem(new OpenAddingCorpGroupViewAction(oc));
 			menu.addItem(new OpenBalanceSheetTemplateAction(oc));
@@ -64,6 +65,11 @@ public class MenuBar extends JMenuBar {
 			menu.addItem(new DeleteCorpGroupAction(oc));
 			menu.addItem(new RefreshAllViewAction(oc));
 
+		}
+		menu = this.addMenu("My Favorites");
+		{
+			menu.addItem(new OpenMyFavoritesListViewAction(oc));
+			menu.addItem(new AddToMyFavoritesAction(oc));
 		}
 	}
 

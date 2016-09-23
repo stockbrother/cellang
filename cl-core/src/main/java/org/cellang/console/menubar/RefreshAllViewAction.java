@@ -24,11 +24,15 @@ public class RefreshAllViewAction extends Action {
 
 	@Override
 	public void perform() {
+		doRefresh(oc);
+	}
+
+	public static void doRefresh(OperationContext oc) {
 		PerspectivePanel pp = oc.getViewManager();
 		List<ViewGroupPanel> vgpL = pp.getViewGroupPanelList();
 		for (ViewGroupPanel gp : vgpL) {
 			for (View v : gp.getViewList()) {
-				Refreshable ref = HasDelegateUtil.getDelegate(gp, Refreshable.class, false);
+				Refreshable ref = HasDelegateUtil.getDelegate(v, Refreshable.class, false);
 				if (ref != null) {
 					ref.refresh();
 				}

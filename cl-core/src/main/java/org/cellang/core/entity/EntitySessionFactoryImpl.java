@@ -72,7 +72,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 			if (this.dataVersion == this.targetDataVersion) {
 				break;
 			}
-			
+
 			DataVersion pre = this.dataVersion;
 			DataVersion dv = this.tryUpgrade();
 			if (dv == null) {
@@ -227,6 +227,29 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 			}
 		};
 		return this.execute(eop);
+	}
+
+	@Override
+	public <T extends EntityObject> void save(T entity) {
+		this.execute(new EntityOp<Void>() {
+
+			@Override
+			public Void execute(EntitySession es) {
+				es.save(entity);
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public <T extends EntityObject> T getEntity(Class<T> cls, String id) {
+		return this.execute(new EntityOp<T>() {
+
+			@Override
+			public T execute(EntitySession es) {
+				return es.getSingle(cls, "id", id);
+			}
+		});
 	}
 
 }

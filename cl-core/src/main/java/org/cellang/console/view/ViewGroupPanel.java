@@ -93,8 +93,8 @@ public class ViewGroupPanel extends JTabbedPane {
 
 	public List<View> getViewList() {
 		List<View> rt = new ArrayList<>();
-		for (int i = 0; i < this.getComponentCount(); i++) {
-			View v = (View) this.getTabComponentAt(i);
+		for (int i = 0; i < this.getComponentCount(); i++) {			
+			View v = (View) this.getComponentAt(i);
 			rt.add(v);
 		}
 		return rt;

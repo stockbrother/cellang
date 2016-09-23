@@ -172,11 +172,9 @@ public class OperationContext {
 				this.getEntityConfigFactory().getEntityConfigList());
 		views.addView(table, true);
 
-		views.addView(0, new HomeView(this), true);
-		View view = this.getEntityConfigManager().newEntityListView(CorpInfoEntity.class);
-		views.addView(1, view, true);//
-		views.addView(2, new EntityObjectHelperPane(this), true);
-		views.addView(2, new ViewHelperPane(this), true);
+		views.addView(0, new HomeView(this), true);		
+		views.addView(1, new EntityObjectHelperPane(this), true);
+		views.addView(1, new ViewHelperPane(this), true);
 
 		// ExtendingPropertyMasterTableView table2 = new
 		// ExtendingPropertyMasterTableView(this);

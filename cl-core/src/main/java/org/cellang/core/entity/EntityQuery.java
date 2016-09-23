@@ -169,6 +169,11 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		this.setOrderBy(strings);//
 		return this;
 	}
+	
+	public EntityQuery<T> eq(String key, Object value) {
+		this.whereFields.add(new WhereField(key,"=",value));
+		return this;
+	}
 
 	public EntityQuery<T> like(Map<String, String> likeMap) {
 		for (Map.Entry<String, String> en : likeMap.entrySet()) {

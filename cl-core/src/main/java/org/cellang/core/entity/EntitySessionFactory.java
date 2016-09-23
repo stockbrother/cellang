@@ -16,13 +16,15 @@ public interface EntitySessionFactory {
 	public EntitySession openSession();
 
 	/**
-	 * Execute entity operation in a newly created session. It will be commit 
+	 * Execute entity operation in a newly created session. It will be commit
 	 * 
 	 * @param op
 	 * @return
 	 */
 	public <T> T execute(EntityOp<T> op);
-	
+
+	public <T extends EntityObject> void save(T entity);
+
 	public <T> T execute(JdbcOperation<T> op);
 
 	/**
@@ -30,10 +32,11 @@ public interface EntitySessionFactory {
 	 * @return
 	 */
 	public EntityConfigFactory getEntityConfigFactory();
-	
+
 	public DataVersion getDataVersion();
-	
+
 	public void close();
 
+	public <T extends EntityObject> T getEntity(Class<T> cls, String id);
 
 }
