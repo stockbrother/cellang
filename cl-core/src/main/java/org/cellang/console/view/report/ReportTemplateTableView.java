@@ -25,8 +25,8 @@ public class ReportTemplateTableView extends TableDataView<ReportTemplateRow> im
 
 	ReportTemplateRow selectedRow;
 
-	public ReportTemplateTableView(OperationContext oc, ReportConfig rc) {
-		super("Report Template", oc, new ReportTemplateTableDataProvider(rc));
+	public ReportTemplateTableView(OperationContext oc, Class cls) {
+		super("Report Template", oc, new ReportTemplateTableDataProvider(oc, cls));
 		this.oc = oc;
 	}
 

@@ -1,26 +1,22 @@
 package org.cellang.console.corpgrouping;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.cellang.console.control.Refreshable;
-import org.cellang.console.control.entity.EntityConfigControl;
-import org.cellang.console.ext.ExtendingPropertyDefine;
+import org.cellang.console.menubar.MenuBar;
+import org.cellang.console.menubar.OpenBalanceSheetAction;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
 import org.cellang.console.view.table.ColumnDefine;
-import org.cellang.console.view.table.EntityObjectTableDataProvider;
 import org.cellang.console.view.table.LineNumberColumn;
 import org.cellang.console.view.table.TableDataView;
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
-import org.cellang.core.entity.EntitySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,9 +119,14 @@ public class CorpListView extends TableDataView<CorpInfoEntity> {
 
 	public CorpListView(OperationContext oc) {
 		super("Corp Search", oc, new DataProvider(oc));
-		// TODO notify by event?
+		// TODO inject view to menu by view manager.
+		MenuBar mbar = oc.getMenuBar();
 		AddToMyFavoritesAction a = oc.getMenuBar().getMenuItemAction(AddToMyFavoritesAction.class);
 		a.setListView(this);//
+
+		OpenBalanceSheetAction a2 = mbar.getMenuItemAction(OpenBalanceSheetAction.class);
+		a2.setCorpListView(this);//
+
 		this.oc = oc;
 	}
 

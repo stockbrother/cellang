@@ -30,7 +30,6 @@ public class SimpleChartDataProvider extends AbstractChartDataProvider<String> {
 
 		((EntityChartModel) model).setEntityObjectList(el);
 
-		this.view.updateUI();
 	}
 
 	@Override

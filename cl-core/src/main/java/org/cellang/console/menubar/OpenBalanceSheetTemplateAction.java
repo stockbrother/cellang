@@ -4,7 +4,7 @@ import org.cellang.console.control.Action;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.View;
 import org.cellang.console.view.report.ReportTemplateTableView;
-import org.cellang.core.metrics.ReportConfig;
+import org.cellang.core.entity.BalanceSheetReportEntity;
 
 public class OpenBalanceSheetTemplateAction extends Action {
 	OperationContext oc;
@@ -23,8 +23,7 @@ public class OpenBalanceSheetTemplateAction extends Action {
 	@Override
 	public void perform() {
 
-		ReportConfig rc = oc.getReportConfigFactory().balanceSheetReportConfig;
-		View v = new ReportTemplateTableView(oc, rc);
+		View v = new ReportTemplateTableView(oc, BalanceSheetReportEntity.class);
 		oc.getViewManager().addView(1, v, true);
 	}
 }

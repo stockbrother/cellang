@@ -6,6 +6,7 @@ import java.util.List;
 import org.cellang.console.HasDelegates;
 import org.cellang.console.control.Refreshable;
 import org.cellang.console.menubar.MenuBar;
+import org.cellang.console.menubar.OpenBalanceSheetAction;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
@@ -94,17 +95,19 @@ public class CorpGroupListView extends TableDataView<CorpGroupRowData> implement
 
 	CorpGroupRowData selected;
 	DeleteCorpGroupAction action;
-	
+
 	public CorpGroupListView(OperationContext oc) {
 		super("CorpGroupList", oc, new DataProvider(oc));
 		MenuBar mbar = oc.getMenuBar();
-		
+
+		// TODO
 		DeleteCorpGroupAction action = mbar.getMenuItemAction(DeleteCorpGroupAction.class);
 		action.setView(this);
 		
+
 		this.refresh();
 	}
-	
+
 	@Override
 	public <T> T getDelegate(Class<T> cls) {
 		if (cls.equals(Refreshable.class)) {
@@ -122,10 +125,10 @@ public class CorpGroupListView extends TableDataView<CorpGroupRowData> implement
 	@Override
 	protected void onRowSelected(Integer row, CorpGroupRowData rowObj) {
 		this.selected = rowObj;
-		
+
 	}
 
-	public CorpGroupRowData getSelectedCorpGroup() {		
+	public CorpGroupRowData getSelectedCorpGroup() {
 		return this.selected;
 	}
 

@@ -4,13 +4,10 @@ import java.util.List;
 
 import org.cellang.console.control.Action;
 import org.cellang.console.control.HasActions;
-import org.cellang.console.format.ReportItemLocators;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.ColumnDefine;
 import org.cellang.console.view.table.TableDataView;
 import org.cellang.core.entity.AbstractReportEntity;
-import org.cellang.core.entity.EntitySessionFactory;
-import org.cellang.core.metrics.ReportConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +25,8 @@ public class ReportTableView<T extends AbstractReportEntity> extends TableDataVi
 	ReportRowChartDataProvider chartDp;
 	ReportRow selectedRow;
 
-	public ReportTableView(OperationContext oc, Class<T> cls, ReportItemLocators.Group template, ReportConfig rptCfg,
-			EntitySessionFactory es, int years, String corpId) {
-		super("Report of " + rptCfg.getReportEntityConfig().getTableName(), oc,
-				new ReportTableDataProvider<T>(cls, template, rptCfg, es, years, corpId));
+	public ReportTableView(OperationContext oc, Class<T> cls, int years, String corpId) {
+		super("Report of " + cls.getName(), oc, new ReportTableDataProvider<T>(oc, cls, years, corpId));
 		this.oc = oc;
 	}
 

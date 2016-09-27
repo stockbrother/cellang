@@ -12,8 +12,8 @@ public class FuzhaiQuanyiBiMetricCalculator extends MetricCalculator {
 	@Override
 	public Double calculate(CorpMetricService ms, String corpId, Date date) {
 		// youxifuzhai
-		Double fuzhai = ms.getReportItem(rcf.balanceSheetReportConfig, corpId, date, "负债合计");
-		Double quanyi = ms.getReportItem(rcf.balanceSheetReportConfig, corpId, date, "所有者权益合计");
+		Double fuzhai = null;//TODO ms.getReportItem(rcf.balanceSheetReportConfig, corpId, date, "负债合计");
+		Double quanyi = null;//TODO ms.getReportItem(rcf.balanceSheetReportConfig, corpId, date, "所有者权益合计");
 		if (quanyi == null) {
 			return null;
 		}

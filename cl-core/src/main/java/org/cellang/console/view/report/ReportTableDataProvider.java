@@ -11,6 +11,7 @@ import org.cellang.collector.EnvUtil;
 import org.cellang.commons.lang.Visitor;
 import org.cellang.console.format.ReportItemLocator;
 import org.cellang.console.format.ReportItemLocators;
+import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
 import org.cellang.console.view.table.LineNumberColumn;
@@ -61,13 +62,12 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 	ReportItemLocators.Group template;
 	Class<T> reportEntityClass;
 
-	public ReportTableDataProvider(Class<T> rptEntityCls, ReportItemLocators.Group template, ReportConfig rptCfg,
-			EntitySessionFactory es, int years, String corpId) {
-		this.reportEntityClass = rptEntityCls;
-		this.template = template;
+	public ReportTableDataProvider(OperationContext oc, Class<T> cls, int years, String corpId) {
+		this.reportEntityClass = cls;
+		this.template =	ReportItemLocators.getInstance().get(cls);
 		this.years = years;
-		this.rptCfg = rptCfg;
-		this.esf = es;
+		this.rptCfg = oc.getReportConfigFactory().get(cls);
+		this.esf = oc.getEntityService();
 		this.corpId = corpId;
 		itemGetMethodList = this.rptCfg.getItemEntityConfig().getGetMethodList();
 

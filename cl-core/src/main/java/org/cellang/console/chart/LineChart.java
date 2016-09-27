@@ -15,10 +15,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.cellang.console.chart.ChartModel.DataChangeListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LineChart<T> extends JPanel {
+public class LineChart<T> extends JPanel implements DataChangeListener{
 
 	private static final Logger LOG = LoggerFactory.getLogger(LineChart.class);
 
@@ -68,6 +69,7 @@ public class LineChart<T> extends JPanel {
 
 	public LineChart(ChartModel<T> model) {
 		this.model = model;
+		this.model.addDataChangeListener(this);
 	}
 
 	public ZoomSetting getZoomSetting() {
@@ -288,6 +290,11 @@ public class LineChart<T> extends JPanel {
 			this.paintSerial(cg, g2, viewPointWidth, viewPointHeight, ser, size, range, max);
 		}
 		g2.translate(-paddingLeft, -paddingTop);
+	}
+
+	@Override
+	public void dataChanged() {
+		this.updateUI();
 	}
 
 }

@@ -97,8 +97,7 @@ public class ReportItemChartDataProvider extends AbstractChartDataProvider<Repor
 			ser.addPoint(ReportDate.valueOf(c.get(Calendar.YEAR)), value);
 
 		}
-
-		this.view.updateUI();
+		
 	}
 
 	@Override

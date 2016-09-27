@@ -132,31 +132,19 @@ public class CorpInfoEntityConfigControl extends EntityConfigControl<CorpInfoEnt
 	}
 
 	protected void openCustomizedReport(CorpInfoEntity context) {
-		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(CustomizedReportEntity.class);
-		View v = new ReportTableView<CustomizedReportEntity>(oc, CustomizedReportEntity.class, template,
-				oc.getReportConfigFactory().customizedReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(1, v, true);
+		
 	}
 
 	protected void openBSReport(CorpInfoEntity context) {
-		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(BalanceSheetReportEntity.class);
-		View v = new ReportTableView<BalanceSheetReportEntity>(oc, BalanceSheetReportEntity.class, template,
-				oc.getReportConfigFactory().balanceSheetReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(1, v, true);
+		
 	}
 
 	protected void openISReport(CorpInfoEntity context) {
-		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(IncomeStatementReportEntity.class);
-		View v = new ReportTableView<IncomeStatementReportEntity>(oc, IncomeStatementReportEntity.class, template,
-				oc.getReportConfigFactory().incomeStatementReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(1, v, true);
+		
 	}
 
 	protected void openCFSReport(CorpInfoEntity context) {
-		ReportItemLocators.Group template = ReportItemLocators.getInstance().get(CashFlowStatementReportEntity.class);
-		View v = new ReportTableView<CashFlowStatementReportEntity>(oc, CashFlowStatementReportEntity.class, template,
-				oc.getReportConfigFactory().cashFlowStatementReportConfig, this.entitySessions, 10, context.getId());
-		oc.getViewManager().addView(1, v, true);
+		
 	}
 
 	protected void addToInterested(CorpInfoEntity ce) {

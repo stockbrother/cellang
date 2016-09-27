@@ -6,6 +6,7 @@ import java.util.List;
 import org.cellang.commons.lang.Visitor;
 import org.cellang.console.format.ReportItemLocator;
 import org.cellang.console.format.ReportItemLocators;
+import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
 import org.cellang.console.view.table.LineNumberColumn;
@@ -20,10 +21,9 @@ public class ReportTemplateTableDataProvider extends AbstractTableDataProvider<R
 	ReportItemLocators.Group template;
 	ReportConfig reportConfig;
 	List<ReportTemplateRow> backList;
-	public ReportTemplateTableDataProvider(ReportConfig rc) {
-		this.reportConfig = rc;
-		
-		this.template = ReportItemLocators.getInstance().get((Class<? extends AbstractReportEntity>)rc.getReportEntityConfig().getEntityClass());		
+	public ReportTemplateTableDataProvider(OperationContext oc, Class cls) {
+		this.reportConfig = oc.getReportConfigFactory().get(cls);		
+		this.template = ReportItemLocators.getInstance().get(cls);		
 
 		this.columnList.add(new LineNumberColumn<ReportTemplateRow>(this));
 		this.columnList.add(new ReportTemplateRowKeyColumn(template, this, filter));

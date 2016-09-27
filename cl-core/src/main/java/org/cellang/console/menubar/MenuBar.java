@@ -51,26 +51,34 @@ public class MenuBar extends JMenuBar {
 	public MenuBar(OperationContext oc) {
 
 		Menu//
-		menu = this.addMenu("File");
-		{
-			menu.addItem(new OpenCorpListAction(oc));
-			menu.addItem(new OpenCorpGroupAction(oc));
-			menu.addItem(new OpenAddingCorpGroupViewAction(oc));
+		menu = this.addMenu("Templates");
+		{			
 			menu.addItem(new OpenBalanceSheetTemplateAction(oc));
 			menu.addItem(new OpenTemplateTableAction(oc));
 			menu.addItem(new OpenTemplateChart(oc));
 		}
+		
 		menu = this.addMenu("Edit");
-		{
-			menu.addItem(new DeleteCorpGroupAction(oc));
+		{			
 			menu.addItem(new RefreshAllViewAction(oc));
-
 		}
-		menu = this.addMenu("My Favorites");
+		
+		menu = this.addMenu("Corps");
 		{
 			menu.addItem(new OpenMyFavoritesListViewAction(oc));
 			menu.addItem(new AddToMyFavoritesAction(oc));
+			menu.addItem(new OpenCorpListAction(oc));
+			menu.addItem(new OpenBalanceSheetAction(oc));
+			
 		}
+		
+		menu = this.addMenu("Groups");
+		{
+			menu.addItem(new OpenCorpGroupAction(oc));
+			menu.addItem(new OpenAddingCorpGroupViewAction(oc));
+			menu.addItem(new DeleteCorpGroupAction(oc));
+		}
+		
 	}
 
 	public <T extends Action> T getMenuItemAction(Class<T> cls) {

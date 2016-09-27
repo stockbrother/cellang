@@ -55,7 +55,6 @@ public class ReportRowChartDataProvider extends AbstractChartDataProvider<Date> 
 		if(this.model.getSerial(key) == null){
 			ChartSerial<Date> cs = new ReportRowChartSerial(key,rowObj);
 			this.model.addSerail(cs);			
-			this.view.updateUI();
 			return true;
 		}else{
 			return false;
