@@ -69,6 +69,8 @@ public class MenuBar extends JMenuBar {
 			menu.addItem(new AddToMyFavoritesAction(oc));
 			menu.addItem(new OpenCorpListAction(oc));
 			menu.addItem(new OpenBalanceSheetAction(oc));
+			menu.addItem(new OpenIncomeStatementAction(oc));
+			menu.addItem(new OpenCashFlowStatementAction(oc));
 			
 		}
 		

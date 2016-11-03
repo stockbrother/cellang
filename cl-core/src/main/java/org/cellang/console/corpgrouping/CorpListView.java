@@ -7,6 +7,8 @@ import java.util.Map;
 import org.cellang.console.control.Refreshable;
 import org.cellang.console.menubar.MenuBar;
 import org.cellang.console.menubar.OpenBalanceSheetAction;
+import org.cellang.console.menubar.OpenCashFlowStatementAction;
+import org.cellang.console.menubar.OpenIncomeStatementAction;
 import org.cellang.console.ops.OperationContext;
 import org.cellang.console.view.table.AbstractColumn;
 import org.cellang.console.view.table.AbstractTableDataProvider;
@@ -126,6 +128,12 @@ public class CorpListView extends TableDataView<CorpInfoEntity> {
 
 		OpenBalanceSheetAction a2 = mbar.getMenuItemAction(OpenBalanceSheetAction.class);
 		a2.setCorpListView(this);//
+		
+		OpenIncomeStatementAction a3 = mbar.getMenuItemAction(OpenIncomeStatementAction.class);
+		a3.setCorpListView(this);//
+		
+		OpenCashFlowStatementAction a4 = mbar.getMenuItemAction(OpenCashFlowStatementAction.class);
+		a4.setCorpListView(this);//
 
 		this.oc = oc;
 	}
