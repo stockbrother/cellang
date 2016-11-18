@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 
 import javax.swing.JFrame;
 
-import org.cellang.console.clojure.Utf8CodedInputStream;
+import org.cellang.viewsframework.clojure.Utf8CodedInputStream;
 
 import bsh.util.JConsole;
 import clojure.lang.Keyword;

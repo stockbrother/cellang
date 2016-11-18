@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.cellang.console.chart.ChartModel;
-import org.cellang.console.chart.LineChart;
-import org.cellang.console.view.chart.CompoundGrowModel;
+import org.cellang.viewsframework.chart.ChartModel;
+import org.cellang.viewsframework.chart.LineChart;
+import org.cellang.viewsframework.view.chart.CompoundGrowModel;
 
 public class Tmp5 {
 	private static void createAndShowGui() {

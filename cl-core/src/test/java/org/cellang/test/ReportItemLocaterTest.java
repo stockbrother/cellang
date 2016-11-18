@@ -3,9 +3,9 @@ package org.cellang.test;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.cellang.console.format.ReportItemLocator;
-import org.cellang.console.format.ReportItemLocators;
 import org.cellang.core.entity.BalanceSheetReportEntity;
+import org.cellang.viewsframework.format.ReportItemLocator;
+import org.cellang.viewsframework.format.ReportItemLocators;
 
 import junit.framework.TestCase;
 
