@@ -1,6 +1,6 @@
 package org.cellang.corpsviewer.myfavorites;
 
-import org.cellang.viewsframework.corpgrouping.CashFlowReportView;
+import org.cellang.corpsviewer.CashFlowReportView;
 import org.cellang.viewsframework.ops.OperationContext;
 import org.cellang.viewsframework.view.View;
 

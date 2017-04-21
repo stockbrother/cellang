@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.corpgrouping;
+package org.cellang.corpsviewer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import org.cellang.core.entity.CorpGroupEntity;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityQuery;
-import org.cellang.corpsviewer.MenuBar;
 import org.cellang.corpsviewer.myfavorites.OpenBalanceSheetAction;
 import org.cellang.viewsframework.HasDelegates;
 import org.cellang.viewsframework.control.Refreshable;

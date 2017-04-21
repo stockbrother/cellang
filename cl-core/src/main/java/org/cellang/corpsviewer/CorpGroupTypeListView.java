@@ -1,12 +1,11 @@
-package org.cellang.viewsframework.corpgrouping;
+package org.cellang.corpsviewer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cellang.corpsviewer.MenuBar;
+import org.cellang.corpsviewer.CorpGroupTypeListView.Row;
 import org.cellang.viewsframework.HasDelegates;
 import org.cellang.viewsframework.control.Refreshable;
-import org.cellang.viewsframework.corpgrouping.CorpGroupTypeListView.Row;
 import org.cellang.viewsframework.ops.OperationContext;
 import org.cellang.viewsframework.view.table.AbstractColumn;
 import org.cellang.viewsframework.view.table.AbstractTableDataProvider;

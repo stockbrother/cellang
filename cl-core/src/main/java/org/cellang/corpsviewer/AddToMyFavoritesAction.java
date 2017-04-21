@@ -1,8 +1,7 @@
-package org.cellang.viewsframework.corpgrouping;
+package org.cellang.corpsviewer;
 
 import org.cellang.core.entity.CorpInfoEntity;
 import org.cellang.core.entity.GroupCorpEntity;
-import org.cellang.corpsviewer.CorpListView;
 import org.cellang.corpsviewer.actions.RefreshAllViewAction;
 import org.cellang.corpsviewer.myfavorites.MyFavoritesCorpListView;
 import org.cellang.viewsframework.control.Action;

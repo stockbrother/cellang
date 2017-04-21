@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.corpgrouping;
+package org.cellang.corpsviewer;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

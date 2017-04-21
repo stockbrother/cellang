@@ -16,6 +16,8 @@ public class ReportRow {
 	ReportItemLocator locator;
 
 	int size;
+	
+	private ReportValueFilter valueFilter;
 
 	public int getSize() {
 		return size;
@@ -25,10 +27,11 @@ public class ReportRow {
 		return key;
 	}
 
-	public ReportRow(int size, String key, ReportItemLocator ri) {
+	public ReportRow(int size, String key, ReportItemLocator ri, ReportValueFilter valueFilter) {
 		this.size = size;
 		this.key = key;
 		this.locator = ri;
+		this.valueFilter = valueFilter;
 	}
 
 	public AbstractReportItemEntity get(int idx) {
@@ -57,6 +60,11 @@ public class ReportRow {
 	public BigDecimal getValue(int year) {
 		//
 		AbstractReportItemEntity en = this.get(year);
-		return en == null ? null : en.getValue();
+		BigDecimal rt = en == null ? null : en.getValue();
+		if(this.valueFilter != null){
+			rt = this.valueFilter.getValue(year, rt, this);
+		}
+		return rt;
+		
 	}
 }

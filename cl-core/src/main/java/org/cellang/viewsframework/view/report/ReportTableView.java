@@ -26,7 +26,11 @@ public class ReportTableView<T extends AbstractReportEntity> extends TableDataVi
 	ReportRow selectedRow;
 
 	public ReportTableView(OperationContext oc, Class<T> cls, int years, String corpId) {
-		super("Report of " + cls.getName(), oc, new ReportTableDataProvider<T>(oc, cls, years, corpId));
+		this(oc, cls, years, corpId, null);
+	}
+
+	public ReportTableView(OperationContext oc, Class<T> cls, int years, String corpId, ReportValueFilter vf) {
+		super("Report of " + cls.getName(), oc, new ReportTableDataProvider<T>(oc, cls, years, corpId, vf));
 		this.oc = oc;
 	}
 

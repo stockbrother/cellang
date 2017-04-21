@@ -1,7 +1,7 @@
 package org.cellang.corpsviewer.actions;
 
+import org.cellang.corpsviewer.CorpGroupEditView;
 import org.cellang.viewsframework.control.Action;
-import org.cellang.viewsframework.corpgrouping.CorpGroupEditView;
 import org.cellang.viewsframework.ops.OperationContext;
 
 public class OpenAddingCorpGroupViewAction extends Action {

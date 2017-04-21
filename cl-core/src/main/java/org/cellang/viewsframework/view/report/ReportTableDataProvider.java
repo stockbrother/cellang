@@ -62,9 +62,16 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 	ReportItemLocators.Group template;
 	Class<T> reportEntityClass;
 
+	ReportValueFilter valueFilter;
+
 	public ReportTableDataProvider(OperationContext oc, Class<T> cls, int years, String corpId) {
+		this(oc, cls, years, corpId, null);
+	}
+
+	public ReportTableDataProvider(OperationContext oc, Class<T> cls, int years, String corpId,
+			ReportValueFilter valueFilter) {
 		this.reportEntityClass = cls;
-		this.template =	ReportItemLocators.getInstance().get(cls);
+		this.template = ReportItemLocators.getInstance().get(cls);
 		this.years = years;
 		this.rptCfg = oc.getReportConfigFactory().get(cls);
 		this.esf = oc.getEntityService();
@@ -77,6 +84,7 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 		for (int i = 0; i < years; i++) {
 			this.columnList.add(new ReportRowValueColumn(i, "Y" + (2015 - i), this));
 		}
+		this.valueFilter = valueFilter;
 		this.refresh();
 	}
 
@@ -100,7 +108,7 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 		}, false);
 
 		for (ReportItemLocator ri : locL) {
-			ReportRow rr = new ReportRow(years, ri.getKey(), ri);
+			ReportRow rr = new ReportRow(years, ri.getKey(), ri, this.valueFilter);
 			rL.add(rr);
 		}
 		return rL;

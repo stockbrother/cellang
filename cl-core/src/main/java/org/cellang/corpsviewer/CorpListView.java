@@ -12,7 +12,6 @@ import org.cellang.corpsviewer.myfavorites.OpenBalanceSheetAction;
 import org.cellang.corpsviewer.myfavorites.OpenCashFlowStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenIncomeStatementAction;
 import org.cellang.viewsframework.control.Refreshable;
-import org.cellang.viewsframework.corpgrouping.AddToMyFavoritesAction;
 import org.cellang.viewsframework.ops.OperationContext;
 import org.cellang.viewsframework.view.table.AbstractColumn;
 import org.cellang.viewsframework.view.table.AbstractTableDataProvider;

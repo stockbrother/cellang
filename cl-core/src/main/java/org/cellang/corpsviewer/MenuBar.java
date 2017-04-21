@@ -22,8 +22,6 @@ import org.cellang.corpsviewer.myfavorites.OpenCashFlowStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenIncomeStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenMyFavoritesListViewAction;
 import org.cellang.viewsframework.control.Action;
-import org.cellang.viewsframework.corpgrouping.AddToMyFavoritesAction;
-import org.cellang.viewsframework.corpgrouping.DeleteCorpGroupAction;
 import org.cellang.viewsframework.ops.OperationContext;
 
 public class MenuBar extends JMenuBar {

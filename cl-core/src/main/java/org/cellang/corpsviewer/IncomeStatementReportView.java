@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.corpgrouping;
+package org.cellang.corpsviewer;
 
 import org.cellang.core.entity.IncomeStatementReportEntity;
 import org.cellang.viewsframework.ops.OperationContext;
