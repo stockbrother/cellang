@@ -10,11 +10,11 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.cellang.commons.util.UUIDUtil;
+import org.cellang.viewsframework.AbstractView;
 import org.cellang.viewsframework.HasDelegates;
 import org.cellang.viewsframework.control.HasActions;
 import org.cellang.viewsframework.control.RowSelector;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.AbstractView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

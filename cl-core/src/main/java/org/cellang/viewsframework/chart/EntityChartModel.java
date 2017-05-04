@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
-import org.cellang.viewsframework.chart.ChartSerial;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

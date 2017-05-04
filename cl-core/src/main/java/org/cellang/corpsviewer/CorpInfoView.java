@@ -12,8 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import org.cellang.core.entity.CorpInfoEntity;
+import org.cellang.viewsframework.AbstractView;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.AbstractView;
 
 public class CorpInfoView extends AbstractView {
 

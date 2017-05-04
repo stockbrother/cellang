@@ -2,8 +2,8 @@ package org.cellang.viewsframework.view.report;
 
 import java.util.Date;
 
+import org.cellang.viewsframework.chart.ChartView;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.chart.ChartView;
 
 public class ReportRowChartView extends ChartView<Date> {
 

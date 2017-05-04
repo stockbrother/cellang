@@ -15,9 +15,9 @@ import org.cellang.commons.util.BeanUtil;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.QuotesEntity;
 import org.cellang.core.loader.DataLoader;
+import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.control.HasActions;
-import org.cellang.viewsframework.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

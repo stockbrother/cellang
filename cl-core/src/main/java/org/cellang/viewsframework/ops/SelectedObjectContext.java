@@ -1,6 +1,6 @@
 package org.cellang.viewsframework.ops;
 
-import org.cellang.viewsframework.view.View;
+import org.cellang.viewsframework.View;
 
 public class SelectedObjectContext {
 

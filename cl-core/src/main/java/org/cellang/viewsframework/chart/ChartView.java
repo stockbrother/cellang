@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -8,13 +8,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.cellang.viewsframework.AbstractView;
 import org.cellang.viewsframework.HasDelegates;
-import org.cellang.viewsframework.chart.ChartModel;
-import org.cellang.viewsframework.chart.LineChart;
 import org.cellang.viewsframework.control.DataPageQuerable;
 import org.cellang.viewsframework.control.Descriable;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.AbstractView;
 
 public class ChartView<T> extends AbstractView implements HasDelegates {
 	protected LineChart<T> chart;

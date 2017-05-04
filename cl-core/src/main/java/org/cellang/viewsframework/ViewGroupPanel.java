@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view;
+package org.cellang.viewsframework;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -6,9 +6,6 @@ import java.util.List;
 
 import javax.swing.JTabbedPane;
 
-import org.cellang.viewsframework.EventBus;
-import org.cellang.viewsframework.HasDelegateUtil;
-import org.cellang.viewsframework.PerspectivePanel;
 import org.cellang.viewsframework.ops.OperationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

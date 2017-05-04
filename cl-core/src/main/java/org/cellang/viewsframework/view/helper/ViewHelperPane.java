@@ -12,6 +12,8 @@ import org.cellang.core.entity.FavoriteActionEntity;
 import org.cellang.viewsframework.EventBus;
 import org.cellang.viewsframework.HasDelegateUtil;
 import org.cellang.viewsframework.HasDelegates;
+import org.cellang.viewsframework.View;
+import org.cellang.viewsframework.ViewGroupPanel;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.control.ColumnAppendable;
 import org.cellang.viewsframework.control.ColumnOrderable;
@@ -23,8 +25,6 @@ import org.cellang.viewsframework.control.Filterable;
 import org.cellang.viewsframework.control.Refreshable;
 import org.cellang.viewsframework.control.ValueChangeListener;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
-import org.cellang.viewsframework.view.ViewGroupPanel;
 import org.cellang.viewsframework.view.table.TableDataProvider;
 
 public class ViewHelperPane extends HelperPane<View> implements EventListener {

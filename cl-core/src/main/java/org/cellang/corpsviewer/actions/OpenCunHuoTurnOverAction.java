@@ -1,8 +1,8 @@
 package org.cellang.corpsviewer.actions;
 
+import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
 import org.cellang.viewsframework.view.list.CunHuoZhouZhuanListTableView;
 
 public class OpenCunHuoTurnOverAction extends Action {

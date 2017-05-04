@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.FavoriteActionEntity;
+import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
 
 public class FavoriteActionFactory {
 	OperationContext oc;

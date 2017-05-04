@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.cellang.viewsframework.HasDelegateUtil;
 import org.cellang.viewsframework.PerspectivePanel;
+import org.cellang.viewsframework.View;
+import org.cellang.viewsframework.ViewGroupPanel;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.control.Refreshable;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
-import org.cellang.viewsframework.view.ViewGroupPanel;
 
 public class RefreshAllViewAction extends Action {
 	OperationContext oc;

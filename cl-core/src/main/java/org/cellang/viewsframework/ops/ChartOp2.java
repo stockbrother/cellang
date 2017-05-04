@@ -8,9 +8,9 @@ import org.cellang.core.entity.IncomeStatementItemEntity;
 import org.cellang.core.entity.IncomeStatementReportEntity;
 import org.cellang.core.util.ReportDate;
 import org.cellang.viewsframework.PerspectivePanel;
-import org.cellang.viewsframework.view.chart.AbstractChartDataProvider;
-import org.cellang.viewsframework.view.chart.DateChartView;
-import org.cellang.viewsframework.view.chart.ReportItemChartDataProvider;
+import org.cellang.viewsframework.chart.AbstractChartDataProvider;
+import org.cellang.viewsframework.chart.DateChartView;
+import org.cellang.viewsframework.chart.ReportItemChartDataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

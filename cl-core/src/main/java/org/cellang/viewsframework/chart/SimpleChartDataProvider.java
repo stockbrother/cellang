@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -7,7 +7,6 @@ import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityObject;
 import org.cellang.core.entity.EntityQuery;
 import org.cellang.core.entity.EntitySessionFactory;
-import org.cellang.viewsframework.chart.ChartModel;
 
 public class SimpleChartDataProvider extends AbstractChartDataProvider<String> {
 	EntitySessionFactory esf;

@@ -6,9 +6,6 @@ import java.util.List;
 import javax.swing.JSplitPane;
 
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
-import org.cellang.viewsframework.view.ViewGroupPanel;
-import org.cellang.viewsframework.view.ViewSelectionHistory;
 
 public class PerspectivePanel extends JSplitPane {
 

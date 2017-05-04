@@ -12,10 +12,10 @@ import org.cellang.core.entity.ExtendingPropertyEntity;
 import org.cellang.core.entity.FavoriteActionEntity;
 import org.cellang.core.entity.InterestedCorpEntity;
 import org.cellang.core.entity.QuotesEntity;
+import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.EntityConfigSelectionListener;
 import org.cellang.viewsframework.control.EntityConfigSelector;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
 import org.cellang.viewsframework.view.table.EntityObjectTableView;
 
 /**

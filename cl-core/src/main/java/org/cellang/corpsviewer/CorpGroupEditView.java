@@ -13,8 +13,8 @@ import javax.swing.JTextField;
 import org.cellang.core.entity.CorpGroupEntity;
 import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
+import org.cellang.viewsframework.AbstractView;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.AbstractView;
 
 public class CorpGroupEditView extends AbstractView {
 	Box box;

@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.cellang.collector.EnvUtil;
+import org.cellang.viewsframework.chart.AbstractChartDataProvider;
 import org.cellang.viewsframework.chart.ChartModel;
 import org.cellang.viewsframework.chart.ChartSerial;
-import org.cellang.viewsframework.view.chart.AbstractChartDataProvider;
 
 public class ReportRowChartDataProvider extends AbstractChartDataProvider<Date> {
 	public static class ReportRowChartSerial extends ChartSerial<Date> {

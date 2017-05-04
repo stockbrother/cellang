@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.viewsframework.PerspectivePanel;
-import org.cellang.viewsframework.view.chart.ChartView;
+import org.cellang.viewsframework.chart.ChartView;
 
 public class ChartOp extends ConsoleOp<Void> {
 

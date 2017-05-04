@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
-import org.cellang.viewsframework.view.chart.ChartView;
-import org.cellang.viewsframework.view.chart.SimpleChartDataProvider;
+import org.cellang.viewsframework.chart.ChartView;
+import org.cellang.viewsframework.chart.SimpleChartDataProvider;
 
 public class SimpleChartView extends ChartView {
 

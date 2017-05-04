@@ -7,10 +7,10 @@ import org.cellang.core.entity.EntityOp;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.entity.ExtendingPropertyEntity;
+import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.control.HasActions;
 import org.cellang.viewsframework.ext.CorpNameExtExtProperty;
-import org.cellang.viewsframework.view.View;
 
 public class ExtendingPropertyEntityConfigControl extends EntityConfigControl<CorpInfoEntity> implements HasActions {
 

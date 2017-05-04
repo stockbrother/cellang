@@ -3,10 +3,10 @@ package org.cellang.viewsframework.view.table;
 import java.util.List;
 
 import org.cellang.core.entity.EntityConfig;
+import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.control.HasActions;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
 
 public class EntityConfigTableView extends TableDataView<EntityConfig> implements HasActions {
 	OperationContext oc;

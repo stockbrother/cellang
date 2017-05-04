@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import org.cellang.core.util.ReportDate;
 import org.cellang.viewsframework.ops.OperationContext;

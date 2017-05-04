@@ -1,8 +1,6 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import java.math.BigDecimal;
-
-import org.cellang.viewsframework.chart.ChartSerial;
 
 public class CompoundGrowModel extends ChartSerial<Integer> {
 

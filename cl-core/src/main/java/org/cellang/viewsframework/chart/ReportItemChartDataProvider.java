@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -14,7 +14,6 @@ import org.cellang.commons.jdbc.ObjectArrayListResultSetProcessor;
 import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.util.ReportDate;
-import org.cellang.viewsframework.chart.ChartModel;
 
 public class ReportItemChartDataProvider extends AbstractChartDataProvider<ReportDate> {
 	EntitySessionFactory esf;

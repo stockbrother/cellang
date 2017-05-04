@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view;
+package org.cellang.viewsframework;
 
 public interface ViewRemoveListener {
 

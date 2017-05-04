@@ -1,8 +1,7 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import java.util.Map;
 
-import org.cellang.viewsframework.chart.ChartModel;
 import org.cellang.viewsframework.control.DataPageQuerable;
 import org.cellang.viewsframework.control.Descriable;
 import org.cellang.viewsframework.control.Refreshable;

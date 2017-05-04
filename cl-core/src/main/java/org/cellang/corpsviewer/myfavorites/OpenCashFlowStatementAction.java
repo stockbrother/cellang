@@ -1,8 +1,8 @@
 package org.cellang.corpsviewer.myfavorites;
 
 import org.cellang.corpsviewer.IncomeStatementReportView;
+import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.View;
 
 public class OpenCashFlowStatementAction extends AbstractFavoriteSelectedCorpAction {
 

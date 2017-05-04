@@ -19,12 +19,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import org.cellang.viewsframework.AbstractView;
 import org.cellang.viewsframework.HasDelegates;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.control.HasActions;
 import org.cellang.viewsframework.control.ValueChangeListener;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.AbstractView;
 
 public class HelperPane<T> extends AbstractView {
 	private static class ActionUI {

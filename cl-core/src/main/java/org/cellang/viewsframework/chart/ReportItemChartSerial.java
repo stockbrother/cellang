@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.view.chart;
+package org.cellang.viewsframework.chart;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.cellang.core.util.ReportDate;
-import org.cellang.viewsframework.chart.ChartSerial;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
