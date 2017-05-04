@@ -6,8 +6,8 @@ import java.util.List;
 import org.cellang.commons.lang.Visitor;
 import org.cellang.core.entity.AbstractReportEntity;
 import org.cellang.core.metrics.ReportConfig;
-import org.cellang.viewsframework.format.ReportItemLocator;
-import org.cellang.viewsframework.format.ReportItemLocators;
+import org.cellang.corpsviewer.corpdata.ItemDefine;
+import org.cellang.corpsviewer.corpdata.ItemDefines;
 import org.cellang.viewsframework.ops.OperationContext;
 import org.cellang.viewsframework.table.AbstractColumn;
 import org.cellang.viewsframework.table.AbstractTableDataProvider;
@@ -15,15 +15,15 @@ import org.cellang.viewsframework.table.LineNumberColumn;
 
 public class ReportTemplateTableDataProvider extends AbstractTableDataProvider<ReportTemplateRow> {
 
-	static ReportItemLocators RIL = ReportItemLocators.getInstance();
+	static ItemDefines RIL = ItemDefines.getInstance();
 
 	ReportItemLocatorFilter filter = new ReportItemLocatorFilter();
-	ReportItemLocators.Group template;
+	ItemDefines.Group template;
 	ReportConfig reportConfig;
 	List<ReportTemplateRow> backList;
 	public ReportTemplateTableDataProvider(OperationContext oc, Class cls) {
 		this.reportConfig = oc.getReportConfigFactory().get(cls);		
-		this.template = ReportItemLocators.getInstance().get(cls);		
+		this.template = ItemDefines.getInstance().get(cls);		
 
 		this.columnList.add(new LineNumberColumn<ReportTemplateRow>(this));
 		this.columnList.add(new ReportTemplateRowKeyColumn(template, this, filter));
@@ -38,19 +38,19 @@ public class ReportTemplateTableDataProvider extends AbstractTableDataProvider<R
 	 */
 	private List<ReportTemplateRow> newReportTemplateRowListFromLocaltors() {
 		List<ReportTemplateRow> rL = new ArrayList<>();
-		List<ReportItemLocator> locL = new ArrayList<>();
+		List<ItemDefine> locL = new ArrayList<>();
 
-		template.getRoot().forEach(new Visitor<ReportItemLocator>() {
+		template.getRoot().forEach(new Visitor<ItemDefine>() {
 
 			@Override
-			public void visit(ReportItemLocator t) {
+			public void visit(ItemDefine t) {
 				if (filter.accept(t)) {
 					locL.add(t);
 				}
 			}
 		}, false);
 
-		for (ReportItemLocator ri : locL) {
+		for (ItemDefine ri : locL) {
 			ReportTemplateRow rr = new ReportTemplateRow(this.reportConfig, ri.getKey(), ri);
 			rL.add(rr);
 		}

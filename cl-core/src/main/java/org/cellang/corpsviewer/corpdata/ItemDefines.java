@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.format;
+package org.cellang.corpsviewer.corpdata;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,31 +14,31 @@ import org.cellang.core.entity.IncomeStatementReportEntity;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public class ReportItemLocators {
+public class ItemDefines {
 	public static class Group {
-		ReportItemLocator root;
-		Map<String, ReportItemLocator> keyMap = new HashMap<>();
+		ItemDefine root;
+		Map<String, ItemDefine> keyMap = new HashMap<>();
 
-		public Group(ReportItemLocator root) {
+		public Group(ItemDefine root) {
 			this.root = root;
 			this.doInit(root);//
 		}
 
-		public ReportItemLocator getRoot() {
+		public ItemDefine getRoot() {
 			return root;
 		}
 
-		private void doInit(ReportItemLocator ril) {
-			ReportItemLocator old = keyMap.put(ril.getKey(), ril);
+		private void doInit(ItemDefine ril) {
+			ItemDefine old = keyMap.put(ril.getKey(), ril);
 			if (old != null) {
 				throw new RuntimeException("duplicated:" + ril);
 			}
-			for (ReportItemLocator child : ril.getChildList()) {
+			for (ItemDefine child : ril.getChildList()) {
 				doInit(child);
 			}
 		}
 
-		public ReportItemLocator get(String key) {
+		public ItemDefine get(String key) {
 			return this.keyMap.get(key);//
 		}
 
@@ -46,17 +46,17 @@ public class ReportItemLocators {
 
 	Map<Class<? extends AbstractReportEntity>, Group> groupMap = new HashMap<>();
 
-	static ReportItemLocators ME;
+	static ItemDefines ME;
 
-	private ReportItemLocators() {
+	private ItemDefines() {
 
 	}
 
-	public static ReportItemLocators getInstance() {
+	public static ItemDefines getInstance() {
 		if (ME != null) {
 			return ME;
 		}
-		ME = new ReportItemLocators();
+		ME = new ItemDefines();
 		{
 
 			Group g1 = load(new StringReader(BalanceSheetContent.content));
@@ -82,10 +82,10 @@ public class ReportItemLocators {
 	}
 
 	private static Group load(Reader reader) {
-		ReportItemLocator root = new ReportItemLocator(null, null);
+		ItemDefine root = new ItemDefine(null, null);
 
 		CSVReader cr = new CSVReader(reader);
-		ReportItemLocator current = root;
+		ItemDefine current = root;
 		int preDepth = 0;
 		int lineNum = -1;
 		root.setOrder(lineNum);

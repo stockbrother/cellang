@@ -17,8 +17,8 @@ import org.cellang.core.entity.EntityQuery;
 import org.cellang.core.entity.EntitySession;
 import org.cellang.core.entity.EntitySessionFactory;
 import org.cellang.core.metrics.ReportConfig;
-import org.cellang.viewsframework.format.ReportItemLocator;
-import org.cellang.viewsframework.format.ReportItemLocators;
+import org.cellang.corpsviewer.corpdata.ItemDefine;
+import org.cellang.corpsviewer.corpdata.ItemDefines;
 import org.cellang.viewsframework.ops.OperationContext;
 import org.cellang.viewsframework.table.AbstractColumn;
 import org.cellang.viewsframework.table.AbstractTableDataProvider;
@@ -31,7 +31,7 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 		String corpId;
 		Date reportDate;
 
-		GetReportOp<T> set(Class<T> rptEntityCls, String corpId, Date reportDate) {
+		public GetReportOp<T> set(Class<T> rptEntityCls, String corpId, Date reportDate) {
 			this.corpId = corpId;
 			this.rptEntityCls = rptEntityCls;
 			this.reportDate = reportDate;
@@ -48,18 +48,18 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 
 	}
 
-	static ReportItemLocators RIL = ReportItemLocators.getInstance();
+	static ItemDefines RIL = ItemDefines.getInstance();
 
 	List<ReportRow> backList;
 	ReportConfig rptCfg;
 	EntitySessionFactory esf;
-	List<Method> itemGetMethodList;
+	//List<Method> itemGetMethodList;
 	String corpId;
 
 	private int years;
 
 	ReportItemLocatorFilter filter = new ReportItemLocatorFilter();
-	ReportItemLocators.Group template;
+	ItemDefines.Group template;
 	Class<T> reportEntityClass;
 
 	ReportValueFilter valueFilter;
@@ -71,12 +71,12 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 	public ReportTableDataProvider(OperationContext oc, Class<T> cls, int years, String corpId,
 			ReportValueFilter valueFilter) {
 		this.reportEntityClass = cls;
-		this.template = ReportItemLocators.getInstance().get(cls);
+		this.template = ItemDefines.getInstance().get(cls);
 		this.years = years;
 		this.rptCfg = oc.getReportConfigFactory().get(cls);
 		this.esf = oc.getEntityService();
 		this.corpId = corpId;
-		itemGetMethodList = this.rptCfg.getItemEntityConfig().getGetMethodList();
+		//itemGetMethodList = this.rptCfg.getItemEntityConfig().getGetMethodList();
 
 		this.columnList.add(new LineNumberColumn<ReportRow>(this));
 		this.columnList.add(new ReportRowKeyColumn(template, this, filter));
@@ -95,19 +95,19 @@ public class ReportTableDataProvider<T extends AbstractReportEntity> extends Abs
 	 */
 	private List<ReportRow> newReportRowListFromLocaltors() {
 		List<ReportRow> rL = new ArrayList<>();
-		List<ReportItemLocator> locL = new ArrayList<>();
+		List<ItemDefine> locL = new ArrayList<>();
 
-		template.getRoot().forEach(new Visitor<ReportItemLocator>() {
+		template.getRoot().forEach(new Visitor<ItemDefine>() {
 
 			@Override
-			public void visit(ReportItemLocator t) {
+			public void visit(ItemDefine t) {
 				if (filter.accept(t)) {
 					locL.add(t);
 				}
 			}
 		}, false);
 
-		for (ReportItemLocator ri : locL) {
+		for (ItemDefine ri : locL) {
 			ReportRow rr = new ReportRow(years, ri.getKey(), ri, this.valueFilter);
 			rL.add(rr);
 		}

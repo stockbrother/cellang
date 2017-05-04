@@ -1,7 +1,7 @@
 package org.cellang.viewsframework.report;
 
 import org.cellang.core.metrics.ReportConfig;
-import org.cellang.viewsframework.format.ReportItemLocator;
+import org.cellang.corpsviewer.corpdata.ItemDefine;
 
 public class ReportTemplateRow {
 	
@@ -12,13 +12,13 @@ public class ReportTemplateRow {
 
 	private String key;
 
-	ReportItemLocator locator;
+	ItemDefine locator;
 
 	public String getKey() {
 		return key;
 	}
 
-	public ReportTemplateRow(ReportConfig rc, String key, ReportItemLocator ri) {
+	public ReportTemplateRow(ReportConfig rc, String key, ItemDefine ri) {
 		this.reportConfig = rc;
 		this.key = key;
 		this.locator = ri;

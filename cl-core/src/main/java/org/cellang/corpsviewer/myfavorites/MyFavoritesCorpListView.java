@@ -114,14 +114,20 @@ public class MyFavoritesCorpListView extends TableDataView<Row> implements HasDe
 	public MyFavoritesCorpListView(OperationContext oc) {
 		super("MyFavorites", oc, new DataProvider(oc));
 		MenuBar mbar = oc.getMenuBar();
-		OpenBalanceSheetAction a2 = mbar.getMenuItemAction(OpenBalanceSheetAction.class);
-		a2.setCorpListView(this);//
 		
-		OpenIncomeStatementAction a3 = mbar.getMenuItemAction(OpenIncomeStatementAction.class);
-		a3.setCorpListView(this);//
+		List<AbstractFavoriteSelectedCorpAction> fscaL = mbar.getMenuItemActionList(AbstractFavoriteSelectedCorpAction.class);
+		for(AbstractFavoriteSelectedCorpAction a:fscaL){
+			a.setCorpListView(this);
+		}
 		
-		OpenCashFlowStatementAction a4 = mbar.getMenuItemAction(OpenCashFlowStatementAction.class);
-		a4.setCorpListView(this);//
+//		OpenBalanceSheetAction a2 = mbar.getMenuItemAction(OpenBalanceSheetAction.class);
+//		a2.setCorpListView(this);//
+//		
+//		OpenIncomeStatementAction a3 = mbar.getMenuItemAction(OpenIncomeStatementAction.class);
+//		a3.setCorpListView(this);//
+//		
+//		OpenCashFlowStatementAction a4 = mbar.getMenuItemAction(OpenCashFlowStatementAction.class);
+//		a4.setCorpListView(this);//
 
 		this.refresh();
 	}

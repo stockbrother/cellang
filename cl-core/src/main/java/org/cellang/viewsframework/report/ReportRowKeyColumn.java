@@ -1,15 +1,15 @@
 package org.cellang.viewsframework.report;
 
-import org.cellang.viewsframework.format.ReportItemLocator;
-import org.cellang.viewsframework.format.ReportItemLocators;
+import org.cellang.corpsviewer.corpdata.ItemDefine;
+import org.cellang.corpsviewer.corpdata.ItemDefines;
 import org.cellang.viewsframework.table.AbstractColumn;
 import org.cellang.viewsframework.table.AbstractTableDataProvider;
 
 public class ReportRowKeyColumn extends AbstractColumn<ReportRow> {
 
 	ReportItemLocatorFilter filter;
-	ReportItemLocators.Group template;
-	public ReportRowKeyColumn(ReportItemLocators.Group template,AbstractTableDataProvider<ReportRow> model, ReportItemLocatorFilter filter) {
+	ItemDefines.Group template;
+	public ReportRowKeyColumn(ItemDefines.Group template,AbstractTableDataProvider<ReportRow> model, ReportItemLocatorFilter filter) {
 		super(model, "Key");
 		this.template = template;
 		this.filter = filter;
@@ -25,7 +25,7 @@ public class ReportRowKeyColumn extends AbstractColumn<ReportRow> {
 			rt = "(+" + rt;
 		}
 
-		ReportItemLocator ril = template.get(key);
+		ItemDefine ril = template.get(key);
 
 		int dep = 0;
 

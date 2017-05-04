@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.format;
+package org.cellang.corpsviewer.corpdata;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -10,38 +10,51 @@ import org.cellang.commons.lang.Visitor;
 /**
  * 1-1 ReportItemEntity
  * 
- * @see ReportItemLocators
+ * @see ItemDefines
  * @author wuzhen
  *
  */
-public class ReportItemLocator {
-	private ReportItemLocator parent;
+public class ItemDefine {
+	private ItemDefine parent;
 	private String key;
-	private List<ReportItemLocator> childList = new ArrayList<>();
+	private List<ItemDefine> childList = new ArrayList<>();
 	private int order;
 
-	public ReportItemLocator(ReportItemLocator parent, String key) {
+	public ItemDefine(ItemDefine parent, String key) {
 		this.parent = parent;
 		this.key = key;
 	}
 
-	public static ReportItemLocator newInstance(String key) {
-		return new ReportItemLocator(null, key);
+	public static ItemDefine newInstance(String key) {
+		return new ItemDefine(null, key);
 	}
 
-	public ReportItemLocator newChild(String key) {
-		ReportItemLocator rt = ReportItemLocator.newInstance(key);
+	public ItemDefine newChild(String key) {
+		ItemDefine rt = ItemDefine.newInstance(key);
 		this.add(rt);
 		return rt;
 	}
 
-	public ReportItemLocator add(ReportItemLocator child) {
+	public ItemDefine add(ItemDefine child) {
 		if (child.parent != null) {
 			throw new RuntimeException("child has parent:" + child.parent);
 		}
 		child.parent = this;
 		this.childList.add(child);
 		return this;
+	}
+
+	public ItemDefine find(String key) {
+		if (key.equals(this.key)) {
+			return this;
+		}
+		for (ItemDefine cd : this.childList) {
+			ItemDefine rt = cd.find(key);
+			if (rt != null) {
+				return rt;
+			}			
+		}
+		return null;
 	}
 
 	public String getKey() {
@@ -52,7 +65,7 @@ public class ReportItemLocator {
 		this.key = key;
 	}
 
-	public ReportItemLocator getParent() {
+	public ItemDefine getParent() {
 		return parent;
 	}
 
@@ -70,12 +83,12 @@ public class ReportItemLocator {
 		}
 		writer.write(this.key);
 		writer.write("\n");
-		for (ReportItemLocator child : this.childList) {
+		for (ItemDefine child : this.childList) {
 			child.write(depth + 1, writer);
 		}
 	}
 
-	public List<ReportItemLocator> getChildList() {
+	public List<ItemDefine> getChildList() {
 		return this.childList;
 	}
 
@@ -87,21 +100,21 @@ public class ReportItemLocator {
 		return order;
 	}
 
-	public void forEach(Visitor<ReportItemLocator> vis, boolean includeThis) {
+	public void forEach(Visitor<ItemDefine> vis, boolean includeThis) {
 		if (includeThis) {
 			vis.visit(this);
 		}
-		for (ReportItemLocator cI : this.childList) {
+		for (ItemDefine cI : this.childList) {
 			cI.forEach(vis, true);//
 		}
 	}
 
-	public void addAllToList(List<ReportItemLocator> list, boolean addThis) {
+	public void addAllToList(List<ItemDefine> list, boolean addThis) {
 
 		if (addThis) {
 			list.add(this);
 		}
-		for (ReportItemLocator cI : this.childList) {
+		for (ItemDefine cI : this.childList) {
 			cI.addAllToList(list, true);//
 		}
 	}

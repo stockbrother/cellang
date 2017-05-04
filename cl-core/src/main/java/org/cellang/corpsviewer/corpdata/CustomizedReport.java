@@ -1,4 +1,4 @@
-package org.cellang.viewsframework.format;
+package org.cellang.corpsviewer.corpdata;
 
 public class CustomizedReport {
 	static String content = "\n"//

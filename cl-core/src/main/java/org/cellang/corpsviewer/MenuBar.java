@@ -2,7 +2,9 @@ package org.cellang.corpsviewer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JMenu;
@@ -18,6 +20,7 @@ import org.cellang.corpsviewer.actions.OpenTemplateChart;
 import org.cellang.corpsviewer.actions.OpenTemplateTableAction;
 import org.cellang.corpsviewer.actions.RefreshAllViewAction;
 import org.cellang.corpsviewer.myfavorites.OpenBalanceSheetAction;
+import org.cellang.corpsviewer.myfavorites.OpenBalanceSheetQinSuanAction;
 import org.cellang.corpsviewer.myfavorites.OpenCashFlowStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenIncomeStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenMyFavoritesListViewAction;
@@ -92,6 +95,7 @@ public class MenuBar extends JMenuBar {
 			menu.addItem(new OpenBalanceSheetAction(oc));
 			menu.addItem(new OpenIncomeStatementAction(oc));
 			menu.addItem(new OpenCashFlowStatementAction(oc));
+			menu.addItem(new OpenBalanceSheetQinSuanAction(oc));
 		}
 		menu = this.addMenu("List");
 		{
@@ -107,7 +111,20 @@ public class MenuBar extends JMenuBar {
 		}
 		a.perform();
 	}
-
+	
+	public <T extends Action> List<T> getMenuItemActionList(Class<T> cls) {
+		List<T> rt = new ArrayList<T>();
+		for (Menu m : this.menuMap.values()) {
+			for (Action a : m.actionMap.values()) {
+				if (cls.isInstance(a)) {
+					rt.add((T) a);
+				}
+			}
+		}
+		
+		return rt;
+	}
+	
 	public <T extends Action> T getMenuItemAction(Class<T> cls) {
 
 		for (Menu m : this.menuMap.values()) {

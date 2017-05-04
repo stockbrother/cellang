@@ -3,9 +3,9 @@ package org.cellang.viewsframework.report;
 import java.util.List;
 
 import org.cellang.core.metrics.ReportConfig;
+import org.cellang.corpsviewer.corpdata.ItemDefines;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.control.HasActions;
-import org.cellang.viewsframework.format.ReportItemLocators;
 import org.cellang.viewsframework.ops.OperationContext;
 import org.cellang.viewsframework.table.ColumnDefine;
 import org.cellang.viewsframework.table.TableDataView;

@@ -6,14 +6,14 @@ import java.util.List;
 
 import org.cellang.core.entity.AbstractReportItemEntity;
 import org.cellang.core.entity.EntityObject;
-import org.cellang.viewsframework.format.ReportItemLocator;
+import org.cellang.corpsviewer.corpdata.ItemDefine;
 
 public class ReportRow {
 	List<AbstractReportItemEntity> itemList = new ArrayList<>();
 
 	private String key;
 
-	ReportItemLocator locator;
+	ItemDefine locator;
 
 	int size;
 	
@@ -27,7 +27,7 @@ public class ReportRow {
 		return key;
 	}
 
-	public ReportRow(int size, String key, ReportItemLocator ri, ReportValueFilter valueFilter) {
+	public ReportRow(int size, String key, ItemDefine ri, ReportValueFilter valueFilter) {
 		this.size = size;
 		this.key = key;
 		this.locator = ri;

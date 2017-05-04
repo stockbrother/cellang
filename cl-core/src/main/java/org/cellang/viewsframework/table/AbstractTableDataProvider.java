@@ -19,15 +19,7 @@ public abstract class AbstractTableDataProvider<T>
 	public AbstractTableDataProvider() {
 
 	}
-	//
-	// protected <T> void addDelagate(Class<? extends T> cls, T obj) {
-	// Object obj2 = this.delagateMap.get(cls);
-	// if (obj2 != null) {
-	//
-	// }
-	// this.delagateMap.put(cls, obj);
-	// }
-
+	
 	@Override
 	public void addDataChangeListener(DataChangedListener l) {
 		this.dataChangedListenerList.add(l);
