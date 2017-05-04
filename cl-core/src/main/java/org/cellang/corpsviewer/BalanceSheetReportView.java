@@ -2,7 +2,7 @@ package org.cellang.corpsviewer;
 
 import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.report.ReportTableView;
+import org.cellang.viewsframework.report.ReportTableView;
 
 public class BalanceSheetReportView extends ReportTableView<BalanceSheetReportEntity> {
 

@@ -16,7 +16,7 @@ import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.EntityConfigSelectionListener;
 import org.cellang.viewsframework.control.EntityConfigSelector;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.table.EntityObjectTableView;
+import org.cellang.viewsframework.table.EntityObjectTableView;
 
 /**
  * 

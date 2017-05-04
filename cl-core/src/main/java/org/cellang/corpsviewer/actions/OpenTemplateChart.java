@@ -2,9 +2,9 @@ package org.cellang.corpsviewer.actions;
 
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.report.ReportTemplateRow;
-import org.cellang.viewsframework.view.report.ReportTemplateRowChartDataProvider;
-import org.cellang.viewsframework.view.report.ReportTemplateRowChartView;
+import org.cellang.viewsframework.report.ReportTemplateRow;
+import org.cellang.viewsframework.report.ReportTemplateRowChartDataProvider;
+import org.cellang.viewsframework.report.ReportTemplateRowChartView;
 
 public class OpenTemplateChart extends Action {
 	OperationContext oc;

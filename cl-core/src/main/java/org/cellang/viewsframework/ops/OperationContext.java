@@ -32,10 +32,10 @@ import org.cellang.viewsframework.HomeView;
 import org.cellang.viewsframework.PerspectivePanel;
 import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.entity.EntityConfigManager;
-import org.cellang.viewsframework.view.helper.EntityObjectHelperPane;
-import org.cellang.viewsframework.view.helper.ViewHelperPane;
-import org.cellang.viewsframework.view.report.ReportTemplateRow;
-import org.cellang.viewsframework.view.table.EntityConfigTableView;
+import org.cellang.viewsframework.helper.EntityObjectHelperPane;
+import org.cellang.viewsframework.helper.ViewHelperPane;
+import org.cellang.viewsframework.report.ReportTemplateRow;
+import org.cellang.viewsframework.table.EntityConfigTableView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

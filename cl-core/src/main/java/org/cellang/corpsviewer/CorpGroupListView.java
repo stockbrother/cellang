@@ -10,10 +10,10 @@ import org.cellang.corpsviewer.myfavorites.OpenBalanceSheetAction;
 import org.cellang.viewsframework.HasDelegates;
 import org.cellang.viewsframework.control.Refreshable;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.table.AbstractColumn;
-import org.cellang.viewsframework.view.table.AbstractTableDataProvider;
-import org.cellang.viewsframework.view.table.LineNumberColumn;
-import org.cellang.viewsframework.view.table.TableDataView;
+import org.cellang.viewsframework.table.AbstractColumn;
+import org.cellang.viewsframework.table.AbstractTableDataProvider;
+import org.cellang.viewsframework.table.LineNumberColumn;
+import org.cellang.viewsframework.table.TableDataView;
 
 public class CorpGroupListView extends TableDataView<CorpGroupRowData> implements HasDelegates, Refreshable {
 

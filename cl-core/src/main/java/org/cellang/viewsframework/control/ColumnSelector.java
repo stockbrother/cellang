@@ -1,6 +1,6 @@
 package org.cellang.viewsframework.control;
 
-import org.cellang.viewsframework.view.table.ColumnDefine;
+import org.cellang.viewsframework.table.ColumnDefine;
 
 public interface ColumnSelector<T> {
 

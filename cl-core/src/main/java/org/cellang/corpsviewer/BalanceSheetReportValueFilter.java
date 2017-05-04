@@ -2,8 +2,8 @@ package org.cellang.corpsviewer;
 
 import java.math.BigDecimal;
 
-import org.cellang.viewsframework.view.report.ReportRow;
-import org.cellang.viewsframework.view.report.ReportValueFilter;
+import org.cellang.viewsframework.report.ReportRow;
+import org.cellang.viewsframework.report.ReportValueFilter;
 
 public class BalanceSheetReportValueFilter implements ReportValueFilter{
 

@@ -4,7 +4,7 @@ import org.cellang.core.entity.CustomizedReportEntity;
 import org.cellang.viewsframework.View;
 import org.cellang.viewsframework.control.Action;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.report.ReportTemplateTableView;
+import org.cellang.viewsframework.report.ReportTemplateTableView;
 
 public class OpenTemplateTableAction extends Action {
 	OperationContext oc;

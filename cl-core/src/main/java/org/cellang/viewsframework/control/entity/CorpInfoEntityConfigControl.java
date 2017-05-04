@@ -20,7 +20,7 @@ import org.cellang.viewsframework.ext.CorpP_EExtendingProperty;
 import org.cellang.viewsframework.ext.CorpROEExtendingPropertyDefine;
 import org.cellang.viewsframework.format.ReportItemLocators;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.report.ReportTableView;
+import org.cellang.viewsframework.report.ReportTableView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

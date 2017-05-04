@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cellang.commons.lang.Tuple2;
-import org.cellang.viewsframework.view.report.ReportTemplateRowChartDataProvider;
+import org.cellang.viewsframework.report.ReportTemplateRowChartDataProvider;
 
 import junit.framework.TestCase;
 

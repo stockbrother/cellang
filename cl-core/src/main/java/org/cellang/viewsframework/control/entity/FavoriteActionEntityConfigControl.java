@@ -9,7 +9,7 @@ import org.cellang.viewsframework.control.HasActions;
 import org.cellang.viewsframework.control.SelectionListener;
 import org.cellang.viewsframework.ext.CorpP_EExtendingProperty;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.table.EntityObjectTableDataProvider;
+import org.cellang.viewsframework.table.EntityObjectTableDataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

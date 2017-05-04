@@ -13,11 +13,11 @@ import org.cellang.corpsviewer.myfavorites.OpenCashFlowStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenIncomeStatementAction;
 import org.cellang.viewsframework.control.Refreshable;
 import org.cellang.viewsframework.ops.OperationContext;
-import org.cellang.viewsframework.view.table.AbstractColumn;
-import org.cellang.viewsframework.view.table.AbstractTableDataProvider;
-import org.cellang.viewsframework.view.table.ColumnDefine;
-import org.cellang.viewsframework.view.table.LineNumberColumn;
-import org.cellang.viewsframework.view.table.TableDataView;
+import org.cellang.viewsframework.table.AbstractColumn;
+import org.cellang.viewsframework.table.AbstractTableDataProvider;
+import org.cellang.viewsframework.table.ColumnDefine;
+import org.cellang.viewsframework.table.LineNumberColumn;
+import org.cellang.viewsframework.table.TableDataView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
