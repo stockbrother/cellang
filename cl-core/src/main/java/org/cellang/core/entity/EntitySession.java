@@ -1,6 +1,7 @@
 package org.cellang.core.entity;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,24 +26,30 @@ public interface EntitySession {
 	public <T extends EntityObject> List<T> getList(Class<T> cls, String field, Object value);
 
 	public <T extends EntityObject> List<T> getList(Class<T> cls, String[] fields, Object[] args);
+	
+	public <T extends AbstractReportEntity, I extends AbstractReportItemEntity> List<I> getReportItemList(Class<T> cls,
+			Class<I> clsItem, String corpId, Date[] reportDate);
 
 	public <T extends EntityObject> EntityQuery<T> query(Class<T> cls, String field, Object arg);
 
 	public <T extends EntityObject> EntityQuery<T> query(Class<T> cls);
 
 	public <T extends EntityObject> EntityQuery<T> query(Class<T> cls, String[] fields, Object[] args);
-
+	
 	public void saveAll(List<EntityObject> seList);
 
 	public void saveAll(Iterator<EntityObject> eoIt);
 
 	public void save(EntityObject se);
-	
+
 	public <T extends EntityObject> long delete(Class<T> cls);
-	
+
 	public <T extends EntityObject> long delete(Class<T> cls, String id);
 
 	public <T extends EntityObject> long delete(Class<T> cls, String[] strings, Object[] objects);
+
+	public <T extends AbstractReportEntity, I extends AbstractReportItemEntity> long deleteReport(Class<T> cls,
+			Class<I> clsItem, String corpId);
 
 	public EntitySessionFactory getFactory();
 
@@ -54,7 +61,7 @@ public interface EntitySession {
 	public void clear();
 
 	public <T> T execute(JdbcOperation<T> op);
-	
+
 	public Connection getConnection();
 
 	public void rollback();

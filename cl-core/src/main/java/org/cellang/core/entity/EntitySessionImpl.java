@@ -3,9 +3,11 @@ package org.cellang.core.entity;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.cellang.collector.EnvUtil;
 import org.cellang.commons.jdbc.InsertRowOperation;
 import org.cellang.commons.jdbc.JdbcDataAccessTemplate;
 import org.cellang.commons.jdbc.JdbcOperation;
@@ -120,6 +122,25 @@ public class EntitySessionImpl implements EntitySession {
 		return op.execute(con);
 	}
 
+	@Override
+	public <T extends AbstractReportEntity, I extends AbstractReportItemEntity> long deleteReport(Class<T> cls,
+			Class<I> clsItem, String corpId) {
+		String t1 = this.ecf.get(cls).getTableName();
+		String t2 = this.ecf.get(clsItem).getTableName();
+		String sql1 = "delete from " + t1 + " where corpId = ?";
+		String sql2 = "delete from " + t2 + " where reportId in (select id from " + t1 + " where corpId = ?)";
+		JdbcOperation<Long> op = new JdbcOperation<Long>() {
+
+			@Override
+			public Long doExecute(Connection con) {
+				long rt2 = this.template.executeUpdate(con, sql2, new Object[] { corpId });
+				long rt1 = this.template.executeUpdate(con, sql1, new Object[] { corpId });
+				return rt1 + rt2;
+			}
+		};
+		return op.execute(con);
+	}
+
 	public EntityConfigFactory getEntityConfigFactory() {
 		return this.ecf;
 	}
@@ -207,6 +228,22 @@ public class EntitySessionImpl implements EntitySession {
 		}
 
 		return this.template.counter(this.con, sql, args);
+	}
+
+	@Override
+	public <T extends AbstractReportEntity, I extends AbstractReportItemEntity> List<I> getReportItemList(Class<T> cls,
+			Class<I> clsItem, String corpId, Date[] reportDate) {
+
+		List<T> rL = this.query(cls, new String[] { "corpId" }, new Object[] { corpId })
+				.in("reportDate", reportDate).execute(this);
+		String[] rIds = new String[rL.size()];
+		for (int i = 0; i < rIds.length; i++) {
+			rIds[i] = rL.get(i).getId();
+		}
+
+		List<I> iL = this.query(clsItem).in("reportId", rIds).execute(this);
+		return iL;
+		
 	}
 
 }

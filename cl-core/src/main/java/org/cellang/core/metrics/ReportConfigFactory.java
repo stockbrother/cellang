@@ -14,6 +14,8 @@ import org.cellang.core.entity.EntityConfig;
 import org.cellang.core.entity.EntityConfigFactory;
 import org.cellang.core.entity.IncomeStatementItemEntity;
 import org.cellang.core.entity.IncomeStatementReportEntity;
+import org.cellang.core.entity.QingSuanItemEntity;
+import org.cellang.core.entity.QingSuanReportEntity;
 
 public class ReportConfigFactory {
 
@@ -26,6 +28,8 @@ public class ReportConfigFactory {
 
 		add(ecf, CashFlowStatementReportEntity.class, CashFlowStatementItemEntity.class);
 
+		add(ecf, QingSuanReportEntity.class, QingSuanItemEntity.class);
+		
 		add(ecf, CustomizedReportEntity.class, CustomizedItemEntity.class);
 
 	}

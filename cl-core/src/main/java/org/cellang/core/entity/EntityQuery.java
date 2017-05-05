@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
  * @param <T>
  */
 public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(EntityQuery.class);
-	
+
 	private static class WhereField {
 		public WhereField(String field, String oper, Object value) {
 			this.field = field;
@@ -34,6 +34,10 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		private String field;
 		private Object value;
 		private String operator;
+
+		public boolean isIn() {
+			return "in".equalsIgnoreCase(this.operator);
+		}
 	}
 
 	private EntityConfig entityConfig;
@@ -41,7 +45,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 	private List<WhereField> whereFields = new ArrayList<>();
 
 	private String[] orderBy;
-	//private String orderByExtendingPropertyKey;
+	// private String orderByExtendingPropertyKey;
 	private Integer limit;
 	private Integer offset;
 
@@ -82,29 +86,45 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 				.append("select * from ")//
 				.append(this.entityConfig.getTableName())//
 				.append(" as t1")//
-				//.append(" left join")//
-				//.append(" " + ExtendingPropertyEntity.tableName)//
-				//.append(" as t2")//
-				//.append(" on t2.entityId = t1.id and t2.entityType=? and t2.key=?")//
+				// .append(" left join")//
+				// .append(" " + ExtendingPropertyEntity.tableName)//
+				// .append(" as t2")//
+				// .append(" on t2.entityId = t1.id and t2.entityType=? and
+				// t2.key=?")//
 				.append(" where 1=1")//
-				;
+		;
 		//
-		//args.add(this.entityConfig.getEntityClass().getName());
-		//args.add(this.orderByExtendingPropertyKey);
+		// args.add(this.entityConfig.getEntityClass().getName());
+		// args.add(this.orderByExtendingPropertyKey);
 		// equal query fields
 
 		for (int i = 0; i < this.whereFields.size(); i++) {
 			WhereField wf = this.whereFields.get(i);
-			sql.append(" and t1." + wf.field + " " + wf.operator + " ?");
-			args.add(wf.value);
+			sql.append(" and t1." + wf.field + " " + wf.operator + " ");
+			if (wf.isIn()) {//in statement
+				Object[] values = (Object[]) wf.value;
+				sql.append("(");
+				for (int j = 0; j < values.length; j++) {
+					sql.append("?");
+					if (j < values.length - 1) {
+						sql.append(",");
+					}
+					args.add(values[j]);
+				}
+				sql.append(")");
+			} else {
+				sql.append("?");
+				args.add(wf.value);
+			}
+
 		}
 		List<String> orderByL = new ArrayList<>();
 		if (orderBy != null) {
 			orderByL.addAll(Arrays.asList(this.orderBy));
 		}
-//		if (this.orderByExtendingPropertyKey != null) {
-//			orderByL.add(" t2.value");
-//		}
+		// if (this.orderByExtendingPropertyKey != null) {
+		// orderByL.add(" t2.value");
+		// }
 
 		if (orderByL.size() > 0) {
 			sql.append(" order by");
@@ -123,7 +143,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		if (this.offset != null) {
 			sql.append(" offset ").append(this.offset);
 		}
-		
+
 		JdbcOperation<List<T>> op = new JdbcOperation<List<T>>() {
 
 			@Override
@@ -132,7 +152,7 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 				return (List<T>) template.executeQuery(con, sql.toString(), args, rsp);
 			}
 		};
-		
+
 		List<T> rt = es.execute(op);
 		return rt;
 	}
@@ -154,24 +174,29 @@ public class EntityQuery<T extends EntityObject> extends EntityOp<List<T>> {
 		this.offset = offset;
 		return this;
 	}
-//
-//	public EntityQuery<T> orderByExtendingPropertyKey(String key) {
-//		this.orderByExtendingPropertyKey = key;
-//		return this;
-//	}
-	
+	//
+	// public EntityQuery<T> orderByExtendingPropertyKey(String key) {
+	// this.orderByExtendingPropertyKey = key;
+	// return this;
+	// }
+
 	public EntityQuery<T> orderBy(String string) {
-		return this.orderBy(new String[]{string});
+		return this.orderBy(new String[] { string });
 	}
-	
+
 	public EntityQuery<T> orderBy(String[] strings) {
 		//
 		this.setOrderBy(strings);//
 		return this;
 	}
-	
+
 	public EntityQuery<T> eq(String key, Object value) {
-		this.whereFields.add(new WhereField(key,"=",value));
+		this.whereFields.add(new WhereField(key, "=", value));
+		return this;
+	}
+
+	public EntityQuery<T> in(String key, Object[] values) {
+		this.whereFields.add(new WhereField(key, "in", values));
 		return this;
 	}
 

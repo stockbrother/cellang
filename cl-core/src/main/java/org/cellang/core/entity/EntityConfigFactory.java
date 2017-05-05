@@ -20,6 +20,8 @@ public class EntityConfigFactory {
 		this.addEntity(new EntityConfig(IncomeStatementItemEntity.class, IncomeStatementItemEntity.tableName));
 		this.addEntity(new EntityConfig(CashFlowStatementReportEntity.class, CashFlowStatementReportEntity.tableName));
 		this.addEntity(new EntityConfig(CashFlowStatementItemEntity.class, CashFlowStatementItemEntity.tableName));
+		this.addEntity(new EntityConfig(QingSuanItemEntity.class, QingSuanItemEntity.tableName));
+		this.addEntity(new EntityConfig(QingSuanReportEntity.class, QingSuanReportEntity.tableName));
 		this.addEntity(new EntityConfig(CorpInfoEntity.class, CorpInfoEntity.tableName));
 		this.addEntity(new EntityConfig(DateInfoEntity.class, DateInfoEntity.tableName));
 		this.addEntity(new EntityConfig(CorpMetricEntity.class, CorpMetricEntity.tableName));
@@ -35,11 +37,13 @@ public class EntityConfigFactory {
 		
 		// indices
 		this.addIndex(BalanceSheetReportEntity.class, new String[] { "corpId", "reportDate" });
+		this.addIndex(QingSuanReportEntity.class, new String[] { "corpId", "reportDate" });
 		this.addIndex(IncomeStatementReportEntity.class, new String[] { "corpId", "reportDate" });
 		this.addIndex(CashFlowStatementReportEntity.class, new String[] { "corpId", "reportDate" });
 		this.addIndex(CustomizedReportEntity.class, new String[] { "corpId", "reportDate" });
 		
 		this.addIndex(BalanceSheetItemEntity.class, new String[] { "reportId", "key" });
+		this.addIndex(QingSuanItemEntity.class, new String[] { "reportId", "key" });
 		this.addIndex(IncomeStatementItemEntity.class, new String[] { "reportId", "key" });
 		this.addIndex(CashFlowStatementItemEntity.class, new String[] { "reportId", "key" });
 		this.addIndex(CustomizedItemEntity.class, new String[] { "reportId", "key" });

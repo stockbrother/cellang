@@ -11,6 +11,7 @@ import org.cellang.core.entity.BalanceSheetReportEntity;
 import org.cellang.core.entity.CashFlowStatementReportEntity;
 import org.cellang.core.entity.CustomizedReportEntity;
 import org.cellang.core.entity.IncomeStatementReportEntity;
+import org.cellang.core.entity.QingSuanReportEntity;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -75,9 +76,16 @@ public class ItemDefines {
 		
 		{
 
+			Group g2 = load(new StringReader(BalanceSheetContent.qingSuan));
+			ME.groupMap.put(QingSuanReportEntity.class, g2);
+		}
+		
+		{
+
 			Group g2 = load(new StringReader(CustomizedReport.content));
 			ME.groupMap.put(CustomizedReportEntity.class, g2);
 		}
+		
 		return ME;
 	}
 

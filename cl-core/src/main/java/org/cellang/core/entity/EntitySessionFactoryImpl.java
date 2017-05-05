@@ -45,6 +45,8 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 		upgraderList.add(new V0_0_10DBUpgrader());
 		upgraderList.add(new V0_0_11DBUpgrader());
 		upgraderList.add(new V0_0_12DBUpgrader());
+		upgraderList.add(new V0_0_13DBUpgrader());
+
 	}
 
 	public static EntitySessionFactory newInstance(File dbHome, String dbName, EntityConfigFactory ecf) {
@@ -68,6 +70,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 	}
 
 	private void upgrade() {
+		LOG.info("dataVersion:" + this.dataVersion + ",targetVersion:" + this.targetDataVersion);
 		while (true) {
 			if (this.dataVersion == this.targetDataVersion) {
 				break;
@@ -81,6 +84,7 @@ public class EntitySessionFactoryImpl implements EntitySessionFactory {
 			}
 			LOG.info("successfuly upgrade from:" + pre + " to target:" + dv);
 		}
+
 	}
 
 	private DataVersion tryUpgrade() {

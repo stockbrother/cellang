@@ -264,4 +264,12 @@ public class BalanceSheetContent {
 			+",,,现金及现金等价物的净增加额\n"//
 	//
 	;
+	
+	static String qingSuan = ""//
+			+",清算价值\n"//
+			+",净资产\n"//
+			+",流动资产价值\n"//
+			+",现金价值\n"//
+	//
+	;
 }

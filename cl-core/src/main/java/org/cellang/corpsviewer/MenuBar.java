@@ -20,7 +20,7 @@ import org.cellang.corpsviewer.actions.OpenTemplateChart;
 import org.cellang.corpsviewer.actions.OpenTemplateTableAction;
 import org.cellang.corpsviewer.actions.RefreshAllViewAction;
 import org.cellang.corpsviewer.myfavorites.OpenBalanceSheetAction;
-import org.cellang.corpsviewer.myfavorites.OpenBalanceSheetQinSuanAction;
+import org.cellang.corpsviewer.myfavorites.OpenQinSuanAction;
 import org.cellang.corpsviewer.myfavorites.OpenCashFlowStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenIncomeStatementAction;
 import org.cellang.corpsviewer.myfavorites.OpenMyFavoritesListViewAction;
@@ -95,7 +95,7 @@ public class MenuBar extends JMenuBar {
 			menu.addItem(new OpenBalanceSheetAction(oc));
 			menu.addItem(new OpenIncomeStatementAction(oc));
 			menu.addItem(new OpenCashFlowStatementAction(oc));
-			menu.addItem(new OpenBalanceSheetQinSuanAction(oc));
+			menu.addItem(new OpenQinSuanAction(oc));
 		}
 		menu = this.addMenu("List");
 		{

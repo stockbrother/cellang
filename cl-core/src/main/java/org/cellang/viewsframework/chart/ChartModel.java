@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ChartModel<T> extends ChartWindow<T> {
-	
-	public static interface DataChangeListener{
+
+	public static interface DataChangeListener {
 		public void dataChanged();
 	}
-	
+
 	private List<ChartSerial<T>> serialList = new ArrayList<>();
 
 	private Map<String, ChartSerial<T>> serialMap = new HashMap<>();
@@ -19,7 +19,7 @@ public class ChartModel<T> extends ChartWindow<T> {
 	private int defaultWindowSize;
 
 	private List<DataChangeListener> dataChangeListenerList = new ArrayList<>();
-	
+
 	public ChartModel() {
 		this(2);
 	}
@@ -36,8 +36,8 @@ public class ChartModel<T> extends ChartWindow<T> {
 	public ChartSerial<T> getSerial(String sname) {
 		return serialMap.get(sname);
 	}
-	
-	public void clearSerials(){
+
+	public void clearSerials() {
 		this.serialMap.clear();
 		this.serialList.clear();
 	}
@@ -51,8 +51,9 @@ public class ChartModel<T> extends ChartWindow<T> {
 		ChartSerial<T> old = this.serialMap.put(key, css);
 		fireDataChanged();
 	}
-	protected void fireDataChanged(){
-		for(DataChangeListener l:this.dataChangeListenerList){
+
+	protected void fireDataChanged() {
+		for (DataChangeListener l : this.dataChangeListenerList) {
 			l.dataChanged();
 		}
 	}
@@ -98,10 +99,10 @@ public class ChartModel<T> extends ChartWindow<T> {
 
 		for (int j = 0; j < this.serialList.size(); j++) {
 			BigDecimal[] mm = this.serialList.get(j).doGetActualMinMax();
-			if (min == null || min.compareTo(mm[0]) > 0) {
+			if (mm[0] != null && (min == null || min.compareTo(mm[0]) > 0)) {
 				min = mm[0];
 			}
-			if (max == null || max.compareTo(mm[1]) < 0) {
+			if (mm[1] != null && (max == null || max.compareTo(mm[1]) < 0)) {
 				max = mm[1];
 			}
 		}
@@ -110,7 +111,7 @@ public class ChartModel<T> extends ChartWindow<T> {
 	}
 
 	public void addDataChangeListener(DataChangeListener l) {
-		this.dataChangeListenerList.add(l);		
+		this.dataChangeListenerList.add(l);
 	}
 
 }

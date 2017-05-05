@@ -11,9 +11,17 @@ import org.cellang.core.util.DateUtil;
 public class EnvUtil {
 	static TimeZone timeZone = TimeZone.getTimeZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC));
 	static TimeZone dataTimeZone = TimeZone.getTimeZone(ZoneOffset.ofHours(8));//
-	
+
 	public static TimeZone getTimeZone() {
 		return dataTimeZone;
+	}
+
+	public static Date[] newDateArrayOfYearLastDay(int[] years) {
+		Date[] rt = new Date[years.length];
+		for (int i = 0; i < years.length; i++) {
+			rt[i] = newDateOfYearLastDay(years[i]);
+		}
+		return rt;
 	}
 
 	public static Date newDateOfYearLastDay(int year) {
